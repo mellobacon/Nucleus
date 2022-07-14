@@ -1,0 +1,81 @@
+/*
+Styling overrides for carbon components
+*/
+.bx--header__nav {
+    display: block !important;
+    padding-left: 0.5rem !important;
+}
+.bx--overflow-menu-options {
+    width: max-content !important;
+    box-shadow: 0px 6px 6px 0px rgb(0 0 0 / 33%) !important;
+}
+.bx--overflow-menu-options__btn {
+    max-width: none !important;
+    outline: none !important;
+    justify-content: space-between;
+}
+.bx--overflow-menu-options__btn:focus {
+    outline: none !important;
+}
+.bx--overflow-menu-options__option:hover {
+    background-color: #144b6b !important;
+}
+button:not(:disabled):active {
+    background-color: #262626 !important;
+}
+.bx--overflow-menu:focus, .bx--overflow-menu__trigger:focus {
+    outline: none !important;
+}
+a.bx--header__menu-item {
+    border: none !important;
+}
+a.bx--header__menu-item:focus {
+    border: none !important;
+}
+.bx--header__menu .bx--header__menu-item {
+    height: 2rem !important;
+}
+.bx--tabs {
+    height: 100% !important;
+}
+.bx--tabs__nav {
+    flex-direction: column !important;
+    align-items: center;
+}
+a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
+    outline: none !important;
+}
+.bx--tabs__nav-item--selected:not(.bx--tabs__nav-item--disabled) .bx--tabs__nav-link, .bx--tabs__nav-item--selected:not(.bx--tabs__nav-item--disabled) .bx--tabs__nav-link:focus, .bx--tabs__nav-item--selected:not(.bx--tabs__nav-item--disabled) .bx--tabs__nav-link:active {
+    box-shadow: inset -2px 0px 0 0 #4589ff !important;
+}
+.bx--tabs__nav-item .bx--tabs__nav-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+}
+.bx--tabs__nav-item {
+    background-color: transparent !important;
+}
+.bx--tabs__nav-item:hover:not(.bx--tabs__nav-item--disabled) {
+    background-color: #b1b1b133 !important;
+    box-shadow: none !important;
+}
+.bx--tree .bx--tree-node--active>.bx--tree-node__label::before {
+    background-color: transparent;
+}
+.bx--tree .bx--tree-node:focus>.bx--tree-node__label {
+    outline: none !important;
+}
+.bx--tree .bx--tree-leaf-node {
+    padding-left: 1rem !important;
+}
+.bx--tree .bx--tree-node {
+    background-color: transparent !important;
+}
+.bx--tree-parent-node.bx--tree-node--selected>.bx--tree-node__label {
+    background-color: transparent !important;
+}
+.bx--tree .bx--tree-node {
+    cursor: pointer;
+}
