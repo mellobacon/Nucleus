@@ -1,8 +1,8 @@
 <h1 align="center" style="position: relative;">
-  <img width="200" src="./public/assets/images/Icon(1).png" alt="The nucleus" /><br>
+  <img width="200" src="./public/assets/images/Icon(1).png" alt="The nucleus icon" /><br>
   Nucleus
 </h1>
-<h3 align="center">A text editor with better UI than your mom :var:</h3>
+<h3 align="center">A text editor with better UI than [enter funny thing here]</h3>
 <p align="center">
   License •
   Download
