@@ -52,6 +52,7 @@ yarn install
 ### To run via browser...
 
 ```bash
+yarn build
 yarn start
 ```
 
