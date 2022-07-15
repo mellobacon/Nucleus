@@ -1,107 +1,75 @@
-# This repo is no longer maintained. Consider using `npm init vite` and selecting the `svelte` option or — if you want a full-fledged app framework and don't mind using pre-1.0 software — use [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
+<h1 align="center" style="position: relative;">
+  <img width="200" src="./public/assets/images/Icon(1).png" alt="The scp terminal icon" /><br>
+  Nucleus
+</h1>
+<h3 align="center">A text editor with better UI than your mom :var:</h3>
+<p align="center">
+  License •
+  Download
+</p>
+
+### Known issues
+- TBA
+
+**This project is a WIP. Bugs and missing or incomplete features will be present**
+
+## Installation
+---
+*TBA*
+
+## Building for development
+This is for those that want to contribute or build on their local machines. If you want to install without building, follow the steps in Installation.
 
 ---
+This project was made with [Tauri](https://tauri.app/) and was built with...
+- [Svelte](https://svelte.dev/) (Frontend)
+- [Rust](https://www.rust-lang.org/) (Backend)
+- [TypeScript](https://www.typescriptlang.org/)
 
-# svelte app
+...and these build dependencies...
+- [Yarn](https://yarnpkg.com/)
+- [Node.js](https://nodejs.org)
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+(*Note: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) before continuing*.)
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
+Clone the repo via...
 ```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+gh repo clone mellobacon/Nucleus
+```
+or
+```bash
+git clone https://github.com/mellobacon/Nucleus.git
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
+If you want to clone from within your editor, copy ```https://github.com/mellobacon/Nucleus.git``` and follow the instructions for cloning a repo for your editor. Alternatively you can [download the zip file](https://github.com/mellobacon/Nucleus/archive/refs/heads/master.zip).
 
 Install the dependencies...
 
 ```bash
-cd svelte-app
-npm install
+cd Nucleus
+yarn install
 ```
 
-...then start [Rollup](https://rollupjs.org):
+### To run via browser...
 
 ```bash
-npm run dev
+yarn start
 ```
 
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+Navigate to [localhost:8080](http://localhost:8080). You should see the app running in the browser.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
+### To run via a desktop window...
 
 ```bash
-npm run build
+yarn tauri dev
 ```
 
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
+## Building
+---
 
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
+To create an executable version of the app:
 
 ```bash
-node scripts/setupTypeScript.js
+yarn tauri build
 ```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-If you want to use `baseUrl` or `path` aliases within your `tsconfig`, you need to set up `@rollup/plugin-alias` to tell Rollup to resolve the aliases. For more info, see [this StackOverflow question](https://stackoverflow.com/questions/63427935/setup-tsconfig-path-in-svelte).
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+(*Note: this is for building a single executable for your current OS. To build for other operating systems, read [how to build a Tauri app](https://tauri.app/v1/guides/building/).*)
