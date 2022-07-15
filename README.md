@@ -29,8 +29,6 @@ This project was made with [Tauri](https://tauri.app/) and was built with...
 - [Yarn](https://yarnpkg.com/)
 - [Node.js](https://nodejs.org)
 
-(*Note: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) before continuing*.)
-
 Clone the repo via...
 ```bash
 gh repo clone mellobacon/Nucleus
@@ -60,6 +58,7 @@ Navigate to [localhost:8080](http://localhost:8080). You should see the app runn
 
 ### To run via a desktop window...
 
+(*Note on building for desktop: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) as well as [the Tauri CLI](https://tauri.app/v1/guides/getting-started/tauri-cli)*.)
 ```bash
 yarn tauri dev
 ```
