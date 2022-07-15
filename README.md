@@ -14,7 +14,6 @@
 **This project is a WIP. Bugs and missing or incomplete features will be present**
 
 ## Installation
----
 *TBA*
 
 ## Building for development
@@ -65,7 +64,6 @@ yarn tauri dev
 ```
 
 ## Building
----
 
 To create an executable version of the app:
 
