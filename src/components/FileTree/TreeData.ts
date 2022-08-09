@@ -1,18 +1,44 @@
 import { dialog, fs } from "@tauri-apps/api";
+import { filetree } from "../FileTree/TreeStore";
 let parentname: string;
+let dir;
 export async function data() {
     let dirname = await dialog.open({ directory: true }) as string;
-    let children = await fs.readDir(dirname, { recursive: true });
+    dir = dirname;
+    return await loadTree();
+}
+
+async function loadTree() {
+    let children = await fs.readDir(dir, { recursive: true });
     id = 0;
     cache = [];
-    let nodes = buildTree(children);
-    parentname = dirname.split("\\").pop();
-    let tree = [{id: -1, text: dirname.split("\\").pop(), children: nodes}];
+    let nodes = buildTree(sort(children));
+    parentname = dir.split("\\").pop();
+    let tree = [{id: -1, name: dir.split("\\").pop(), children: nodes, path: dir}];
     return tree;
 }
 
 export async function updateTree() {
-    
+    let tree = await loadTree();
+    filetree.set(tree);
+}
+
+function sort(children) {
+    let files = [];
+    let folders = [];
+    for (const child of children) {
+        if (child.children) {
+            folders.push(child)
+            sort(child.children);
+        }
+        else {
+            files.push(child);
+        }
+    }
+    files.sort();
+    folders.sort();
+    folders.push(...files);
+    return folders;
 }
 
 export function getFileData(id) {
@@ -29,15 +55,15 @@ let cache = [];
 function buildTree(children: fs.FileEntry[]) {
     let nodes = [];
     for (const child of children) {
-        let node: {id: number, text: string; children?: any[]; path: string; } = {id: 0, text: "", children: null, path: ""};
+        let node: {id: number, name: string; children?: any[]; path: string; } = {id: 0, name: "", children: null, path: ""};
+        if (child.children) {
+            node.children = buildTree(sort(child.children));
+        }
         node.id = id;
         id++;
-        node.text = child.name;
+        node.name = child.name;
         node.path = child.path;
         cache.push(node);
-        if (child.children) {
-            node.children = buildTree(child.children);
-        }
         nodes.push(node);
     }
     return nodes;
