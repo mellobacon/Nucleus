@@ -1,9 +1,8 @@
 <script lang="ts">
     import ArrowUp from "carbon-icons-svelte/lib/ArrowUp.svelte";
-    import ArrowDown from "carbon-icons-svelte/lib/ArrowDown.svelte";
     import WatsonHealthRotate_360 from "carbon-icons-svelte/lib/WatsonHealthRotate_360.svelte";
-    import { TreeView } from "carbon-components-svelte";
-    import { getFileData } from "./TreeData";
+    import TreeView from "./TreeView.svelte";
+    import { updateTree } from "../FileTree/TreeData";
     import { onMount } from "svelte";
     import { filetree, workspacename } from "./TreeStore";
     let treeview = null;
@@ -21,18 +20,11 @@
     <div class="toolbar-button" on:click={treeview?.collapseAll}>
         <ArrowUp />
     </div>
-    <div class="toolbar-button" on:click={treeview?.expandAll}>
-        <ArrowDown />
-    </div>
-    <div class="toolbar-button" on:click={() => {filetree.update(t => $filetree)}}>
+    <div class="toolbar-button" on:click={ async() => {await updateTree();}}>
         <WatsonHealthRotate_360 />
     </div>
 </div>
-<TreeView bind:this={treeview} size="compact" hideLabel children={tree} on:select={({ detail }) => {
-    if (detail.leaf) {
-        getFileData(detail.id)
-    }
-}}></TreeView>
+<TreeView bind:this={treeview} size="compact" hideLabel children={tree}></TreeView>
 
 <style>
     #explorer-toolbar {
