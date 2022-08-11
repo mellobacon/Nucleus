@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { ContextMenuDivider, ContextMenuGroup, ContextMenuOption } from "carbon-components-svelte";
+    import { ContextMenuDivider, ContextMenuOption } from "carbon-components-svelte";
     import ContextMenu from "../ContextMenu/ContextMenu.svelte";
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Paste from "carbon-icons-svelte/lib/Paste.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import RenameModel from "../Modal/RenameModel.svelte";
     import { fs, clipboard, shell, path } from "@tauri-apps/api";
-import { dirname } from "@tauri-apps/api/path";
     export let target;
     export let filename;
     export let filepath;

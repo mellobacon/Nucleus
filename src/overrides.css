@@ -65,7 +65,7 @@ a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
     background-color: transparent;
 }
 .bx--tree .bx--tree-node:focus>.bx--tree-node__label {
-    outline: none !important;
+    outline: 1px solid #fff !important;
 }
 .bx--tree .bx--tree-leaf-node {
     padding-left: 1rem !important;
@@ -75,7 +75,4 @@ a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
 }
 .bx--tree-parent-node.bx--tree-node--selected>.bx--tree-node__label {
     background-color: transparent !important;
-}
-.bx--tree .bx--tree-node {
-    cursor: pointer;
 }
