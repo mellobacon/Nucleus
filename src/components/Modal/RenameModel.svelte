@@ -12,6 +12,8 @@
         : "-";
 
     let invalid = false;
+    let invalidtext = "";
+
     function getExt() {
         extinput = filenameinput.split(".")[1];
         if (extinput === undefined || extinput === "") {
@@ -34,11 +36,11 @@
         </div>
         <div class="input">
             <Input
-                invalid={invalid}
+                {invalid}
                 bind:value={filenameinput}
                 labelText="Name:"
                 placeholder="Enter name..."
-                invalidText="Enter a name for your file"
+                invalidText={invalidtext}
                 on:input={() => {
                     invalid = false;
                     getExt();
@@ -57,8 +59,15 @@
             <div
                 class="button"
                 on:click={async () => {
-                    if (filenameinput === "" || undefined) {
+                    // TODO: process any/all invalid characters (different per OS apparently)
+                    if (filenameinput === "" || filenameinput === "." || filenameinput === "/" || filenameinput === "\\" || undefined) {
                         invalid = true;
+                        if (filenameinput === "." || filenameinput === "/" || filenameinput === "\\") {
+                            invalidtext = `"${filenameinput}"" is not a valid file or directory name`;
+                        }
+                        else {
+                            invalidtext = "Enter a name for your file";
+                        }
                         return;
                     }
                     let oldpath = path;
