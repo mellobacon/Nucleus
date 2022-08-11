@@ -114,7 +114,7 @@
     {name}
   </div>
 </li>
-<LeafNodeMenu target={ref} filename={name} path={path}></LeafNodeMenu>
+<LeafNodeMenu target={ref} filename={name} filepath={path}></LeafNodeMenu>
 <RenameModel bind:open bind:filename={name} bind:path={path} />
 
 <style>

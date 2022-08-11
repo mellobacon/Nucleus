@@ -148,4 +148,4 @@
   </li>
 {/if}
 
-<ParentNodeMenu target={[refLabel]} filename={name} path={path}></ParentNodeMenu>
+<ParentNodeMenu target={[refLabel]} filename={name} filepath={path}></ParentNodeMenu>
