@@ -11,6 +11,7 @@
         ? filenameinput.split(".")[1]
         : "-";
 
+    let invalid = false;
     function getExt() {
         extinput = filenameinput.split(".")[1];
         if (extinput === undefined || extinput === "") {
@@ -33,10 +34,13 @@
         </div>
         <div class="input">
             <Input
+                invalid={invalid}
                 bind:value={filenameinput}
                 labelText="Name:"
                 placeholder="Enter name..."
+                invalidText="Enter a name for your file"
                 on:input={() => {
+                    invalid = false;
                     getExt();
                 }}
             />
@@ -53,6 +57,10 @@
             <div
                 class="button"
                 on:click={async () => {
+                    if (filenameinput === "" || undefined) {
+                        invalid = true;
+                        return;
+                    }
                     let oldpath = path;
                     let newpath = path.split("\\");
                     newpath.pop();

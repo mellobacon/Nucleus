@@ -6,6 +6,7 @@ export const filemenu = [
     { option: "Open File...", shortcut: "Ctrl + O", onclick: () => { console.log("click"); } },
     { option: "Open Folder", shortcut: "Ctrl + K", onclick: async () => { 
         let treedata = await data();
+        if (treedata === undefined) return;
         filetree.set(treedata);
         workspacename.set(workspace());
     }},
@@ -46,6 +47,6 @@ export const helpmenu = [
     { option: "View Commands", onclick: () => { console.log("click"); } },
     { option: "Toggle developer tools", onclick: () => { console.log("click"); } },
     { option: "Release Notes", onclick: () => { console.log("click"); }, divider: true },
-    { option: "Check for Updates", onclick: () => { console.log("click"); } },
-    { option: "About Editor", onclick: () => { console.log("click"); } },
+    { option: "Check for Updates", onclick: async() => { console.log("click"); } },
+    { option: "About Editor", onclick: async() => { console.log("click"); } },
 ];

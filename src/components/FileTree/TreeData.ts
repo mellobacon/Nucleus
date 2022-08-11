@@ -4,6 +4,7 @@ let parentname: string;
 let dir;
 export async function data() {
     let dirname = await dialog.open({ directory: true }) as string;
+    if (dirname === null) return;
     dir = dirname;
     return await loadTree();
 }
