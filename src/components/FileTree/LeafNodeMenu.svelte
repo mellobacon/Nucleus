@@ -6,7 +6,7 @@
     import Paste from "carbon-icons-svelte/lib/Paste.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import Script from "carbon-icons-svelte/lib/Script.svelte";
-    import { fs, clipboard } from "@tauri-apps/api";
+    import { fs, clipboard, shell, path } from "@tauri-apps/api";
     export let target;
     export let filename;
     export let filepath;
@@ -39,7 +39,12 @@
             <span slot="labelText" title={filepath}>Copy Absolute Path</span>
         </ContextMenuOption>
     </ContextMenuOption>
-    <ContextMenuOption labelText="Show in Explorer"></ContextMenuOption>
+    <ContextMenuOption labelText="Show in Explorer" on:click={() => {
+        let dir = filepath.split(path.sep);
+        dir.pop();
+        dir = dir.join(path.sep);
+        shell.open(dir);
+    }}></ContextMenuOption>
 
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {

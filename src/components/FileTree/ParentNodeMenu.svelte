@@ -5,7 +5,8 @@
     import Paste from "carbon-icons-svelte/lib/Paste.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import RenameModel from "../Modal/RenameModel.svelte";
-    import { fs, clipboard } from "@tauri-apps/api";
+    import { fs, clipboard, shell, path } from "@tauri-apps/api";
+import { dirname } from "@tauri-apps/api/path";
     export let target;
     export let filename;
     export let filepath;
@@ -40,7 +41,9 @@
             <span slot="labelText" title={filepath}>Copy Absolute Path</span>
         </ContextMenuOption>
     </ContextMenuOption>
-    <ContextMenuOption labelText="Show in Explorer"></ContextMenuOption>
+    <ContextMenuOption labelText="Show in Explorer" on:click={() => {
+        shell.open(filepath);
+    }}></ContextMenuOption>
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {
         await fs.removeDir(filepath, {recursive: true});
