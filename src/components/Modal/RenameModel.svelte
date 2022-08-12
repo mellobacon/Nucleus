@@ -3,6 +3,7 @@
     import Input from "../Input/Input.svelte";
     import { fs } from "@tauri-apps/api";
     import { updateTree } from "../FileTree/TreeData";
+    import langlist from "../../scripts/languages/languages.json";
     export let open = false;
     export let filename = "";
     export let path = "/";
@@ -15,9 +16,19 @@
     let invalidtext = "";
 
     function getExt() {
-        extinput = filenameinput.split(".")[1];
+        let _ = filenameinput.split(".");
+        if (_.length > 1) {
+            extinput = _.slice(-1)[0];
+        }
         if (extinput === undefined || extinput === "") {
             extinput = "-";
+        }
+        let keys = Object.keys(langlist);
+        for (let key of keys) {
+            let extensions = langlist[key].extensions;
+            if (extensions && extensions.includes(`.${extinput}`)) {
+                extinput = `${key} File`;
+            }
         }
     }
 </script>
@@ -51,7 +62,7 @@
                 readonly
                 placeholder={extinput}
                 _class="rename-ext"
-                labelText="Extension:"
+                labelText="File Type:"
             />
         </div>
         <div class="buttongroup">
