@@ -27,7 +27,7 @@
         for (let key of keys) {
             let extensions = langlist[key].extensions;
             if (extensions && extensions.includes(`.${extinput}`)) {
-                extinput = `${key} File`;
+                extinput = `${key}`;
             }
         }
     }
