@@ -5,7 +5,7 @@
 
 <div id="container">
     <div class="main">
-        
+        <Editor />
     </div>
     <Footer></Footer>
 </div>
@@ -14,6 +14,7 @@
     #container {
         flex-grow: 1;
         height: 100%;
+        overflow: hidden;
     }
     .main {
         width: 100%;
