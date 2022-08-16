@@ -69,7 +69,7 @@
         display: none !important;
     }
     #grabber {
-		width: 3px;
+		min-width: 3px;
 		height: 100%;
 		cursor: ew-resize;
         position: relative;

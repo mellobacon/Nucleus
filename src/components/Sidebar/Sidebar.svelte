@@ -62,7 +62,7 @@
 <style>
     #sidebar {
         height: 100%;
-        width: 3rem;
+        min-width: 3rem;
         border-right: 1px solid #333;
         display: flex;
         flex-direction: column;
