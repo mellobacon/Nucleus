@@ -9,6 +9,12 @@ export async function data() {
     return await loadTree();
 }
 
+export async function loadFile() {
+    let file = await dialog.open() as string;
+    if (file === null) return;
+    return file;
+}
+
 async function loadTree() {
     let children = await fs.readDir(dir, { recursive: true });
     id = 0;
@@ -42,10 +48,6 @@ function sort(children) {
     return folders;
 }
 
-export function getFileData(id) {
-    console.log(cache[id]);
-}
-
 export function workspace() {
     return parentname;
 }
@@ -69,12 +71,3 @@ function buildTree(children: fs.FileEntry[]) {
     }
     return nodes;
 }
-
-/*
-export async function printTree() {
-    let dirname = await dialog.open({ directory: true }) as string;
-    let children = await fs.readDir(dirname, { recursive: true });
-    console.log(buildTree(children));
-}
-*/
-
