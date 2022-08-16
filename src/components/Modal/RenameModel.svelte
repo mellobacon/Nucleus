@@ -4,6 +4,7 @@
     import { fs } from "@tauri-apps/api";
     import { updateTree } from "../FileTree/TreeData";
     import langlist from "../../scripts/languages/languages.json";
+    import { sep } from "@tauri-apps/api/path";
     export let open = false;
     export let filename = "";
     export let path = "/";
@@ -20,7 +21,7 @@
         if (_.length > 1) {
             extinput = _.slice(-1)[0];
         }
-        if (extinput === undefined || extinput === "") {
+        else if (extinput === undefined || extinput === "") {
             extinput = "-";
         }
         let keys = Object.keys(langlist);
@@ -71,9 +72,10 @@
                 class="button"
                 on:click={async () => {
                     // TODO: process any/all invalid characters (different per OS apparently)
-                    if (filenameinput === "" || filenameinput === "." || filenameinput === "/" || filenameinput === "\\" || undefined) {
+                    
+                    if (filenameinput === "" || filenameinput === "." || filenameinput === sep || undefined) {
                         invalid = true;
-                        if (filenameinput === "." || filenameinput === "/" || filenameinput === "\\") {
+                        if (filenameinput === "." || filenameinput === sep) {
                             invalidtext = `"${filenameinput}"" is not a valid file or directory name`;
                         }
                         else {
