@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount, tick } from "svelte";
     import { basicSetup } from "codemirror";
     import { EditorView, keymap } from "@codemirror/view";
     import { indentWithTab } from "@codemirror/commands";
@@ -9,7 +9,9 @@
     export let hidden = false;
     let editorElement;
     let editorView: EditorView;
-    export let content = ""
+    export let content = "";
+    
+    let dispatch = createEventDispatcher();
 
     onMount(() => {
         editorView = new EditorView({
@@ -19,9 +21,17 @@
             }),
             parent: editorElement,
         });
+        
     });
 </script>
-<div class="editor" class:hidden bind:this={editorElement} />
+<div class="editor" class:hidden bind:this={editorElement} on:input={async () => {
+    await tick();
+    let x = "";
+    for (let text of editorView.state.doc) {
+        x += `${text} `;
+    }
+    dispatch("input", x);
+}} />
 
 <style>
     .editor {
