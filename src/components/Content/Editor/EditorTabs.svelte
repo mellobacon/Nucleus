@@ -2,7 +2,7 @@
     import { Sortable } from "sortablejs";
     import { onMount } from "svelte";
     import Tab from "./Tab.svelte";
-    import { tabs } from "./Tabs";
+    import { tabs, hidden } from "./Tabs";
 
     let tabcontainer;
     // TODO: Get this to work
@@ -16,13 +16,16 @@
     })
 </script>
 
-<div id="editor-tabs" bind:this={tabcontainer}>
+<div id="editor-tabs" bind:this={tabcontainer} class:hidden={$hidden}>
     {#each $tabs as tab}
-        <Tab label="Untitled-{tab.id}" active={tab.active} id={tab.id} />
+        <Tab label={tab.label} active={tab.active} id={tab.id} />
     {/each}
 </div>
 
 <style>
+    .hidden {
+        visibility: hidden;
+    }
     :global(#editor-tabs) {
         width: -webkit-fill-available;
         height: 2rem;

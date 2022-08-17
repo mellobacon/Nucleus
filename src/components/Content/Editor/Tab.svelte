@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { closeTab, setActive, tabs } from "./Tabs";
+    import { setActive, closeTab } from "./Tabs";
     export let id = 0;
     export let label = "Untitled-1";
     export let active = false;
