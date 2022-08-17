@@ -2,10 +2,10 @@ import { filetree, workspacename } from "../FileTree/TreeStore";
 import { data, workspace } from "../FileTree/TreeData";
 import { addTab } from "../Content/Editor/Tabs";
 export const filemenu = [
-    { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { 
+    { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { console.log("click"); } },
+    { option: "Open File...", shortcut: "Ctrl + O", onclick: async () => { 
         await addTab();
      } },
-    { option: "Open File...", shortcut: "Ctrl + O", onclick: () => { console.log("click"); } },
     { option: "Open Folder", shortcut: "Ctrl + K", onclick: async () => { 
         let treedata = await data();
         if (treedata === undefined) return;
