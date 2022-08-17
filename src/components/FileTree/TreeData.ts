@@ -1,4 +1,5 @@
 import { dialog, fs } from "@tauri-apps/api";
+import { readTextFile } from "@tauri-apps/api/fs";
 import { sep } from "@tauri-apps/api/path";
 import { filetree } from "../FileTree/TreeStore";
 let parentname: string;
@@ -13,16 +14,19 @@ export async function data() {
 class File {
     filename: string;
     path: string;
-    constructor(filename: string, path: string) {
+    content: string;
+    constructor(filename: string, path: string, content) {
         this.filename = filename;
         this.path = path;
+        this.content = content;
     }
 }
 export async function loadFile() {
     let file = await dialog.open() as string;
     if (file === null) return;
     let filename = file.split(sep).pop();
-    return new File(filename, file);
+    let content = await readTextFile(file);
+    return new File(filename, file, content);
 }
 
 async function loadTree() {

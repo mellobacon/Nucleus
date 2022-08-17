@@ -8,12 +8,14 @@
 
     export let hidden = false;
     let editorElement;
-    let editorView;
+    let editorView: EditorView;
+    export let content = ""
 
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
                 extensions: [basicSetup, default_theme, keymap.of([indentWithTab])],
+                doc: content
             }),
             parent: editorElement,
         });
