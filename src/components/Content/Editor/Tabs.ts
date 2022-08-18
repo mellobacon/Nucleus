@@ -5,7 +5,6 @@ import CodeMirrorEditor from './CodeMirrorEditor.svelte';
 export let tabs = writable([]);
 export let hidden = writable(true);
 
-let x = undefined;
 class Tab {
     label: string;
     path: string;
@@ -23,6 +22,7 @@ class Tab {
         this.editorcontent = editorcontent
         this.saved = saved;
 
+        let x = undefined;
         this.editor.$on("input", (e) => {
             clearTimeout(x);
             x = setTimeout(() => {
