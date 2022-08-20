@@ -3,8 +3,9 @@
     export let id = 0;
     export let label = "Untitled-1";
     export let active = false;
+    export let unsaved = false;
 </script>
-<div class="tab" class:tab-active={active} on:click = {
+<div id={`tab-${id.toString()}`} class="tab" class:tab-active={active} class:unsaved={unsaved} on:click = {
     () => {
         setActive(id);
     }
@@ -31,6 +32,7 @@
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
+        box-shadow: inset 0px -0.5px 0 0 #bdd4ff;
     }
     .tab:not(.tab-active):hover {
         background-color: rgb(43, 43, 43);
@@ -52,7 +54,13 @@
     }
     .tab-active {
         background-color: rgb(28, 28, 28);
-        box-shadow: inset 0px -2px 0 0 #1b5fdd;
+        box-shadow: inset 0px -2px 0 0 #1b5fdd !important;
+    }
+    .tab-active.unsaved {
+        box-shadow: inset 0px -2px 0 0 #dd6f1b !important;
+    }
+    .unsaved {
+        box-shadow: inset 0px -0.5px 0 0 #dd6f1b;
     }
     .tab-label {
         text-overflow: ellipsis;

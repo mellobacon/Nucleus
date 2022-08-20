@@ -88,6 +88,9 @@
     if (disabled) return;
     clickNode(node);
   }}
+  on:dblclick={() => {
+    console.log(path);
+  }}
   on:keydown={(e) => {
     if (
       e.key === "ArrowLeft" ||
