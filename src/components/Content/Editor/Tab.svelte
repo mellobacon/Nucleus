@@ -1,11 +1,14 @@
 <script lang="ts">
+    import TabMenu from "./TabMenu.svelte";
     import { setActive, closeTab } from "./Tabs";
     export let id = 0;
     export let label = "Untitled-1";
+    export let path = "";
     export let active = false;
     export let unsaved = false;
+    let tab;
 </script>
-<div id={`tab-${id.toString()}`} class="tab" class:tab-active={active} class:unsaved={unsaved} on:click = {
+<div bind:this={tab} title={path} id={`tab-${id.toString()}`} class="tab" class:tab-active={active} class:unsaved={unsaved} on:click = {
     () => {
         setActive(id);
     }
@@ -19,6 +22,8 @@
         <span></span>
     </div>
 </div>
+
+<TabMenu target={tab} id={id} filename={label} filepath={path} />
 
 <style>
     .tab {
