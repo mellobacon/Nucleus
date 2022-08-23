@@ -36,8 +36,8 @@ class Tab {
 let id = 0;
 let activeid;
 let tablist: Tab[] = [];
-export async function addTab() {
-    let file = await loadFile();
+export async function addTab(f) {
+    let file = await loadFile(f);
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file.filename, file.path, editor, file.content);
     tablist = [...tablist, tab];
@@ -69,7 +69,7 @@ function updateEditorVisibility() {
     }
 }
 
-export function closeTab(id) {
+export function closeTab(id: number) {
     tablist[id].editor.$destroy();
     tablist = tablist.filter(t => t.id !== id);
     tabs.set(tablist);

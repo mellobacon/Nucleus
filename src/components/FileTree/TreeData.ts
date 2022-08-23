@@ -21,8 +21,7 @@ class File {
         this.content = content;
     }
 }
-export async function loadFile() {
-    let file = await dialog.open() as string;
+export async function loadFile(file: string) {
     if (file === null) return;
     let filename = file.split(sep).pop();
     let content = await readTextFile(file);

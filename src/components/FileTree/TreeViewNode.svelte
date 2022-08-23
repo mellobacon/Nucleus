@@ -41,6 +41,7 @@
   export let icon = undefined;
 
   import { afterUpdate, getContext } from "svelte";
+  import { addTab } from "../Content/Editor/Tabs";
   import RenameModel from "../Modal/RenameModel.svelte";
   import LeafNodeMenu from "./LeafNodeMenu.svelte";
 
@@ -88,8 +89,8 @@
     if (disabled) return;
     clickNode(node);
   }}
-  on:dblclick={() => {
-    console.log(path);
+  on:dblclick={async () => {
+    await addTab(path);
   }}
   on:keydown={(e) => {
     if (

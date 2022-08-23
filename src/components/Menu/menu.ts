@@ -1,10 +1,12 @@
 import { filetree, workspacename } from "../FileTree/TreeStore";
 import { data, workspace } from "../FileTree/TreeData";
 import { addTab } from "../Content/Editor/Tabs";
+import { dialog } from "@tauri-apps/api";
 export const filemenu = [
     { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { console.log("click"); } },
     { option: "Open File...", shortcut: "Ctrl + O", onclick: async () => { 
-        await addTab();
+        let f = await dialog.open() as string;
+        await addTab(f);
      } },
     { option: "Open Folder", shortcut: "Ctrl + K", onclick: async () => { 
         let treedata = await data();
