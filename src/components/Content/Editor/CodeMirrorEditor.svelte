@@ -16,12 +16,11 @@
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab])],
+                extensions: [basicSetup, default_theme, keymap.of([indentWithTab]), EditorView.lineWrapping],
                 doc: content
             }),
             parent: editorElement,
         });
-        
     });
 </script>
 <div class="editor" class:hidden bind:this={editorElement} on:input={async () => {
@@ -50,7 +49,8 @@
         height: 100%;
     }
     :global(.cm-scroller) {
-        overflow: auto;
+        overflow-y: overlay;
+        overflow-x: hidden;
     }
     :global(.cm-scroller)::-webkit-scrollbar {
         width: 20px;
