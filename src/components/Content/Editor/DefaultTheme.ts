@@ -61,7 +61,8 @@ const defaultTheme = EditorView.theme(
         },
 
         ".cm-activeLine": {
-            backgroundColor: cl
+            backgroundColor: "transparent",
+            boxShadow: "inset 0px 0px 0 0.5px #3f3f3f"
         },
 
         ".cm-selectionMatch": {
