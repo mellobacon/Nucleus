@@ -81,7 +81,8 @@ const defaultTheme = EditorView.theme(
         },
 
         ".cm-activeLineGutter": {
-            backgroundColor: bg
+            backgroundColor: bg,
+            color: "white"
         },
 
         ".cm-foldPlaceholder": {
