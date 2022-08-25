@@ -84,11 +84,11 @@
                         return;
                     }
                     let oldpath = path;
-                    let newpath = path.split("\\");
+                    let newpath = path.split(sep);
                     newpath.pop();
 
                     newpath.push(`${filenameinput}`);
-                    path = newpath.join("\\");
+                    path = newpath.join(sep);
 
                     await fs.renameFile(oldpath, path);
                     await updateTree();
