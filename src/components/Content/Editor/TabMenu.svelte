@@ -17,19 +17,18 @@
 
 <ContextMenu {target}>
     <ContextMenuOption indented icon={CopyFile} labelText="Close Tab" on:click={() => { 
-        //closeTab(id);
-        console.log(id); 
+        closeTab(id);
     }}>
         <span class="contextshortcut" slot="shortcutText">Ctrl + F4</span>
     </ContextMenuOption>
     <ContextMenuOption indented icon={Cut} labelText="Close Others" on:click={() => {
+        // TODO: Fix this
         let tabs = document.getElementsByClassName("tab");
-        console.log(id);
         for (const tab of tabs) {
             let t = tab.id;
             let tabid = parseInt(t.split("-").pop());
             if (tabid !== id) {
-                console.log(`close tab: ${tabid}`)
+                closeTab(tabid);
             }
         }
     }} ></ContextMenuOption>
