@@ -50,13 +50,16 @@
     }
     :global(.cm-scroller) {
         overflow-y: overlay;
-        overflow-x: hidden;
+        overflow-x: overlay !important;
     }
     :global(.cm-scroller)::-webkit-scrollbar {
         width: 20px;
     }
     :global(.cm-scroller)::-webkit-scrollbar-thumb {
         background-color: #4c4c4c38;;
+    }
+    :global(.cm-scroller)::-webkit-scrollbar-corner {
+        background-color: transparent;
     }
     :global(.cm-content) {
         padding: 0 !important;
