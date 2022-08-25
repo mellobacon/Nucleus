@@ -69,20 +69,21 @@ function updateEditorVisibility() {
     }
 }
 
-export function closeTab(id: number) {
-    tablist[id].editor.$destroy();
-    tablist = tablist.filter(t => t.id !== id);
+export function closeTab(tabid: number) {
+    tablist[tabid].editor.$destroy();
+    tablist = tablist.filter(t => t.id !== tabid);
     tabs.set(tablist);
     for (let _ of tablist) {
         if (activeid >= tablist.length - 1) {
-            setActive(id - 1);
+            setActive(tabid - 1);
         }
         else {
-            setActive(id + 1);
+            setActive(tabid + 1);
         }
     }
     updateEditorVisibility();
     if (tablist.length === 0) {
         hidden.set(true);
+        id = 0;
     }
 }
