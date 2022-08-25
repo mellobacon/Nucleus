@@ -2,6 +2,7 @@ import { filetree, workspacename } from "../FileTree/TreeStore";
 import { data, workspace } from "../FileTree/TreeData";
 import { addTab } from "../Content/Editor/Tabs";
 import { dialog } from "@tauri-apps/api";
+import { appWindow } from "@tauri-apps/api/window";
 export const filemenu = [
     { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { console.log("click"); } },
     { option: "Open File...", shortcut: "Ctrl + O", onclick: async () => { 
@@ -19,7 +20,7 @@ export const filemenu = [
     { option: "Save File As...", shortcut: "Ctrl + Shift + S", onclick: () => { console.log("click"); } },
     { option: "Save All", shortcut: "Ctrl + Shift + K", onclick: () => { console.log("click"); } },
     { option: "Settings", onclick: () => { console.log("click"); }, divider: true },
-    { option: "Exit", onclick: () => { console.log("click"); } }
+    { option: "Exit", onclick: async () => { await appWindow.close(); } }
 ];
 export const editmenu = [
     { option: "Undo", shortcut: "Ctrl + Z", onclick: () => { console.log("click"); } },
