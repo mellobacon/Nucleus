@@ -16,20 +16,20 @@
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab]), EditorView.lineWrapping],
+                extensions: [basicSetup, default_theme, keymap.of([indentWithTab])],
                 doc: content
             }),
             parent: editorElement,
         });
     });
 </script>
-<div class="editor" class:hidden bind:this={editorElement} on:input={async () => {
+<div class="editor" class:hidden bind:this={editorElement} on:input={async (e) => {
     await tick();
-    let x = "";
+    let filecontent = "";
     for (let text of editorView.state.doc) {
-        x += `${text} `;
+        filecontent += `${text} `;
     }
-    dispatch("input", x);
+    dispatch("input", filecontent);
 }} />
 
 <style>
