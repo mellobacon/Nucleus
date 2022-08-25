@@ -22,10 +22,10 @@ class Tab {
         this.editorcontent = editorcontent
         this.saved = saved;
 
-        let x = undefined;
+        let _ = undefined;
         this.editor.$on("input", (e) => {
-            clearTimeout(x);
-            x = setTimeout(() => {
+            clearTimeout(_);
+            _ = setTimeout(() => {
                 writeFile(this.path, e.detail);
                 console.log(`${this.label} saved`)
             }, 1000)
