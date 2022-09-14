@@ -8,12 +8,12 @@
     export let unsaved = false;
     let tab;
 </script>
-<div bind:this={tab} title={path} id={`tab-${id.toString()}`} class="tab" class:tab-active={active} class:unsaved={unsaved} on:click = {
-    () => {
-        setActive(id);
-    }
-}>
-    <div class="tab-content">
+<div bind:this={tab} title={path} id={`tab-${id}`} class="tab" class:tab-active={active} class:unsaved={unsaved}>
+    <div class="tab-content" on:click = {
+        () => {
+            setActive(id);
+        }
+    }>
         <span class="tab-label">{label}</span>
     </div>
     <div class="close-tab" on:click={() => {
