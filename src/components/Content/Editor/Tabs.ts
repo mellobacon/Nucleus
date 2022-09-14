@@ -70,17 +70,23 @@ function updateEditorVisibility() {
 }
 
 export function closeTab(tabid: number) {
-    tablist[tabid].editor.$destroy();
+    tablist.find(t => t.id === tabid).editor.$destroy();
     tablist = tablist.filter(t => t.id !== tabid);
-    tabs.set(tablist);
-    for (let _ of tablist) {
-        if (activeid >= tablist.length - 1) {
-            setActive(tabid - 1);
-        }
-        else {
-            setActive(tabid + 1);
+
+    for (let i = 0; i < tablist.length - 1; i++) {
+        if (tablist[i].id === tabid) {
+            
         }
     }
+    // TODO: Fix logic here
+    if (activeid >= tablist.length - 1) {
+        setActive(tabid - 1);
+    }
+    else {
+        setActive(tabid + 1);
+    }
+    tabs.set(tablist);
+    
     updateEditorVisibility();
     if (tablist.length === 0) {
         hidden.set(true);
