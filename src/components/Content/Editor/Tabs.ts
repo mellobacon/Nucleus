@@ -70,9 +70,6 @@ function updateEditorVisibility() {
 }
 
 export function closeTab(tabid: number) {
-
-    /*
-    AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
     if (activeid === tabid) {
         for (let i = 0; i <= tablist.length - 1; i++) {
             if (tablist[i].id === tabid && tablist[i + 1]) {
@@ -84,14 +81,6 @@ export function closeTab(tabid: number) {
                 break;
             }
         }
-    }
-    */
-
-    if (activeid >= tablist.length - 1) {
-        setActive(tabid - 1);
-    }
-    else {
-        setActive(tabid + 1);
     }
 
     tablist.find(t => t.id === tabid).editor.$destroy();
