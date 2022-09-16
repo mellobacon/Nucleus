@@ -4,7 +4,7 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, shell, path } from "@tauri-apps/api";
-    import { closeTab } from "./Tabs";
+    import { closeTab, setActive } from "./Tabs";
     export let id: number;
     export let target;
     export let filename;
@@ -22,7 +22,6 @@
         <span class="contextshortcut" slot="shortcutText">Ctrl + F4</span>
     </ContextMenuOption>
     <ContextMenuOption indented icon={Cut} labelText="Close Others" on:click={() => {
-        // TODO: Fix this
         let tabs = document.getElementsByClassName("tab");
         for (const tab of tabs) {
             let t = tab.id;
@@ -31,6 +30,7 @@
                 closeTab(tabid);
             }
         }
+        setActive(id);
     }} ></ContextMenuOption>
     <ContextMenuOption indented labelText="Close Saved Tabs" on:click={() => {}}>
         <span class="contextshortcut" slot="shortcutText">Ctrl + X S</span>
