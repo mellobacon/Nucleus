@@ -36,7 +36,11 @@ class Tab {
 let id = 0;
 let activeid;
 let tablist: Tab[] = [];
-export async function addTab(f) {
+export async function addTab(f: string) {
+    if (tablist.find(file => file.path === f)) {
+        setActive(tablist.find(file => file.path === f).id);
+        return;
+    }
     let file = await loadFile(f);
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file.filename, file.path, editor, file.content);
