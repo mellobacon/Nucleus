@@ -130,7 +130,7 @@
             'bx--tree-parent-node__toggle-icon--expanded'}"
         />
       </span>
-      <span class:bx--tree-node__label__details={false}>
+      <span class:bx--tree-node__label__details={true}>
         <svelte:component this={icon} class="bx--tree-node__icon" />
         {name}
       </span>
