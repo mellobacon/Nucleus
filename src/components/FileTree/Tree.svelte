@@ -20,7 +20,7 @@
     <div class="toolbar-button" on:click={treeview?.collapseAll}>
         <ArrowUp />
     </div>
-    <div class="toolbar-button" on:click={ async() => {await updateTree();}}>
+    <div class="toolbar-button" on:click={ async() => {if (tree.length > 0) await updateTree();}}>
         <WatsonHealthRotate_360 />
     </div>
 </div>
@@ -39,7 +39,6 @@
         }>Open Folder</div>
     </div>
 {/if}
-
 
 <TreeView bind:this={treeview} size="compact" hideLabel children={tree}></TreeView>
 
