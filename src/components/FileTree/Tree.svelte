@@ -63,35 +63,33 @@
         background-color: #333;
     }
 
-    .toolbar-button-mx
-    {
-        background-color: white;
-        color: #333;
+    .toolbar-button-mx {
+        background-color: #222222;
+        color: #fff;
         font-family: inherit;
         text-align: center;
-        padding: 5px 25px;
+        padding: 7px 30px;
         margin-top: 10px;
         margin-bottom: 5px;
         display: inline-block;
         cursor: pointer;
     }
 
-    .toolbar-button-mx:hover
-    {
-        background-color: rgb(177, 177, 177);
+    .toolbar-button-mx:hover {
+        background-color: rgb(50 50 50);
     }
 
     .text-form {
         margin-top: 10px;
         margin-bottom: 5px;
+        text-align: center;
     }
-    .container
-    {
+    .container {
         display:flex; 
         flex-direction:column; 
         align-items: center;
         justify-content:center;
-        min-height:10vh;
+        min-height: 10vh;
         margin-top: 10px;
         margin-bottom: 5px;
     }
