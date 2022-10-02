@@ -2,13 +2,23 @@
   <img width="200" src="./public/assets/images/Icon(1).png" alt="The nucleus icon" /><br>
   Nucleus
 </h1>
-<h3 align="center">A text editor with better UI than [enter funny thing here]</h3>
+<h3 align="center">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues/mellobacon/Nucleus?style=for-the-badge">
+  <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/mellobacon/Nucleus?style=for-the-badge">
+  <img alt="Project License" src="https://img.shields.io/github/license/mellobacon/Nucleus?style=for-the-badge">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/mellobacon/Nucleus?style=for-the-badge">
+  
+  A text editor with better UI than [enter funny thing here]
+  </h3>
 <p align="center">
   <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
   Download
 </p>
 
+
 Nucleus is a text editor featuring a clean and easy to use user interface inspired by Visual Studio Code, Atom, Fleet, and others.
+
+<img width="600" alt="nucleus_emptyworkspace" src="https://user-images.githubusercontent.com/42365887/193436094-43a4a617-0f4f-48a1-bfe6-660702075b62.png">
 
 ### Known issues
 - TBA
