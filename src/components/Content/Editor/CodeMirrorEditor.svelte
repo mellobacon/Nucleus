@@ -6,17 +6,42 @@
     import { EditorState } from "@codemirror/state";
     import { default_theme } from "./DefaultTheme";
 
-    export let hidden = false;
+    import { javascript } from "@codemirror/lang-javascript";
+    import { rust } from "@codemirror/lang-rust";
+    import { css } from "@codemirror/lang-css";
+    import { html } from "@codemirror/lang-html";
+
     let editorElement;
+    let extensions = [basicSetup, default_theme, keymap.of([indentWithTab])]
     let editorView: EditorView;
-    export let content = "";
-    
     let dispatch = createEventDispatcher();
 
+    export let hidden = false;
+    export let content = "";
+    export let filename = "";
+
     onMount(() => {
+        const filenameExtension = filename.split(".")[1]
+        switch (filenameExtension) {
+            case "js":
+                extensions.push(javascript())
+                break;
+            case "rs":
+                extensions.push(rust())
+                break;
+            case "css":
+                extensions.push(css())
+                break;
+            case "html":
+                extensions.push(html())
+                break;
+            default:
+                break;
+        }
+
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab])],
+                extensions,
                 doc: content
             }),
             parent: editorElement,

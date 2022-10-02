@@ -42,7 +42,7 @@ export async function addTab(f: string) {
         return;
     }
     let file = await loadFile(f);
-    let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
+    let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content, filename: file.filename } });
     let tab = new Tab(id, file.filename, file.path, editor, file.content);
     tablist = [...tablist, tab];
     if (tablist.length > 0) {

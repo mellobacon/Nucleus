@@ -43,6 +43,51 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
 
+"@codemirror/lang-css@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-css/-/lang-css-6.0.0.tgz#e66d087a4e52e334da4f5b3dfab47dbbdc5f6b15"
+  integrity sha512-jBqc+BTuwhNOTlrimFghLlSrN6iFuE44HULKWoR4qKYObhOIl9Lci1iYj6zMIte1XTQmZguNvjXMyr43LUKwSw==
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@lezer/css" "^1.0.0"
+
+"@codemirror/lang-html@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-html/-/lang-html-6.1.2.tgz#64979e583c6120c70d3123e6ce3f8595b20abc52"
+  integrity sha512-e8JAUWyOo7N26tmek+WK0+Zg+pZRe+dQi8TZq0OOVVygpLV+mNAT2n5b5JhknY+TVZIVGLjuhdsoizw1SDFfPg==
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/lang-css" "^6.0.0"
+    "@codemirror/lang-javascript" "^6.0.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.2.2"
+    "@lezer/common" "^1.0.0"
+    "@lezer/html" "^1.0.1"
+
+"@codemirror/lang-javascript@^6.0.0", "@codemirror/lang-javascript@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-6.1.0.tgz#3b3ddfed59c5fb39b210c13f1e0e8e5a65f009f3"
+  integrity sha512-wAWEY1Wdis2cKDy9A5q/rUmzLHFbZgoupJBcGaeMMsDPi68Rm90NsmzAEODE5kW8mYdRKFhQ157WJghOZ3yYdg==
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/javascript" "^1.0.0"
+
+"@codemirror/lang-rust@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-rust/-/lang-rust-6.0.0.tgz#b18bd3441bba9182725c08f77d666e0d8d9d58b4"
+  integrity sha512-VQql3Qk1BwoXb3SUkeWll/EEwhsgQWc1bpia7CFqqp2PhQBb5A6r4Vj2JCkU/nE6A7TDPSGHTOoqJSG5s/VXtQ==
+  dependencies:
+    "@codemirror/language" "^6.0.0"
+    "@lezer/rust" "^1.0.0"
+
 "@codemirror/language@^6.0.0":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-6.2.1.tgz#cb10cd785a76e50ecd2fe2dc59ff66af8a41b87a"
@@ -82,6 +127,15 @@
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.2.0.tgz#bae4c486a84174bd9656af9c9d2bd709d5b26c9f"
   integrity sha512-3emW1symh+GoteFMBPsltjmF790U/trouLILATh3JodbF/z98HvcQh2g3+H6dfNIHx16uNonsAF4mNzVr1TJNA==
+  dependencies:
+    "@codemirror/state" "^6.0.0"
+    style-mod "^4.0.0"
+    w3c-keyname "^2.2.4"
+
+"@codemirror/view@^6.2.2":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.3.0.tgz#715c97d64e7e20c9674782e7101ab7aefef8e23d"
+  integrity sha512-jMN9OGKmzRPJ+kksfMrB5e/A9heQncirHsz8XNBpgEbYONCk5tWHMKVWKTNwznkUGD5mnigXI1i5YIcWpscSPg==
   dependencies:
     "@codemirror/state" "^6.0.0"
     style-mod "^4.0.0"
@@ -132,6 +186,14 @@
   resolved "https://registry.yarnpkg.com/@lezer/common/-/common-1.0.0.tgz#1c95ae53ec17706aa3cbcc88b52c23f22ed56096"
   integrity sha512-ohydQe+Hb+w4oMDvXzs8uuJd2NoA3D8YDcLiuDsLqH+yflDTPEpgCsWI3/6rH5C3BAedtH1/R51dxENldQceEA==
 
+"@lezer/css@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/css/-/css-1.0.0.tgz#c473ea969238a36889533cb733b75539083a326d"
+  integrity sha512-616VqgDKumHmYIuxs3tnX1irEQmoDHgF/TlP4O5ICWwyHwLMErq+8iKVuzTkOdBqvYAVmObqThcDEAaaMJjAdg==
+  dependencies:
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
+
 "@lezer/highlight@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@lezer/highlight/-/highlight-1.0.0.tgz#1dc82300f5d39fbd67ae1194b5519b4c381878d3"
@@ -139,12 +201,37 @@
   dependencies:
     "@lezer/common" "^1.0.0"
 
+"@lezer/html@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@lezer/html/-/html-1.0.1.tgz#5d62b98cdd37e50394e1b7097c86d8ce3ef128b8"
+  integrity sha512-sC00zEt3GBh3vVO6QaGX4YZCl41S9dHWN/WGBsDixy9G+sqOC7gsa4cxA/fmRVAiBvhqYkJk+5Ul4oul92CPVw==
+  dependencies:
+    "@lezer/common" "^1.0.0"
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
+
+"@lezer/javascript@^1.0.0":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@lezer/javascript/-/javascript-1.0.2.tgz#79b5c2c77e27322a0ae516395a193574b9ad3f5e"
+  integrity sha512-IjOVeIRhM8IuafWNnk+UzRz7p4/JSOKBNINLYLsdSGuJS9Ju7vFdc82AlTt0jgtV5D8eBZf4g0vK4d3ttBNz7A==
+  dependencies:
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
+
 "@lezer/lr@^1.0.0":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@lezer/lr/-/lr-1.2.2.tgz#9f5a9c76580e730116bd5432de358506e0eeb7c6"
   integrity sha512-Df2R6Q7mieAVKYOD5ifo9j5SUoT6EHp10FvHU0v4cQ3MoPsifi6mb8eEycI0uNTdtPSCZLqDqT8G1mNvEqSB1Q==
   dependencies:
     "@lezer/common" "^1.0.0"
+
+"@lezer/rust@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/rust/-/rust-1.0.0.tgz#939f3e7b0376ebe13f4ac336ed7d59ca2c8adf52"
+  integrity sha512-IpGAxIjNxYmX9ra6GfQTSPegdCAWNeq23WNmrsMMQI7YNSvKtYxO4TX5rgZUmbhEucWn0KTBMeDEPXg99YKtTA==
+  dependencies:
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
