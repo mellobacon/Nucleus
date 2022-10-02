@@ -25,6 +25,7 @@
   import CaretDown from "carbon-icons-svelte/lib/CaretDown.svelte";
   import TreeViewNode, { computeTreeLeafDepth } from "./TreeViewNode.svelte";
   import ParentNodeMenu from "./ParentNodeMenu.svelte";
+  
 
   let ref = null;
   let refLabel = null;
@@ -129,7 +130,7 @@
             'bx--tree-parent-node__toggle-icon--expanded'}"
         />
       </span>
-      <span class:bx--tree-node__label__details={true}>
+      <span class:bx--tree-node__label__details={false}>
         <svelte:component this={icon} class="bx--tree-node__icon" />
         {name}
       </span>
