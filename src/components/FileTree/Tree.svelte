@@ -26,16 +26,18 @@
 </div>
 
 {#if tree.length==0}
-<div class="container">
-    <div class="text-form">
-        You have not yet opened a folder.
+    <div class="container">
+        <div class="text-form">
+            You have not yet opened a folder.
+        </div>
+        <div class="toolbar-button-mx" on:click ={async() => { 
+            let treedata = await data();
+            if (treedata === undefined) return;
+            filetree.set(treedata);
+            workspacename.set(workspace());
+        }
+        }>Open Folder</div>
     </div>
-    <div class="toolbar-button-mx" on:click ={async() => { 
-        let treedata = await data();
-        if (treedata === undefined) return;
-        filetree.set(treedata);
-        workspacename.set(workspace());}}>Open Folder</div>
-</div>
 {/if}
 
 
@@ -72,14 +74,15 @@
         margin-top: 10px;
         margin-bottom: 5px;
         display: inline-block;
+        cursor: pointer;
     }
 
     .toolbar-button-mx:hover
     {
-        background-color: rgb(227, 228, 228);
+        background-color: rgb(177, 177, 177);
     }
 
-    .text-form{
+    .text-form {
         margin-top: 10px;
         margin-bottom: 5px;
     }
