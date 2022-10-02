@@ -4,7 +4,7 @@
 </h1>
 <h3 align="center">A text editor with better UI than [enter funny thing here]</h3>
 <p align="center">
-  License •
+  <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
   Download
 </p>
 
