@@ -8,6 +8,8 @@
   Download
 </p>
 
+Nucleus is a text editor featuring a clean and easy to use user interface inspired by Visual Studio Code, Atom, Fleet, and others.
+
 ### Known issues
 - TBA
 
@@ -16,58 +18,5 @@
 ## Installation
 *TBA*
 
-## Building for development
-This is for those that want to contribute or build on their local machines. If you want to install without building, follow the steps in Installation.
-
----
-This project was made with [Tauri](https://tauri.app/) and was built with...
-- [Svelte](https://svelte.dev/) (Frontend)
-- [Rust](https://www.rust-lang.org/) (Backend)
-- [TypeScript](https://www.typescriptlang.org/)
-
-...and these build dependencies...
-- [Yarn](https://yarnpkg.com/)
-- [Node.js](https://nodejs.org)
-
-Clone the repo via...
-```bash
-gh repo clone mellobacon/Nucleus
-```
-or
-```bash
-git clone https://github.com/mellobacon/Nucleus.git
-```
-
-If you want to clone from within your editor, copy ```https://github.com/mellobacon/Nucleus.git``` and follow the instructions for cloning a repo for your editor. Alternatively you can [download the zip file](https://github.com/mellobacon/Nucleus/archive/refs/heads/master.zip).
-
-Install the dependencies...
-
-```bash
-cd Nucleus
-yarn install
-```
-
-### To run via browser...
-
-```bash
-yarn build
-yarn start
-```
-
-Navigate to [localhost:8080](http://localhost:8080). You should see the app running in the browser.
-
-### To run via a desktop window...
-
-(*Note on building for desktop: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) as well as [the Tauri CLI](https://tauri.app/v1/guides/getting-started/tauri-cli)*.)
-```bash
-yarn tauri dev
-```
-
-## Building
-
-To create an executable version of the app:
-
-```bash
-yarn tauri build
-```
-(*Note: this is for building a single executable for your current OS. To build for other operating systems, read [how to build a Tauri app](https://tauri.app/v1/guides/building/).*)
+## Contributing
+This is for those that want to contribute or build on their local machines. ~~If you want to install without building, follow the steps in Installation.~~ Otherwise, [here's how to contribute](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md).
