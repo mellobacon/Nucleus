@@ -3,7 +3,7 @@
     import ContextMenu from "../../ContextMenu/ContextMenu.svelte";
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
-    import { clipboard, shell, path } from "@tauri-apps/api";
+    import { clipboard, path, invoke } from "@tauri-apps/api";
     import { closeTab, setActive } from "./Tabs";
     export let id: number;
     export let target;
@@ -47,9 +47,8 @@
     </ContextMenuOption>
     <ContextMenuOption labelText="Show in Explorer" on:click={() => {
         let dir = filepath.split(path.sep);
-        dir.pop();
-        dir = dir.join(path.sep);
-        shell.open(dir);
+        let explorerPath = dir.join(path.sep);
+        invoke("open_in_explorer",{ path:explorerPath})
     }}></ContextMenuOption>
 </ContextMenu>
 

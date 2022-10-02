@@ -5,7 +5,7 @@
     import Paste from "carbon-icons-svelte/lib/Paste.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import RenameModel from "../Modal/RenameModel.svelte";
-    import { fs, clipboard, shell, path } from "@tauri-apps/api";
+    import { fs, clipboard, invoke, path } from "@tauri-apps/api";
     export let target;
     export let filename;
     export let filepath;
@@ -41,7 +41,9 @@
         </ContextMenuOption>
     </ContextMenuOption>
     <ContextMenuOption labelText="Show in Explorer" on:click={() => {
-        shell.open(filepath);
+        let dir = filepath.split(path.sep);
+        let explorerPath = dir.join(path.sep);
+        invoke("open_in_explorer",{ path:explorerPath})
     }}></ContextMenuOption>
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {
