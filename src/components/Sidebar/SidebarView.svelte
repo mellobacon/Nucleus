@@ -57,7 +57,7 @@
 <style>
     #sidebarview {
         height: 100%;
-        width: 10rem;
+        width: 15rem;
         border-right: 1px solid #333;
         display: flex;
         flex-direction: column;

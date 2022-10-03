@@ -18,6 +18,7 @@
     "@tsconfig/svelte": "^2.0.0",
     "carbon-components-svelte": "^0.67.0",
     "carbon-icons-svelte": "^11.1.0",
+    "prettier": "2.7.1",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
