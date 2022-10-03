@@ -46,9 +46,7 @@
         <span slot="labelText" title={filepath}>Copy Absolute Path</span>
     </ContextMenuOption>
     <ContextMenuOption labelText="Show in Explorer" on:click={() => {
-        let dir = filepath.split(path.sep);
-        let explorerPath = dir.join(path.sep);
-        invoke("open_in_explorer",{ path:explorerPath})
+        invoke("open_in_explorer",{ path:filepath})
     }}></ContextMenuOption>
 </ContextMenu>
 

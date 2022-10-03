@@ -41,9 +41,7 @@
         </ContextMenuOption>
     </ContextMenuOption>
     <ContextMenuOption labelText="Show in Explorer" on:click={() => {
-        let dir = filepath.split(path.sep);
-        let explorerPath = dir.join(path.sep);
-        invoke("open_in_explorer",{ path:explorerPath})
+        invoke("open_in_explorer",{ path:filepath})
     }}></ContextMenuOption>
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {
