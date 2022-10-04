@@ -1,21 +1,6 @@
-extern crate winreg;
-use winreg::RegKey;
-use winreg::enums::*;
-
 use notify::{Watcher, RecursiveMode, watcher};
 use std::sync::mpsc::channel;
 use std::time::Duration;
-
-pub fn get_file_extensions(input: &str) -> &str {
-    println!("File extensions, registered in system:");
-    for i in RegKey::predef(HKEY_CLASSES_ROOT)
-        .enum_keys().map(|x| x.unwrap())
-        .filter(|x| x.starts_with("."))
-    {
-        println!("{}", i);
-    }
-    return input;
-}
 
 pub fn watch_directory(directory: &str) -> String {
     // Create a channel to receive the events.
