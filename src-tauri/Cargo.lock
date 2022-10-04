@@ -63,7 +63,6 @@ dependencies = [
  "tauri",
  "tauri-build",
  "windows 0.32.0",
- "winreg",
 ]
 
 [[package]]
