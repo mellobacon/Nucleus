@@ -26,15 +26,26 @@ git clone https://github.com/mellobacon/Nucleus.git
 
 If you want to clone from within your editor, copy ```https://github.com/mellobacon/Nucleus.git``` and follow the instructions for cloning a repo for your editor. Alternatively you can [download the zip file](https://github.com/mellobacon/Nucleus/archive/refs/heads/master.zip).
 
+Finally install the packages...
+```bash
+yarn install # Packages are listed in the package.json
+```
+
 ## Running Nucleus
 
-Once you have the project open, you can run it via a desktop window or alternatively on a browser window*.
+First build the app. This will bundle the scripts, css, and other required project files.
+```bash
+yarn build
+```
 
-\**Nucleus is meant to be run on a desktop window; though it can load and run in a browser*
+Once you have the project built, you can run it via a desktop window or alternatively on a browser window*.
+
+\**Nucleus is meant to be run on a desktop window. Though it can load and run in a browser, expect weird behavior*
 
 ### To run via a desktop window...
 
 (*Note on building for desktop: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) as well as [the Tauri CLI](https://tauri.app/v1/guides/getting-started/tauri-cli)*.)
+
 ```bash
 yarn tauri dev
 ```
@@ -42,7 +53,7 @@ yarn tauri dev
 ### To run via browser...
 
 ```bash
-yarn build
+yarn build # Will need to be run if there are file changes
 yarn start
 ```
 
