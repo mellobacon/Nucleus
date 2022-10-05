@@ -3,20 +3,26 @@
     import { basicSetup } from "codemirror";
     import { EditorView, keymap } from "@codemirror/view";
     import { indentWithTab } from "@codemirror/commands";
-    import { EditorState } from "@codemirror/state";
+    import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
 
     export let hidden = false;
     let editorElement;
     let editorView: EditorView;
     export let content = "";
+    export let lang = new Compartment();
     
+    export function setLanguageMode(mode) {
+        editorView.dispatch({
+            effects: lang.reconfigure(mode)
+        })
+    }
     let dispatch = createEventDispatcher();
 
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab])],
+                extensions: [basicSetup, default_theme, keymap.of([indentWithTab]), lang.of([])],
                 doc: content
             }),
             parent: editorElement,

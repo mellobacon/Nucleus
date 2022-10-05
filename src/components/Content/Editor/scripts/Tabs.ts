@@ -2,7 +2,7 @@ import { writeFile, writeTextFile } from '@tauri-apps/api/fs';
 import { writable } from 'svelte/store';
 import { loadFile } from '../../../FileTree/scripts/TreeData';
 import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
-import { getLang } from './Editor';
+import { getLang, getLangMode } from './Editor';
 export let tabs = writable([]);
 export let tabinfo = writable("");
 export let hidden = writable(true);
@@ -40,7 +40,12 @@ class Tab {
                 console.log(`${this.label} saved`)
             }, 1000)
         })
-    }    
+    }   
+    
+    async setLanguage(lang) {
+        let mode = await getLangMode(lang);
+        this.editor.setLanguageMode(mode);
+    }
 }
 
 let id = 0;
@@ -54,6 +59,7 @@ export async function addTab(f: string) {
     let file = await loadFile(f);
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file, editor);
+    await tab.setLanguage(tab.language);
     
     tablist = [...tablist, tab];
     if (tablist.length > 0) {
