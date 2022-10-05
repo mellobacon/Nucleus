@@ -1,5 +1,5 @@
 <script lang="ts">
-    // #2117a1
+    import { hidden, tabinfo } from "../Content/Editor/scripts/Tabs";
 </script>
 
 <div id="footer">
@@ -8,7 +8,11 @@
             <span>Nucleus</span>
         </div>
     </div>
-    <div id="codeinfo"></div>
+    {#if !$hidden}
+        <div id="codeinfo">
+            <span>{$tabinfo}</span>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -29,10 +33,17 @@
     #codeinfo {
         display: flex;
         justify-content: flex-end;
-        align-items: center;                                                                                    
+        align-items: center;
         flex-grow: 1;
     }
+    #codeinfo span {
+        padding: 0 7px;
+    }
+    #codeinfo span:nth-child(even) {
+        border-right: 1px solid #393939;
+        border-left: 1px solid #393939;
+    }
     #apptitle {
-        padding: 0 15px 0 15px;
+        padding: 0 15px;
     }
 </style>

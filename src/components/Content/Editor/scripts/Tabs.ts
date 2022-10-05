@@ -2,26 +2,36 @@ import { writeFile, writeTextFile } from '@tauri-apps/api/fs';
 import { writable } from 'svelte/store';
 import { loadFile } from '../../../FileTree/scripts/TreeData';
 import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
+import { getLang } from './Editor';
 export let tabs = writable([]);
+export let tabinfo = writable("");
 export let hidden = writable(true);
 
 class Tab {
     label: string;
     path: string;
+    language: string = "Plain Text";
     id: number;
     active: boolean;
     editor: CodeMirrorEditor | null;
     editorcontent: string;
     saved: boolean;
-    constructor(id: number, tabname: string = "", path: string, editor = null, editorcontent = "", active: boolean = false, saved: boolean = true) {
+    constructor(id: number, file , editor = null, active: boolean = false, saved: boolean = true) {
         this.id = id;
-        this.label = tabname === "" ? `Untitled-${id}` : tabname;
-        this.path = path;
+        this.label = file.filename === "" ? `Untitled-${id}` : file.filename;
+        this.path = file.path;
         this.active = active;
-        this.editor = editor
-        this.editorcontent = editorcontent
+        this.editor = editor;
+        this.editorcontent = file.content;
         this.saved = saved;
 
+        let filepath = file.path.split(".");
+        let extension = "txt";
+        if (filepath.length !== 1) {
+            extension = filepath.at(-1);
+        }
+        this.language = getLang(extension);
+        
         let _ = undefined;
         this.editor.$on("input", (e) => {
             clearTimeout(_);
@@ -43,11 +53,13 @@ export async function addTab(f: string) {
     }
     let file = await loadFile(f);
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
-    let tab = new Tab(id, file.filename, file.path, editor, file.content);
+    let tab = new Tab(id, file, editor);
+    
     tablist = [...tablist, tab];
     if (tablist.length > 0) {
         hidden.set(false);
     }
+    
     tabs.set(tablist);
     setActive(id);
     id++;
@@ -58,6 +70,7 @@ export function setActive(id) {
         if (tab.id === id) {
             activeid = id;
             tab.active = true;
+            tabinfo.set(tab.language);
         }
         else {
             tab.active = false;
