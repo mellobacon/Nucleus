@@ -2,10 +2,10 @@
     import ArrowUp from "carbon-icons-svelte/lib/ArrowUp.svelte";
     import WatsonHealthRotate_360 from "carbon-icons-svelte/lib/WatsonHealthRotate_360.svelte";
     import TreeView from "./TreeView.svelte";
-    import { updateTree } from "../FileTree/TreeData";
+    import { updateTree } from "./scripts/TreeData";
     import { onMount } from "svelte";
-    import { filetree, workspacename } from "./TreeStore";
-    import { data, workspace } from "../FileTree/TreeData";
+    import { filetree, workspacename } from "./scripts/TreeStore";
+    import { data, workspace } from "./scripts/TreeData";
     let treeview = null;
     let tree = $filetree;
     onMount(() => {

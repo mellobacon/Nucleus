@@ -1,6 +1,6 @@
 <script lang="ts">
     import TabMenu from "./TabMenu.svelte";
-    import { setActive, closeTab } from "./Tabs";
+    import { setActive, closeTab } from "./scripts/Tabs";
     export let id = 0;
     export let label = "Untitled-1";
     export let path = "";

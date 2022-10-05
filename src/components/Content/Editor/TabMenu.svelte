@@ -4,7 +4,7 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, path, invoke } from "@tauri-apps/api";
-    import { closeTab, setActive } from "./Tabs";
+    import { closeTab, setActive } from "./scripts/Tabs";
     export let id: number;
     export let target;
     export let filename;

@@ -1,7 +1,7 @@
 import { dialog, fs } from "@tauri-apps/api";
 import { readTextFile } from "@tauri-apps/api/fs";
 import { sep } from "@tauri-apps/api/path";
-import { filetree } from "../FileTree/TreeStore";
+import { filetree } from "./TreeStore";
 let parentname: string;
 let dir;
 export async function data() {

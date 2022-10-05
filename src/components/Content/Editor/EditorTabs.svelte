@@ -2,7 +2,7 @@
     import { Sortable } from "sortablejs";
     import { onMount } from "svelte";
     import Tab from "./Tab.svelte";
-    import { tabs, hidden } from "./Tabs";
+    import { tabs, hidden } from "./scripts/Tabs";
 
     let tabcontainer;
     // TODO: Get this to work

@@ -41,7 +41,7 @@
   export let icon = undefined;
 
   import { afterUpdate, getContext } from "svelte";
-  import { addTab } from "../Content/Editor/Tabs";
+  import { addTab } from "../Content/Editor/scripts/Tabs";
   import RenameModel from "../Modal/RenameModel.svelte";
   import LeafNodeMenu from "./LeafNodeMenu.svelte";
 

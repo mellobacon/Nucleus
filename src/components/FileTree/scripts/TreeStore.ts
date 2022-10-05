@@ -1,7 +1,5 @@
 import { writable } from 'svelte/store';
 
-let testtree = [
-
-];
-export let filetree = writable(testtree);
+let treedata = [];
+export let filetree = writable(treedata);
 export let workspacename = writable("Untitled Workspace");

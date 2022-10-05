@@ -4,7 +4,7 @@
     import "../../overrides.css";
 	import { filemenu, editmenu, viewmenu, runmenu, helpmenu} from "../Menu/menu";
     import { appWindow } from "@tauri-apps/api/window";
-    import { workspacename } from "../FileTree/TreeStore";
+    import { workspacename } from "../FileTree/scripts/TreeStore";
 </script>
 <div id="header" data-tauri-drag-region>
     <div id="logo"></div>

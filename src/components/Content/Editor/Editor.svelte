@@ -1,6 +1,6 @@
 <script lang="ts">
     import EditorTabs from "./EditorTabs.svelte";
-    import { hidden } from "./Tabs";
+    import { hidden } from "./scripts/Tabs";
 </script>
 
 <EditorTabs />

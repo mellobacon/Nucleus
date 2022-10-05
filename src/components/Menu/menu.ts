@@ -1,6 +1,6 @@
-import { filetree, workspacename } from "../FileTree/TreeStore";
-import { data, workspace } from "../FileTree/TreeData";
-import { addTab } from "../Content/Editor/Tabs";
+import { filetree, workspacename } from "../FileTree/scripts/TreeStore";
+import { data, workspace } from "../FileTree/scripts/TreeData";
+import { addTab } from "../Content/Editor/scripts/Tabs";
 import { dialog } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 export const filemenu = [

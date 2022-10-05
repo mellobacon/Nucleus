@@ -1,7 +1,7 @@
 import { writeFile, writeTextFile } from '@tauri-apps/api/fs';
 import { writable } from 'svelte/store';
-import { loadFile } from '../../FileTree/TreeData';
-import CodeMirrorEditor from './CodeMirrorEditor.svelte';
+import { loadFile } from '../../../FileTree/scripts/TreeData';
+import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
 export let tabs = writable([]);
 export let hidden = writable(true);
 

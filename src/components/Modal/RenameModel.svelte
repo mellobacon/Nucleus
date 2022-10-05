@@ -2,7 +2,7 @@
     import { Modal } from "carbon-components-svelte";
     import Input from "../Input/Input.svelte";
     import { fs } from "@tauri-apps/api";
-    import { updateTree } from "../FileTree/TreeData";
+    import { updateTree } from "../FileTree/scripts/TreeData";
     import langlist from "../../scripts/languages/languages.json";
     import { sep } from "@tauri-apps/api/path";
     export let open = false;

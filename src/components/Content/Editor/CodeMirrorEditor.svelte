@@ -4,7 +4,7 @@
     import { EditorView, keymap } from "@codemirror/view";
     import { indentWithTab } from "@codemirror/commands";
     import { EditorState } from "@codemirror/state";
-    import { default_theme } from "./DefaultTheme";
+    import { default_theme } from "./scripts/DefaultTheme";
 
     export let hidden = false;
     let editorElement;
