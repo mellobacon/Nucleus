@@ -21,11 +21,11 @@ class File {
         this.content = content;
     }
 }
-export async function loadFile(file: string) {
-    if (file === null) return;
-    let filename = file.split(sep).pop();
-    let content = await readTextFile(file);
-    return new File(filename, file, content);
+export async function loadFile(path: string) {
+    if (path === null) return;
+    let filename = path.split(sep).pop();
+    let content = await readTextFile(path);
+    return new File(filename, path, content);
 }
 
 async function loadTree() {
