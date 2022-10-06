@@ -77,6 +77,7 @@ export function setActive(id) {
             activeid = id;
             tab.active = true;
             tabinfo.set(tab.language);
+            tab.editor.focus();
         }
         else {
             tab.active = false;
