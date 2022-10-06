@@ -1,5 +1,6 @@
 <script lang="ts">
     import { hidden, tabinfo } from "../Content/Editor/scripts/Tabs";
+    import { line_column } from "../Content/Editor/scripts/Editor";
 </script>
 
 <div id="footer">
@@ -10,6 +11,7 @@
     </div>
     {#if !$hidden}
         <div id="codeinfo">
+            <span>Line {$line_column.line}, Col {$line_column.col}</span>
             <span>{$tabinfo}</span>
         </div>
     {/if}
