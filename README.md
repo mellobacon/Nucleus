@@ -30,3 +30,6 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 
 ## Contributing 
 This is for those that want to contribute or build on their local machines. ~~If you want to install without building, follow the steps in Installation.~~ Otherwise, [here's how to contribute](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md).
+
+## Support
+Support the project by starring Nucleus. It helps a lot!
