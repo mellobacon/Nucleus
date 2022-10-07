@@ -1,6 +1,10 @@
 <script lang="ts">
+    import { Terminal } from "carbon-icons-svelte";
     import { hidden, tabinfo } from "../Content/Editor/scripts/Tabs";
     import { line_column } from "../Content/Editor/scripts/Editor";
+    import { invoke } from "@tauri-apps/api/tauri";
+    import { homeDir } from '@tauri-apps/api/path';
+    import { filetree } from "../FileTree/scripts/TreeStore";
 </script>
 
 <div id="footer">
@@ -9,9 +13,19 @@
             <span>Nucleus</span>
         </div>
     </div>
+    <div id="tools">
+        <span class="terminal-button tool" on:click={async() => {
+            let userpath = await homeDir();
+            if ($filetree.length > 0) {
+                userpath = $filetree[0].path;
+            }
+            // opens terminal externally for the time being
+            invoke("open_terminal", {path: userpath});
+        }}><Terminal /> <span class="toolname">Terminal</span></span>
+    </div>
     {#if !$hidden}
         <div id="codeinfo">
-            <span>Line {$line_column.line}, Col {$line_column.col}</span>
+            <span>{$line_column.line} : {$line_column.col}</span>
             <span>{$tabinfo}</span>
         </div>
     {/if}
@@ -37,6 +51,33 @@
         justify-content: flex-end;
         align-items: center;
         flex-grow: 1;
+    }
+    #tools {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 7px;
+        height: 100%;
+    }
+    #tools span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #tools .tool:hover {
+        background-color: #b1b1b133;
+        cursor: pointer;
+    }
+    .tool {
+        height: 100%;
+        padding: 0 5px;
+    }
+    .toolname {
+        margin-left: 5px;
+    }
+    :global(#tools span svg) {
+        width: 18px;
+        height: 18px;
     }
     #codeinfo span {
         padding: 0 7px;
