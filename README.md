@@ -23,10 +23,10 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 ### Known issues
 - TBA
 
-**This project is a WIP. Bugs and missing or incomplete features will be present**
+**This project is a WIP. Bugs and missing or incomplete features will be present.**
 
 ## Installation
 *TBA*
 
-## Contributing
+## Contributing 
 This is for those that want to contribute or build on their local machines. ~~If you want to install without building, follow the steps in Installation.~~ Otherwise, [here's how to contribute](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md).
