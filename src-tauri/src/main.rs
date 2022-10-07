@@ -36,7 +36,7 @@ fn open_terminal(path: &str) {
     }
     else {
         Command::new("sh")
-        .args(["cd", path])
+        .args(["gnome-terminal", format!("--working-directory={}", path).as_str()])
         .spawn()
         .unwrap();
     }
