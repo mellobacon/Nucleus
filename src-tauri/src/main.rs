@@ -35,8 +35,8 @@ fn open_terminal(path: &str) {
         .unwrap();
     }
     else {
-        Command::new("sh")
-        .args(["gnome-terminal", format!("--working-directory={}", path).as_str()])
+        Command::new("gnome-terminal")
+        .arg(format!("--working-directory={}", path).as_str())
         .spawn()
         .unwrap();
     }
