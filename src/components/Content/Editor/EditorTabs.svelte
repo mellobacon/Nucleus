@@ -5,7 +5,6 @@
     import { tabs, hidden } from "./scripts/Tabs";
 
     let tabcontainer;
-    // TODO: Get this to work
     onMount(() => {
         Sortable.create(tabcontainer, {
             draggable: ".tab",
