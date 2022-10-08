@@ -5,11 +5,11 @@
     import { tabs, hidden } from "./scripts/Tabs";
 
     let tabcontainer;
-    // TODO: Get this to work
     onMount(() => {
         Sortable.create(tabcontainer, {
             draggable: ".tab",
             animation: 150,
+            forceFallback: true,
             easing: "cubic-bezier(1, 0, 0, 1)",
             sort: true
         })
