@@ -29,7 +29,7 @@
     .tab {
         background-color: rgb(58 58 58);
         height: 100%;
-        min-width: 150px;
+        min-width: min-content;
         flex-grow: 0.05;
         display: flex;
         overflow: hidden;
@@ -69,7 +69,6 @@
     }
     .tab-label {
         text-overflow: ellipsis;
-        overflow-x: clip;
         white-space: nowrap;
         padding-right: 20px;
     }
