@@ -39,6 +39,6 @@
         height: 4px;
     }
     :global(#editor-tabs::-webkit-scrollbar-thumb) {
-        background-color: #1b5fdd;
+        background-color: #ffffff12;
     }
 </style>
