@@ -4,13 +4,15 @@ import { loadFile } from '../../../FileTree/scripts/TreeData';
 import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
 import { getLang, getLangMode } from './Editor';
 export let tabs = writable([]);
-export let tabinfo = writable("");
+export let file_language = writable("");
+export let linefeed = writable("");
 export let hidden = writable(true);
 
 class Tab {
     label: string;
     path: string;
     language: string = "Plain Text";
+    linefeed: string;
     id: number;
     active: boolean;
     editor: CodeMirrorEditor | null;
@@ -31,6 +33,8 @@ class Tab {
             extension = filepath.at(-1);
         }
         this.language = getLang(extension);
+
+        this.linefeed = file.linefeed;
         
         let _ = undefined;
         this.editor.$on("input", (e) => {
@@ -76,7 +80,9 @@ export function setActive(id) {
         if (tab.id === id) {
             activeid = id;
             tab.active = true;
-            tabinfo.set(tab.language);
+            file_language.set(tab.language);
+            linefeed.set(tab.linefeed);
+            tab.editor.focus();
         }
         else {
             tab.active = false;

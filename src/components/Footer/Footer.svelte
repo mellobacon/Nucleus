@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { hidden, tabinfo } from "../Content/Editor/scripts/Tabs";
+    import { Terminal } from "carbon-icons-svelte";
+    import { hidden, file_language, linefeed } from "../Content/Editor/scripts/Tabs";
+    import { line_info } from "../Content/Editor/scripts/Editor";
+    import { invoke } from "@tauri-apps/api/tauri";
+    import { homeDir } from '@tauri-apps/api/path';
+    import { filetree } from "../FileTree/scripts/TreeStore";
 </script>
 
 <div id="footer">
@@ -8,9 +13,21 @@
             <span>Nucleus</span>
         </div>
     </div>
+    <div id="tools">
+        <span class="terminal-button tool" on:click={async() => {
+            let userpath = await homeDir();
+            if ($filetree.length > 0) {
+                userpath = $filetree[0].path;
+            }
+            // opens terminal externally for the time being
+            invoke("open_terminal", {path: userpath});
+        }}><Terminal /> <span class="toolname">Terminal</span></span>
+    </div>
     {#if !$hidden}
         <div id="codeinfo">
-            <span>{$tabinfo}</span>
+            <span title="End of Line Sequence">{$linefeed}</span>
+            <span>{$line_info.line} : {$line_info.col}</span>
+            <span>{$file_language}</span>
         </div>
     {/if}
 </div>
@@ -35,6 +52,34 @@
         justify-content: flex-end;
         align-items: center;
         flex-grow: 1;
+        font-size: 13px;
+    }
+    #tools {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 7px;
+        height: 100%;
+    }
+    #tools span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #tools .tool:hover {
+        background-color: #b1b1b133;
+        cursor: pointer;
+    }
+    .tool {
+        height: 100%;
+        padding: 0 5px;
+    }
+    .toolname {
+        margin-left: 5px;
+    }
+    :global(#tools span svg) {
+        width: 18px;
+        height: 18px;
     }
     #codeinfo span {
         padding: 0 7px;

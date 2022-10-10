@@ -1,5 +1,8 @@
 import langlist from "../../../../scripts/languages/languages.json";
 import { languages } from "@codemirror/language-data";
+import { writable } from 'svelte/store';
+
+export let line_info = writable({line: "-", col: "-"});
 
 let keys = Object.keys(langlist);
 export function getLang(ext: string) {

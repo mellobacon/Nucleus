@@ -5,6 +5,7 @@
     import { indentWithTab } from "@codemirror/commands";
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
+    import { line_info } from "./scripts/Editor";
 
     export let hidden = false;
     let editorElement;
@@ -16,6 +17,25 @@
         editorView.dispatch({
             effects: lang.reconfigure(mode)
         })
+    }
+    export async function focus() {
+        await tick();
+        await tick();
+        editorView.focus();
+        getLineInfo();
+    }
+    function getLineInfo() {
+        let linenumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
+        let colnumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from
+        line_info.set({line: linenumber.toString(), col: (colnumber + 1).toString()})
+    }
+    async function updateDom() {
+        await tick();
+        let filecontent = "";
+        for (let text of editorView.state.doc) {
+            filecontent += `${text} `;
+        }
+        dispatch("input", filecontent);
     }
     let dispatch = createEventDispatcher();
 
@@ -29,14 +49,27 @@
         });
     });
 </script>
-<div class="editor" class:hidden bind:this={editorElement} on:input={async (e) => {
-    await tick();
-    let filecontent = "";
-    for (let text of editorView.state.doc) {
-        filecontent += `${text} `;
+<div class="editor" class:hidden bind:this={editorElement} 
+on:input={async (e) => {
+    await updateDom();
+    getLineInfo();
+}}
+on:keydown={async (e) => {
+    let key = e.code;
+    switch(key) {
+        case "Backspace": case "Enter":
+            await updateDom();
+            getLineInfo();
+            break;
+        case "ArrowRight": case "ArrowLeft": case "ArrowDown": case "ArrowUp":
+            getLineInfo();
+            break;
     }
-    dispatch("input", filecontent);
-}} />
+}}
+on:mousedown = {(e) => {
+    getLineInfo();
+}}
+ />
 
 <style>
     .editor {
