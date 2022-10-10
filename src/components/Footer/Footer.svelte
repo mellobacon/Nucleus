@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Terminal } from "carbon-icons-svelte";
-    import { hidden, tabinfo } from "../Content/Editor/scripts/Tabs";
-    import { line_column } from "../Content/Editor/scripts/Editor";
+    import { hidden, file_language, linefeed } from "../Content/Editor/scripts/Tabs";
+    import { line_info } from "../Content/Editor/scripts/Editor";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
     import { filetree } from "../FileTree/scripts/TreeStore";
@@ -25,8 +25,9 @@
     </div>
     {#if !$hidden}
         <div id="codeinfo">
-            <span>{$line_column.line} : {$line_column.col}</span>
-            <span>{$tabinfo}</span>
+            <span title="End of Line Sequence">{$linefeed}</span>
+            <span>{$line_info.line} : {$line_info.col}</span>
+            <span>{$file_language}</span>
         </div>
     {/if}
 </div>
@@ -51,6 +52,7 @@
         justify-content: flex-end;
         align-items: center;
         flex-grow: 1;
+        font-size: 13px;
     }
     #tools {
         display: flex;

@@ -5,7 +5,7 @@
     import { indentWithTab } from "@codemirror/commands";
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
-    import { line_column } from "./scripts/Editor";
+    import { line_info } from "./scripts/Editor";
 
     export let hidden = false;
     let editorElement;
@@ -27,7 +27,7 @@
     function getLineInfo() {
         let linenumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
         let colnumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from
-        line_column.set({line: linenumber.toString(), col: (colnumber + 1).toString()})
+        line_info.set({line: linenumber.toString(), col: (colnumber + 1).toString()})
     }
     async function updateDom() {
         await tick();

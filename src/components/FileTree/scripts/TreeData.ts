@@ -15,9 +15,11 @@ class File {
     filename: string;
     path: string;
     content: string;
-    constructor(filename: string, path: string, content) {
+    linefeed: string;
+    constructor(filename: string, path: string, linefeed: string, content) {
         this.filename = filename;
         this.path = path;
+        this.linefeed = linefeed;
         this.content = content;
     }
 }
@@ -25,7 +27,12 @@ export async function loadFile(path: string) {
     if (path === null) return;
     let filename = path.split(sep).pop();
     let content = await readTextFile(path);
-    return new File(filename, path, content);
+    let linefeed = getLF(content);
+    return new File(filename, path, linefeed, content);
+}
+
+function getLF(file) {
+    return file.includes('\r\n') ? 'CRLF' : 'LF'
 }
 
 async function loadTree() {
