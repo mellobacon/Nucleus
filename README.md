@@ -5,8 +5,10 @@
 <h3 align="center">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/mellobacon/Nucleus?style=for-the-badge">
+  <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/mellobacon/Nucleus?style=for-the-badge">
   <img alt="Project License" src="https://img.shields.io/github/license/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/mellobacon/Nucleus?style=for-the-badge">
+  <img alt="GitHub Hacktoberfest combined status" src="https://img.shields.io/github/hacktoberfest/2022/mellobacon/Nucleus?style=for-the-badge">
   
   A text editor with better UI than [enter funny thing here]
   </h3>
