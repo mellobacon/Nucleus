@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Have/found an issue with the app? Make a report.
-title: "[BUG]"
+title: "[BUG] Title"
 labels: bug
 assignees: ''
 
