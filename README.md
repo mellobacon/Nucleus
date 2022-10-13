@@ -10,7 +10,7 @@
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub Hacktoberfest combined status" src="https://img.shields.io/github/hacktoberfest/2022/mellobacon/Nucleus?style=for-the-badge">
   
-  A text editor with better UI than [enter funny thing here]
+  A text editor with better UI than Apple park because no one's been there. 
   </h3>
 <p align="center">
   <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
