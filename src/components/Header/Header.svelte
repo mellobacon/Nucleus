@@ -57,7 +57,7 @@
         background-size: 20px;
         background-repeat: no-repeat;
         height: 100%;
-        width: 35px;
+        min-width: 35px;
         position: relative;
         content: '';
         background-image: url("/assets/images/Icon\(1\).png");
@@ -69,14 +69,27 @@
     }
     #workspace {
         height: 100%;
+        min-width: 160px;
+        overflow-x: clip;
     }
+    :global(#workspace a.bx--header__menu-item) {
+        flex-direction: row-reverse;
+    }
+    :global(#workspace .bx--header__menu-arrow) {
+        margin-right: .5rem;
+        margin-left: 0 !important;
+    }
+    :global(#workspace .bx--header__menu-title[aria-expanded=true]+.bx--header__menu) {
+        width: 100% !important;
+    }
+
     #windowcontrols {
         margin-left: auto;
         height: 100%;
         display: flex;
     }
     .window-button {
-        width: 47px;
+        min-width: 47px;
         height: 100%;
         line-height: 34px;
         text-align: center;

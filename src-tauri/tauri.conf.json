@@ -60,6 +60,8 @@
         "resizable": true,
         "title": "Nucleus",
         "width": 800,
+        "minWidth": 680,
+        "minHeight": 430,
         "decorations": false
       }
     ]
