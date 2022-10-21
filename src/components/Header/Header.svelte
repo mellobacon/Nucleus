@@ -6,7 +6,7 @@
     import { appWindow } from "@tauri-apps/api/window";
     import { workspacename } from "../FileTree/scripts/TreeStore";
 </script>
-<div id="header" data-tauri-drag-region>
+<div id="header">
     <div id="logo"></div>
     <div id="menubar">
         <Menu name="File" options={filemenu}></Menu>
@@ -24,6 +24,7 @@
             </HeaderNavMenu>
         </HeaderNav>
     </div>
+    <div id="handle" data-tauri-drag-region></div>
     <div id="windowcontrols">
         <div
             class="window-button"
@@ -62,32 +63,43 @@
         content: '';
         background-image: url("/assets/images/Icon\(1\).png");
         background-position: center;
+        z-index: 10;
     }
     #menubar {
         height: 100%;
         display: flex;
+        z-index: 10;
     }
     #workspace {
         height: 100%;
-        min-width: 160px;
+        width: fit-content;
+        max-width: 200px;
         overflow-x: clip;
+        z-index: 10;
     }
     :global(#workspace a.bx--header__menu-item) {
         flex-direction: row-reverse;
         cursor: pointer;
     }
     :global(#workspace .bx--header__menu-arrow) {
-        margin-right: .5rem;
-        margin-left: 0 !important;
+        display: none;
     }
     :global(#workspace .bx--header__menu-title.bx--header__menu) {
         width: 100% !important;
+    }
+
+    #handle {
+        position: absolute;
+        height: 2rem;
+        width: -webkit-fill-available;
+        z-index: 9;
     }
 
     #windowcontrols {
         margin-left: auto;
         height: 100%;
         display: flex;
+        z-index: 10;
     }
     .window-button {
         min-width: 47px;
@@ -116,4 +128,5 @@
     #close:hover {
         background-color: rgb(255, 49, 49);
     }
+    
 </style>
