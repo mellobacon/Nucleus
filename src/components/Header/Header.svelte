@@ -74,12 +74,13 @@
     }
     :global(#workspace a.bx--header__menu-item) {
         flex-direction: row-reverse;
+        cursor: pointer;
     }
     :global(#workspace .bx--header__menu-arrow) {
         margin-right: .5rem;
         margin-left: 0 !important;
     }
-    :global(#workspace .bx--header__menu-title[aria-expanded=true]+.bx--header__menu) {
+    :global(#workspace .bx--header__menu-title.bx--header__menu) {
         width: 100% !important;
     }
 
