@@ -31,7 +31,7 @@ class Tab {
                     console.log(`${this.label} saved`);
                 }
                 else {
-                    console.log('unnamed buffer ${this.label}, not saving');
+                    console.log(`unnamed buffer ${this.label}, not saving`);
                 }
             }, 1000)
         })
@@ -61,7 +61,7 @@ export async function addTab(f: string) {
 export async function addNewFileTab() {
     let content = "";
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: content } });
-    let tab = new Tab(id, null, null, editor, content);
+    let tab = new Tab(id, "", "", editor, content);
     tablist = [...tablist, tab];
     if (tablist.length > 0) {
         hidden.set(false);
@@ -72,7 +72,7 @@ export async function addNewFileTab() {
 }
 
 export async function saveFileAs(filePath: string) {
-    console.log('saveFileAs ${filePath}');
+    console.log(`saveFileAs ${filePath}`);
     for (let tab of tablist) {
         if (tab.active) {
             console.log("found active tab");
@@ -80,6 +80,8 @@ export async function saveFileAs(filePath: string) {
             tab.label = filePath;
         }
     }
+    // refresh tab list (to ensure we display the correct filename)
+    tabs.set(tablist);
 }
 
 export function setActive(id) {
