@@ -26,8 +26,13 @@ class Tab {
         this.editor.$on("input", (e) => {
             clearTimeout(_);
             _ = setTimeout(() => {
-                writeFile(this.path, e.detail);
-                console.log(`${this.label} saved`)
+                if (this.path) {
+                    writeFile(this.path, e.detail);
+                    console.log(`${this.label} saved`);
+                }
+                else {
+                    console.log('unnamed buffer ${this.label}, not saving');
+                }
             }, 1000)
         })
     }    
@@ -51,6 +56,30 @@ export async function addTab(f: string) {
     tabs.set(tablist);
     setActive(id);
     id++;
+}
+
+export async function addNewFileTab() {
+    let content = "";
+    let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: content } });
+    let tab = new Tab(id, null, null, editor, content);
+    tablist = [...tablist, tab];
+    if (tablist.length > 0) {
+        hidden.set(false);
+    }
+    tabs.set(tablist);
+    setActive(id);
+    id++;
+}
+
+export async function saveFileAs(filePath: string) {
+    console.log('saveFileAs ${filePath}');
+    for (let tab of tablist) {
+        if (tab.active) {
+            console.log("found active tab");
+            tab.path = filePath;
+            tab.label = filePath;
+        }
+    }
 }
 
 export function setActive(id) {
