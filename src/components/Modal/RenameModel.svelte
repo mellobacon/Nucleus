@@ -5,6 +5,8 @@
     import { updateTree } from "../FileTree/scripts/TreeData";
     import langlist from "../../scripts/languages/languages.json";
     import { sep } from "@tauri-apps/api/path";
+    import { renameFile, setLanguage } from "../Content/Editor/scripts/Tabs";
+    import { getLang } from "../Content/Editor/scripts/Editor";
     export let open = false;
     export let filename = "";
     export let path = "/";
@@ -91,6 +93,8 @@
                     path = newpath.join(sep);
 
                     await fs.renameFile(oldpath, path);
+                    renameFile(filenameinput, path);
+                    setLanguage(extinput);
                     await updateTree();
                     open = false;
                 }}

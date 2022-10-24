@@ -126,6 +126,13 @@ export async function saveFile() {
     }
 }
 
+export function renameFile(label, path) {
+    let tab = tablist.find(t => t.active);
+    tab.label = label;
+    tab.path = path;
+    setActive(tab.id);
+}
+
 export function setLanguage(language) {
     for (let tab of tablist) {
         if (tab.active) {
