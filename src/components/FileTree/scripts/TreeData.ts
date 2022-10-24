@@ -23,6 +23,9 @@ class File {
         this.content = content;
     }
 }
+export function createFile(filename = "", path = "") {
+    return new File(filename, path, getLF(""), "");
+}
 export async function loadFile(path: string) {
     if (path === null) return;
     let filename = path.split(sep).pop();

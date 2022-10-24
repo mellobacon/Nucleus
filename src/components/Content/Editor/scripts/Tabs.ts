@@ -1,6 +1,8 @@
+import { dialog } from '@tauri-apps/api';
 import { writeFile, writeTextFile } from '@tauri-apps/api/fs';
+import { sep, videoDir } from '@tauri-apps/api/path';
 import { writable } from 'svelte/store';
-import { loadFile } from '../../../FileTree/scripts/TreeData';
+import { createFile, loadFile } from '../../../FileTree/scripts/TreeData';
 import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
 import { getLang, getLangMode } from './Editor';
 export let tabs = writable([]);
@@ -40,12 +42,10 @@ class Tab {
         this.editor.$on("input", (e) => {
             clearTimeout(_);
             _ = setTimeout(() => {
+                this.editorcontent = e.detail;
                 if (this.path) {
                     writeFile(this.path, e.detail);
                     console.log(`${this.label} saved`);
-                }
-                else {
-                    console.log(`unnamed buffer ${this.label}, not saving`);
                 }
             }, 1000)
         })
@@ -54,6 +54,18 @@ class Tab {
     async setLanguage(lang) {
         let mode = await getLangMode(lang);
         this.editor.setLanguageMode(mode);
+    }
+    setFile(file) {
+        this.label = file.filename === "" ? `Untitled-${id}` : file.filename;
+        this.path = file.path;
+        let filepath = file.path.split(".");
+        let extension = "txt";
+        if (filepath.length !== 1) {
+            extension = filepath.at(-1);
+        }
+        this.language = getLang(extension);
+
+        this.linefeed = file.linefeed;
     }
 }
 
@@ -83,7 +95,8 @@ export async function addTab(f: string) {
 export async function addNewFileTab() {
     let content = "";
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: content } });
-    let tab = new Tab(id, "", "", editor, content);
+    let file = createFile(); // create empty file
+    let tab = new Tab(id, file, editor);
     tablist = [...tablist, tab];
     if (tablist.length > 0) {
         hidden.set(false);
@@ -93,17 +106,23 @@ export async function addNewFileTab() {
     id++;
 }
 
-export async function saveFileAs(filePath: string) {
-    console.log(`saveFileAs ${filePath}`);
+export async function saveFile() {
     for (let tab of tablist) {
         if (tab.active) {
-            console.log("found active tab");
-            tab.path = filePath;
-            tab.label = filePath;
+            if (tab.path === "") {
+                const filePath = await dialog.save({
+                    defaultPath: `${tab.label}.txt`
+                  }) as string;
+                if (filePath == undefined) return;
+                let file = createFile(filePath.split(sep).pop(), filePath);
+                tab.setFile(file);
+                setActive(tab.id); // refresh active tab to load file data in status bar
+            }
+            else {
+                writeFile(tab.path, tab.editorcontent);
+            }
         }
     }
-    // refresh tab list (to ensure we display the correct filename)
-    tabs.set(tablist);
 }
 
 export function setActive(id) {

@@ -1,15 +1,15 @@
 import { filetree, workspacename } from "../FileTree/scripts/TreeStore";
 import { data, workspace } from "../FileTree/scripts/TreeData";
-import { addNewFileTab, addTab, saveFileAs } from "../Content/Editor/scripts/Tabs";
+import { addNewFileTab, addTab, saveFile } from "../Content/Editor/scripts/Tabs";
 import { dialog } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 export const filemenu = [
     { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { 
-        console.log("'New File' click");
         await addNewFileTab();
     } },
     { option: "Open File...", shortcut: "Ctrl + O", onclick: async () => { 
         let f = await dialog.open() as string;
+        if (f === undefined) return;
         await addTab(f);
      } },
     { option: "Open Folder", shortcut: "Ctrl + K", onclick: async () => { 
@@ -19,13 +19,12 @@ export const filemenu = [
         workspacename.set(workspace());
     }},
     { option: "Open Recent", onclick: () => { console.log("click"); } },
-    { option: "Save File", shortcut: "Ctrl + S", onclick: () => { console.log("click"); }, divider: true },
+    { option: "Save File", shortcut: "Ctrl + S", onclick: async () => { 
+        await saveFile();
+     }, divider: true },
     { option: "Save File As...", shortcut: "Ctrl + Shift + S", onclick: async () => 
     { 
-        console.log("'save file as' click");
-        const filePath = await dialog.save() as string;
-        if (filePath == undefined) return;
-        await saveFileAs(filePath);
+        await saveFile();
     } },
     { option: "Save All", shortcut: "Ctrl + Shift + K", onclick: () => { console.log("click"); } },
     { option: "Settings", onclick: () => { console.log("click"); }, divider: true },
