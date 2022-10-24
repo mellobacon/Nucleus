@@ -51,7 +51,7 @@ class Tab {
         })
     }   
     
-    async setLanguage(lang) {
+    async setLanguage(lang: string) {
         let mode = await getLangMode(lang);
         this.editor.setLanguageMode(mode);
     }
@@ -121,6 +121,18 @@ export async function saveFile() {
             else {
                 writeFile(tab.path, tab.editorcontent);
             }
+            break;
+        }
+    }
+}
+
+export function setLanguage(language) {
+    for (let tab of tablist) {
+        if (tab.active) {
+            file_language.set(language);
+            tab.language = language;
+            tab.setLanguage(language);
+            break;
         }
     }
 }

@@ -5,6 +5,16 @@
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
     import { filetree } from "../FileTree/scripts/TreeStore";
+    import LanguageList from "./LanguageList.svelte";
+    import { languages } from "@codemirror/language-data";
+
+    let langs = [];
+    for (let l of languages) {
+        let langdata = {lang: l.name, tags: l.extensions}
+        langs = [...langs, langdata];
+    }
+
+    let showlangs = false;
 </script>
 
 <div id="footer">
@@ -27,8 +37,13 @@
         <div id="codeinfo">
             <span title="End of Line Sequence">{$linefeed}</span>
             <span>{$line_info.line} : {$line_info.col}</span>
-            <span>{$file_language}</span>
+            <span on:click={
+                () => {showlangs = true;}
+            } id="language">{$file_language}</span>
         </div>
+    {/if}
+    {#if showlangs}
+        <LanguageList bind:showlangs {langs}></LanguageList>
     {/if}
 </div>
 
@@ -53,6 +68,7 @@
         align-items: center;
         flex-grow: 1;
         font-size: 13px;
+        height: 100%;
     }
     #tools {
         display: flex;
@@ -83,11 +99,19 @@
     }
     #codeinfo span {
         padding: 0 7px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    #codeinfo span:hover {
+        background-color: #b1b1b133;
+        cursor: pointer;
     }
     #codeinfo span:nth-child(even) {
         border-right: 1px solid #393939;
         border-left: 1px solid #393939;
     }
+    
     #apptitle {
         padding: 0 15px;
     }
