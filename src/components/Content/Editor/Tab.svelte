@@ -5,10 +5,10 @@
     export let label = "Untitled-1";
     export let path = "";
     export let active = false;
-    export let unsaved = false;
+    export let saved = false;
     let tab;
 </script>
-<div bind:this={tab} title={path} id={`tab-${id}`} class="tab" class:tab-active={active} class:unsaved={unsaved}>
+<div bind:this={tab} title={path} id={`tab-${id}`} class="tab" class:tab-active={active} class:unsaved={!saved}>
     <div class="tab-content" on:click = {
         () => {
             setActive(id);

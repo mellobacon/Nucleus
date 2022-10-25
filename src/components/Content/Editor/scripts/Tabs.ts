@@ -16,15 +16,14 @@ class Tab {
     language: string = "Plain Text";
     linefeed: string;
     id: number;
-    active: boolean;
+    active: boolean = false;
     editor: CodeMirrorEditor | null;
     editorcontent: string;
-    saved: boolean;
-    constructor(id: number, file , editor = null, active: boolean = false, saved: boolean = true) {
+    saved: boolean = true;
+    constructor(id: number, file , editor = null, saved: boolean = true) {
         this.id = id;
         this.label = file.filename === "" ? `Untitled-${id}` : file.filename;
         this.path = file.path;
-        this.active = active;
         this.editor = editor;
         this.editorcontent = file.content;
         this.saved = saved;
@@ -43,9 +42,16 @@ class Tab {
             clearTimeout(_);
             _ = setTimeout(() => {
                 this.editorcontent = e.detail;
-                if (this.path) {
+                if (this.path !== "") {
                     writeFile(this.path, e.detail);
                     console.log(`${this.label} saved`);
+                    if (!this.saved) {
+                        this.saved = true;
+                        setActive(id);
+                    }
+                }
+                else {
+                    this.saved = false;
                 }
             }, 1000)
         })
@@ -96,7 +102,7 @@ export async function addNewFileTab() {
     let content = "";
     let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: content } });
     let file = createFile(); // create empty file
-    let tab = new Tab(id, file, editor);
+    let tab = new Tab(id, file, editor, false);
     tablist = [...tablist, tab];
     if (tablist.length > 0) {
         hidden.set(false);
@@ -116,6 +122,7 @@ export async function saveFile() {
                 if (filePath == undefined) return;
                 let file = createFile(filePath.split(sep).pop(), filePath);
                 tab.setFile(file);
+                tab.saved = true;
                 setActive(tab.id); // refresh active tab to load file data in status bar
             }
             else {
@@ -142,6 +149,10 @@ export function setLanguage(language) {
             break;
         }
     }
+}
+
+export function isSaved(id) {
+    return tablist.find(t => t.id == id).saved;
 }
 
 export function setActive(id) {
