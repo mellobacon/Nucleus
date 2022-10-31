@@ -1,6 +1,7 @@
 <script lang="ts">
+    import { closeTab, setActive } from "./scripts/Tab";
     import TabMenu from "./TabMenu.svelte";
-    import { setActive, closeTab } from "./scripts/Tabs";
+    //import { setActive, closeTab } from "./scripts/Tabs";
     export let id = 0;
     export let label = "Untitled-1";
     export let path = "";

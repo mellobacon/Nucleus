@@ -4,11 +4,11 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, path, invoke } from "@tauri-apps/api";
-    import { closeTab, setActive } from "./scripts/Tabs";
+    import { closeTab, setActive } from "./scripts/Tab";
     export let id: number;
     export let target;
-    export let filename;
-    export let filepath;
+    export let filename: string;
+    export let filepath: string;
 
     async function copyToClipboard(input) {
         await clipboard.writeText(input);

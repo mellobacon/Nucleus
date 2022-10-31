@@ -6,7 +6,7 @@
 </script>
 
 <OverflowMenu style="width: auto;" size="sm">
-    <div slot="menu" style="padding: 1rem; color: white;">{name}</div>
+    <div slot="menu" style="padding: 0 1rem; color: white;">{name}</div>
     {#each options as menuoption}
         <OverflowMenuItem on:click={menuoption.onclick} hasDivider={menuoption.divider}>
             <span class="option_name">{menuoption.option}</span>

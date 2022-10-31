@@ -1,6 +1,7 @@
 import { dialog, fs } from "@tauri-apps/api";
 import { readTextFile } from "@tauri-apps/api/fs";
 import { sep } from "@tauri-apps/api/path";
+import { EditorFile } from "../../../scripts/EditorFile";
 import { filetree } from "./TreeStore";
 let parentname: string;
 let dir;
@@ -11,27 +12,15 @@ export async function data() {
     return await loadTree();
 }
 
-class File {
-    filename: string;
-    path: string;
-    content: string;
-    linefeed: string;
-    constructor(filename: string, path: string, linefeed: string, content) {
-        this.filename = filename;
-        this.path = path;
-        this.linefeed = linefeed;
-        this.content = content;
-    }
-}
 export function createFile(filename = "", path = "") {
-    return new File(filename, path, getLF(""), "");
+    return new EditorFile(filename, path, getLF(""), "");
 }
 export async function loadFile(path: string) {
     if (path === null) return;
     let filename = path.split(sep).pop();
     let content = await readTextFile(path);
     let linefeed = getLF(content);
-    return new File(filename, path, linefeed, content);
+    return new EditorFile(filename, path, linefeed, content);
 }
 
 function getLF(file) {

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Modal, Search } from "carbon-components-svelte";
-    import { setLanguage } from "../Content/Editor/scripts/Tabs";
+    import { setFileLanguage } from "../../scripts/EditorFile";
 
     export let showlangs = false;
     export let langs;
@@ -35,7 +35,7 @@
         </div>
         <div id="selected">Selected: {selectedlang}</div>
         <div id="button" on:click={() => {
-            setLanguage(selectedlang);
+            setFileLanguage(selectedlang);
             showlangs = false;
         }}>
             Select
