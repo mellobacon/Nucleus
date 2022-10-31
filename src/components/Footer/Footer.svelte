@@ -1,6 +1,8 @@
 <script lang="ts">
-    import { Terminal } from "carbon-icons-svelte";
-    import { hidden, file_language, linefeed } from "../Content/Editor/scripts/Tabs";
+    import { Terminal } from "carbon-icons-svelte"
+    import { isfile } from "../Content/Editor/scripts/Tab";
+    import {file_language, linefeed} from "../Content/Editor/scripts/Tab";
+
     import { line_info } from "../Content/Editor/scripts/Editor";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
@@ -33,7 +35,7 @@
             invoke("open_terminal", {path: userpath});
         }}><Terminal /> <span class="toolname">Terminal</span></span>
     </div>
-    {#if !$hidden}
+    {#if $isfile}
         <div id="codeinfo">
             <span title="End of Line Sequence">{$linefeed}</span>
             <span>{$line_info.line} : {$line_info.col}</span>
