@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { EditorFile, getFileData } from '../../../../scripts/EditorFile
+import { EditorFile, getFileData } from '../../../../scripts/EditorFile'
 import CodeMirrorEditor from '../CodeMirrorEditor.svelte';
 import { writeFile } from '@tauri-apps/api/fs';
 import { getLang, getLangMode } from './Editor';
