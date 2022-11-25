@@ -65,7 +65,7 @@ a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
     background-color: transparent;
 }
 .bx--tree .bx--tree-node:focus>.bx--tree-node__label {
-    outline: 1px solid #fff !important;
+    outline: none !important;
 }
 .bx--tree .bx--tree-leaf-node {
     padding-left: 1rem !important;

@@ -1,31 +1,12 @@
-import { filetree, workspacename } from "../FileTree/scripts/TreeStore";
-import { data, workspace } from "../FileTree/scripts/TreeData";
 import { appWindow } from "@tauri-apps/api/window";
-import { addFileTab } from "../Content/Editor/scripts/Tab";
-import { openFile, saveFile } from "../../scripts/EditorFile";
+import { addNewFile, openFile, openFolder, saveOpenFile } from "./header_menus/FileMenu";
 export const filemenu = [
-    { option: "New File...", shortcut: "Ctrl + N", onclick: async () => { 
-        await addFileTab();
-    } },
-    { option: "Open File...", shortcut: "Ctrl + O", onclick: async () => { 
-        let path = await openFile();
-        if (path === undefined) return;
-        await addFileTab(path);
-     } },
-    { option: "Open Folder", shortcut: "Ctrl + K", onclick: async () => { 
-        let treedata = await data();
-        if (treedata === undefined) return;
-        filetree.set(treedata);
-        workspacename.set(workspace());
-    }},
+    { option: "New File...", shortcut: "Ctrl + N", onclick: addNewFile },
+    { option: "Open File...", shortcut: "Ctrl + O", onclick: openFile },
+    { option: "Open Folder", shortcut: "Ctrl + K", onclick: openFolder },
     { option: "Open Recent", onclick: () => { console.log("click"); } },
-    { option: "Save File", shortcut: "Ctrl + S", onclick: async () => { 
-        await saveFile();
-     }, divider: true },
-    { option: "Save File As...", shortcut: "Ctrl + Shift + S", onclick: async () => 
-    { 
-        await saveFile();
-    } },
+    { option: "Save File", shortcut: "Ctrl + S", onclick: saveOpenFile, divider: true },
+    { option: "Save File As...", shortcut: "Ctrl + Shift + S", onclick: saveOpenFile },
     { option: "Save All", shortcut: "Ctrl + Shift + K", onclick: () => { console.log("click"); } },
     { option: "Settings", onclick: () => { console.log("click"); }, divider: true },
     { option: "Exit", onclick: async () => { await appWindow.close(); } }

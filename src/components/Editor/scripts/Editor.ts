@@ -1,4 +1,4 @@
-import langlist from "../../../../scripts/languages/languages.json";
+import langlist from "../../../scripts/languages/languages.json";
 import { languages } from "@codemirror/language-data";
 import { writable } from 'svelte/store';
 

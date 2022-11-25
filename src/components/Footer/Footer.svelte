@@ -1,9 +1,7 @@
 <script lang="ts">
     import { Terminal } from "carbon-icons-svelte"
-    import { isfile } from "../Content/Editor/scripts/Tab";
-    import {file_language, linefeed} from "../Content/Editor/scripts/Tab";
-
-    import { line_info } from "../Content/Editor/scripts/Editor";
+    import { isfile, file_language, linefeed } from "../Tabs/scripts/Tab";
+    import { line_info } from "../Editor/scripts/Editor";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
     import { filetree } from "../FileTree/scripts/TreeStore";
@@ -15,8 +13,34 @@
         let langdata = {lang: l.name, tags: l.extensions}
         langs = [...langs, langdata];
     }
-
     let showlangs = false;
+
+    const tools = [
+        {name: "Notifications", content: "notifications"}
+    ]
+
+    async function spawnTerminal() {
+        let userpath = await homeDir();
+        if ($filetree.length > 0) {
+            userpath = $filetree[0].path;
+        }
+        // opens terminal externally for the time being
+        invoke("open_terminal", {path: userpath});
+    }
+</script>
+
+<script lang="ts" context="module">
+    import { writable } from "svelte/store";
+    export let showpanel = writable(false);
+    let show = false;
+    
+    export let tool = writable({name: "", content: null});
+
+    export function togglePanel(x) {
+        show = !show;
+        showpanel.set(show);
+        tool.set({name: x.name, content: x.content});
+    }
 </script>
 
 <div id="footer">
@@ -26,19 +50,23 @@
         </div>
     </div>
     <div id="tools">
-        <span class="terminal-button tool" on:click={async() => {
-            let userpath = await homeDir();
-            if ($filetree.length > 0) {
-                userpath = $filetree[0].path;
-            }
-            // opens terminal externally for the time being
-            invoke("open_terminal", {path: userpath});
-        }}><Terminal /> <span class="toolname">Terminal</span></span>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <span class="tool" on:click={spawnTerminal}>
+            <Terminal /> 
+            <span class="toolname">Terminal</span>
+        </span>
+        {#each tools as tool}
+        <span class="tool">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <span class="toolname" on:click={() => {togglePanel(tool)}}>{tool.name}</span>
+        </span>
+        {/each}
     </div>
     {#if $isfile}
         <div id="codeinfo">
             <span title="End of Line Sequence">{$linefeed}</span>
             <span>{$line_info.line} : {$line_info.col}</span>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span on:click={
                 () => {showlangs = true;}
             } id="language">{$file_language}</span>
@@ -49,14 +77,17 @@
     {/if}
 </div>
 
-<style>
+<style lang="scss">
     #footer {
         z-index: 8000;
         width: 100%;
         display: flex;
-        height: 1.4rem;
         align-items: center;
         border-top: 1px solid #393939;
+        font-size: 0.9rem;
+        span {
+            white-space: nowrap;
+        }
     }
     #info {
         display: flex;

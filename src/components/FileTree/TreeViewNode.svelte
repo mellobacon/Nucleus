@@ -32,6 +32,7 @@
   export let id = "";
   export let name = "";
   export let disabled = false;
+  export let dblclick = false;
   export let path = "";
 
   /**
@@ -41,7 +42,6 @@
   export let icon = undefined;
 
   import { afterUpdate, getContext } from "svelte";
-  import { addFileTab } from "../Content/Editor/scripts/Tab";
   import RenameModel from "../Modal/RenameModel.svelte";
   import LeafNodeMenu from "./LeafNodeMenu.svelte";
 
@@ -86,11 +86,13 @@
   class:bx--tree-node--disabled={disabled}
   class:bx--tree-node--with-icon={icon}
   on:click|stopPropagation={() => {
-    if (disabled) return;
+    selectNode(node);
+    if (disabled || dblclick) return;
     clickNode(node);
   }}
-  on:dblclick={async () => {
-    await addFileTab(path);
+  on:dblclick|stopPropagation={() => {
+    if (disabled || !dblclick) return;
+    clickNode(node);
   }}
   on:keydown={(e) => {
     if (

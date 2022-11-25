@@ -1,30 +1,29 @@
 import { writable } from "svelte/store";
 
-let active = false;
-let activeid = -1;
-export let showtabview = writable(false);
-
-class SidebarTab {
+class Tool {
     tabname: string;
     content;
-    constructor(tabname, content) {
+    constructor(tabname: string, content) {
         this.tabname = tabname;
         this.content = content;
     }
 }
-export let sidebartab = writable(new SidebarTab("", null));
 
-export const toggleActive = (tab) => {
-    active = !active;
-    if (activeid === tab.id) {
-        activeid = -1;
-        document.getElementById(`sidetab-${tab.id}`).parentElement.classList.remove("bx--tabs__nav-item--selected");
-        showtabview.set(false);
+export let activeid = writable(-1);
+let active = -1;
+export let showsidebarview = writable(false);
+export let tool = writable(null);
+
+export const toggleActive = (tab: { id: any; tabname: any; icon: any, content: any }) => {
+    if (active === tab.id) {
+        active = -1;
+        activeid.set(-1);
+        showsidebarview.set(false);
     }
     else {
-        activeid = tab.id;
-        document.getElementById(`sidetab-${tab.id}`).parentElement.classList.add("bx--tabs__nav-item--selected");
-        sidebartab.set(new SidebarTab(tab.tabname, tab.content));
-        showtabview.set(true);
+        activeid.set(tab.id);
+        active = tab.id;
+        showsidebarview.set(true);
+        tool.set(new Tool(tab.tabname, tab.content));
     }
 }

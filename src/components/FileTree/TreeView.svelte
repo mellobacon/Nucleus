@@ -44,6 +44,8 @@
   /** Set to `true` to visually hide the label text */
   export let hideLabel = false;
 
+  export let dblclick = false;
+
   /**
    * Programmatically expand all nodes
    * @type {() => void}
@@ -159,5 +161,5 @@
   aria-multiselectable={selectedIds.length > 1 || undefined}
   on:keydown
 >
-  <TreeViewNodeList root {children} />
+  <TreeViewNodeList root {dblclick} {children} />
 </ul>

@@ -13,6 +13,7 @@
   export let id = "";
   export let name = "";
   export let disabled = false;
+  export let dblclick = false;
   export let path = "";
 
   /**
@@ -70,9 +71,9 @@
 {#if root}
   {#each children as child (child.id)}
     {#if Array.isArray(child.children)}
-      <svelte:self {...child} />
+      <svelte:self {dblclick} {...child} />
     {:else}
-      <TreeViewNode leaf {...child} />
+      <TreeViewNode leaf {dblclick} {...child} />
     {/if}
   {/each}
 {:else}
@@ -117,6 +118,7 @@
       focusNode(node);
     }}
   >
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class:bx--tree-node__label={true} bind:this={refLabel} 
       on:click={() => {
         if (disabled) return;
@@ -139,9 +141,9 @@
       <ul role="group" class:bx--tree-node__children={true}>
         {#each children as child (child.id)}
           {#if Array.isArray(child.children)}
-            <svelte:self {...child} />
+            <svelte:self {dblclick} {...child} />
           {:else}
-            <TreeViewNode leaf {...child} />
+            <TreeViewNode leaf {dblclick} {...child} />
           {/if}
         {/each}
       </ul>

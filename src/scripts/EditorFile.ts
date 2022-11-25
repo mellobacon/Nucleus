@@ -1,8 +1,8 @@
 import { readTextFile, writeFile } from "@tauri-apps/api/fs";
 import { sep } from "@tauri-apps/api/path";
 import { dialog } from "@tauri-apps/api";
-import { setActive, tablist } from "../components/Content/Editor/scripts/Tab";
-import type { FileTab } from "../components/Content/Editor/scripts/Tab";
+import { setActive, tablist } from "../components/Tabs/scripts/Tab";
+import type { FileTab } from "../components/Tabs/scripts/Tab";
 
 export class EditorFile {
     filename: string;
@@ -17,7 +17,7 @@ export class EditorFile {
     }
 }
 
-export async function openFile() {
+export async function getFile() {
     let path = await dialog.open() as string;
     if (path === undefined) return;
     return path;
