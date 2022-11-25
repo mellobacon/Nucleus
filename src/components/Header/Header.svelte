@@ -1,6 +1,5 @@
 <script lang="ts">
     import Menu from "../Menu/Menu.svelte";
-    import { HeaderNav, HeaderNavMenu, HeaderNavItem } from "carbon-components-svelte";
     import "../../overrides.css";
 	import { filemenu, editmenu, viewmenu, runmenu, helpmenu} from "../Menu/menu";
     import { appWindow } from "@tauri-apps/api/window";
@@ -15,27 +14,25 @@
         <Menu name="Run" options={runmenu}></Menu>
         <Menu name="Help" options={helpmenu}></Menu>
     </div>
+    <div class="divider"></div>
     <div id="workspace">
-        <HeaderNav>
-            <HeaderNavMenu text={$workspacename}>
-                <HeaderNavItem text="Open New Workspace..." />
-                <HeaderNavItem text="Open Recent Workspace" />
-                <HeaderNavItem text="Close Workspace" />
-            </HeaderNavMenu>
-        </HeaderNav>
+        {$workspacename}
     </div>
     <div id="handle" data-tauri-drag-region></div>
     <div id="windowcontrols">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div
             class="window-button"
             id="minimize"
             on:click={() => appWindow.minimize()}
         />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div
             class="window-button"
             id="maximize"
             on:click={async () => { (await appWindow.isMaximized()) ? appWindow.unmaximize() : appWindow.maximize(); }}
         />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div
             class="window-button"
             id="close"
@@ -44,15 +41,13 @@
     </div>
 </div>
 
-<style>
+<style lang="scss">
     #header {
-        z-index: 8000;
         width: 100%;
         display: flex;
         height: 2rem;
         align-items: center;
         border-bottom: 1px solid #393939;
-        background-color: #161616;
     }
     #logo {
         background-size: 20px;
@@ -70,63 +65,61 @@
         display: flex;
         z-index: 10;
     }
+    .divider {
+		width: 0.0625rem;
+		height: 1.2rem;
+		background-color: #393939;
+		margin: 0 4px;
+	}
     #workspace {
         height: 100%;
-        width: fit-content;
-        max-width: 200px;
-        overflow-x: clip;
-        z-index: 10;
-    }
-    :global(#workspace a.bx--header__menu-item) {
-        flex-direction: row-reverse;
-        cursor: pointer;
-    }
-    :global(#workspace .bx--header__menu-arrow) {
-        display: none;
-    }
-    :global(#workspace .bx--header__menu-title.bx--header__menu) {
-        width: 100% !important;
+		width: fit-content;
+		max-width: 200px;
+		overflow-x: clip;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 1rem;
     }
 
     #handle {
         position: absolute;
-        height: 2rem;
         width: -webkit-fill-available;
         z-index: 9;
     }
 
-    #windowcontrols {
-        margin-left: auto;
-        height: 100%;
-        display: flex;
-        z-index: 10;
-    }
-    .window-button {
-        min-width: 47px;
-        height: 100%;
-        line-height: 34px;
-        text-align: center;
-        padding-right: 5px;
-        padding-left: 5px;
-        font-size: 14px;
-        color: white;
-        cursor: pointer;
-    }
-    #minimize::before {
-        content: "\2014";
-    }
-    #maximize::before {
-        content: "\eabb";
-    }
-    #close::before {
-        content: "\2715";
-        line-height: 30px;
-    }
-    .window-button:not(#close):hover {
-        background-color: #262626;
-    }
-    #close:hover {
-        background-color: rgb(255, 49, 49);
-    }
+    #window-controls {
+		margin-left: auto;
+		height: 100%;
+		display: flex;
+		z-index: 9999;
+		.window-button {
+			min-width: 36px;
+			height: 100%;
+			line-height: 34px;
+			text-align: center;
+			padding: 0 5px;
+			font-size: 14px;
+			color: white;
+			cursor: pointer;
+			&:not(#close):hover {
+				background-color: #262626;
+			}
+			&#close:hover {
+				background-color: #ff3131;
+			}
+			&#minimize::before {
+				content: "\2014";
+				font-size: 10px;
+			}
+			&#maximize::before {
+				content: "\eabb"; // replace
+			}
+			&#close::before {
+				content: "\2715";
+				line-height: 30px;
+			}
+		}
+	}
     
 </style>
