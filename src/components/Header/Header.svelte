@@ -1,7 +1,7 @@
 <script lang="ts">
     import Menu from "../Menu/Menu.svelte";
     import "../../overrides.css";
-	import { filemenu, editmenu, viewmenu, runmenu, helpmenu} from "../Menu/menu";
+	import { filemenu, editmenu, viewmenu, runmenu, helpmenu} from "./menu";
     import { appWindow } from "@tauri-apps/api/window";
     import { workspacename } from "../FileTree/scripts/TreeStore";
 </script>
@@ -45,7 +45,6 @@
     #header {
         width: 100%;
         display: flex;
-        height: 2rem;
         align-items: center;
         border-bottom: 1px solid #393939;
     }
