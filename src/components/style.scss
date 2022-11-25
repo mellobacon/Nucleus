@@ -1,0 +1,30 @@
+$window-background-color: #161616;
+$header-height: 2rem;
+$footer-height: 1.6rem;
+
+#handle, #header {
+    height: $header-height;
+}
+
+#main {
+    height: calc(100vh - $header-height - 0.063rem);
+}
+
+#footer {
+    height: $footer-height;
+}
+.main {
+    height: 100%;
+}
+#container > .splitpanes {
+    height: calc(100% - $footer-height);
+}
+#editor-tabs{
+    background-color: $window-background-color;
+    min-height: 2rem;
+}
+.dropdown, .numberinput, .checkboxinput {
+    justify-content: space-between;
+    width: 300px;
+    margin: 15px 0;
+}
