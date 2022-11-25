@@ -1,6 +1,7 @@
 $window-background-color: #161616;
 $header-height: 2rem;
 $footer-height: 1.6rem;
+$tab-container-height: 2rem;
 
 #handle, #header {
     height: $header-height;
@@ -21,7 +22,10 @@ $footer-height: 1.6rem;
 }
 #editor-tabs{
     background-color: $window-background-color;
-    min-height: 2rem;
+    min-height: $tab-container-height;
+}
+#tabview {
+    padding-top: $tab-container-height;
 }
 .dropdown, .numberinput, .checkboxinput {
     justify-content: space-between;
