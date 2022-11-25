@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { Tabs, Tab, TabContent } from "carbon-components-svelte";
     import Folder from "carbon-icons-svelte/lib/Folder.svelte";
     import Share from "carbon-icons-svelte/lib/Share.svelte";
     import PasteMyst from "../Misc/PasteMyst.svelte";
     import Tree from "../FileTree/Tree.svelte";
-    import { toggleActive } from "./Sidebar";
+    import { activeid, toggleActive } from "./Sidebar";
+    import SidebarTab from "./SidebarTab.svelte";
 
     const tabs = [
         {id: 0, tabname: "Files", icon: Folder, content: Tree},
@@ -16,30 +16,32 @@
 </script>
 
 <div id="sidebar">
-    <Tabs selected={-1} type="container">
-        {#each tabs as tab}
-            <Tab id={`sidetab-${tab.id.toString()}`} on:click={() => {toggleActive(tab)}}>
-                <svelte:component this={tab.icon}></svelte:component>
-            </Tab>
-        {/each}
-        <div class="sidebardivider"></div>
-        {#each exttabs as tab}
-            <Tab id={`sidetab-${tab.id.toString()}`} on:click={() => {toggleActive(tab)}}>
-                <svelte:component this={tab.icon}></svelte:component>
-            </Tab>
-        {/each}
-    </Tabs>
+    {#each tabs as tab}
+		<SidebarTab id={`tool-${tab.id}`} active={$activeid === tab.id} label={tab.tabname} on:click={() => {toggleActive(tab)}}>
+			<svelte:component this={tab.icon}/>
+		</SidebarTab>
+	{/each}
+    <div class="sidebardivider"></div>
+    {#each exttabs as tab}
+		<SidebarTab id={`tool-${tab.id}`} active={$activeid === tab.id} label={tab.tabname} on:click={() => {toggleActive(tab)}}>
+			<svelte:component this={tab.icon}/>
+		</SidebarTab>
+	{/each}
 </div>
 
-<style>
+<style lang="scss">
     #sidebar {
         height: 100%;
         min-width: 3rem;
         border-right: 1px solid #333;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         justify-content: flex-start;
+        :global(svg) {
+			width: 24px;
+			height: 24px;
+		}
     }
     .sidebardivider {
         width: 2rem;
@@ -47,9 +49,5 @@
         background-color: #333;
         margin: 5px 0 5px 0;
         content: '';
-    }
-    :global(.bx--tabs__nav-link svg) {
-        width: 24px;
-        height: 24px;
     }
 </style>
