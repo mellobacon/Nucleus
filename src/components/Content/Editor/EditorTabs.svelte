@@ -15,29 +15,35 @@
     })
 </script>
 
-<div id="editor-tabs" bind:this={tabcontainer} class:hidden={$hidden}>
-    {#each $tabs as tab}
-        <Tab label={tab.label} path={tab.path} active={tab.active} id={tab.id} saved={tab.saved} />
-    {/each}
+<div id="editor-tabs" class:hidden={$hidden}>
+    <div id="tablist" bind:this={tabcontainer}>
+        {#each $tabs as tab}
+            <Tab label={tab.label} path={tab.path} active={tab.active} id={tab.id} unsaved={tab.saved} />
+        {/each}
+    </div>
 </div>
 
-<style>
+<style lang="scss">
     .hidden {
         visibility: hidden;
     }
-    :global(#editor-tabs) {
+    #editor-tabs {
         width: -webkit-fill-available;
-        height: 2rem;
-        background-color: #333;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
         position: absolute;
-        overflow-x: overlay;
-        top: 2rem;
-    }
-    :global(#editor-tabs::-webkit-scrollbar) {
-        height: 4px;
-    }
-    :global(#editor-tabs::-webkit-scrollbar-thumb) {
-        background-color: #ffffff12;
+        box-shadow: inset 0px -1px 0 0 #333;
+        #tablist {
+            position: absolute;
+            height: 100%;
+            display: flex;
+            &::-webkit-scrollbar {
+                height: 4px;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #ffffff12;
+            }
+        }
     }
 </style>

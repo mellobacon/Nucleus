@@ -1,9 +1,7 @@
 <script lang="ts">
-    import EditorTabs from "./EditorTabs.svelte";
     import { hidden } from "./scripts/Tab";
 </script>
 
-<EditorTabs />
 <div id="tabview" class:hidden={$hidden}></div>
 
 <style>
