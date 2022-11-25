@@ -32,6 +32,7 @@
   export let id = "";
   export let name = "";
   export let disabled = false;
+  export let dblclick = false;
   export let path = "";
 
   /**
@@ -86,11 +87,13 @@
   class:bx--tree-node--disabled={disabled}
   class:bx--tree-node--with-icon={icon}
   on:click|stopPropagation={() => {
-    if (disabled) return;
+    selectNode(node);
+    if (disabled || dblclick) return;
     clickNode(node);
   }}
-  on:dblclick={async () => {
-    await addFileTab(path);
+  on:dblclick|stopPropagation={() => {
+    if (disabled || !dblclick) return;
+    clickNode(node);
   }}
   on:keydown={(e) => {
     if (
