@@ -77,7 +77,7 @@
     {/if}
 </div>
 
-<style>
+<style lang="scss">
     #footer {
         z-index: 8000;
         width: 100%;
@@ -85,6 +85,9 @@
         align-items: center;
         border-top: 1px solid #393939;
         font-size: 0.9rem;
+        span {
+            white-space: nowrap;
+        }
     }
     #info {
         display: flex;

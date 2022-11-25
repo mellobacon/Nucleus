@@ -30,19 +30,18 @@
     #editor-tabs {
         width: -webkit-fill-available;
         display: flex;
-        align-items: center;
         justify-content: space-between;
         position: absolute;
         box-shadow: inset 0px -1px 0 0 #333;
         #tablist {
-            position: absolute;
-            height: 100%;
+            position: relative;
             display: flex;
+            overflow-x: overlay;
             &::-webkit-scrollbar {
-                height: 4px;
+                height: 7px;
             }
             &::-webkit-scrollbar-thumb {
-                background-color: #ffffff12;
+                background-color: #e8e8e81f;
             }
         }
     }

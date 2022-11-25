@@ -91,7 +91,7 @@
 		margin-left: auto;
 		height: 100%;
 		display: flex;
-		z-index: 9999;
+		z-index: 10;
 		.window-button {
 			min-width: 36px;
 			height: 100%;
