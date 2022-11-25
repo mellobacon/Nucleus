@@ -19,7 +19,7 @@
         {$workspacename}
     </div>
     <div id="handle" data-tauri-drag-region></div>
-    <div id="windowcontrols">
+    <div id="window-controls">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div
             class="window-button"
