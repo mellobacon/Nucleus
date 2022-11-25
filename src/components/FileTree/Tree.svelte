@@ -6,7 +6,7 @@
     import { onMount } from "svelte";
     import { filetree, workspacename } from "./scripts/TreeStore";
     import { data, workspace } from "./scripts/TreeData";
-    import { addFileTab } from "../Content/Editor/scripts/Tab";
+    import { addFileTab } from "../Tabs/scripts/Tab";
     let treeview = null;
     let tree = $filetree;
 

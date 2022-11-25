@@ -1,9 +1,7 @@
 <script lang="ts">
     import { Terminal } from "carbon-icons-svelte"
-    import { isfile } from "../Content/Editor/scripts/Tab";
-    import {file_language, linefeed} from "../Content/Editor/scripts/Tab";
-
-    import { line_info } from "../Content/Editor/scripts/Editor";
+    import { isfile, file_language, linefeed } from "../Tabs/scripts/Tab";
+    import { line_info } from "../Editor/scripts/Editor";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
     import { filetree } from "../FileTree/scripts/TreeStore";
