@@ -11,13 +11,14 @@
 
 <Modal
     bind:open={showlangs}
+    selectorPrimaryFocus = "#language-search"
     modalHeading="Languages"
     on:open
     on:close
     passiveModal
 >
     <div id="model-content">
-        <Search placeholder="Search for a language" size="lg"></Search>
+        <Search id="language-search" placeholder="Search for a language" size="lg"></Search>
         <div id="langlist">
             <div><span class="note">Missing a language? Search for new ones in Extensions ></span></div>
             {#each langs as language}

@@ -37,6 +37,7 @@
 
 <Modal
     preventCloseOnClickOutside
+    selectorPrimaryFocus = "#rename-input"
     bind:open
     modalHeading="Rename {filename}"
     on:open
@@ -49,6 +50,7 @@
         </div>
         <div class="input">
             <Input
+                id="rename-input"
                 {invalid}
                 bind:value={filenameinput}
                 labelText="Name:"
