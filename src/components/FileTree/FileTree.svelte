@@ -48,7 +48,7 @@
     </div>
 {/if}
 
-<TreeView dblclick bind:this={treeview} size="compact" hideLabel children={tree} on:select={openTab}></TreeView>
+<TreeView isFileTree dblclick bind:this={treeview} size="compact" hideLabel children={tree} on:select={openTab}></TreeView>
 
 
 <style>
