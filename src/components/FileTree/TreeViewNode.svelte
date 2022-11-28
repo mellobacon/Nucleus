@@ -27,8 +27,6 @@
    */
 
   export let leaf = false;
-
-  /** @type {TreeNodeId} */
   export let id = "";
   export let name = "";
   export let disabled = false;
@@ -42,14 +40,13 @@
   export let icon = undefined;
 
   import { afterUpdate, getContext } from "svelte";
-  import RenameModel from "../Modal/RenameModel.svelte";
-  import LeafNodeMenu from "./LeafNodeMenu.svelte";
-
+    import RenameModel from "../Modal/RenameModel.svelte";
+    import LeafNodeMenu from "./LeafNodeMenu.svelte";
   let ref = null;
   let refLabel = null;
   let prevActiveId = undefined;
 
-  const { activeNodeId, selectedNodeIds, clickNode, selectNode, focusNode } =
+  const { activeNodeId, selectedNodeIds, clickNode, selectNode, focusNode, rightClickNode } =
     getContext("TreeView");
   const offset = () =>
     computeTreeLeafDepth(refLabel) + (leaf && icon ? 2 : 2.5);
@@ -67,9 +64,9 @@
     refLabel.style.marginLeft = `-${offset()}rem`;
     refLabel.style.paddingLeft = `${offset()}rem`;
   }
-
-  let open = false;
+  let contextmenu = false;
 </script>
+
 
 <li
   bind:this={ref}
@@ -94,21 +91,17 @@
     if (disabled || !dblclick) return;
     clickNode(node);
   }}
-  on:keydown={(e) => {
-    if (
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight" ||
-      e.key === "F2"
-    ) {
-      e.stopPropagation();
+  on:mousedown|stopPropagation={(e) => {
+    if (e.button === 2) {
+      selectNode(node);
+      rightClickNode(node);
+      contextmenu = true;
     }
+  }}
+  on:keydown|stopPropagation={(e) => {
     if (e.key === "ArrowLeft") {
       const parentNode = findParentTreeNode(ref.parentNode);
       if (parentNode) parentNode.focus();
-    }
-    if (e.key === "F2") {
-      e.preventDefault();
-      open = true;
     }
   }}
   on:focus={() => {
@@ -120,8 +113,9 @@
     {name}
   </div>
 </li>
+{#if contextmenu}
 <LeafNodeMenu target={ref} filename={name} filepath={path}></LeafNodeMenu>
-<RenameModel bind:open bind:filename={name} bind:path={path} />
+{/if}
 
 <style>
   :global(.bx--tree-node__label) {

@@ -1,18 +1,43 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, tick } from "svelte";
+    import { onMount, tick } from "svelte";
     import { basicSetup } from "codemirror";
     import { EditorView, keymap } from "@codemirror/view";
     import { indentWithTab } from "@codemirror/commands";
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
-    import { line_info } from "./scripts/Editor";
+    import { file_language, file_linefeed, line_info } from "./scripts/Editor";
+    import { fs } from "@tauri-apps/api";
 
     export let hidden = false;
     let editorElement;
     let editorView: EditorView;
     export let content = "";
     export let lang = new Compartment();
+    let file_info;
+    let _ = null;
     
+    export function getFileContent() {
+        return content;
+    }
+    export function getFileInfo() {
+        return file_info;
+    }
+    export function setFileInfo(file) {
+        let name = file.filename;
+        let path = file.path;
+        let linefeed = file.linefeed;
+        let language = file.language.name;
+        setLanguageMode(file.language.mode);
+        file_linefeed.set(file.linefeed);
+        file_info = {name, path, linefeed, language};
+    }
+
+    export async function setLanguage(lang, mode) {
+        file_info.language = lang;
+        file_language.set(lang);
+        setLanguageMode(await mode);
+    }
+
     export function setLanguageMode(mode) {
         editorView.dispatch({
             effects: lang.reconfigure(mode)
@@ -21,13 +46,15 @@
     export async function focus() {
         await tick();
         await tick();
+        file_linefeed.set(file_info.linefeed);
+        file_language.set(file_info.language);
         editorView.focus();
         getLineInfo();
     }
     function getLineInfo() {
         let linenumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
         let colnumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from
-        line_info.set({line: linenumber.toString(), col: (colnumber + 1).toString()})
+        line_info.set({line: linenumber.toString(), col: (colnumber + 1).toString()});
     }
     async function updateDom() {
         await tick();
@@ -35,9 +62,18 @@
         for (let text of editorView.state.doc) {
             filecontent += `${text} `;
         }
-        dispatch("input", filecontent);
+        content = filecontent;
+        // save content to file
+        clearTimeout(_);
+        _ = setTimeout(() => {
+            if (!file_info || !file_info.path) {
+                console.log("File path not found, cannot save.");
+            }
+            else if (file_info.path !== "") {
+                fs.writeFile(file_info.path, filecontent);
+            }
+        }, 1000)
     }
-    let dispatch = createEventDispatcher();
 
     onMount(() => {
         editorView = new EditorView({

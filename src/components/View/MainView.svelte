@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Splitpanes, Pane } from "svelte-splitpanes";
-    import Editor from "../Editor/Editor.svelte";
+    import Editor from "./Editor.svelte";
     import Footer, { showpanel, tool } from "../Footer/Footer.svelte";
     import EditorTabs from "../Tabs/EditorTabs.svelte";
 

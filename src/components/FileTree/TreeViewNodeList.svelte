@@ -1,7 +1,6 @@
 <script>
   /**
-   * @typedef {string | number} TreeNodeId
-   * @typedef {{ id: TreeNodeId; name: string; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
+   * @typedef {{ id: string; name: string; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
    */
 
   /** @type {Array<TreeNode & { children?: TreeNode[] }>} */
@@ -9,7 +8,6 @@
   export let expanded = false;
   export let root = false;
 
-  /** @type {string | number} */
   export let id = "";
   export let name = "";
   export let disabled = false;
@@ -25,7 +23,7 @@
   import { afterUpdate, getContext } from "svelte";
   import CaretDown from "carbon-icons-svelte/lib/CaretDown.svelte";
   import TreeViewNode, { computeTreeLeafDepth } from "./TreeViewNode.svelte";
-  import ParentNodeMenu from "./ParentNodeMenu.svelte";
+    import ParentNodeMenu from "./ParentNodeMenu.svelte";
   
 
   let ref = null;
@@ -37,6 +35,7 @@
     selectedNodeIds,
     expandedNodeIds,
     clickNode,
+    rightClickNode,
     selectNode,
     expandNode,
     focusNode,
@@ -66,6 +65,7 @@
     refLabel.style.paddingLeft = `${offset()}rem`;
   }
   $: expanded = $expandedNodeIds.includes(id);
+  let contextmenu = false;
 </script>
 
 {#if root}
@@ -125,7 +125,16 @@
         expanded = !expanded;
         expandNode(node, expanded);
         toggleNode(node);
-      }}>
+      }}
+      on:mousedown={(e) => {
+        if (disabled) return;
+        if (e.button === 2) {
+          selectNode(node);
+          rightClickNode(node);
+          contextmenu = true;
+        }
+      }}
+      >
       <span class:bx--tree-parent-node__toggle={true} {disabled}>
         <CaretDown
           class="bx--tree-parent-node__toggle-icon {expanded &&
@@ -151,4 +160,6 @@
   </li>
 {/if}
 
+{#if contextmenu}
 <ParentNodeMenu target={[refLabel]} filename={name} filepath={path}></ParentNodeMenu>
+{/if}

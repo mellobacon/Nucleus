@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   /**
    * @typedef {string | number} TreeNodeId
    * @typedef {{ id: TreeNodeId; name: string; icon?: typeof import("svelte").SvelteComponent; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
@@ -87,6 +87,9 @@
     selectNode: (node) => {
       selectedIds = [node.id];
     },
+    rightClickNode: (node) => {
+      dispatch("rightclick", node);
+    },
     expandNode: (node, expanded) => {
       if (expanded) {
         expandedIds = [...expandedIds, node.id];
@@ -132,7 +135,7 @@
   $: expandedNodeIds.set(expandedIds);
   $: if (ref) {
     treeWalker = document.createTreeWalker(ref, NodeFilter.SHOW_ELEMENT, {
-      acceptNode: (node) => {
+      acceptNode: (node: Element) => {
         if (node.classList.contains("bx--tree-node--disabled"))
           return NodeFilter.FILTER_REJECT;
         if (node.matches("li.bx--tree-node")) return NodeFilter.FILTER_ACCEPT;

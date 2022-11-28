@@ -7,6 +7,7 @@
     export let active = false;
     export let unsaved = false;
     let tab;
+    let contextmenu = false;
 </script>
 <div bind:this={tab} title={path} id={`tab-${id}`} class="tab" class:tab-active={active} class:unsaved={unsaved}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -14,21 +15,28 @@
         () => {
             setActive(id);
         }
-    }>
+    }
+    on:mousedown={(e) => {
+        if (e.button === 2) {
+            contextmenu = true;
+        }
+    }}>
         <span class="tab-label">{label}</span>
         {#if unsaved}
             <span></span>
         {/if}
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="close-tab" on:click={() => {
-        closeTab(id);
-    }}>
-        <span></span>
+    <div class="close-tab">
+        <span on:click={() => {
+            closeTab(id);
+        }}></span>
     </div>
 </div>
 
+{#if contextmenu}
 <TabMenu target={tab} id={id} filename={label} filepath={path} />
+{/if}
 
 <style lang="scss">
     .tab {
