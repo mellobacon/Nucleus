@@ -50,7 +50,9 @@
     </ContextMenuOption>
 </ContextMenu>
 
+{#if open}
 <RenameModel bind:open bind:filename={filename} bind:path={filepath} />
+{/if}
 
 <style>
     .contextshortcut {
