@@ -46,7 +46,7 @@
   let refLabel = null;
   let prevActiveId = undefined;
 
-  const { activeNodeId, selectedNodeIds, clickNode, selectNode, focusNode, rightClickNode } =
+  const { isFileTree, activeNodeId, selectedNodeIds, clickNode, selectNode, focusNode, rightClickNode } =
     getContext("TreeView");
   const offset = () =>
     computeTreeLeafDepth(refLabel) + (leaf && icon ? 2 : 2.5);
@@ -95,7 +95,7 @@
     if (e.button === 2) {
       selectNode(node);
       rightClickNode(node);
-      contextmenu = true;
+      if (isFileTree) contextmenu = true;
     }
   }}
   on:keydown|stopPropagation={(e) => {
