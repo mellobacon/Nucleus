@@ -46,6 +46,8 @@
 
   export let dblclick = false;
 
+  export let isFileTree = false;
+
   /**
    * Programmatically expand all nodes
    * @type {() => void}
@@ -79,6 +81,7 @@
     activeNodeId,
     selectedNodeIds,
     expandedNodeIds,
+    isFileTree,
     clickNode: (node) => {
       activeId = node.id;
       selectedIds = [node.id];
