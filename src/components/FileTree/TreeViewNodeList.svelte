@@ -7,6 +7,7 @@
   export let children = [];
   export let expanded = false;
   export let root = false;
+  export let isroot = false;
 
   export let id = "";
   export let name = "";
@@ -31,6 +32,7 @@
   let prevActiveId = undefined;
 
   const {
+    isFileTree,
     activeNodeId,
     selectedNodeIds,
     expandedNodeIds,
@@ -71,7 +73,7 @@
 {#if root}
   {#each children as child (child.id)}
     {#if Array.isArray(child.children)}
-      <svelte:self {dblclick} {...child} />
+      <svelte:self {dblclick} isroot={root} {...child} />
     {:else}
       <TreeViewNode leaf {dblclick} {...child} />
     {/if}
@@ -85,6 +87,7 @@
     aria-current={id === $activeNodeId || undefined}
     aria-selected={disabled ? undefined : $selectedNodeIds.includes(id)}
     aria-disabled={disabled}
+    class:root={isroot}
     class:bx--tree-node={true}
     class:bx--tree-parent-node={true}
     class:bx--tree-node--active={id === $activeNodeId}
@@ -131,7 +134,7 @@
         if (e.button === 2) {
           selectNode(node);
           rightClickNode(node);
-          contextmenu = true;
+          if (isFileTree) contextmenu = true;
         }
       }}
       >
@@ -163,3 +166,9 @@
 {#if contextmenu}
 <ParentNodeMenu target={[refLabel]} filename={name} filepath={path}></ParentNodeMenu>
 {/if}
+
+<style>
+  .root > .bx--tree-node__label {
+		font-weight: bold;
+	}
+</style>
