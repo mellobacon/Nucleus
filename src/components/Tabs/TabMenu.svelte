@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ContextMenuOption } from "carbon-components-svelte";
-    import ContextMenu from "../../ContextMenu/ContextMenu.svelte";
+    import ContextMenu from "../ContextMenu/ContextMenu.svelte";
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, path, invoke } from "@tauri-apps/api";

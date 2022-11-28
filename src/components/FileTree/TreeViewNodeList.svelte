@@ -1,18 +1,18 @@
 <script>
   /**
-   * @typedef {string | number} TreeNodeId
-   * @typedef {{ id: TreeNodeId; name: string; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
+   * @typedef {{ id: string; name: string; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
    */
 
   /** @type {Array<TreeNode & { children?: TreeNode[] }>} */
   export let children = [];
   export let expanded = false;
   export let root = false;
+  export let isroot = false;
 
-  /** @type {string | number} */
   export let id = "";
   export let name = "";
   export let disabled = false;
+  export let dblclick = false;
   export let path = "";
 
   /**
@@ -24,7 +24,7 @@
   import { afterUpdate, getContext } from "svelte";
   import CaretDown from "carbon-icons-svelte/lib/CaretDown.svelte";
   import TreeViewNode, { computeTreeLeafDepth } from "./TreeViewNode.svelte";
-  import ParentNodeMenu from "./ParentNodeMenu.svelte";
+    import ParentNodeMenu from "./ParentNodeMenu.svelte";
   
 
   let ref = null;
@@ -32,10 +32,12 @@
   let prevActiveId = undefined;
 
   const {
+    isFileTree,
     activeNodeId,
     selectedNodeIds,
     expandedNodeIds,
     clickNode,
+    rightClickNode,
     selectNode,
     expandNode,
     focusNode,
@@ -65,14 +67,15 @@
     refLabel.style.paddingLeft = `${offset()}rem`;
   }
   $: expanded = $expandedNodeIds.includes(id);
+  let contextmenu = false;
 </script>
 
 {#if root}
   {#each children as child (child.id)}
     {#if Array.isArray(child.children)}
-      <svelte:self {...child} />
+      <svelte:self {dblclick} isroot={root} {...child} />
     {:else}
-      <TreeViewNode leaf {...child} />
+      <TreeViewNode parentnode={node} leaf {dblclick} {...child} />
     {/if}
   {/each}
 {:else}
@@ -84,6 +87,7 @@
     aria-current={id === $activeNodeId || undefined}
     aria-selected={disabled ? undefined : $selectedNodeIds.includes(id)}
     aria-disabled={disabled}
+    class:root={isroot}
     class:bx--tree-node={true}
     class:bx--tree-parent-node={true}
     class:bx--tree-node--active={id === $activeNodeId}
@@ -117,13 +121,23 @@
       focusNode(node);
     }}
   >
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class:bx--tree-node__label={true} bind:this={refLabel} 
       on:click={() => {
         if (disabled) return;
         expanded = !expanded;
         expandNode(node, expanded);
         toggleNode(node);
-      }}>
+      }}
+      on:mousedown={(e) => {
+        if (disabled) return;
+        if (e.button === 2) {
+          selectNode(node);
+          rightClickNode(node);
+          if (isFileTree) contextmenu = true;
+        }
+      }}
+      >
       <span class:bx--tree-parent-node__toggle={true} {disabled}>
         <CaretDown
           class="bx--tree-parent-node__toggle-icon {expanded &&
@@ -139,9 +153,9 @@
       <ul role="group" class:bx--tree-node__children={true}>
         {#each children as child (child.id)}
           {#if Array.isArray(child.children)}
-            <svelte:self {...child} />
+            <svelte:self {dblclick} {...child} />
           {:else}
-            <TreeViewNode leaf {...child} />
+            <TreeViewNode parentnode={node} leaf {dblclick} {...child} />
           {/if}
         {/each}
       </ul>
@@ -149,4 +163,12 @@
   </li>
 {/if}
 
+{#if contextmenu}
 <ParentNodeMenu target={[refLabel]} filename={name} filepath={path}></ParentNodeMenu>
+{/if}
+
+<style>
+  .root > .bx--tree-node__label {
+		font-weight: bold;
+	}
+</style>

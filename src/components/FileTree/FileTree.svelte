@@ -6,8 +6,13 @@
     import { onMount } from "svelte";
     import { filetree, workspacename } from "./scripts/TreeStore";
     import { data, workspace } from "./scripts/TreeData";
+    import { addFileTab } from "../Tabs/scripts/Tab";
     let treeview = null;
     let tree = $filetree;
+
+    async function openTab(event) {
+        await addFileTab(event.detail.path);
+    }
     onMount(() => {
         tree = $filetree;
         filetree.subscribe(t => tree = t);
@@ -17,9 +22,11 @@
 </script>
 
 <div id="explorer-toolbar">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="toolbar-button" on:click={treeview?.collapseAll}>
         <ArrowUp />
     </div>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="toolbar-button" on:click={ async() => {if (tree.length > 0) await updateTree();}}>
         <WatsonHealthRotate_360 />
     </div>
@@ -30,6 +37,7 @@
         <div class="text-form">
             You have not yet opened a folder.
         </div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="toolbar-button-mx" on:click ={async() => { 
             let treedata = await data();
             if (treedata === undefined) return;
@@ -40,7 +48,7 @@
     </div>
 {/if}
 
-<TreeView bind:this={treeview} size="compact" hideLabel children={tree}></TreeView>
+<TreeView isFileTree dblclick bind:this={treeview} size="compact" hideLabel children={tree} on:select={openTab}></TreeView>
 
 
 <style>

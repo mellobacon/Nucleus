@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   /**
    * @typedef {string | number} TreeNodeId
    * @typedef {{ id: TreeNodeId; name: string; icon?: typeof import("svelte").SvelteComponent; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
@@ -44,6 +44,10 @@
   /** Set to `true` to visually hide the label text */
   export let hideLabel = false;
 
+  export let dblclick = false;
+
+  export let isFileTree = false;
+
   /**
    * Programmatically expand all nodes
    * @type {() => void}
@@ -77,6 +81,7 @@
     activeNodeId,
     selectedNodeIds,
     expandedNodeIds,
+    isFileTree,
     clickNode: (node) => {
       activeId = node.id;
       selectedIds = [node.id];
@@ -84,6 +89,9 @@
     },
     selectNode: (node) => {
       selectedIds = [node.id];
+    },
+    rightClickNode: (node) => {
+      dispatch("rightclick", node);
     },
     expandNode: (node, expanded) => {
       if (expanded) {
@@ -130,7 +138,7 @@
   $: expandedNodeIds.set(expandedIds);
   $: if (ref) {
     treeWalker = document.createTreeWalker(ref, NodeFilter.SHOW_ELEMENT, {
-      acceptNode: (node) => {
+      acceptNode: (node: Element) => {
         if (node.classList.contains("bx--tree-node--disabled"))
           return NodeFilter.FILTER_REJECT;
         if (node.matches("li.bx--tree-node")) return NodeFilter.FILTER_ACCEPT;
@@ -159,5 +167,5 @@
   aria-multiselectable={selectedIds.length > 1 || undefined}
   on:keydown
 >
-  <TreeViewNodeList root {children} />
+  <TreeViewNodeList root {dblclick} {children} />
 </ul>

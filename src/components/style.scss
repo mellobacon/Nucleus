@@ -1,0 +1,29 @@
+$window-background-color: #161616;
+$header-height: 2rem;
+$footer-height: 1.6rem;
+$tab-container-height: 2rem;
+
+#handle, #header {
+    height: $header-height;
+}
+
+#main {
+    height: calc(100vh - $header-height - 0.063rem);
+}
+
+#footer {
+    height: $footer-height;
+}
+.main {
+    height: 100%;
+}
+#container > .splitpanes {
+    height: calc(100% - $footer-height);
+}
+#editor-tabs{
+    background-color: $window-background-color;
+    min-height: $tab-container-height;
+}
+#tabview {
+    padding-top: $tab-container-height;
+}

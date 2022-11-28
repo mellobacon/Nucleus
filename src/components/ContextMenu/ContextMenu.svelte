@@ -1,14 +1,9 @@
-<script>
+<script lang="ts">
     /**
      * @event {HTMLElement} open
      */
-
-    /**
-     * Specify an element or list of elements to trigger the context menu.
-     * If no element is specified, the context menu applies to the entire window
-     * @type {null | ReadonlyArray<null | HTMLElement>}
-     */
-    export let target = null;
+    
+    export let target: HTMLElement = null;
 
     /**
      * Set to `true` to open the menu
@@ -88,12 +83,13 @@
         openDetail = e.target;
     }
 
-    $: if (target != null) {
+    $: if (target !== null) {
         if (Array.isArray(target)) {
             target.forEach((node) =>
                 node?.addEventListener("contextmenu", openMenu)
             );
         } else {
+            
             target.addEventListener("contextmenu", openMenu);
         }
     }
@@ -146,7 +142,7 @@
 
 <svelte:window
     on:contextmenu|preventDefault={(e) => {
-        if (target != null) return;
+        if (target !== null) return;
         if (level > 1) return;
         if (!ref) return;
         openMenu(e);
@@ -173,8 +169,8 @@
     {...$$restProps}
     style="left: {x}px; top: {y}px; {$$restProps.style}"
     on:click
-    on:click={({ target }) => {
-        const closestOption = target.closest("[tabindex]");
+    on:click={({ currentTarget }) => {
+        const closestOption = currentTarget.closest("[tabindex]");
         if (
             closestOption &&
             closestOption.getAttribute("role") !== "menuitem"
