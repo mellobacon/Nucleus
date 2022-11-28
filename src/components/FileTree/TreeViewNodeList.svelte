@@ -75,7 +75,7 @@
     {#if Array.isArray(child.children)}
       <svelte:self {dblclick} isroot={root} {...child} />
     {:else}
-      <TreeViewNode leaf {dblclick} {...child} />
+      <TreeViewNode parentnode={node} leaf {dblclick} {...child} />
     {/if}
   {/each}
 {:else}
@@ -155,7 +155,7 @@
           {#if Array.isArray(child.children)}
             <svelte:self {dblclick} {...child} />
           {:else}
-            <TreeViewNode leaf {dblclick} {...child} />
+            <TreeViewNode parentnode={node} leaf {dblclick} {...child} />
           {/if}
         {/each}
       </ul>

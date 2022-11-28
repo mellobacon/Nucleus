@@ -32,6 +32,7 @@
   export let disabled = false;
   export let dblclick = false;
   export let path = "";
+  export let parentnode = null;
 
   /**
    * Specify the icon to render
@@ -59,7 +60,7 @@
     prevActiveId = $activeNodeId;
   });
 
-  $: node = { id, name: name, expanded: false, leaf, path };
+  $: node = { id, parent: parentnode, name: name, expanded: false, leaf, path };
   $: if (refLabel) {
     refLabel.style.marginLeft = `-${offset()}rem`;
     refLabel.style.paddingLeft = `${offset()}rem`;

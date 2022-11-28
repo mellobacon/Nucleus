@@ -1,14 +1,15 @@
 <script lang="ts">
-    //import SettingsList, {setting} from "../Tree/SettingsList.svelte";
+    import SettingsTree, {setting} from "./SettingsTree.svelte";
     import AppearanceSettings from "./settings/general/AppearanceSettings.svelte";
     export let hidden = false;
 
 </script>
 <div id="settings" class:hidden>
     <div id="settings-list">
+        <SettingsTree></SettingsTree>
     </div>
     <div id="settings-view">
-        <div id="title">Settings View</div>
+        <div id="title">{$setting}</div>
         <div id="setting">
             <AppearanceSettings></AppearanceSettings>
         </div>
