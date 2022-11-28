@@ -2,12 +2,12 @@
     import Folder from "carbon-icons-svelte/lib/Folder.svelte";
     import Share from "carbon-icons-svelte/lib/Share.svelte";
     import PasteMyst from "../Misc/PasteMyst.svelte";
-    import Tree from "../FileTree/Tree.svelte";
+    import FileTree from "../FileTree/FileTree.svelte";
     import { activeid, toggleActive } from "./Sidebar";
     import SidebarTab from "./SidebarTab.svelte";
 
     const tabs = [
-        {id: 0, tabname: "Files", icon: Folder, content: Tree},
+        {id: 0, tabname: "Files", icon: Folder, content: FileTree},
         //{id: 1, tabname: "Git", icon: Share, content: "Git"}
     ]
     const exttabs = [
