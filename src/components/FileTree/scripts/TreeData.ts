@@ -12,21 +12,6 @@ export async function data() {
     return await loadTree();
 }
 
-export function createFile(filename = "", path = "") {
-    return new EditorFile(filename, path, getLF(""), "");
-}
-export async function loadFile(path: string) {
-    if (path === null) return;
-    let filename = path.split(sep).pop();
-    let content = await readTextFile(path);
-    let linefeed = getLF(content);
-    return new EditorFile(filename, path, linefeed, content);
-}
-
-function getLF(file) {
-    return file.includes('\r\n') ? 'CRLF' : 'LF'
-}
-
 async function loadTree() {
     let children = await fs.readDir(dir, { recursive: true });
     id = 0;

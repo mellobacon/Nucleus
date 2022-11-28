@@ -1,14 +1,11 @@
-import { writable } from 'svelte/store';
-import { EditorFile, getFileData } from '../../../scripts/EditorFile'
 import CodeMirrorEditor from '../../Editor/CodeMirrorEditor.svelte';
-import { writeFile } from '@tauri-apps/api/fs';
-import { getLang, getLangMode } from '../../Editor/scripts/Editor';
+import Settings from '../../Settings/Settings.svelte';
+import { writable } from 'svelte/store';
+import { getFileData } from '../../../scripts/EditorFile';
 
 let id = 0;
 let activeid;
 
-export let file_language = writable("");
-export let linefeed = writable("");
 export let tablist: Tab[] = [];
 export let tabs = writable([]);
 export let hidden = writable(true);
@@ -18,111 +15,40 @@ class Tab {
     id: number;
     label: string;
     active: boolean;
-    constructor(id: number, label: string = "") {
+    path: string;
+    content;
+    isfile: boolean;
+    saved: boolean;
+    constructor(id, label = "", content = null, path = "") {
         this.id = id;
         this.label = label === "" ? `Untitled-${id}` : label;
-    }
-}
-
-export class FileTab extends Tab {
-    path: string;
-    language: string = "Plain Text";
-    linefeed: string;
-    saved: boolean = true;
-    editor: CodeMirrorEditor | null;
-    editorcontent: string;
-    constructor(id: number, file: EditorFile, editor, saved: boolean = true) {
-        super(id, file.filename);
-        this.path = file.path;
-        this.saved = saved;
-        this.editor = editor;
-        this.editorcontent = file.content;
-
-        let filepath = file.path.split(".");
-        let extension = "txt";
-        if (filepath.length !== 1) {
-            extension = filepath.at(-1);
-        }
-
-        this.language = getLang(extension)
-        this.linefeed = file.linefeed;
-
-        let _ = undefined;
-        this.editor.$on("input", (e) => {
-            clearTimeout(_);
-            _ = setTimeout(() => {
-                this.editorcontent = e.detail;
-                if (this.path !== "") {
-                    writeFile(this.path, e.detail);
-                    console.log(`${this.label} saved`);
-                    if (!this.saved) {
-                        this.saved = true;
-                        setActive(this.id);
-                    }
-                }
-                else {
-                    this.saved = false;
-                }
-            }, 1000)
-        })
-    }
-
-    async setLanguage(lang: string) {
-        let mode = await getLangMode(lang);
-        this.editor.setLanguageMode(mode);
-
-        file_language.set(lang);
-        this.language = lang;
-    }
-    setFile(file: EditorFile) {
-        this.label = file.filename === "" ? `Untitled-${this.id}` : file.filename;
-        this.path = file.path;
-        let filepath = file.path.split(".");
-        let extension = "txt";
-        if (filepath.length !== 1) {
-            extension = filepath.at(-1);
-        }
-        this.language = getLang(extension);
-
-        this.linefeed = file.linefeed;
-    }
-    focusTab() {
-        file_language.set(this.language);
-        linefeed.set(this.linefeed);
-        this.editor.focus();
-    }
-    updateEditorVisibility(id: number) {
-        this.editor.$set({ hidden: !(this.id === id) })
-    }
-}
-export class SettingsTab extends Tab {
-    content: string;
-    constructor(id: number, label: string, content: string) {
-        super(id, label);
+        this.path = path === "" ? this.label : path;
         this.content = content;
+    }
+    updateView(id) {
+        this.content.$set({ hidden: !(this.id === id) });
     }
 }
 
 export async function addFileTab(path = "") {
-    for (let t of tablist) {
-        if ((t as FileTab).path === path) {
-            setActive(t.id);
-        }
+    if (tabOpen(path)) {
+        return;
     }
     let file = await getFileData(path);
-    let editor = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
-    let tab = new FileTab(id, file, editor, path !== "");
-    await tab.setLanguage(tab.language);
+    let content = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
+    let tab = new Tab(id, file.filename, content, file.path);
+    tab.isfile = true;
+    tab.saved = file.path === "";
+    // set language for highlighting here
+    content.setFileInfo(file);
     tablist = [...tablist, tab];
-
     refreshTabs();
 }
 
 export function addSettingsTab() {
-    let content = "";
-    let tab = new SettingsTab(id, "Settings", content);
+    let content = new Settings({target: document.getElementById("tabview")});
+    let tab = new Tab(id, "Settings", content);
     tablist = [...tablist, tab];
-
     refreshTabs();
 }
 
@@ -131,10 +57,9 @@ export function setActive(id: number) {
         if (tab.id === id) {
             activeid = id;
             tab.active = true;
-            if (tab instanceof FileTab) {
-                let t = tab as FileTab;
+            if (tab.isfile) {
                 isfile.set(true);
-                t.focusTab();
+                tab.content.focus();
             }
             else {
                 isfile.set(false);
@@ -145,7 +70,7 @@ export function setActive(id: number) {
         }
     }
     tabs.set(tablist);
-    updateEditorVisibility();
+    updateView();
 }
 
 export function closeTab(tabid: number) {
@@ -161,17 +86,13 @@ export function closeTab(tabid: number) {
             }
         }
     }
-    
-    for (let tab of tablist) {
-        if (tab.id === tabid) {
-            (tab as FileTab).editor.$destroy();
-            break;
-        }
-    }
+
+    tablist.find(t => t.id === tabid).content.$destroy();
     tablist = tablist.filter(t => t.id !== tabid);
     tabs.set(tablist);
+
+    updateView();
     
-    updateEditorVisibility();
     if (tablist.length === 0) {
         hidden.set(true);
         isfile.set(false);
@@ -182,15 +103,23 @@ export function closeTab(tabid: number) {
 function refreshTabs() {
     if (tablist.length > 0) {
         hidden.set(false);
-        isfile.set(true);
     }
     tabs.set(tablist);
     setActive(id);
     id++;
 }
 
-function updateEditorVisibility() {
+function updateView() {
     for (let tab of tablist) {
-        (tab as FileTab).updateEditorVisibility(activeid);
+        tab.updateView(activeid);
     }
+}
+function tabOpen(path) {
+    for (const tab of tablist) {
+        if (tab.path === path) {
+            setActive(tab.id);
+            return true;
+        }
+    }
+    return false;
 }

@@ -5,7 +5,7 @@
     import { updateTree } from "../FileTree/scripts/TreeData";
     import langlist from "../../scripts/languages/languages.json";
     import { sep } from "@tauri-apps/api/path";
-    import { renameFile, setFileLanguage } from "../../scripts/EditorFile";
+    import { renameFile } from "../../scripts/EditorFile";
     export let open = false;
     export let filename = "";
     export let path = "/";
@@ -69,6 +69,7 @@
         </div>
         <div class="buttongroup">
             <div class="button disabled">Back</div>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div
                 class="button"
                 on:click={async () => {
@@ -92,8 +93,7 @@
                     path = newpath.join(sep);
 
                     await fs.renameFile(oldpath, path);
-                    renameFile(filenameinput, path);
-                    setFileLanguage(extinput);
+                    await renameFile(filenameinput, path);
                     await updateTree();
                     open = false;
                 }}

@@ -1,5 +1,5 @@
 import { appWindow } from "@tauri-apps/api/window";
-import { addNewFile, openFile, openFolder, saveOpenFile } from "./header_menus/FileMenu";
+import { addNewFile, openFile, openFolder, openSettings, saveOpenFile } from "./header_menus/FileMenu";
 export const filemenu = [
     { option: "New File...", shortcut: "Ctrl + N", onclick: addNewFile },
     { option: "Open File...", shortcut: "Ctrl + O", onclick: openFile },
@@ -7,8 +7,7 @@ export const filemenu = [
     { option: "Open Recent", onclick: () => { console.log("click"); } },
     { option: "Save File", shortcut: "Ctrl + S", onclick: saveOpenFile, divider: true },
     { option: "Save File As...", shortcut: "Ctrl + Shift + S", onclick: saveOpenFile },
-    { option: "Save All", shortcut: "Ctrl + Shift + K", onclick: () => { console.log("click"); } },
-    { option: "Settings", onclick: () => { console.log("click"); }, divider: true },
+    { option: "Settings", onclick: openSettings, divider: true },
     { option: "Exit", onclick: async () => { await appWindow.close(); } }
 ];
 export const editmenu = [

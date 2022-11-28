@@ -1,7 +1,7 @@
 import { filetree, workspacename } from "../../FileTree/scripts/TreeStore";
 import { data, workspace } from "../../FileTree/scripts/TreeData";
-import { addFileTab } from "../../Tabs/scripts/Tab";
-import { getFile, saveFile } from "../../../scripts/EditorFile";
+import { addFileTab, addSettingsTab } from "../../Tabs/scripts/Tab";
+import { getFile, saveFile, saveFileAs } from "../../../scripts/EditorFile";
 
 export async function addNewFile() {
     await addFileTab();
@@ -18,5 +18,11 @@ export async function openFolder() {
     workspacename.set(workspace());
 }
 export async function saveOpenFile() {
-    await saveFile();
+    await saveFile()
+}
+export async function saveOpenFileAs() {
+    await saveFileAs();
+}
+export function openSettings() {
+    addSettingsTab();
 }

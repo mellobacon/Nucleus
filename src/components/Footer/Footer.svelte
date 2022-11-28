@@ -1,16 +1,16 @@
 <script lang="ts">
     import { Terminal } from "carbon-icons-svelte"
-    import { isfile, file_language, linefeed } from "../Tabs/scripts/Tab";
-    import { line_info } from "../Editor/scripts/Editor";
+    import { isfile } from "../Tabs/scripts/Tab";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
     import { filetree } from "../FileTree/scripts/TreeStore";
     import LanguageList from "./LanguageList.svelte";
     import { languages } from "@codemirror/language-data";
+    import { file_language, file_linefeed, line_info } from "../Editor/scripts/Editor";
 
     let langs = [];
     for (let l of languages) {
-        let langdata = {lang: l.name, tags: l.extensions}
+        let langdata = {lang: l.name, tags: l.extensions, mode: l.load()};
         langs = [...langs, langdata];
     }
     let showlangs = false;
@@ -64,7 +64,7 @@
     </div>
     {#if $isfile}
         <div id="codeinfo">
-            <span title="End of Line Sequence">{$linefeed}</span>
+            <span title="End of Line Sequence">{$file_linefeed}</span>
             <span>{$line_info.line} : {$line_info.col}</span>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span on:click={

@@ -21,10 +21,10 @@
         {/if}
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="close-tab" on:click={() => {
-        closeTab(id);
-    }}>
-        <span></span>
+    <div class="close-tab">
+        <span on:click={() => {
+            closeTab(id);
+        }}></span>
     </div>
 </div>
 

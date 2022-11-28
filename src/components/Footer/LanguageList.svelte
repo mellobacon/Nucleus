@@ -6,7 +6,7 @@
     export let langs;
 
     let selectedlang = "None";
-    let selected = false;
+    let langmode = null;
 </script>
 
 <Modal
@@ -21,8 +21,10 @@
         <div id="langlist">
             <div><span class="note">Missing a language? Search for new ones in Extensions ></span></div>
             {#each langs as language}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div class="language" on:click={() => {
                     selectedlang = language.lang;
+                    langmode = language.mode;
                 }}>
                     <span class="name">{language.lang}</span>
                     <span class="tags">
@@ -34,8 +36,9 @@
             {/each}
         </div>
         <div id="selected">Selected: {selectedlang}</div>
-        <div id="button" on:click={() => {
-            setFileLanguage(selectedlang);
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div id="button" on:click={async() => {
+            setFileLanguage(selectedlang, langmode);
             showlangs = false;
         }}>
             Select
