@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, tick } from "svelte";
+    import { onMount, tick } from "svelte";
     import { basicSetup } from "codemirror";
     import { EditorView, keymap } from "@codemirror/view";
     import { indentWithTab } from "@codemirror/commands";
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
+    import { fs } from "@tauri-apps/api";
 
     export let hidden = false;
     let editorElement;
@@ -29,6 +30,12 @@
         setLanguageMode(file.language.mode);
         file_linefeed.set(file.linefeed);
         file_info = {name, path, linefeed, language};
+    }
+
+    export async function setLanguage(lang, mode) {
+        file_info.language = lang;
+        file_language.set(lang);
+        setLanguageMode(await mode);
     }
 
     export function setLanguageMode(mode) {
@@ -59,9 +66,11 @@
         // save content to file
         clearTimeout(_);
         _ = setTimeout(() => {
-            if (file_info.path !== "") {
-                //writeFile(file_info.path, filecontent);
-                console.log(`${file_info.name} saved`);
+            if (!file_info || !file_info.path) {
+                console.log("File path not found, cannot save.");
+            }
+            else if (file_info.path !== "") {
+                fs.writeFile(file_info.path, filecontent);
             }
         }, 1000)
     }
