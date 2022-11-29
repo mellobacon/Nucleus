@@ -7,6 +7,10 @@
     import { default_theme } from "./scripts/DefaultTheme";
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
     import { fs } from "@tauri-apps/api";
+    import settings from "../../config/nucleus-settings.json";
+    import { addNotification, NotifType } from "../Notifications/Notifications";
+
+    const shortcuts = Object.entries(settings.shortcuts)
 
     export let hidden = false;
     let editorElement;
@@ -67,6 +71,7 @@
         clearTimeout(_);
         _ = setTimeout(() => {
             if (!file_info || !file_info.path) {
+                addNotification(NotifType.Message, "File path not found, cannot save.");
                 console.log("File path not found, cannot save.");
             }
             else if (file_info.path !== "") {
@@ -89,6 +94,11 @@
 on:input={async (e) => {
     await updateDom();
     getLineInfo();
+}}
+on:keydown={(e) => {
+    const code = e.code;
+    const key = e.key.charAt(0).toUpperCase() + e.key.slice(1);
+    //TODO: Figure out shortcuts
 }}
 on:keydown={async (e) => {
     let key = e.code;
