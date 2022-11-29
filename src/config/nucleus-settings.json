@@ -22,7 +22,7 @@
         },
         "save-file-as-shortcut": {
             "primaryKey": "S",
-            "secondaryKey": "LShift",
+            "secondaryKey": "Shift",
             "modifier": "Ctrl"
         },
         "undo-shortcut": {
