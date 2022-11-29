@@ -2,7 +2,7 @@
     import { Sortable } from "sortablejs";
     import { onMount } from "svelte";
     import Tab from "./Tab.svelte";
-    import { hidden, tabs } from "./scripts/Tab";
+    import { closeAllTabs, hidden, tabs } from "./scripts/Tab";
     import { Add, ChevronDown, OverflowMenuVertical, Play } from "carbon-icons-svelte";
     import { OverflowMenu, OverflowMenuItem } from "carbon-components-svelte";
     let tabcontainer;
@@ -18,7 +18,7 @@
     })
 
     let tabmenu = [
-        { option: "Close All Tabs", onclick: () => { console.log("click"); } },
+        { option: "Close All Tabs", onclick: () => { closeAllTabs() } },
     ]
 </script>
 
@@ -39,7 +39,7 @@
                 <Play />
             {/if}
         </div>
-        <OverflowMenu style="width: auto;" size="sm" title="" class="tab-settings">
+        <OverflowMenu flipped style="width: auto;" size="sm" title="" class="tab-settings">
             {#each tabmenu as option}
                 <OverflowMenuItem on:click={option.onclick}>
                     <span class="option">{option.option}</span>
