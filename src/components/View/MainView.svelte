@@ -49,5 +49,6 @@
         background-image: url("/assets/images/Watermark(3).png");
         background-repeat: no-repeat;
         background-position: center;
+        position: relative;
     }
 </style>

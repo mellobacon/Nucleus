@@ -10,6 +10,7 @@
         height: 100%;
         background-color: #1C1C1C;
         z-index: 1;
+        position: absolute;
     }
     .hidden {
         visibility: hidden;

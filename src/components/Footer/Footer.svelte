@@ -82,7 +82,7 @@
 <style lang="scss">
     #footer {
         z-index: 8000;
-        width: 100%;
+        width: -webkit-fill-available;
         display: flex;
         align-items: center;
         border-top: 1px solid #393939;
