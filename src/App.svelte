@@ -13,7 +13,7 @@
 	<Sidebar />
 	<Splitpanes theme="editor-pane">
 		{#if $showsidebarview}
-		<Pane size={25} minSize={10}>
+		<Pane size={25} minSize={10} maxSize={60}>
 			<SidebarView title={$tool.tabname} content={$tool.content}></SidebarView>
 		</Pane>
 		{/if}

@@ -4,7 +4,7 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, path, invoke } from "@tauri-apps/api";
-    import { closeTab, setActive } from "./scripts/Tab";
+    import { closeAllTabs, closeTab, setActive } from "./scripts/Tab";
     export let id: number;
     export let target;
     export let filename: string;
@@ -35,7 +35,7 @@
     <ContextMenuOption indented labelText="Close Saved Tabs" on:click={() => {}}>
         <span class="contextshortcut" slot="shortcutText">Ctrl + X S</span>
     </ContextMenuOption>
-    <ContextMenuOption indented labelText="Close All Tabs" on:click={() => {}}>
+    <ContextMenuOption indented labelText="Close All Tabs" on:click={() => {closeAllTabs()}}>
         <span class="contextshortcut" slot="shortcutText">Ctrl + X A</span>
     </ContextMenuOption>
     <!--TODO: Make this relative instead of file name. Am lazy-->

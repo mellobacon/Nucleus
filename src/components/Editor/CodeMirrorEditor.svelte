@@ -7,6 +7,24 @@
     import { default_theme } from "./scripts/DefaultTheme";
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
     import { fs } from "@tauri-apps/api";
+    import settings from "../../config/nucleus-settings.json";
+    import { addNotification, NotifType } from "../Notifications/Notifications";
+    import { execute } from "../../config/config";
+
+    const shortcuts = Object.entries(settings.shortcuts);
+    let keys = {};
+
+    function modifier(shortcut) {
+        switch (shortcut) {
+            case "Ctrl":
+                return "Control";
+            case "Shift":
+                return "Shift";
+            case "Alt":
+                return "Alt";
+        }
+        return "";
+    }
 
     export let hidden = false;
     let editorElement;
@@ -56,7 +74,7 @@
         let colnumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from
         line_info.set({line: linenumber.toString(), col: (colnumber + 1).toString()});
     }
-    async function updateDom() {
+    export async function updateDom() {
         await tick();
         let filecontent = "";
         for (let text of editorView.state.doc) {
@@ -67,6 +85,7 @@
         clearTimeout(_);
         _ = setTimeout(() => {
             if (!file_info || !file_info.path) {
+                addNotification(NotifType.Message, "File path not found, cannot save.");
                 console.log("File path not found, cannot save.");
             }
             else if (file_info.path !== "") {
@@ -89,6 +108,41 @@
 on:input={async (e) => {
     await updateDom();
     getLineInfo();
+}}
+on:keyup={(e) => {
+    const key = e.key.charAt(0).toUpperCase() + e.key.slice(1);
+    keys[key] = false;
+    keys = {};
+}}
+on:keydown={async (e) => {
+    const key = e.key.charAt(0).toUpperCase() + e.key.slice(1);
+    keys[key] = true;
+    for (const [name, shortcutKey] of shortcuts) {
+        if (keys[modifier(shortcutKey.modifier)] && keys[modifier(shortcutKey.secondaryKey)] && keys[shortcutKey.primaryKey]) {
+            await execute(name);
+            return false;
+        }
+        else if (keys[modifier(shortcutKey.modifier)] && shortcutKey.secondaryKey === "" && keys[shortcutKey.primaryKey]) {
+            // janky or something yes yes sue me
+            if (name === "paste-shortcut" || name === "cut-shortcut" || name === "redo-shortcut" || name === "undo-shortcut") {
+                updateDom();
+                getLineInfo();
+                return false;
+            }
+            await execute(name);
+            return false;
+        }
+        else if (shortcutKey.modifier === "" && shortcutKey.secondaryKey === "" && keys[shortcutKey.primaryKey]) {
+            e.preventDefault();
+            if (name === "delete-shortcut") {
+                await updateDom();
+                getLineInfo();
+                break;
+            }
+            await execute(name);
+            break;
+        }
+    }
 }}
 on:keydown={async (e) => {
     let key = e.code;

@@ -7,6 +7,8 @@
     import LanguageList from "./LanguageList.svelte";
     import { languages } from "@codemirror/language-data";
     import { file_language, file_linefeed, line_info } from "../Editor/scripts/Editor";
+    import Notifications from "../Notifications/Notifications.svelte";
+    import { unreadnotifications } from "../Notifications/Notifications";
 
     let langs = [];
     for (let l of languages) {
@@ -14,9 +16,8 @@
         langs = [...langs, langdata];
     }
     let showlangs = false;
-
     const tools = [
-        {name: "Notifications", content: "notifications"}
+        {name: "Notifications", content: Notifications}
     ]
 
     async function spawnTerminal() {
@@ -56,9 +57,10 @@
             <span class="toolname">Terminal</span>
         </span>
         {#each tools as tool}
-        <span class="tool">
+        <span class="tool" class:updated={$unreadnotifications}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span class="toolname" on:click={() => {togglePanel(tool)}}>{tool.name}</span>
+            <span class="notification"></span>
         </span>
         {/each}
     </div>
@@ -80,7 +82,7 @@
 <style lang="scss">
     #footer {
         z-index: 8000;
-        width: 100%;
+        width: -webkit-fill-available;
         display: flex;
         align-items: center;
         border-top: 1px solid #393939;
@@ -122,6 +124,19 @@
     .tool {
         height: 100%;
         padding: 0 5px;
+        position: relative;
+        &.updated {
+            .notification {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                display: block;
+                background-color: #4589ff;
+                border-radius: 50%;
+                top: 5px;
+                left: 5px;
+            }
+        }
     }
     .toolname {
         margin-left: 5px;

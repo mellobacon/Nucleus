@@ -99,6 +99,11 @@ export function closeTab(tabid: number) {
         id = 0;
     }
 }
+export function closeAllTabs() {
+    for (const tab of tablist) {
+        closeTab(tab.id);
+    }
+}
 
 function refreshTabs() {
     if (tablist.length > 0) {
