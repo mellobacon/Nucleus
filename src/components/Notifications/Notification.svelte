@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { updateReadStatus } from "./Notifications";
+    import { NotificationButton } from "carbon-components-svelte";
+    import { getTime } from "../../config/config";
+    import { closeNotification, updateReadStatus } from "./Notifications";
 
     export let id;
     export let type = "";
@@ -10,7 +12,7 @@
     let notification;
 </script>
 <div class="info">
-    <span>01:25:47 PM CST</span>
+    <span>{getTime()}</span>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <span class="mark-read" on:click|preventDefault={() => {
             read = !read
@@ -34,6 +36,10 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="action-button" on:click={action.action}>{action.label}</div>
         {/each}
+    </div>
+    
+    <div class="close-button">
+        <NotificationButton on:click={() => {closeNotification(id)}}></NotificationButton>
     </div>
 </div>
 
@@ -90,6 +96,9 @@
             .action-button {
                 color: #bdd4ff75 !important;
             }
+            :global(.bx--toast-notification__close-button .bx--toast-notification__close-icon) {
+                fill: #bdd4ff75 !important;
+            }
         }
         &::before {
             position: absolute;
@@ -133,6 +142,14 @@
                 &:hover {
                     text-decoration: underline;
                 }
+            }
+        }
+        .close-button {
+            flex-grow: 1;
+            :global(.bx--toast-notification__close-button .bx--toast-notification__close-icon) {
+                fill: #ffffff;
+                cursor: pointer;
+                z-index: 1;
             }
         }
     }
