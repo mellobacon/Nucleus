@@ -11,17 +11,8 @@ export function getShortcut({ primaryKey, secondaryKey, modifier }) {
     return `${modifier}${secondaryKey}${primaryKey}`;
 }
 
-export async function execute(shortcut) {
+export function executeEditorShortcut(shortcut) {
     switch (shortcut) {
-        case "new-file-shortcut":
-            await addFileTab();
-            break;
-        case "open-file-shortcut":
-            openFile();
-            break;
-        case "open-folder-shortcut":
-            openFolder();
-            break;
         case "save-file-shortcut":
             saveOpenFile();
             break;
@@ -33,6 +24,19 @@ export async function execute(shortcut) {
             break;
         case "select-all-text-shortcut":
             break;
+    }
+}
+export async function executeWindowShortcut(shortcut) {
+    switch (shortcut) {
+        case "new-file-shortcut":
+            await addFileTab();
+            break;
+        case "open-file-shortcut":
+            await openFile();
+            break;
+        case "open-folder-shortcut":
+            await openFolder();
+            break;
         case "build-shortcut":
             console.log(shortcut);
             break;
@@ -43,4 +47,9 @@ export async function execute(shortcut) {
             console.log(shortcut);
             break;
     }
+}
+
+export function getTime() {
+    let time = new Intl.DateTimeFormat('en-US', {dateStyle: "short", timeStyle: "long"}).format();
+    return time;
 }

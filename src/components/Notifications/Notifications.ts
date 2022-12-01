@@ -66,6 +66,10 @@ export function clearNotifications() {
     notifications.set(notificationlist);
     updateNotificationStatus();
 }
+export function closeNotification(id) {
+    notificationlist = notificationlist.filter(n => n.id !== id);
+    notifications.set(notificationlist);
+}
 function getType(type: NotifType) {
     switch (type) {
         case NotifType.Message:

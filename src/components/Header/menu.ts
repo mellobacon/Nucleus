@@ -2,6 +2,7 @@ import { appWindow } from "@tauri-apps/api/window";
 import { addNewFile, openFile, openFolder, openSettings, saveOpenFile } from "./header_menus/FileMenu";
 import settings from "../../config/nucleus-settings.json";
 import { getShortcut } from "../../config/config";
+import { shell } from "@tauri-apps/api";
 const shortcuts = settings.shortcuts;
 
 export const filemenu = [
@@ -45,5 +46,5 @@ export const helpmenu = [
     { option: "Toggle developer tools", onclick: () => { console.log("click"); } },
     { option: "Release Notes", onclick: () => { console.log("click"); }, divider: true },
     { option: "Check for Updates", onclick: async() => { console.log("click"); } },
-    { option: "About Editor", onclick: async() => { console.log("click"); } },
+    { option: "About Editor", onclick: async() => { shell.open("https://github.com/mellobacon/Nucleus") } },
 ];

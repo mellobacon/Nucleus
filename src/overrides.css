@@ -76,6 +76,9 @@ a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
 .bx--tree-parent-node.bx--tree-node--selected>.bx--tree-node__label {
     background-color: transparent !important;
 }
+.bx--toast-notification__close-button .bx--toast-notification__close-icon {
+    fill: #ffffff;
+}
 /*----------------------*/
 .editor-pane .splitpanes__pane {
     background-color: transparent;
