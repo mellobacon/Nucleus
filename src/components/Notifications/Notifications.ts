@@ -69,6 +69,7 @@ export function clearNotifications() {
 export function closeNotification(id) {
     notificationlist = notificationlist.filter(n => n.id !== id);
     notifications.set(notificationlist);
+    updateNotificationStatus();
 }
 function getType(type: NotifType) {
     switch (type) {
