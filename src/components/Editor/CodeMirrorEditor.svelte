@@ -85,11 +85,11 @@
         clearTimeout(_);
         _ = setTimeout(() => {
             if (!file_info || !file_info.path) {
-                addNotification(NotifType.Message, "File path not found, cannot save.");
                 console.log("File path not found, cannot save.");
             }
             else if (file_info.path !== "") {
                 fs.writeFile(file_info.path, filecontent);
+                console.log("file saved");
             }
         }, 1000)
     }
