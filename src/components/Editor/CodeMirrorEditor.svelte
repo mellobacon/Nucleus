@@ -9,7 +9,7 @@
     import { fs } from "@tauri-apps/api";
     import settings from "../../config/nucleus-settings.json";
     import { addNotification, NotifType } from "../Notifications/Notifications";
-    import { execute } from "../../config/config";
+    import { executeEditorShortcut } from "../../config/config";
 
     const shortcuts = Object.entries(settings.shortcuts);
     let keys = {};
@@ -119,7 +119,7 @@ on:keydown={async (e) => {
     keys[key] = true;
     for (const [name, shortcutKey] of shortcuts) {
         if (keys[modifier(shortcutKey.modifier)] && keys[modifier(shortcutKey.secondaryKey)] && keys[shortcutKey.primaryKey]) {
-            await execute(name);
+            executeEditorShortcut(name);
             return false;
         }
         else if (keys[modifier(shortcutKey.modifier)] && shortcutKey.secondaryKey === "" && keys[shortcutKey.primaryKey]) {
@@ -129,7 +129,7 @@ on:keydown={async (e) => {
                 getLineInfo();
                 return false;
             }
-            await execute(name);
+            executeEditorShortcut(name);
             return false;
         }
         else if (shortcutKey.modifier === "" && shortcutKey.secondaryKey === "" && keys[shortcutKey.primaryKey]) {
@@ -139,7 +139,7 @@ on:keydown={async (e) => {
                 getLineInfo();
                 break;
             }
-            await execute(name);
+            executeEditorShortcut(name);
             break;
         }
     }
