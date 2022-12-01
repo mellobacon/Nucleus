@@ -3,8 +3,9 @@
     import { onMount } from "svelte";
     import Tab from "./Tab.svelte";
     import { closeAllTabs, hidden, tabs } from "./scripts/Tab";
-    import { Add, ChevronDown, OverflowMenuVertical, Play } from "carbon-icons-svelte";
+    import { Add, Play } from "carbon-icons-svelte";
     import { OverflowMenu, OverflowMenuItem } from "carbon-components-svelte";
+    import { addNotification, NotifType } from "../Notifications/Notifications";
     let tabcontainer;
     export let canAdd = false;
     onMount(() => {
@@ -29,10 +30,8 @@
         {/each}
     </div>
     <div class="tools">
-        <div class="overflow-list">
-            <ChevronDown />
-        </div>
-        <div class="play">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div class="play" on:click={() => {addNotification(NotifType.Warning, "Unable to run code - feature not yet implemented")}}>
             {#if canAdd}
                 <Add></Add>
             {:else}
@@ -73,7 +72,7 @@
         }
         .tools {
             display: flex;
-            .play, .overflow-list {
+            .play {
                 display: flex;
                 justify-content: center;
                 align-items: center;

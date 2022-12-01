@@ -119,8 +119,8 @@
             .icon {
                 border-radius: 50%;
                 background-color: $default-color;
-                width: 20px;
-                height: 20px;
+                min-width: 20px;
+                min-height: 20px;
                 margin-right: 10px;
             }
         }
@@ -137,7 +137,7 @@
                 color: #BDD4FF;
                 cursor: pointer;
                 &:nth-child(2) {
-                    margin: 0 5px;
+                    margin: 0 0.6rem;
                 }
                 &:hover {
                     text-decoration: underline;
