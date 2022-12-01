@@ -8,6 +8,9 @@
     import { showsidebarview, tool } from "./components/Sidebar/Sidebar";
 	import settings from "./config/nucleus-settings.json";
     import { executeWindowShortcut } from "./config/config";
+    import { Action, addNotification, NotifType } from "./components/Notifications/Notifications";
+    import { onMount } from "svelte";
+    import { shell } from "@tauri-apps/api";
 
 	const shortcuts = Object.entries(settings.shortcuts);
 	let keys = {};
@@ -22,6 +25,10 @@
         }
         return "";
     }
+
+    onMount(() => {
+        addNotification(NotifType.Message, "Nucleus editor is in a work in progress state. Expect missing features and bugs", [new Action("GitHub link", () => {shell.open("https://github.com/mellobacon/Nucleus")}), new Action("Report issue/feature", () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")})]);
+    })
 </script>
 
 <svelte:window on:contextmenu|preventDefault on:keyup={(e) => {
