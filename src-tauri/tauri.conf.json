@@ -3,7 +3,7 @@
     "beforeBuildCommand": "yarn build",
     "beforeDevCommand": "yarn dev",
     "devPath": "http://localhost:8080",
-    "distDir": "../public",
+    "distDir": "../dist",
     "withGlobalTauri": false
   },
   "package": {
