@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Header from "./components/Header/Header.svelte";
 	import Sidebar from "./components/Sidebar/Sidebar.svelte";
-	import MainContainer from "./components/View/MainView.svelte";
+	import MainView from "./components/View/MainView.svelte";
 	import "carbon-components-svelte/css/g100.css";
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./components/Sidebar/SidebarView.svelte";
@@ -66,7 +66,7 @@ on:keydown={async (e) => {
 		</Pane>
 		{/if}
 		<Pane>
-			<MainContainer />
+			<MainView />
 		</Pane>
 	</Splitpanes>
 </div>
