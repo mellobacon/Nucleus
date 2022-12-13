@@ -8,7 +8,6 @@
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
     import { fs } from "@tauri-apps/api";
     import settings from "../../config/nucleus-settings.json";
-    import { addNotification, NotifType } from "../Notifications/Notifications";
     import { executeEditorShortcut } from "../../config/config";
 
     const shortcuts = Object.entries(settings.shortcuts);
