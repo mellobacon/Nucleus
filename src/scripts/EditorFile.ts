@@ -1,4 +1,4 @@
-import { readTextFile, writeFile } from "@tauri-apps/api/fs";
+import { readBinaryFile, readTextFile, writeFile } from "@tauri-apps/api/fs";
 import { extname, sep } from "@tauri-apps/api/path";
 import { dialog, fs } from "@tauri-apps/api";
 import { setActive, tablist } from "../components/Tabs/scripts/Tab";
@@ -10,12 +10,14 @@ export class EditorFile {
     content: string;
     linefeed: string;
     language;
-    constructor(filename: string, path: string, linefeed: string, language, content: string) {
+    support: boolean;
+    constructor(filename: string, path: string, linefeed: string, language, content: string, support = true) {
         this.filename = filename;
         this.path = path;
         this.linefeed = linefeed;
         this.content = content;
         this.language = language;
+        this.support = support;
     }
 }
 export async function getFile() {
@@ -30,6 +32,7 @@ export async function getFileData(path = "", label = "") {
     let content = "";
     let linefeed = "LF";
     let ext = "txt";
+    let support = true;
     if (path !== "") {
         try {
             ext = await extname(path);
@@ -42,10 +45,11 @@ export async function getFileData(path = "", label = "") {
             content = await readTextFile(path);
         } catch (error) {
             console.log("Cannot read file content. Skipping...");
+            support = false;
         }
         linefeed = content.includes("\r\n") ? "CLRF" : "LF";
     }
-    return new EditorFile(filename, path, linefeed, language, content);
+    return new EditorFile(filename, path, linefeed, language, content, support);
 }
 export async function saveFile() {
     for (let tab of tablist) {

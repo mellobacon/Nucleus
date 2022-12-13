@@ -2,6 +2,8 @@ import CodeMirrorEditor from '../../Editor/CodeMirrorEditor.svelte';
 import Settings from '../../Settings/Settings.svelte';
 import { writable } from 'svelte/store';
 import { getFileData } from '../../../scripts/EditorFile';
+import { addNotification, NotifType } from "../../Notifications/Notifications";
+import { showpanel } from '../../../components/Footer/Footer.svelte';
 
 let id = 0;
 let activeid;
@@ -35,6 +37,11 @@ export async function addFileTab(path = "") {
         return;
     }
     let file = await getFileData(path);
+    if (!file.support) {
+        addNotification(NotifType.Error, "File cannot open; File is currently unsupported");
+        showpanel.set(true);
+        return;
+    }
     let content = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file.filename, content, file.path);
     tab.isfile = true;
