@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Terminal } from "carbon-icons-svelte"
+    import { Locked, Notification, Terminal, Unlocked } from "carbon-icons-svelte"
     import { isfile } from "../Tabs/scripts/Tab";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
@@ -58,6 +58,7 @@
         </span>
         {#each tools as tool}
         <span class="tool" class:updated={$unreadnotifications}>
+            <Notification></Notification>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span class="toolname" on:click={() => {togglePanel(tool)}}>{tool.name}</span>
             <span class="notification"></span>
@@ -66,6 +67,10 @@
     </div>
     {#if $isfile}
         <div id="codeinfo">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <span title="Readonly toggle">
+                <Unlocked></Unlocked>
+            </span>
             <span title="End of Line Sequence">{$file_linefeed}</span>
             <span>{$line_info.line} : {$line_info.col}</span>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -141,7 +146,7 @@
     .toolname {
         margin-left: 5px;
     }
-    :global(#tools span svg) {
+    :global(#tools span svg), :global(#codeinfo span svg) {
         width: 18px;
         height: 18px;
     }

@@ -2,6 +2,8 @@ import CodeMirrorEditor from '../../Editor/CodeMirrorEditor.svelte';
 import Settings from '../../Settings/Settings.svelte';
 import { writable } from 'svelte/store';
 import { getFileData } from '../../../scripts/EditorFile';
+import { addNotification, NotifType } from "../../Notifications/Notifications";
+import { showpanel } from '../../../components/Footer/Footer.svelte';
 
 let id = 0;
 let activeid;
@@ -18,7 +20,7 @@ class Tab {
     path: string;
     content;
     isfile: boolean;
-    saved: boolean;
+    saved = true;
     constructor(id, label = "", content = null, path = "") {
         this.id = id;
         this.label = label === "" ? `Untitled-${id}` : label;
@@ -28,6 +30,11 @@ class Tab {
     updateView(id) {
         this.content.$set({ hidden: !(this.id === id) });
     }
+    refreshView(tab) {
+        if (tab.isfile) {
+            tab.content.updateTheme();
+        }
+    }
 }
 
 export async function addFileTab(path = "") {
@@ -35,11 +42,14 @@ export async function addFileTab(path = "") {
         return;
     }
     let file = await getFileData(path);
+    if (!file.support) {
+        addNotification(NotifType.Error, "File cannot open; File is currently unsupported");
+        showpanel.set(true);
+        return;
+    }
     let content = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file.filename, content, file.path);
     tab.isfile = true;
-    tab.saved = file.path === "";
-    // set language for highlighting here
     content.setFileInfo(file);
     tablist = [...tablist, tab];
     refreshTabs();

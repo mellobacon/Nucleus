@@ -6,10 +6,9 @@
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
-    import { fs } from "@tauri-apps/api";
     import settings from "../../config/nucleus-settings.json";
-    import { addNotification, NotifType } from "../Notifications/Notifications";
-    import { executeEditorShortcut } from "../../config/config";
+    import { autosave, executeEditorShortcut } from "../../config/config";
+    import { saveFile, updateSaveState } from "../../scripts/EditorFile";
 
     const shortcuts = Object.entries(settings.shortcuts);
     let keys = {};
@@ -31,6 +30,7 @@
     let editorView: EditorView;
     export let content = "";
     export let lang = new Compartment();
+    export let theme = new Compartment();
     let file_info;
     let _ = null;
     
@@ -66,8 +66,14 @@
         await tick();
         file_linefeed.set(file_info.linefeed);
         file_language.set(file_info.language);
+        updateTheme();
         editorView.focus();
         getLineInfo();
+    }
+    export function updateTheme() {
+        editorView.dispatch({
+            effects: theme.reconfigure(default_theme)
+        })
     }
     function getLineInfo() {
         let linenumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -82,13 +88,17 @@
         }
         content = filecontent;
         // save content to file
+        if (!$autosave) {
+            updateSaveState();
+            return;
+        }
         clearTimeout(_);
         _ = setTimeout(() => {
             if (!file_info || !file_info.path) {
                 console.log("File path not found, cannot save.");
             }
             else if (file_info.path !== "") {
-                fs.writeFile(file_info.path, filecontent);
+                saveFile();
                 console.log("file saved");
             }
         }, 1000)
@@ -97,7 +107,7 @@
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab]), lang.of([])],
+                extensions: [basicSetup, theme.of([default_theme]), keymap.of([indentWithTab]), lang.of([])],
                 doc: content
             }),
             parent: editorElement,

@@ -1,5 +1,12 @@
+import { writable } from "svelte/store";
 import { openFile, openFolder, saveOpenFile, saveOpenFileAs } from "../components/Header/header_menus/FileMenu";
-import { addFileTab } from "../components/Tabs/scripts/Tab";
+import { addFileTab, tablist } from "../components/Tabs/scripts/Tab";
+
+export const systemfonts = writable([]);
+export const editorfont = writable("");
+export const windowtheme = writable("");
+export let font = "";
+export const autosave = writable(true);
 
 export function getShortcut({ primaryKey, secondaryKey, modifier }) {
     if (modifier) {
@@ -52,4 +59,25 @@ export async function executeWindowShortcut(shortcut) {
 export function getTime() {
     let time = new Intl.DateTimeFormat('en-US', {dateStyle: "short", timeStyle: "long"}).format();
     return time;
+}
+
+export function getInstalledFonts(fonts: []) {
+    let fontlist = [];
+    let id = 0;
+    for (const f of fonts) {
+        let font = {id: id, name: f};
+        fontlist = [...fontlist, font];
+        id++;
+    }
+    systemfonts.set(fontlist);
+}
+export function setFont(efont) {
+    editorfont.set(efont);
+    editorfont.subscribe(f => (font = f));
+    for (const tab of tablist) {
+        if (tab.active && tab.isfile) {
+            tab.refreshView(tab);
+        }
+    }
+    
 }

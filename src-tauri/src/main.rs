@@ -5,6 +5,7 @@
 
 use std::env;
 use std::process::Command;
+use font_loader::system_fonts;
 #[tauri::command]
 fn open_in_explorer(path: &str) {
     // FOR OTHER OS REFER - https://doc.rust-lang.org/std/env/consts/constant.OS.html
@@ -42,9 +43,14 @@ fn open_terminal(path: &str) {
     }
 }
 
+#[tauri::command]
+fn get_installed_fonts() -> Vec<String> {
+    system_fonts::query_all()
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_in_explorer, open_terminal])
+        .invoke_handler(tauri::generate_handler![open_in_explorer, open_terminal, get_installed_fonts])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

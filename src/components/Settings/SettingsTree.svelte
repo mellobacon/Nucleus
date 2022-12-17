@@ -5,11 +5,6 @@
             {id: 1, path: "file1", name: "Appearance"},
             {id: 2, path: "file1", name: "Shortcuts"},
         ]},
-        {id: 3, path: "file1", name: "Editor", children: [
-            {id: 4, path: "file1", name: "Appearance"},
-            {id: 5, path: "file1", name: "Files"},
-            {id: 6, path: "file1", name: "Code"},
-        ]},
     ];
 </script>
 <script lang="ts" context="module">

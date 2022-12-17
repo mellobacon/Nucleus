@@ -2,6 +2,7 @@ import { filetree, workspacename } from "../../FileTree/scripts/TreeStore";
 import { data, workspace } from "../../FileTree/scripts/TreeData";
 import { addFileTab, addSettingsTab } from "../../Tabs/scripts/Tab";
 import { getFile, saveFile, saveFileAs } from "../../../scripts/EditorFile";
+import { loadingtree } from "../../FileTree/scripts/TreeData";
 
 export async function addNewFile() {
     await addFileTab();
@@ -13,9 +14,13 @@ export async function openFile() {
 }
 export async function openFolder() {
     let treedata = await data();
-    if (treedata === undefined) return;
+    if (treedata === undefined) {
+        loadingtree.set(false);
+        return;
+    }
     filetree.set(treedata);
     workspacename.set(workspace());
+    loadingtree.set(false);
 }
 export async function saveOpenFile() {
     await saveFile()

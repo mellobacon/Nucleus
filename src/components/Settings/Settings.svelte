@@ -12,6 +12,7 @@
         <div id="title">{$setting}</div>
         <div id="setting">
             <AppearanceSettings></AppearanceSettings>
+            <span class="note">Settings incomplete. Everything is nonfunctional except for autosave</span>
         </div>
     </div>
 </div>
@@ -20,14 +21,31 @@
     .hidden {
         display: none !important;
     }
+    .note {
+        font-weight: 200;
+        font-size: 0.7rem;
+        color: #ffdc68;
+        text-decoration: underline;
+        margin-top: 50px;
+        display: block;
+    }
     #settings {
         height: 100%;
         width: 100%;
         display: flex;
+        background: #1c1c1c;
+        overflow-y: hidden;
+        overflow-x: overlay;
+        &::-webkit-scrollbar {
+            width: 12px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #4c4c4c38;
+        }
     }
     #settings-list {
         height: 100%;
-        min-width: 9rem;
+        min-width: 15rem;
         border-right: solid 1px #333;
         padding-top: 1rem;
     }

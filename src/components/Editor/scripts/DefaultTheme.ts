@@ -2,6 +2,7 @@ import { EditorView } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
+import { font } from "../../../config/config";
 
 const bg = "#1c1c1c",
     cl = "#282a2e",
@@ -14,11 +15,10 @@ const bg = "#1c1c1c",
     aqua = "#8abeb7",
     blue = "#81a2be",
     purple = "#b294bb";
-
 const defaultTheme = EditorView.theme(
     {
         "*": {
-            fontFamily: '"Ubuntu Mono", monospace'
+            fontFamily: `"${font}", monospace`
         },
 
         "&": {
@@ -107,13 +107,13 @@ const defaultTheme = EditorView.theme(
 
 const defaultHighlightStyle = HighlightStyle.define([
     {
-        tag: t.keyword,
-        color: purple
+        tag: [t.keyword, t.typeName],
+        color: "#7db7f3" // blue
     },
 
     {
-        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
-        color: red
+        tag: [t.deleted, t.character, t.propertyName, t.macroName],
+        color: "#cc8c66" // orange
     },
 
     {
@@ -133,7 +133,6 @@ const defaultHighlightStyle = HighlightStyle.define([
 
     {
         tag: [
-            t.typeName,
             t.className,
             t.number,
             t.changed,
@@ -142,7 +141,7 @@ const defaultHighlightStyle = HighlightStyle.define([
             t.self,
             t.namespace
         ],
-        color: orange
+        color: purple
     },
 
     {
@@ -197,7 +196,7 @@ const defaultHighlightStyle = HighlightStyle.define([
 
     {
         tag: [t.processingInstruction, t.string, t.inserted],
-        color: green
+        color: "#df8cc9" // pink
     },
 
     {
