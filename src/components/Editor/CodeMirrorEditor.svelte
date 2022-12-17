@@ -6,9 +6,9 @@
     import { EditorState, Compartment } from "@codemirror/state";
     import { default_theme } from "./scripts/DefaultTheme";
     import { file_language, file_linefeed, line_info } from "./scripts/Editor";
-    import { fs } from "@tauri-apps/api";
     import settings from "../../config/nucleus-settings.json";
-    import { executeEditorShortcut } from "../../config/config";
+    import { autosave, executeEditorShortcut } from "../../config/config";
+    import { saveFile, updateSaveState } from "../../scripts/EditorFile";
 
     const shortcuts = Object.entries(settings.shortcuts);
     let keys = {};
@@ -88,13 +88,17 @@
         }
         content = filecontent;
         // save content to file
+        if (!$autosave) {
+            updateSaveState();
+            return;
+        }
         clearTimeout(_);
         _ = setTimeout(() => {
             if (!file_info || !file_info.path) {
                 console.log("File path not found, cannot save.");
             }
             else if (file_info.path !== "") {
-                fs.writeFile(file_info.path, filecontent);
+                saveFile();
                 console.log("file saved");
             }
         }, 1000)

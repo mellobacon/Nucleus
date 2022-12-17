@@ -26,7 +26,7 @@
 <div id="editor-tabs" class:hidden={$hidden}>
     <div id="tablist" bind:this={tabcontainer}>
         {#each $tabs as tab}
-            <Tab label={tab.label} path={tab.path} active={tab.active} id={tab.id} unsaved={tab.saved} />
+            <Tab label={tab.label} path={tab.path} active={tab.active} id={tab.id} unsaved={!tab.saved} />
         {/each}
     </div>
     <div class="tools">

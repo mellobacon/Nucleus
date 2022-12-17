@@ -64,11 +64,13 @@ export async function saveFile() {
                 tab.content.setFileInfo(file);
                 tab.label = label;
                 tab.path = path;
-                tab.saved = !tab.saved;
+                tab.saved = true;
                 setActive(tab.id);
             }
             else {
+                tab.saved = true;
                 await fs.writeFile(tab.path, tab.content.getFileContent());
+                setActive(tab.id);
             }
             break;
         }
@@ -86,6 +88,16 @@ export async function saveFileAs() {
             tab.label = label;
             tab.path = path;
             tab.saved = !tab.saved;
+            setActive(tab.id);
+            break;
+        }
+    }
+}
+
+export function updateSaveState() {
+    for (const tab of tablist) {
+        if (tab.active && tab.isfile) {
+            tab.saved = false;
             setActive(tab.id);
             break;
         }

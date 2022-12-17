@@ -20,7 +20,7 @@ class Tab {
     path: string;
     content;
     isfile: boolean;
-    saved: boolean;
+    saved = true;
     constructor(id, label = "", content = null, path = "") {
         this.id = id;
         this.label = label === "" ? `Untitled-${id}` : label;
@@ -50,8 +50,6 @@ export async function addFileTab(path = "") {
     let content = new CodeMirrorEditor({ target: document.getElementById("tabview"), props: { content: file.content } });
     let tab = new Tab(id, file.filename, content, file.path);
     tab.isfile = true;
-    tab.saved = file.path === "";
-    // set language for highlighting here
     content.setFileInfo(file);
     tablist = [...tablist, tab];
     refreshTabs();
