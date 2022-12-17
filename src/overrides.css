@@ -79,6 +79,69 @@ a.bx--tabs__nav-link:focus, a.bx--tabs__nav-link:active, a.bx--tabs__nav-link {
 .bx--toast-notification__close-button .bx--toast-notification__close-icon {
     fill: #ffffff;
 }
+.bx--inline-loading {
+    justify-content: center;
+}
+.bx--checkbox-label::before {
+    position: absolute;
+    top: .125rem;
+    right: 0;
+    left: unset;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid #f4f4f4;
+    margin: .125rem .125rem .125rem .1875rem;
+    background-color: rgba(0,0,0,0);
+    border-radius: 1px;
+    content: "";
+}
+.bx--checkbox:checked+.bx--checkbox-label::before, .bx--checkbox:indeterminate+.bx--checkbox-label::before, .bx--checkbox-label[data-contained-checkbox-state=true]::before, .bx--checkbox-label[data-contained-checkbox-state=mixed]::before {
+    border-width: 1px;
+    border-color: #f4f4f4;
+    background-color: #f4f4f4;
+}
+.bx--checkbox-label::after {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.3427rem;
+    left: unset;
+    width: 0.6625rem;
+    height: 0.5125rem;
+    border-bottom: 2px solid #161616;
+    border-left: 2px solid #161616;
+    margin-top: -0.1875rem /*rtl:0rem*/;
+    background: none;
+    content: "";
+    -webkit-transform: scale(0) rotate(-45deg);
+    transform: scale(0) rotate(-45deg);
+    -webkit-transform-origin: bottom right;
+    transform-origin: bottom right /*rtl:center*/;
+}
+.bx--checkbox-label-text {
+    padding-right: .375rem;
+    padding-left: unset;
+}
+.bx--checkbox-label {
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.28572;
+    letter-spacing: .16px;
+    position: relative;
+    display: flex;
+    min-height: 1.5rem;
+    padding-top: .1875rem;
+    padding-right: 1.25rem;
+    padding-left: unset;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.bx--checkbox:focus+.bx--checkbox-label::before, .bx--checkbox-label__focus::before, .bx--checkbox:checked:focus+.bx--checkbox-label::before, .bx--checkbox-label[data-contained-checkbox-state=true].bx--checkbox-label__focus::before, .bx--checkbox:indeterminate:focus+.bx--checkbox-label::before, .bx--checkbox-label[data-contained-checkbox-state=mixed].bx--checkbox-label__focus::before {
+    outline: none;
+    outline-offset: 0px;
+}
 /*----------------------*/
 .editor-pane .splitpanes__pane {
     background-color: transparent;

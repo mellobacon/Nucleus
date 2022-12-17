@@ -12,6 +12,7 @@
         <div id="title">{$setting}</div>
         <div id="setting">
             <AppearanceSettings></AppearanceSettings>
+            <span class="note">Settings incomplete. Everything is nonfunctional except for autosave</span>
         </div>
     </div>
 </div>
@@ -19,6 +20,14 @@
 <style lang="scss">
     .hidden {
         display: none !important;
+    }
+    .note {
+        font-weight: 200;
+        font-size: 0.7rem;
+        color: #ffdc68;
+        text-decoration: underline;
+        margin-top: 50px;
+        display: block;
     }
     #settings {
         height: 100%;
