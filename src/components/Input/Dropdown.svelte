@@ -1,6 +1,7 @@
 <script lang="ts">
     import { ChevronDown } from "carbon-icons-svelte";
-    import { afterUpdate } from "svelte";
+    import { afterUpdate, createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
 
     export let label: string;
     export let items = [];
@@ -8,6 +9,11 @@
     let open = false;
     let button;
     let list;
+
+    function handleSelect(name) {
+        selected = name;
+        dispatch("select", {selection: name});
+    }
 
     afterUpdate(() => {
         if (open && list) {
@@ -37,7 +43,7 @@
                 {#each items as item}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div id={item.id} class="item" on:click={() => {
-                        selected = item.name;
+                        handleSelect(item.name);
                         open = false;
                     }}>{item.name}</div>
                 {/each}
@@ -88,6 +94,7 @@
         background-color: #1f1f1f;
         max-height: 15rem;
         overflow-y: overlay;
+        min-width: 20rem;
         &::-webkit-scrollbar {
             width: 12px;
         }
@@ -97,7 +104,6 @@
         .item {
             display: flex;
             align-items: center;
-            justify-content: center;
             min-height: 2rem;
             cursor: pointer;
             padding: 0 20px;
