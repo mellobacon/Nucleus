@@ -30,6 +30,7 @@
     let editorView: EditorView;
     export let content = "";
     export let lang = new Compartment();
+    export let theme = new Compartment();
     let file_info;
     let _ = null;
     
@@ -65,8 +66,14 @@
         await tick();
         file_linefeed.set(file_info.linefeed);
         file_language.set(file_info.language);
+        updateTheme();
         editorView.focus();
         getLineInfo();
+    }
+    export function updateTheme() {
+        editorView.dispatch({
+            effects: theme.reconfigure(default_theme)
+        })
     }
     function getLineInfo() {
         let linenumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -96,7 +103,7 @@
     onMount(() => {
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, default_theme, keymap.of([indentWithTab]), lang.of([])],
+                extensions: [basicSetup, theme.of([default_theme]), keymap.of([indentWithTab]), lang.of([])],
                 doc: content
             }),
             parent: editorElement,

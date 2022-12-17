@@ -30,6 +30,11 @@ class Tab {
     updateView(id) {
         this.content.$set({ hidden: !(this.id === id) });
     }
+    refreshView(tab) {
+        if (tab.isfile) {
+            tab.content.updateTheme();
+        }
+    }
 }
 
 export async function addFileTab(path = "") {
