@@ -41,10 +41,10 @@ export const runmenu = [
     { option: "Install debugger...", onclick: () => { console.log("click"); } },
 ];
 export const helpmenu = [
-    { option: "Documentation", onclick: () => { console.log("click"); } },
-    { option: "View Commands", onclick: () => { console.log("click"); } },
+    //{ option: "Documentation", onclick: () => { console.log("click"); } },
+    { option: "View Commands", onclick: () => { console.log("click"); }, disabled: true },
     { option: "Toggle developer tools", onclick: () => { console.log("click"); } },
-    { option: "Release Notes", onclick: () => { console.log("click"); }, divider: true },
-    { option: "Check for Updates", onclick: async() => { console.log("click"); } },
+    { option: "Release Notes", onclick: () => { console.log("click"); }, divider: true, disabled: true },
+    { option: "Check for Updates", onclick: async() => { console.log("click"); }, disabled: true },
     { option: "About Editor", onclick: async() => { shell.open("https://github.com/mellobacon/Nucleus") } },
 ];

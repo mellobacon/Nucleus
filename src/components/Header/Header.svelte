@@ -10,7 +10,6 @@
     <div id="menubar">
         <Menu name="File" options={filemenu}></Menu>
         <Menu name="Edit" options={editmenu}></Menu>
-        <Menu name="View" options={viewmenu}></Menu>
         <Menu name="Run" options={runmenu}></Menu>
         <Menu name="Help" options={helpmenu}></Menu>
     </div>

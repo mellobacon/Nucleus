@@ -8,7 +8,7 @@
 <OverflowMenu style="width: auto;" size="sm">
     <div slot="menu" style="padding: 0 1rem; color: white;">{name}</div>
     {#each options as menuoption}
-        <OverflowMenuItem on:click={menuoption.onclick} hasDivider={menuoption.divider}>
+        <OverflowMenuItem on:click={menuoption.onclick} hasDivider={menuoption.divider} disabled={menuoption.disabled}>
             <span class="option_name">{menuoption.option}</span>
             {#if menuoption.shortcut}
                 <span class="shortcut">{menuoption.shortcut}</span>
