@@ -115,6 +115,14 @@ export function closeAllTabs() {
     }
 }
 
+export function closeSavedTabs() {
+    for (const tab of tablist) {
+        if (tab.saved) {
+            closeTab(tab.id);
+        }
+    }
+}
+
 function refreshTabs() {
     if (tablist.length > 0) {
         hidden.set(false);

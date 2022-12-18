@@ -4,7 +4,7 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import { clipboard, path, invoke } from "@tauri-apps/api";
-    import { closeAllTabs, closeTab, setActive } from "./scripts/Tab";
+    import { closeAllTabs, closeSavedTabs, closeTab, setActive } from "./scripts/Tab";
     export let id: number;
     export let target;
     export let filename: string;
@@ -32,7 +32,7 @@
         }
         setActive(id);
     }} ></ContextMenuOption>
-    <ContextMenuOption indented labelText="Close Saved Tabs" on:click={() => {}}>
+    <ContextMenuOption indented labelText="Close Saved Tabs" on:click={() => {closeSavedTabs()}}>
         <span class="contextshortcut" slot="shortcutText">Ctrl + X S</span>
     </ContextMenuOption>
     <ContextMenuOption indented labelText="Close All Tabs" on:click={() => {closeAllTabs()}}>
@@ -42,10 +42,11 @@
     <ContextMenuOption on:click={() => copyToClipboard(filename)}>
         <span slot="labelText" title={filename}>Copy File Name</span>
     </ContextMenuOption>
-    <ContextMenuOption on:click={() => copyToClipboard(filepath)}>
+    <ContextMenuOption disabled={filepath === ""} on:click={() => copyToClipboard(filepath)}>
         <span slot="labelText" title={filepath}>Copy Absolute Path</span>
     </ContextMenuOption>
-    <ContextMenuOption labelText="Show in Explorer" on:click={() => {
+    <ContextMenuOption disabled={filepath === ""} labelText="Show in Explorer" on:click={() => {
+        if (!filepath || filepath === "") return;
         invoke("open_in_explorer",{ path:filepath})
     }}></ContextMenuOption>
 </ContextMenu>
