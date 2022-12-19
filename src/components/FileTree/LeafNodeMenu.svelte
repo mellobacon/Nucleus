@@ -9,7 +9,7 @@
     import { updateTree } from "./scripts/TreeData";
     import { deleteFile } from "../../scripts/EditorFile";
     import Model from "../Modal/Model.svelte";
-    import { closeActiveTab } from "../Tabs/scripts/Tab";
+    import { addFileTab, closeActiveTab } from "../Tabs/scripts/Tab";
     export let target;
     export let filename;
     export let filepath;
@@ -32,7 +32,7 @@
         <ContextMenuOption indented labelText="Rename..." on:click={() => {open = true}}>
             <span class="contextshortcut" slot="shortcutText">F2</span>
         </ContextMenuOption>
-        <ContextMenuOption indented icon={Script} labelText="Edit {filename}"></ContextMenuOption>
+        <ContextMenuOption indented icon={Script} labelText="Edit {filename}" on:click={() => {addFileTab(filepath)}}></ContextMenuOption>
     </ContextMenuOption>
     <ContextMenuOption labelText="Copy Path...">
         <!--TODO: Make this relative instead of file name. Am lazy-->
