@@ -36,11 +36,11 @@
 
 <div id="explorer-toolbar">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="toolbar-button" on:click={treeview?.collapseAll}>
+    <div class="toolbar-button" title="Collapse all open folders" on:click={treeview?.collapseAll}>
         <ArrowUp />
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="toolbar-button" on:click={ async() => {if (tree.length > 0) await updateTree();}}>
+    <div class="toolbar-button" title="Refresh filetree view" on:click={ async() => {if (tree.length > 0) await updateTree();}}>
         <WatsonHealthRotate_360 />
     </div>
 </div>
