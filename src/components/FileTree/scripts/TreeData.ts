@@ -6,16 +6,16 @@ import { EditorFile } from "../../../scripts/EditorFile";
 import { filetree } from "./TreeStore";
 let parentname: string;
 let dir;
-export let loadingtree =writable(false);
+export let loadingtree = writable(false);
 export async function data() {
     let dirname = await dialog.open({ directory: true }) as string;
     if (dirname === null) return;
     dir = dirname;
+    loadingtree.set(true);
     return await loadTree();
 }
 
 async function loadTree() {
-    loadingtree.set(true);
     let children = await fs.readDir(dir, { recursive: true });
     id = 0;
     cache = [];
