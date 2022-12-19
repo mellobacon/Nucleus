@@ -5,11 +5,17 @@
     import Paste from "carbon-icons-svelte/lib/Paste.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import RenameModel from "../Modal/RenameModel.svelte";
-    import { fs, clipboard, invoke, path } from "@tauri-apps/api";
+    import { clipboard, invoke } from "@tauri-apps/api";
+    import { updateTree } from "./scripts/TreeData";
+    import Model from "../Modal/Model.svelte";
+    import { deleteDir } from "../../scripts/EditorFile";
+    import { closeActiveTab } from "../Tabs/scripts/Tab";
     export let target;
     export let filename;
     export let filepath;
+    export let children = [];
     let open;
+    let deleteopen;
 
     async function copyToClipboard(input) {
         await clipboard.writeText(input);
@@ -45,7 +51,8 @@
     }}></ContextMenuOption>
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {
-        await fs.removeDir(filepath, {recursive: true});
+        deleteopen = true;
+        await updateTree();
     }}>
         <span class="contextshortcut" slot="shortcutText">Delete</span>
     </ContextMenuOption>
@@ -53,6 +60,27 @@
 
 {#if open}
 <RenameModel bind:open bind:filename={filename} bind:path={filepath} />
+{/if}
+{#if deleteopen}
+<Model bind:open={deleteopen} heading="Delete Directory" description="Are you sure you want to delete {filename} and all its contents? Deleted files are put in your recycling bin." size="sm" buttons={[
+    {name: "Move to recycle bin", action: async () => {
+        await deleteDir(filepath);
+        await updateTree();
+        for (const child of children) {
+            closeActiveTab(child.path);
+        }
+        deleteopen = false;
+    }},
+    {name: "Delete permanently", title: "Delete file permanently off of OS. Does not go into the recycling bin and cannot be undone", danger: true, action: async () => {
+        await deleteDir(filepath, true);
+        await updateTree();
+        for (const child of children) {
+            closeActiveTab(child.path);
+        }
+        deleteopen = false;
+    }}
+]}
+></Model>
 {/if}
 
 <style>

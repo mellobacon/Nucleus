@@ -109,6 +109,12 @@ export function closeTab(tabid: number) {
         id = 0;
     }
 }
+export function closeActiveTab(path) {
+    for (const tab of tablist) {
+        if (tab.isfile && tab.path === path)
+        closeTab(tab.id);
+    }
+}
 export function closeAllTabs() {
     for (const tab of tablist) {
         closeTab(tab.id);

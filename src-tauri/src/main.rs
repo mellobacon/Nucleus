@@ -48,9 +48,14 @@ fn get_installed_fonts() -> Vec<String> {
     system_fonts::query_all()
 }
 
+#[tauri::command]
+fn delete_file(path: &str) {
+    trash::delete(path).unwrap();
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_in_explorer, open_terminal, get_installed_fonts])
+        .invoke_handler(tauri::generate_handler![open_in_explorer, open_terminal, get_installed_fonts, delete_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

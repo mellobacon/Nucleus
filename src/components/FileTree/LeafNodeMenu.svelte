@@ -5,11 +5,16 @@
     import CopyFile from "carbon-icons-svelte/lib/CopyFile.svelte";
     import Cut from "carbon-icons-svelte/lib/Cut.svelte";
     import Script from "carbon-icons-svelte/lib/Script.svelte";
-    import { fs, clipboard, path, invoke } from "@tauri-apps/api";
+    import { clipboard, invoke } from "@tauri-apps/api";
+    import { updateTree } from "./scripts/TreeData";
+    import { deleteFile } from "../../scripts/EditorFile";
+    import Model from "../Modal/Model.svelte";
+    import { closeActiveTab } from "../Tabs/scripts/Tab";
     export let target;
     export let filename;
     export let filepath;
     let open;
+    let deleteopen;
 
     async function copyToClipboard(input) {
         await clipboard.writeText(input);
@@ -44,7 +49,9 @@
 
     <ContextMenuDivider></ContextMenuDivider>
     <ContextMenuOption labelText="Delete..." on:click={ async() => {
-        await fs.removeFile(filepath);
+        //deleteFile(filepath);
+        //await updateTree();
+        deleteopen = true;
     }}>
         <span class="contextshortcut" slot="shortcutText">Delete</span>
     </ContextMenuOption>
@@ -52,6 +59,23 @@
 
 {#if open}
 <RenameModel bind:open bind:filename={filename} bind:path={filepath} />
+{/if}
+{#if deleteopen}
+<Model bind:open={deleteopen} heading="Delete File" description="Are you sure you want to delete {filename}? Deleted files are put in your recycling bin." size="sm" buttons={[
+    {name: "Move to recycle bin", action: async () => {
+        await deleteFile(filepath);
+        await updateTree();
+        closeActiveTab(filepath);
+        deleteopen = false;
+    }},
+    {name: "Delete permanently", title: "Delete file permanently off of OS. Does not go into the recycling bin and cannot be undone", danger: true, action: async () => {
+        await deleteFile(filepath, true);
+        await updateTree();
+        closeActiveTab(filepath);
+        deleteopen = false;
+    }}
+]}
+></Model>
 {/if}
 
 <style>

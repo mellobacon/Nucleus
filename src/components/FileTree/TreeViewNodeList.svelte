@@ -164,7 +164,7 @@
 {/if}
 
 {#if contextmenu}
-<ParentNodeMenu target={[refLabel]} filename={name} filepath={path}></ParentNodeMenu>
+<ParentNodeMenu target={[refLabel]} children={children} filename={name} filepath={path}></ParentNodeMenu>
 {/if}
 
 <style>
