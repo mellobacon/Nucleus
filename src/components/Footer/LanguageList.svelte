@@ -4,9 +4,15 @@
 
     export let showlangs = false;
     export let langs;
+    let filteredlangs = langs;
 
     let selectedlang = "None";
     let langmode = null;
+
+    let value = "";
+    function filterLangs() {
+        filteredlangs = langs.filter(l => l.lang.toLowerCase().includes(value.toLowerCase()));
+    }
 </script>
 
 <Modal
@@ -18,10 +24,10 @@
     passiveModal
 >
     <div id="model-content">
-        <Search id="language-search" placeholder="Search for a language" size="lg"></Search>
+        <Search id="language-search" bind:value on:input={() => {filterLangs()}} placeholder="Search for a language" size="lg"></Search>
         <div id="langlist">
             <div><span class="note">Missing a language? Search for new ones in Extensions ></span></div>
-            {#each langs as language}
+            {#each filteredlangs as language}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div class="language" on:click={() => {
                     selectedlang = language.lang;
