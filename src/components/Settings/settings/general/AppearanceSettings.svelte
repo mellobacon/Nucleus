@@ -30,4 +30,4 @@
 <Dropdown label="Window Theme" items={themes}></Dropdown>
 <NumberInput label="Editor - Font Size"></NumberInput>
 <Dropdown on:select={handleFontSelect} label="Editor - Font Family" items={fonts}></Dropdown>
-<CheckmarkInput checked={true} on:change={toggleAutosave} labelText="Editor - Autosave:" title="Toggle autosave for files"></CheckmarkInput>
+<CheckmarkInput checked={$autosave} on:change={toggleAutosave} labelText="Editor - Autosave:" title="Toggle autosave for files"></CheckmarkInput>

@@ -6,7 +6,7 @@ export const systemfonts = writable([]);
 export const editorfont = writable("");
 export const windowtheme = writable("");
 export let font = "";
-export const autosave = writable(true);
+export const autosave = writable(false);
 
 export function getShortcut({ primaryKey, secondaryKey, modifier }) {
     if (modifier) {
