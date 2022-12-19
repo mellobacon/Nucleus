@@ -83,6 +83,7 @@
     bind:this={ref}
     role="treeitem"
     {id}
+    title={path}
     tabindex={disabled ? undefined : -1}
     aria-current={id === $activeNodeId || undefined}
     aria-selected={disabled ? undefined : $selectedNodeIds.includes(id)}

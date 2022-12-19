@@ -71,6 +71,7 @@
 
 <li
   bind:this={ref}
+  title={path}
   role="treeitem"
   {id}
   tabindex={disabled ? undefined : -1}
