@@ -1,7 +1,7 @@
 <script>
     import NumberInput from "../../../../components/Input/NumberInput.svelte";
     import Dropdown from "../../../../components/Input/Dropdown.svelte";
-    import { systemfonts, editorfont, setFont, autosave } from "../../../../config/config";
+    import { systemfonts, setFont, autosave } from "../../../../config/config";
     import CheckmarkInput from "../../../../components/Input/CheckmarkInput.svelte";
 
     let themes = [

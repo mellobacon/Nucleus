@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Locked, Notification, Terminal, Unlocked } from "carbon-icons-svelte"
+    import { Notification, Terminal, Unlocked } from "carbon-icons-svelte"
     import { isfile } from "../Tabs/scripts/Tab";
     import { invoke } from "@tauri-apps/api/tauri";
     import { homeDir } from '@tauri-apps/api/path';
