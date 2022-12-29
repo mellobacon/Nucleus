@@ -37,10 +37,12 @@
     
     export let tool = writable({name: "", content: null});
 
-    export function togglePanel(x) {
+    export function togglePanel(x = null) {
         show = !show;
         showpanel.set(show);
-        tool.set({name: x.name, content: x.content});
+        if (x) {
+            tool.set({name: x.name, content: x.content});
+        }
     }
 </script>
 

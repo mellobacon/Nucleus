@@ -1,10 +1,15 @@
 <script lang="ts">
     import { clearNotifications, notifications } from "./Notifications";
     import Notification from "./Notification.svelte";
+    import {togglePanel} from "../Footer/Footer.svelte";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div id="title">Notifications <span on:click={() => {clearNotifications()}}>Clear Notifications</span></div>
+<div id="title">Notifications <span on:click={() => {
+        clearNotifications();
+        togglePanel();
+    }
+}>Clear Notifications</span></div>
 <div id="notifications">
     {#each $notifications as notification}
         <Notification id={notification.id} type={notification.type} message={notification.message} read={notification.read} actions={notification.actions}></Notification>
