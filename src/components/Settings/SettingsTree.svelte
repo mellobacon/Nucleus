@@ -17,4 +17,4 @@
     }
 </script>
 
-<TreeView children={tree} size="compact" on:select={openSetting}></TreeView>
+<TreeView children={tree} size="compact" expanded on:select={openSetting}></TreeView>

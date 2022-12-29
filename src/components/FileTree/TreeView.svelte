@@ -1,4 +1,7 @@
 <script lang="ts">
+  // Code originally from Carbon Components Svelte
+  // Modified because its trash lol
+
   /**
    * @typedef {string | number} TreeNodeId
    * @typedef {{ id: TreeNodeId; name: string; icon?: typeof import("svelte").SvelteComponent; disabled?: boolean; expanded?: boolean; path?: string; }} TreeNode
@@ -47,6 +50,8 @@
   export let dblclick = false;
 
   export let isFileTree = false;
+
+  export let expanded = false;
 
   /**
    * Programmatically expand all nodes
@@ -111,6 +116,9 @@
 
     if (firstFocusableNode != null) {
       firstFocusableNode.tabIndex = "0";
+    }
+    if (expanded) {
+      expandAll();
     }
   });
 
