@@ -15,11 +15,11 @@
     "@codemirror/language-data": "^6.1.0",
     "@tauri-apps/api": "^1.1.0",
     "codemirror": "^6.0.1",
+    "sass": "^1.56.1",
     "sortablejs": "^1.15.0",
     "svelte-splitpanes": "^0.7.3",
     "xterm": "^5.0.0",
-    "xterm-addon-fit": "^0.6.0",
-    "sass": "^1.56.1"
+    "xterm-addon-fit": "^0.6.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
