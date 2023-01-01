@@ -2,7 +2,6 @@ import { EditorView } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
-import { font } from "../../../config/config";
 
 const bg = "#1c1c1c",
     cl = "#282a2e",
@@ -18,7 +17,7 @@ const bg = "#1c1c1c",
 const defaultTheme = EditorView.theme(
     {
         "*": {
-            fontFamily: `"${font}", monospace`
+            fontFamily: `"Ubuntu Mono", monospace`
         },
 
         "&": {
@@ -107,17 +106,38 @@ const defaultTheme = EditorView.theme(
 
 const defaultHighlightStyle = HighlightStyle.define([
     {
-        tag: [t.keyword, t.typeName],
-        color: "#7db7f3" // blue
+        tag: [t.typeName, t.namespace],
+        class: "type"
+    },
+    {
+        tag: t.keyword,
+        class: "keyword"
+    },
+    {
+        tag: t.function(t.variableName),
+        class: "variable"
+    },
+    {
+        tag: [t.string, t.deleted],
+        class: "string"
+    },
+    {
+        tag: [t.inserted],
+        class: "literal"
+    },
+    {
+        tag: [t.labelName],
+        class: "atom"
     },
 
     {
-        tag: [t.deleted, t.character, t.propertyName, t.macroName],
-        color: "#cc8c66" // orange
+        tag: [ t.character, t.propertyName, t.macroName],
+        color: "#cc8c66", // orange
+        class: "test"
     },
 
     {
-        tag: [t.function(t.variableName), t.labelName],
+        tag: [t.labelName],
         color: blue
     },
 
@@ -139,7 +159,6 @@ const defaultHighlightStyle = HighlightStyle.define([
             t.annotation,
             t.modifier,
             t.self,
-            t.namespace
         ],
         color: purple
     },
@@ -195,7 +214,7 @@ const defaultHighlightStyle = HighlightStyle.define([
     },
 
     {
-        tag: [t.processingInstruction, t.string, t.inserted],
+        tag: [t.processingInstruction],
         color: "#df8cc9" // pink
     },
 
@@ -205,4 +224,62 @@ const defaultHighlightStyle = HighlightStyle.define([
     }
 ]);
 
-export const default_theme: Extension = [defaultTheme, syntaxHighlighting(defaultHighlightStyle)];
+const test = HighlightStyle.define([
+        { tag: t.meta, class: "meta" },
+        { tag: t.link, class: "link" },
+        { tag: t.heading, class: "heading" },
+        { tag: t.emphasis, class: "emphasis" },
+        { tag: t.strong, class: "strong" },
+        { tag: t.strikethrough, class: "strikethrough" },
+        { tag: t.keyword, class: "keyword" },
+        {
+          tag: [
+            t.atom,
+            t.bool,
+            t.url,
+            t.contentSeparator,
+            t.labelName,
+          ],
+          class: "atom",
+        },
+        { tag: [t.literal, t.inserted], class: "literal" },
+        { tag: [t.string, t.deleted], class: "string" },
+        {
+          tag: [
+            t.regexp,
+            t.escape,
+            t.special(t.string),
+          ],
+          class: "regex",
+        },
+        {
+          tag: t.definition(t.variableName),
+          class: "variable",
+        },
+        { tag: [t.typeName], class: "type" },
+        { tag: t.className, class: "class" },
+        {
+          tag: [t.special(t.variableName), t.macroName, t.character],
+          class: "macro",
+        },
+        {
+          tag: t.definition(t.propertyName),
+          class: "property",
+        },
+        { tag: t.comment, class: "comment" },
+        { tag: t.invalid, class: "invalid" },
+        { tag: t.bracket, class: "bracket" },
+        { tag: t.function(t.name), class: "functionCall" },
+        { tag: t.namespace, class: "namespace" },
+        {
+            tag: [t.processingInstruction],
+            color: "#df8cc9" // pink
+        },
+        {
+            tag: t.propertyName,
+            class: "propertyName"
+        }
+      ])
+
+
+export const default_theme: Extension = [defaultTheme, syntaxHighlighting(test)];
