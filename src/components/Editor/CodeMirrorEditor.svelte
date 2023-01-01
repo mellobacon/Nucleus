@@ -9,6 +9,8 @@
     import settings from "../../config/nucleus-settings.json";
     import { autosave, executeEditorShortcut } from "../../config/config";
     import { saveFile, updateSaveState } from "../../scripts/EditorFile";
+    import "./syntaxhighlighting.scss";
+    
 
     const shortcuts = Object.entries(settings.shortcuts);
     let keys = {};
