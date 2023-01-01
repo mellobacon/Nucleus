@@ -64,7 +64,7 @@ on:keydown={async (e) => {
 	<Sidebar />
 	<Splitpanes theme="editor-pane">
 		{#if $showsidebarview}
-		<Pane size={25} minSize={10} maxSize={60}>
+		<Pane size={19} minSize={10} maxSize={60}>
 			<SidebarView title={$tool.tabname} content={$tool.content}></SidebarView>
 		</Pane>
 		{/if}
