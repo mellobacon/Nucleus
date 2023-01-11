@@ -6,7 +6,7 @@ import { shell } from "@tauri-apps/api";
 const shortcuts = settings.shortcuts;
 
 export const filemenu = [
-    { option: "New File...", shortcut: getShortcut(shortcuts["new-file-shortcut"]), onclick: addNewFile },
+    { option: "New File...", shortcut: getShortcut(shortcuts["new-file-shortcut"]), onclick: addNewFile  },
     { option: "Open File...", shortcut: getShortcut(shortcuts["open-file-shortcut"]), onclick: openFile },
     { option: "Open Folder", shortcut: getShortcut(shortcuts["open-folder-shortcut"]), onclick: openFolder },
     { option: "Open Recent", onclick: () => { console.log("click"); } },

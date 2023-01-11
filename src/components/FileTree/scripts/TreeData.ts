@@ -7,7 +7,7 @@ let dir;
 export let loadingtree = writable(false);
 export async function data() {
     let dirname = await dialog.open({ directory: true }) as string;
-    if (dirname === null) return;
+    if (dirname === undefined || dirname === null) return;
     dir = dirname;
     loadingtree.set(true);
     return await loadTree();

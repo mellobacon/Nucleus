@@ -24,7 +24,7 @@ export class EditorFile {
 }
 export async function getFile() {
     let path = await dialog.open() as string;
-    if (path === null) return;
+    if (path === null || path === undefined) return;
     return path;
 }
 export async function getFileData(path = "", label = "") {
