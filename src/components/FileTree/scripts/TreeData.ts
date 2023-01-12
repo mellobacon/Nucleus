@@ -2,14 +2,17 @@ import { dialog, fs } from "@tauri-apps/api";
 import { sep } from "@tauri-apps/api/path";
 import { writable } from "svelte/store";
 import { filetree } from "./TreeStore";
+import { homeDir } from '@tauri-apps/api/path';
 let parentname: string;
 let dir;
+var path: string;
 export let loadingtree = writable(false);
 export async function data() {
     let dirname = await dialog.open({ directory: true }) as string;
     if (dirname === undefined || dirname === null) return;
     dir = dirname;
     loadingtree.set(true);
+    globalThis.path = dir;
     return await loadTree();
 }
 
@@ -69,3 +72,11 @@ function buildTree(children: fs.FileEntry[]) {
     }
     return nodes;
 }
+
+// function for getting the absolute path of tree
+export function get_path() {
+    let userpath = homeDir();
+    if (dir != undefined || dir != null) return dir;
+    return userpath;
+}
+
