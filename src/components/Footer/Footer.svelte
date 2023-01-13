@@ -2,13 +2,12 @@
     import { Notification, Terminal, Unlocked } from "carbon-icons-svelte"
     import { isfile } from "../Tabs/scripts/Tab";
     import { invoke } from "@tauri-apps/api/tauri";
-    import { homeDir } from '@tauri-apps/api/path';
-    import { filetree } from "../FileTree/scripts/TreeStore";
     import LanguageList from "./LanguageList.svelte";
     import { languages } from "@codemirror/language-data";
     import { file_language, file_linefeed, line_info } from "../Editor/scripts/Editor";
     import Notifications from "../Notifications/Notifications.svelte";
     import { unreadnotifications } from "../Notifications/Notifications";
+    import { get_path } from "../FileTree/scripts/TreeData";
 
     let langs = [];
     for (let l of languages) {
@@ -21,12 +20,8 @@
     ]
 
     async function spawnTerminal() {
-        let userpath = await homeDir();
-        if ($filetree.length > 0) {
-            userpath = $filetree[0].path;
-        }
-        // opens terminal externally for the time being
-        invoke("open_terminal", {path: userpath});
+        let userpath_tree = await get_path();
+        invoke("open_terminal", {path: userpath_tree});
     }
 </script>
 
@@ -34,7 +29,7 @@
     import { writable } from "svelte/store";
     export let showpanel = writable(false);
     let show = false;
-    
+
     export let tool = writable({name: "", content: null});
 
     export function togglePanel(x = null) {
@@ -55,7 +50,7 @@
     <div id="tools">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span class="tool" on:click={spawnTerminal}>
-            <Terminal /> 
+            <Terminal />
             <span class="toolname">Terminal</span>
         </span>
         {#each tools as tool}
@@ -166,7 +161,7 @@
         border-right: 1px solid #393939;
         border-left: 1px solid #393939;
     }
-    
+
     #apptitle {
         padding: 0 15px;
     }

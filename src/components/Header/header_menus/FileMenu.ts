@@ -9,21 +9,20 @@ export async function addNewFile() {
 }
 export async function openFile() {
     let path = await getFile();
-    if (path === undefined) return;
+    if (path === undefined || path === null) return;
     await addFileTab(path);
 }
+
 export async function openFolder() {
     let treedata = await data();
-    if (treedata === undefined) {
-        loadingtree.set(false);
-        return;
-    }
+    if (treedata === undefined || treedata === null) return;
     filetree.set(treedata);
     workspacename.set(workspace());
     loadingtree.set(false);
+    return;
 }
 export async function saveOpenFile() {
-    await saveFile()
+    await saveFile();
 }
 export async function saveOpenFileAs() {
     await saveFileAs();
