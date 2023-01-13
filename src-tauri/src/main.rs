@@ -6,6 +6,10 @@
 use std::env;
 use std::process::Command;
 use font_loader::system_fonts;
+use std::fs;
+use std::path::Path;
+extern crate trash;
+
 #[tauri::command]
 fn open_in_explorer(path: &str) {
     // FOR OTHER OS REFER - https://doc.rust-lang.org/std/env/consts/constant.OS.html
@@ -49,8 +53,23 @@ fn get_installed_fonts() -> Vec<String> {
 }
 
 #[tauri::command]
-fn delete_file(path: &str) {
-    trash::delete(path).unwrap();
+fn delete_file(path: &str, force: bool) {
+    if path != "" {
+        let path = Path::new(path);
+        if path.exists() {
+            if force {
+                if path.is_file() {
+                    fs::remove_file(path).unwrap();
+                } else if path.is_dir() {
+                    fs::remove_dir_all(path).unwrap();
+                }
+            } else {
+                trash::delete(path).unwrap();
+            }
+        } else {
+            println!("File or folder not found!");
+        }
+    }
 }
 
 fn main() {

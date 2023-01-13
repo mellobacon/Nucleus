@@ -7,7 +7,6 @@
     import Script from "carbon-icons-svelte/lib/Script.svelte";
     import { clipboard, invoke } from "@tauri-apps/api";
     import { updateTree } from "./scripts/TreeData";
-    import { deleteFile } from "../../scripts/EditorFile";
     import Model from "../Modal/Model.svelte";
     import { addFileTab, closeActiveTab } from "../Tabs/scripts/Tab";
     export let target;
@@ -63,13 +62,13 @@
 {#if deleteopen}
 <Model bind:open={deleteopen} heading="Delete File" description="Are you sure you want to delete {filename}? Deleted files are put in your recycling bin." size="sm" buttons={[
     {name: "Move to recycle bin", action: async () => {
-        await deleteFile(filepath);
+        await invoke("delete_file", {"path": filepath, "force": false});
         await updateTree();
         closeActiveTab(filepath);
         deleteopen = false;
     }},
     {name: "Delete permanently", title: "Delete file permanently off of OS. Does not go into the recycling bin and cannot be undone", danger: true, action: async () => {
-        await deleteFile(filepath, true);
+        await invoke("delete_file",{"path": filepath, "force": true});
         await updateTree();
         closeActiveTab(filepath);
         deleteopen = false;

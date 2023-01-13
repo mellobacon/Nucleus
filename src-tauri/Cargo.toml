@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.1", features = ["api-all"] }
 notify = "4.0.0"
 font-loader = "0.11.0"
-trash = "3.0.0"
+trash = "*"
 
 [dev-dependencies]
 windows = "0.32.0"
@@ -27,7 +27,7 @@ windows = "0.32.0"
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = [ "custom-protocol" ]
+default = ["custom-protocol"]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

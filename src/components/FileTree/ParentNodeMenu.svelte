@@ -8,7 +8,6 @@
     import { clipboard, invoke } from "@tauri-apps/api";
     import { updateTree } from "./scripts/TreeData";
     import Model from "../Modal/Model.svelte";
-    import { deleteDir } from "../../scripts/EditorFile";
     import { closeActiveTab } from "../Tabs/scripts/Tab";
     export let target;
     export let filename;
@@ -64,7 +63,7 @@
 {#if deleteopen}
 <Model bind:open={deleteopen} heading="Delete Directory" description="Are you sure you want to delete {filename} and all its contents? Deleted files are put in your recycling bin." size="sm" buttons={[
     {name: "Move to recycle bin", action: async () => {
-        await deleteDir(filepath);
+        await invoke("delete_file", {"path": filepath, "force": false});
         await updateTree();
         for (const child of children) {
             closeActiveTab(child.path);
@@ -72,7 +71,7 @@
         deleteopen = false;
     }},
     {name: "Delete permanently", title: "Delete file permanently off of OS. Does not go into the recycling bin and cannot be undone", danger: true, action: async () => {
-        await deleteDir(filepath, true);
+        await invoke("delete_file", {"path": filepath, "force": false});
         await updateTree();
         for (const child of children) {
             closeActiveTab(child.path);

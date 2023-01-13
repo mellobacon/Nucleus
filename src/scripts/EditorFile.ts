@@ -4,7 +4,6 @@ import { dialog, fs, path } from "@tauri-apps/api";
 import { setActive, tablist } from "../components/Tabs/scripts/Tab";
 import { getLang } from "../components/Editor/scripts/Editor";
 import { updateTree } from "../components/FileTree/scripts/TreeData";
-import { invoke } from "@tauri-apps/api/tauri";
 
 export class EditorFile {
     filename: string;
@@ -130,19 +129,3 @@ export function setFileLanguage(lang, mode = null) {
     }
 }
 
-export async function deleteFile(filepath, force = false) {
-    if (force) {
-        await fs.removeFile(filepath);
-    }
-    else {
-        await invoke("delete_file", {path: filepath});
-    }
-}
-export async function deleteDir(filepath, force = false) {
-    if (force) {
-        await fs.removeDir(filepath, {recursive: true});
-    }
-    else {
-        await invoke("delete_file", {path: filepath});
-    }
-}
