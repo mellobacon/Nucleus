@@ -9,7 +9,6 @@
     import { file_language, file_linefeed, line_info } from "../Editor/scripts/Editor";
     import Notifications from "../Notifications/Notifications.svelte";
     import { unreadnotifications } from "../Notifications/Notifications";
-    import InternalTerminal from "../Terminal/InternalTerminal.svelte";
 
     let langs = [];
     for (let l of languages) {
@@ -19,7 +18,7 @@
     let showlangs = false;
     const tools = [
         {name: "Notifications", content: Notifications, icon: Notification, action: (t) => {togglePanel(t)}},
-        {name: "Terminal", content: InternalTerminal, icon: Terminal, action: spawnTerminal}
+        {name: "Terminal", content: null, icon: Terminal, action: spawnTerminal}
     ]
 
     async function spawnTerminal() {
