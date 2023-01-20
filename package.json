@@ -17,6 +17,7 @@
     "codemirror": "^6.0.1",
     "sass": "^1.56.1",
     "sortablejs": "^1.15.0",
+    "svelte-resize-observer": "^2.0.0",
     "svelte-splitpanes": "^0.7.3",
     "xterm": "^5.0.0",
     "xterm-addon-fit": "^0.6.0"
