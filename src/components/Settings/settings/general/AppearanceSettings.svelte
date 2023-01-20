@@ -3,11 +3,9 @@
     import Dropdown from "../../../../components/Input/Dropdown.svelte";
     import { systemfonts, setFont, autosave } from "../../../../config/config";
     import CheckmarkInput from "../../../../components/Input/CheckmarkInput.svelte";
+    import { getThemes } from "../../../../config/themehandler";
 
-    let themes = [
-        {id: 0, name: "Light"},
-        {id: 1, name: "Dark"},
-    ]
+    let themes = getThemes();
     let fonts = [
         {id: 0, name: "No fonts found"},
     ]
