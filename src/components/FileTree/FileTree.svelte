@@ -54,7 +54,7 @@
             You have not yet opened a folder.
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="toolbar-button-mx" on:click ={async() => { 
+        <div class="load-button" on:click ={async() => { 
             await loadTree();
         }
         }>Open Folder</div>
@@ -64,12 +64,10 @@
     <TreeView isFileTree dblclick bind:this={treeview} size="compact" hideLabel children={tree} on:select={openTab}></TreeView>
 {/if}
 
-
 <style>
     #explorer-toolbar {
         height: 1rem;
         width: 100%;
-        border-bottom: 1px solid #333;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,7 +83,7 @@
         background-color: #333;
     }
 
-    .toolbar-button-mx {
+    .load-button {
         background-color: #222222;
         color: #fff;
         font-family: inherit;
@@ -97,7 +95,7 @@
         cursor: pointer;
     }
 
-    .toolbar-button-mx:hover {
+    .load-button:hover {
         background-color: rgb(50 50 50);
     }
 

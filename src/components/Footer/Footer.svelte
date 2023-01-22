@@ -90,7 +90,6 @@
         width: -webkit-fill-available;
         display: flex;
         align-items: center;
-        border-top: 1px solid #393939;
         font-size: 0.9rem;
         span {
             white-space: nowrap;
@@ -100,7 +99,6 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        border-right: 1px solid #393939;
     }
     #codeinfo {
         display: flex;
@@ -123,7 +121,6 @@
         justify-content: center;
     }
     #tools .tool:hover {
-        background-color: #b1b1b133;
         cursor: pointer;
     }
     .tool {
@@ -136,7 +133,6 @@
                 width: 8px;
                 height: 8px;
                 display: block;
-                background-color: #4589ff;
                 border-radius: 50%;
                 top: 5px;
                 left: 5px;
@@ -160,11 +156,6 @@
         background-color: #b1b1b133;
         cursor: pointer;
     }
-    #codeinfo span:nth-child(even) {
-        border-right: 1px solid #393939;
-        border-left: 1px solid #393939;
-    }
-    
     #apptitle {
         padding: 0 15px;
     }

@@ -40,7 +40,6 @@
 
 <style lang="scss">
     .tab {
-        background-color: #1c1c1c;
         height: 100%;
         min-width: min-content;
         flex-grow: 0.05;
@@ -51,13 +50,6 @@
         align-items: center;
         cursor: pointer;
         padding: 0 10px;
-        box-shadow: inset 0px -0.5px 0 0 #bdd4ff;
-        &:not(.active):hover {
-            background-color: #2b2b2b;
-        }
-    }
-    .tab:not(.tab-active):hover {
-        background-color: #2b2b2b;
     }
     .tab-content::-webkit-scrollbar {
         height: 4px;
@@ -83,16 +75,6 @@
             top: 0.5px;
             position: relative;
         }
-    }
-    .tab-active {
-        background-color: rgb(28, 28, 28);
-        box-shadow: inset 0px -2px 0 0 #1b5fdd !important;
-    }
-    .tab-active.unsaved {
-        box-shadow: inset 0px -2px 0 0 #dd6f1b !important;
-    }
-    .unsaved {
-        box-shadow: inset 0px -0.5px 0 0 #dd6f1b;
     }
     .tab-label {
         text-overflow: ellipsis;

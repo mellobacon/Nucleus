@@ -1,19 +1,100 @@
-$window-background-color: #161616;
 $header-height: 2rem;
 $footer-height: 1.6rem;
 $tab-container-height: 2rem;
 
+:root {
+    --window-borderColor: #333;
+    --window-foreground: #ffffff;
+    --window-accentForeground: transparent;
+    --window-background: #161616;
+    --window-itemHoverBackground: #363636;
+    --window-itemHoverForground: #ffffff;
+    --window-inputBackground: #1f1f1f;
+    --window-inputActiveBackground: transparent;
+    --window-dropdownBackground: #1f1f1f;
+    --window-dropdownActiveBackground: transparent;
+    --window-dropdownItemHoverBackground: #373737;
+    --window-dropdownItemActiveBackground: transparent;
+    --window-dropdownItemActiveForeground: transparent;
+    --window-scrollbarBackground: #4c4c4c38;
+    --titlebar-background: #161616;
+    --titlebar-forground: #ffffff;
+    --titlebar-menuItemHoverBackground: #b1b1b133;
+    --titlebar-menuItemHoverForeground: transparent;
+    --sidebar-background: #161616;
+    --sidebar-foreground: #ffffff;
+    --sidebar-tabHoverBackground: #363636;
+    --sidebar-tabHoverForeground: #ffffff;
+    --sidebar-tabActiveBackground: transparent;
+    --sidebar-tabActiveForeground: #ffffff;
+    --sidebar-tabActiveBorder: #4589ff;
+    --statusbar-background: #161616;
+    --statusbar-foreground: #ffffff;
+    --statusbar-borderColor: #393939;
+    --statusbar-toolHoverBackground: #b1b1b133;
+    --statusbar-toolHoverForeground: #ffffff;
+    --statusbar-toolActiveBackground: transparent;
+    --statusbar-toolActiveForeground: transparent;
+    --statusbar-toolAlertColor: #4589ff;
+    --tabContainer-background: #161616;
+    --tabContainer-foreground: #ffffff;
+    --tabContainer-tabBackground: #1c1c1c;
+    --tabContainer-tabForeground: #ffffff;
+    --tabContainer-tabBorderColor: #bdd4ff;
+    --tabContainer-tabActiveBorderColor: #1b5fdd;
+    --tabContainer-tabActiveBackground: #1c1c1c;
+    --tabContainer-tabActiveForeground: transparent;
+    --tabContainer-tabHoverBackground: #2b2b2b;
+    --tabContainer-tabHoverForeground: transparent;
+    --tabContainer-tabUnsavedColor: #ffffff;
+    --tabContainer-tabUnsavedBorderColor: #dd6f1b;
+    --editor-background: #1c1c1c;
+    --editor-foreground: #ffffff;
+    --filetree-background: #161616;
+    --filetree-foreground: #ffffff;
+    --filetree-nodeHoverBackground: #363636;
+    --filetree-nodeHoverForeground: #ffffff;
+    --filetree-nodeActiveBackground: #363636;
+    --filetree-nodeActiveForeground: transparent;
+    --notification-background: #1f1f1f;
+    --notification-borderColor--default: #4589ff;
+}
+
 #handle, #header {
     height: $header-height;
+}
+#header, #sidebarview .tool-header {
+    border-bottom: 1px solid var(--window-borderColor);
 }
 
 #main {
     height: calc(100vh - $header-height - 0.063rem);
 }
-
-#footer {
-    height: $footer-height;
+#sidebar {
+    border-right: 1px solid var(--window-borderColor);
 }
+.sidebardivider {
+    background-color: var(--window-borderColor);
+}
+.sidebar-tab {
+    &.active {
+        box-shadow: inset -2px 0px 0 0 var(--sidebar-tabActiveBorder);
+    }
+    &:hover {
+        background-color: var(--sidebar-tabHoverBackground);
+    }
+}
+#tool-view {
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--window-scrollbarBackground);
+    }
+}
+.panel {
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--window-scrollbarBackground);
+    }
+}
+
 .main {
     height: 100%;
 }
@@ -21,9 +102,94 @@ $tab-container-height: 2rem;
     height: calc(100% - $footer-height);
 }
 #editor-tabs{
-    background-color: $window-background-color;
+    background-color: var(--window-background);
     min-height: $tab-container-height;
 }
 #tabview {
     padding-top: $tab-container-height;
+    background-color: var(--tabContainer-background);
+}
+.tab {
+    background-color: var(--tabContainer-tabBackground);
+    &:not(.active):hover {
+        background-color: var(--tabContainer-tabHoverBackground);
+    }
+    box-shadow: inset 0px -0.5px 0 0 var(--tabContainer-tabBorderColor);
+}
+.tab:not(.tab-active):hover {
+    background-color: var(--tabContainer-tabHoverBackground);
+}
+.tab-active {
+    background-color: var(--tabContainer-tabActiveBackground);
+    box-shadow: inset 0px -2px 0 0 var(--tabContainer-tabActiveBorderColor) !important;
+}
+.tab-active.unsaved {
+    box-shadow: inset 0px -2px 0 0 var(--tabContainer-tabUnsavedBorderColor) !important;
+}
+.unsaved {
+    box-shadow: inset 0px -0.5px 0 0 var(--tabContainer-tabUnsavedBorderColor);
+}
+#explorer-toolbar {
+    border-bottom: 1px solid var(--window-borderColor);
+}
+
+#footer {
+    height: $footer-height;
+    border-top: 1px solid var(--statusbar-borderColor);
+}
+#info {
+    border-right: 1px solid var(--statusbar-borderColor);
+}
+#tools .tool, #codeinfo span {
+    &:hover {
+        background-color: var(--statusbar-toolHoverBackground);
+    }
+}
+.tool {
+    &.updated {
+        .notification {
+            background-color: var(--statusbar-toolAlertColor);
+        }
+    }
+}
+#codeinfo span:nth-child(even) {
+    border-right: 1px solid var(--statusbar-borderColor);
+    border-left: 1px solid var(--statusbar-borderColor);
+}
+
+#title {
+    background-color: var(--window-background);
+    border-bottom: 1px solid var(--window-borderColor);
+
+}
+
+.notification {
+    background-color: var(--notification-background);
+    border-top: 3px solid var(--notification-borderColor--default);
+    .details .icon {
+        background-color: var(--notification-borderColor--default);
+    }
+    &::before {
+        border-color: var(--window-borderColor);
+    }
+}
+.dropdown-list button {
+    border: 1px solid var(--window-borderColor);
+    background-color: var(--window-inputBackground);
+}
+.item-list {
+    border: solid 1px var(--window-borderColor);
+    background-color: var(--window-inputBackground);
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--window-scrollbarBackground);
+    }
+}
+.item {
+    &:hover {
+        background-color: var(--window-dropdownItemHoverBackground);
+    }
+}
+input {
+    background-color: var(--window-inputBackground);
+    border: 1px solid var(--window-borderColor);
 }

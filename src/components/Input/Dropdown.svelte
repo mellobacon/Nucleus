@@ -72,8 +72,6 @@
             justify-content: center;
             min-height: 2rem;
             width: 100%;
-            border: 1px solid #333;
-            background-color: #1f1f1f;
             padding: 0 20px;
             span {
                 display: flex;
@@ -90,16 +88,11 @@
     }
     .item-list {
         position: absolute;
-        border: 1px solid #333;
-        background-color: #1f1f1f;
         max-height: 15rem;
         overflow-y: overlay;
         min-width: 20rem;
         &::-webkit-scrollbar {
             width: 12px;
-        }
-        &::-webkit-scrollbar-thumb {
-            background-color: #4c4c4c38;
         }
         .item {
             display: flex;
@@ -107,9 +100,6 @@
             min-height: 2rem;
             cursor: pointer;
             padding: 0 20px;
-            &:hover {
-                background-color: #373737;
-            }
         }
     }
 </style>

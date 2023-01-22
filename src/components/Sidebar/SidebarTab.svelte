@@ -17,11 +17,5 @@
         width: 100%;
         height: 3rem;
         cursor: pointer;
-        &.active {
-            box-shadow: inset -2px 0px 0 0 #4589ff;
-        }
-        &:hover {
-            background-color: #363636;
-        }
     }
 </style>

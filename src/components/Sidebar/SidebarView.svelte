@@ -26,16 +26,12 @@
         justify-content: center;
         width: 100%;
         min-height: 2rem;
-        border-bottom: 1px solid #333;
     }
 	#tool-view {
         width: 100%;
         overflow-y: auto;
         &::-webkit-scrollbar {
             width: 12px;
-        }
-        &::-webkit-scrollbar-thumb {
-            background-color: #4c4c4c38;
         }
     }
 </style>

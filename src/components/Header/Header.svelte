@@ -45,7 +45,6 @@
         width: 100%;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid #393939;
     }
     #logo {
         background-size: 20px;

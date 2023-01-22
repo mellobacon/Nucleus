@@ -33,7 +33,6 @@
     #sidebar {
         height: 100%;
         min-width: 3rem;
-        border-right: 1px solid #333;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -46,7 +45,6 @@
     .sidebardivider {
         width: 2rem;
         height: .0625rem;
-        background-color: #333;
         margin: 5px 0 5px 0;
         content: '';
     }

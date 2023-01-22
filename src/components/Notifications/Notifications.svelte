@@ -27,11 +27,9 @@
         min-height: 2rem;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid #333;
         padding: 5px;
         position: absolute;
         width: -webkit-fill-available;
-        background-color: #161616;
         z-index: 1;
         justify-content: space-between;
         box-shadow: 0px 3px 3px -2px #161616;

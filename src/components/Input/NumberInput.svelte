@@ -20,14 +20,12 @@
         height: 2rem;
         width: 3rem;
         input {
-            background-color: #1f1f1f;
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            border: 1px solid #333;
             color: white;
             &::-webkit-inner-spin-button {
                 -webkit-appearance: none;

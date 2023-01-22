@@ -37,9 +37,6 @@
         &::-webkit-scrollbar {
             width: 12px;
         }
-        &::-webkit-scrollbar-thumb {
-            background-color: #4c4c4c38;
-        }
     }
     #container {
         height: 100%;

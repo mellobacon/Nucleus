@@ -197,7 +197,7 @@ on:mousedown = {(e) => {
         width: 20px;
     }
     :global(.cm-scroller)::-webkit-scrollbar-thumb {
-        background-color: #4c4c4c38;;
+        background-color: #4c4c4c38;
     }
     :global(.cm-scroller)::-webkit-scrollbar-corner {
         background-color: transparent;

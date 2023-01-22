@@ -48,7 +48,6 @@
     $notification-border-width: 1px;
     $error-color: #c02b2b;
     $warning-color: #ffeb10;
-    $default-color: #4589ff;
     .info {
         color: #6d6d6d;
         font-weight: 200;
@@ -71,10 +70,8 @@
     .notification {
         display: flex;
         min-height: $notification-height;
-        background-color: #1f1f1f;
         margin-bottom: 0.8rem;
         position: relative;
-        border-top: 3px solid $default-color;
         &.warning {
             border-top: 3px solid $warning-color;
             .icon {
@@ -107,7 +104,6 @@
             border-width: 0 $notification-border-width $notification-border-width $notification-border-width;
             border-style: solid;
             box-sizing: border-box;
-            border-color: #333;
             content: "";
         }
         .details {
@@ -118,7 +114,6 @@
             align-items: center;
             .icon {
                 border-radius: 50%;
-                background-color: $default-color;
                 min-width: 20px;
                 min-height: 20px;
                 margin-right: 10px;

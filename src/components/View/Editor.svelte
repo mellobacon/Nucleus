@@ -8,7 +8,6 @@
     #tabview {
         width: 100%;
         height: 100%;
-        background-color: #161616;
         z-index: 1;
         position: absolute;
     }
