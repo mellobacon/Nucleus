@@ -7,7 +7,7 @@
             "foreground": "#ffffff",
             "accentForeground": "",
             "background": "#161616",
-            "itemHoverBackground": "#363636",
+            "itemHoverBackground": "#353535",
             "itemHoverForeground": "#ffffff",
             "inputBackground": "#1f1f1f",
             "inputActiveBackground": "",
@@ -21,6 +21,7 @@
         "titlebar": {
             "background": "#161616",
             "foreground": "#ffffff",
+            "menuItemActiveBackground": "#262626",
             "menuItemHoverBackground": "#b1b1b133",
             "menuItemHoverForeground": ""
         },
@@ -58,7 +59,8 @@
         },
         "editor": {
             "background": "#1c1c1c",
-            "foreground": "#ffffff"
+            "foreground": "#ffffff",
+            "gutterActiveBackground": "#333"
         },
         "filetree": {
             "background": "#161616",
@@ -70,6 +72,7 @@
         },
         "notification": {
             "background": "1f1f1f",
+            "accentColor": "#bdd4ff",
             "borderColor": {
                 "default": "4589ff"
             }

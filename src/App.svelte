@@ -9,9 +9,10 @@
 	import settings from "./config/nucleus-settings.json";
     import { executeWindowShortcut, getInstalledFonts } from "./config/config";
     import { Action, addNotification, NotifType } from "./components/Notifications/Notifications";
-    import { onMount } from "svelte";
+    import { beforeUpdate, onMount } from "svelte";
     import { shell } from "@tauri-apps/api";
     import { invoke } from "@tauri-apps/api/tauri";
+    import { loadTheme } from "./config/themehandler";
 
 	const shortcuts = Object.entries(settings.shortcuts);
 	let keys = {};
@@ -26,10 +27,10 @@
         }
         return "";
     }
-
     onMount(async () => {
         let fonts: [] = await invoke("get_installed_fonts");
         getInstalledFonts(fonts);
+        loadTheme("Dark");
         addNotification(NotifType.Message, "Nucleus editor is in a work in progress state. Expect missing features and bugs", [new Action("GitHub link", () => {shell.open("https://github.com/mellobacon/Nucleus")}), new Action("Report issue/feature", () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")})]);
     })
 </script>
