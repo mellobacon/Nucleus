@@ -11,12 +11,12 @@ export function getThemes() {
 }
 
 export async function loadTheme(name: string) {
-    let themefile = await import(`../config/themes/${name}-theme.json`);
+    let themefile = await import(`../config/themes/${name.toLowerCase()}-theme.json`);
     const theme = Object.entries(themefile.theme);
     for (const t of theme) {
         for (const p of Object.entries(t[1])) {
-            const property = `${t[0]}.${p[0]}`;
-            if (document.documentElement.style.getPropertyValue(property)) {
+            const property = `${t[0]}-${p[0]}`;
+            if (getComputedStyle(document.documentElement).getPropertyValue(`--${property}`)) {
                 document.documentElement.style.setProperty(`--${property}`, p[1]);
             }
         }
