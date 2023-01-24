@@ -1,0 +1,82 @@
+{
+    "theme-name": "Light",
+    "author": "e",
+    "theme": {
+        "window": {
+            "borderColor": "#d2d2d2",
+            "foreground": "#000000",
+            "accentForeground": "",
+            "background": "#ffffff",
+            "itemHoverBackground": "#c3c3c3",
+            "itemHoverForeground": "#000000",
+            "inputBackground": "#eeeeee",
+            "inputActiveBackground": "",
+            "dropdownBackground": "#1f1f1f",
+            "dropdownActiveBackground": "",
+            "dropdownItemHoverBackground": "#c3c3c3",
+            "dropdownItemActiveBackground": "",
+            "dropdownItemActiveForeground": "",
+            "scrollbarBackground": "#4c4c4c38"
+        },
+        "titlebar": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "menuItemActiveBackground": "#d2d2d2",
+            "menuItemHoverBackground": "#b1b1b133",
+            "menuItemHoverForeground": ""
+        },
+        "sidebar": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "tabHoverBackground": "#c3c3c3",
+            "tabHoverForeground": "#000000",
+            "tabActiveBackground": "",
+            "tabActiveForeground": "#000000",
+            "tabActiveBorder": "#4589ff"
+        },
+        "statusbar": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "toolHoverBackground": "#c3c3c3",
+            "toolHoverForeground": "#000000",
+            "toolActiveBackground": "",
+            "toolActiveForeground": "",
+            "toolAlertColor": "#4589ff"
+        },
+        "tabContainer": {
+            "background": "#eeeeee",
+            "foreground": "#000000",
+            "menuItemActiveBackground": "#eeeeee",
+            "tabBackground": "#eeeeee",
+            "tabForeground": "#000000",
+            "tabBorderColor": "#bdd4ff",
+            "tabActiveBorderColor": "#1b5fdd",
+            "tabActiveBackground": "#ffffff",
+            "tabActiveForeground": "",
+            "tabHoverBackground": "#dfdfdf",
+            "tabHoverForeground": "",
+            "tabUnsavedColor": "#000000",
+            "tabUnsavedBorderColor": "#dd6f1b"
+        },
+        "editor": {
+            "background": "#ffffff",
+            "foreground": "#1c1c1c",
+            "gutterActiveBackground": "#dfdfdf"
+        },
+        "filetree": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "nodeHoverBackground": "#c3c3c3",
+            "nodeHoverForeground": "#000000",
+            "nodeActiveBackground": "#c3c3c3",
+            "nodeActiveForeground": ""
+        },
+        "notification": {
+            "background": "1f1f1f",
+            "accentColor": "#84afff",
+            "borderColor": {
+                "default": "4589ff"
+            }
+        }
+    }
+}
