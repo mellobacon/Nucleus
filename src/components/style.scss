@@ -7,7 +7,7 @@ $tab-container-height: 2rem;
     --window-foreground: #ffffff;
     --window-accentForeground: transparent;
     --window-background: #161616;
-    --window-itemHoverBackground: #363636;
+    --window-itemHoverBackground: #353535;
     --window-itemHoverForground: #ffffff;
     --window-inputBackground: #1f1f1f;
     --window-inputActiveBackground: transparent;
@@ -21,6 +21,7 @@ $tab-container-height: 2rem;
     --titlebar-forground: #ffffff;
     --titlebar-menuItemHoverBackground: #b1b1b133;
     --titlebar-menuItemHoverForeground: transparent;
+    --titlebar-menuItemActiveBackground: #262626;
     --sidebar-background: #161616;
     --sidebar-foreground: #ffffff;
     --sidebar-tabHoverBackground: #363636;
@@ -50,6 +51,7 @@ $tab-container-height: 2rem;
     --tabContainer-tabUnsavedBorderColor: #dd6f1b;
     --editor-background: #1c1c1c;
     --editor-foreground: #ffffff;
+    --editor-gutterActiveBackground: #222227;
     --filetree-background: #161616;
     --filetree-foreground: #ffffff;
     --filetree-nodeHoverBackground: #363636;
@@ -58,15 +60,55 @@ $tab-container-height: 2rem;
     --filetree-nodeActiveForeground: transparent;
     --notification-background: #1f1f1f;
     --notification-borderColor--default: #4589ff;
+    --notification-accentColor: #BDD4FF;
 }
 
+body {
+    color: var(--window-foreground) !important;
+    background-color: var(--window-background) !important;
+}
+button {
+    color: var(--window-foreground);
+    &:hover {
+        background-color: var(--window-itemHoverBackground) !important;
+    }
+}
+input {
+    color: var(--window-foreground);
+}
+button:not(:disabled):active {
+    background-color: var(--titlebar-menuItemActiveBackground);
+}
 #handle, #header {
     height: $header-height;
 }
 #header, #sidebarview .tool-header {
     border-bottom: 1px solid var(--window-borderColor);
 }
-
+#header {
+    .divider {
+        background-color: var(--window-borderColor);
+    }
+}
+.bx--overflow-menu-options {
+    background-color: var(--titlebar-menuItemActiveBackground) !important;
+}
+.bx--overflow-menu-options::after {
+    background-color: var(--titlebar-menuItemActiveBackground) !important;
+}
+.bx--overflow-menu-options__option {
+    button:hover {
+        background-color: transparent !important;
+    }
+}
+.bx--overflow-menu.bx--overflow-menu--open {
+    background-color: var(--titlebar-menuItemActiveBackground) !important;
+}
+.window-controls {
+    .window-button {
+        color: var(--window-foreground);
+    }
+}
 #main {
     height: calc(100vh - $header-height - 0.063rem);
 }
@@ -89,6 +131,13 @@ $tab-container-height: 2rem;
         background-color: var(--window-scrollbarBackground);
     }
 }
+.toolbar-button, .load-button {
+    background-color: var(--window-inputBackground);
+    color: var(--window-foreground);
+    &:hover {
+        background-color: var(--window-itemHoverBackground);
+    }
+}
 .panel {
     &::-webkit-scrollbar-thumb {
         background-color: var(--window-scrollbarBackground);
@@ -102,7 +151,7 @@ $tab-container-height: 2rem;
     height: calc(100% - $footer-height);
 }
 #editor-tabs{
-    background-color: var(--window-background);
+    background-color: var(--tabContainer-background);
     min-height: $tab-container-height;
 }
 #tabview {
@@ -110,6 +159,7 @@ $tab-container-height: 2rem;
     background-color: var(--tabContainer-background);
 }
 .tab {
+    color: var(--tabContainer-tabForeground);
     background-color: var(--tabContainer-tabBackground);
     &:not(.active):hover {
         background-color: var(--tabContainer-tabHoverBackground);
@@ -129,10 +179,38 @@ $tab-container-height: 2rem;
 .unsaved {
     box-shadow: inset 0px -0.5px 0 0 var(--tabContainer-tabUnsavedBorderColor);
 }
+.tab-content {
+    :nth-child(2) {
+        background-color: var(--tabContainer-tabUnsavedColor);
+    }
+}
 #explorer-toolbar {
     border-bottom: 1px solid var(--window-borderColor);
 }
+#settings {
+    background-color: var(--editor-background);
+}
 
+
+
+
+.cm-editor, .cm-panels {
+    background-color: var(--editor-background);
+    color: var(--editor-foreground);
+}
+.cm-gutters {
+    background-color: var(--window-background) !important;
+}
+.cm-activeLineGutter {
+    background-color: var(--editor-gutterActiveBackground) !important;
+    color: var(--editor-foreground) !important;
+}
+.cm-content, .cm-line {
+    caret-color: var(--editor-foreground) !important;
+}
+.cm-focused .cm-cursor {
+    border-left-color: var(--editor-foreground) !important;
+}
 #footer {
     height: $footer-height;
     border-top: 1px solid var(--statusbar-borderColor);
@@ -160,9 +238,10 @@ $tab-container-height: 2rem;
 #title {
     background-color: var(--window-background);
     border-bottom: 1px solid var(--window-borderColor);
-
+    span {
+        color: var(--notification-accentColor);
+    }
 }
-
 .notification {
     background-color: var(--notification-background);
     border-top: 3px solid var(--notification-borderColor--default);
@@ -171,6 +250,14 @@ $tab-container-height: 2rem;
     }
     &::before {
         border-color: var(--window-borderColor);
+    }
+    .action-button {
+        color: var(--notification-accentColor);
+    }
+    .close-button {
+        .bx--toast-notification__close-button .bx--toast-notification__close-icon {
+            fill: var(--window-foreground);
+        }
     }
 }
 .dropdown-list button {
@@ -192,4 +279,47 @@ $tab-container-height: 2rem;
 input {
     background-color: var(--window-inputBackground);
     border: 1px solid var(--window-borderColor);
+}
+.tools .play {
+    background-color: var(--tabContainer-background);
+    &:hover {
+        background-color: var(--tabContainer-tabHoverBackground);
+    }
+}
+.bx--overflow-menu__icon {
+    fill: var(--window-foreground) !important;
+}
+.bx--tree .bx--tree-node__label__details {
+    color: var(--window-foreground) !important;
+}
+.bx--tree .bx--tree-node__label:hover {
+    background-color: var(--filetree-nodeHoverBackground) !important;
+    color: var(--filetree-nodeHoverForeground) !important;
+}
+.bx--tree .bx--tree-node {
+    color: var(--filetree-foreground) !important;
+}
+.bx--checkbox-label::before {
+    border: 1px solid var(--window-borderColor) !important;
+}
+.bx--menu, .bx--menu-option {
+    background-color: var(--window-background) !important;
+    color: var(--window-foreground) !important;
+}
+.bx--menu-option {
+    &:hover {
+        background-color: var(--window-itemHoverBackground) !important;
+    }
+}
+.bx--modal-container {
+    background-color: var(--titlebar-menuItemActiveBackground) !important;
+}
+.bx--modal .bx--text-input {
+    background-color: var(--window-inputBackground) !important;
+}
+.bx--modal-content, .bx--modal-header__heading, .bx--text-input {
+    color: var(--window-foreground) !important;
+}
+.bx--label {
+    color: #898989 !important;
 }

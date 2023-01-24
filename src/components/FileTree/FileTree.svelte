@@ -79,13 +79,8 @@
         cursor: pointer;
         margin: 0 3px 0 3px;
     }
-    .toolbar-button:hover {
-        background-color: #333;
-    }
 
     .load-button {
-        background-color: #222222;
-        color: #fff;
         font-family: inherit;
         text-align: center;
         padding: 7px 30px;
@@ -93,10 +88,6 @@
         margin-bottom: 5px;
         display: inline-block;
         cursor: pointer;
-    }
-
-    .load-button:hover {
-        background-color: rgb(50 50 50);
     }
 
     .text-form {

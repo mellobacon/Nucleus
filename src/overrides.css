@@ -13,15 +13,13 @@ Styling overrides for carbon components
     max-width: none !important;
     outline: none !important;
     justify-content: space-between;
+    color: inherit;
 }
 .bx--overflow-menu-options__btn:focus {
     outline: none !important;
 }
 .bx--overflow-menu-options__option:hover {
     background-color: #144b6b !important;
-}
-button:not(:disabled):active {
-    background-color: #262626 !important;
 }
 .bx--overflow-menu:focus, .bx--overflow-menu__trigger:focus {
     outline: none !important;

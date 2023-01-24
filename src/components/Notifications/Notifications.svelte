@@ -36,7 +36,6 @@
         span {
             font-weight: 200;
             font-size: 0.7rem;
-            color: #BDD4FF;
             cursor: pointer;
             &:hover {
                 text-decoration: underline;

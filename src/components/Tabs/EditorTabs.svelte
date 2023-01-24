@@ -79,11 +79,7 @@
                 height: 100%;
                 cursor: pointer;
                 padding: 0 5px;
-                background-color: #161616;
                 box-shadow: inset 0px -1px 0 0 #333;
-                &:hover {
-                    background-color: #ffffff12;
-                }
             }
             :global(svg) {
                 width: 20px;

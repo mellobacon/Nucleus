@@ -20,26 +20,8 @@ const defaultTheme = EditorView.theme(
             fontFamily: `"Ubuntu Mono", monospace`
         },
 
-        "&": {
-            color: fg,
-            backgroundColor: bg
-        },
-
-        ".cm-content": {
-            caretColor: orange
-        },
-
-        "&.cm-focused .cm-cursor": {
-            borderLeftColor: orange
-        },
-
         "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": {
             backgroundColor: sel
-        },
-
-        ".cm-panels": {
-            backgroundColor: bg,
-            color: fg
         },
 
         ".cm-panels.cm-panels-top": {
@@ -74,14 +56,8 @@ const defaultTheme = EditorView.theme(
         },
 
         ".cm-gutters": {
-            backgroundColor: bg,
             color: com,
             border: "none"
-        },
-
-        ".cm-activeLineGutter": {
-            backgroundColor: bg,
-            color: "white"
         },
 
         ".cm-foldPlaceholder": {

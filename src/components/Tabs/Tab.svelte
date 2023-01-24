@@ -35,7 +35,7 @@
 </div>
 
 {#if contextmenu}
-<TabMenu target={tab} id={id} filename={label} filepath={path} />
+    <TabMenu target={tab} id={id} filename={label} filepath={path} />
 {/if}
 
 <style lang="scss">
@@ -45,7 +45,6 @@
         flex-grow: 0.05;
         display: flex;
         overflow: hidden;
-        color: white;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
@@ -69,7 +68,6 @@
             display: block;
             width: 6px;
             height: 6px;
-            background-color: white;
             border-radius: 50%;
             left: -11px;
             top: 0.5px;

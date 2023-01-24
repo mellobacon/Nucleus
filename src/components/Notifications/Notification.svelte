@@ -129,7 +129,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: #BDD4FF;
                 cursor: pointer;
                 &:nth-child(2) {
                     margin: 0 0.6rem;
@@ -142,7 +141,6 @@
         .close-button {
             flex-grow: 1;
             :global(.bx--toast-notification__close-button .bx--toast-notification__close-icon) {
-                fill: #ffffff;
                 cursor: pointer;
                 z-index: 1;
             }

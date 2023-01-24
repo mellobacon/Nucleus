@@ -33,7 +33,6 @@
         height: 100%;
         width: 100%;
         display: flex;
-        background: #1c1c1c;
         overflow-y: hidden;
         overflow-x: overlay;
         &::-webkit-scrollbar {

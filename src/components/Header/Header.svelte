@@ -65,7 +65,6 @@
     .divider {
 		width: 0.0625rem;
 		height: 1.2rem;
-		background-color: #393939;
 		margin: 0 4px;
 	}
     #workspace {
@@ -97,7 +96,6 @@
 			text-align: center;
 			padding: 0 5px;
 			font-size: 14px;
-			color: white;
 			cursor: pointer;
 			&:not(#close):hover {
 				background-color: #262626;
@@ -118,5 +116,4 @@
 			}
 		}
 	}
-    
 </style>

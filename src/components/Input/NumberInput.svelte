@@ -26,7 +26,6 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            color: white;
             &::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
