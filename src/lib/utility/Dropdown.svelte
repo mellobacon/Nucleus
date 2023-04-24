@@ -22,18 +22,14 @@
     }
 }}></svelte:window>
 
-{#if menu.menuname}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div bind:this={button} class="dropdown-button" on:click={() => {open = !open}}>
-        {menu.menuname}
-    </div>
-{/if}
-{#if menu.icon}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div bind:this={button} class="dropdown-button" on:click={() => {open = !open}}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div bind:this={button} class="dropdown-button" on:click={() => {open = !open}}>
+    {#if menu.icon}
         <svelte:component this={menu.icon}></svelte:component>
-    </div>
-{/if}
+    {:else}
+        {menu.menuname}
+    {/if}
+</div>
 
 {#if open}
     <div bind:this={dropdownList} class="dropdown-list">
