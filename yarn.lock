@@ -291,6 +291,11 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
+carbon-icons-svelte@^11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/carbon-icons-svelte/-/carbon-icons-svelte-11.4.0.tgz#1bab38ac0c8f778e0431f8df54324829c81cfd30"
+  integrity sha512-p/llZde2kP2BI9SOqM+QFKGfQnYrW+4dVxF1rAYriEADXDsjt9EYlh+KpQ5qf4JpXAq+e2+TB/r/lIG1xdUbAQ==
+
 "chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.1:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"

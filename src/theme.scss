@@ -1,0 +1,65 @@
+$foreground: #ffffff;
+$window-background-color: #161616;
+$header-background-color: #2D2D2D;
+
+$toolbar-button-hover-color: #414040;
+
+$dropdown-background-color: $header-background-color;
+$dropdownButton-background-color: $header-background-color;
+$dropdownButtonText-hover-color: $foreground;
+$dropdownItem-hover-color: $window-background-color;
+$dropdownItemText-hover-color: $foreground;
+
+$header-height: 2rem;
+$footer-height: 1.6rem;
+$tab-container-height: 2rem;
+
+$border-color: #414040;
+
+html {
+    background-color: $window-background-color;
+}
+#handle, #header {
+    height: $header-height;
+}
+#header {
+    background-color: $header-background-color;
+    border-bottom: 1px solid $border-color;
+}
+.dropdown-button {
+    &:hover {
+        background-color: $toolbar-button-hover-color;
+    }
+}
+.dropdown-list {
+    background-color: $dropdown-background-color;
+}
+.dropdown-item {
+    &:hover {
+        background-color: $dropdownItem-hover-color;
+    }
+}
+.divider {
+    background-color: $border-color;
+}
+
+#main {
+    height: calc(100vh - $header-height - 0.063rem);
+}
+
+#footer {
+    height: $footer-height;
+}
+.main {
+    height: 100%;
+}
+#container > .splitpanes {
+    height: calc(100% - $footer-height);
+}
+#editor-tabs{
+    background-color: $window-background-color;
+    min-height: $tab-container-height;
+}
+#tabview {
+    padding-top: $tab-container-height;
+}

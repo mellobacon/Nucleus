@@ -1,9 +1,11 @@
 <script lang="ts">
+    import Header from "./lib/Header.svelte";
 	
 </script>
 
+<Header />
 <div id="main">
-	<h1>TEST</h1>
+	
 </div>
 <style>
 	#main {
