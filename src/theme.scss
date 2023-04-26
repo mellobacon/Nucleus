@@ -70,3 +70,10 @@ html {
 .editor-panes .splitpanes__splitter {
     background-color: $border-color;
 }
+
+#statusbar {
+    border-top: 1px solid  $border-color;
+    #title {
+        border-right: 1px solid $border-color;
+    }
+}

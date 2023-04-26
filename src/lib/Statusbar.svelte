@@ -10,7 +10,6 @@
         width: -webkit-fill-available;
         display: flex;
         align-items: center;
-        border-top: 1px solid #393939;
         font-size: 0.9rem;
     }
     #title {
