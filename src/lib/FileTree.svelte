@@ -3,10 +3,10 @@
 </script>
 
 {#if tree.length === 0}
-<div class="container">
-    <span>No folder/workspace open</span>
-    <button class="toolbar-button">Open Folder</button>
-</div>
+    <div class="container">
+        <span>No folder/workspace open</span>
+        <button class="toolbar-button">Open Folder</button>
+    </div>
 {/if}
 
 <style lang="scss">

@@ -61,8 +61,8 @@
         {/each}
     </div>
     <div class="divider"></div>
-    <div id="workspace">
-        Nucleus
+    <div id="workspace" title="path/to/deez/nuts/or/something/filename.txt">
+        filename.txt
     </div>
     <div id="handle" data-tauri-drag-region></div>
     <div class="tools">

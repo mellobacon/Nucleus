@@ -14,6 +14,7 @@ $tab-hover-color: #363636;
 $tabBorder-active-color: red;
 
 $header-height: 2rem;
+$statusbar-height: 1.5rem;
 $footer-height: 1.6rem;
 $tab-container-height: 2rem;
 
@@ -24,6 +25,9 @@ html {
 }
 #handle, #header {
     height: $header-height;
+}
+#statusbar {
+    height: $statusbar-height;
 }
 #header {
     background-color: $header-background-color;
@@ -47,7 +51,7 @@ html {
 }
 
 #main {
-    height: calc(100vh - $header-height - 0.063rem);
+    height: calc(100vh - $header-height - $statusbar-height - 0.063rem * 2);
 }
 
 #sidebar {

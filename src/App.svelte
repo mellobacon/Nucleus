@@ -3,6 +3,7 @@
     import Sidebar, { showsidebarview, tool} from "./lib/Sidebar.svelte";
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./lib/SidebarView.svelte";
+    import Statusbar from "./lib/Statusbar.svelte";
 </script>
 
 <Header />
@@ -17,6 +18,7 @@
 		<Pane></Pane>
 	</Splitpanes>
 </div>
+<Statusbar />
 <style>
 	#main {
 		display: flex;
