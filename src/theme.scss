@@ -62,3 +62,7 @@ html {
         background-color: $tab-hover-color;
     }
 }
+
+.editor-panes .splitpanes__splitter {
+    background-color: $border-color;
+}

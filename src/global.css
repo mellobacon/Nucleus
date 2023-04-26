@@ -69,3 +69,48 @@ button {
 	border: none;
 	color: white;
 }
+
+.editor-panes .splitpanes__pane {
+    background-color: transparent;
+    transition: none !important;
+}
+.editor-panes .splitpanes__splitter {
+    position: relative;
+}
+.editor-panes .splitpanes__splitter.splitpanes__splitter__active {
+    z-index: 5;
+}
+.editor-panes .splitpanes__splitter::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: opacity 0.2s;
+    background-color: #2d6fd2;
+    opacity: 0;
+    z-index: 2;
+}
+.editor-panes .splitpanes__splitter:hover::before {
+    opacity: 1;
+}
+.editor-panes.splitpanes--vertical > .splitpanes__splitter::before {
+    left: -1.5px;
+    right: -1.5px;
+    height: 100%;
+    cursor: ew-resize;
+}
+.editor-panes.splitpanes--horizontal > .splitpanes__splitter::before {
+    top: -1.5px;
+    bottom: -1.5px;
+    width: 100%;
+    cursor: ns-resize;
+}
+.editor-panes.splitpanes--dragging .splitpanes__splitter::before {
+    opacity: 1;
+}
+.editor-panes.splitpanes--vertical.splitpanes--dragging {
+    cursor: ew-resize;
+}
+.editor-panes.splitpanes--horizontal.splitpanes--dragging {
+    cursor: ns-resize;
+}
