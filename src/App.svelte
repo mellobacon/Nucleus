@@ -9,7 +9,11 @@
 <div id="main">
 	<Sidebar />
 	<Splitpanes theme="editor-panes">
-		<Pane size={25} minSize={10} maxSize={60}></Pane>
+		{#if $showsidebarview}
+			<Pane size={25} minSize={10} maxSize={60}>
+				<SidebarView content={$tool.content}></SidebarView>
+			</Pane>
+		{/if}
 		<Pane></Pane>
 	</Splitpanes>
 </div>

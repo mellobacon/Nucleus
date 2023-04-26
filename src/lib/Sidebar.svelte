@@ -1,9 +1,10 @@
 <script lang="ts">
     import Folder from "carbon-icons-svelte/lib/Folder.svelte";
     import SidebarTab from "./SidebarTab.svelte";
+    import FileTree from "./FileTree.svelte";
 
     export let tabs = [
-        {id: 0, tabname: "Explorer", icon: Folder, content: "Git"}
+        {id: 0, tabname: "Explorer", icon: Folder, content: FileTree}
     ];
 </script>
 

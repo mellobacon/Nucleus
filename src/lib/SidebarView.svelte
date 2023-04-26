@@ -4,10 +4,7 @@
 <div id="sidebarview">
     {#if content}
         <div id="tool-view">
-            <!---
             <svelte:component this={content}></svelte:component>
-            -->
-            {content}
         </div>
     {/if}
 </div>
