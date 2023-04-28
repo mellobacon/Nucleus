@@ -1,27 +1,38 @@
-$foreground: #ffffff;
-$window-background-color: #171717;
-$header-background-color: #2D2D2D;
-
-$toolbar-button-hover-color: #414040;
-
-$dropdown-background-color: $header-background-color;
-$dropdownButton-background-color: $header-background-color;
-$dropdownButtonText-hover-color: $foreground;
-$dropdownItem-hover-color: $window-background-color;
-$dropdownItemText-hover-color: $foreground;
-
-$tab-hover-color: #363636;
-$tabBorder-active-color: red;
-
 $header-height: 2rem;
 $statusbar-height: 1.5rem;
 $footer-height: 1.6rem;
 $tab-container-height: 2rem;
 
-$border-color: #414040;
+:root {
+    --window-foreground: #ffffff;
+    --window-background: #171717;
+    --window-borderColor: #414040;
+
+    --window-dropdownBackground: #2D2D2D;
+    --window-dropdownButtonBackground: #2D2D2D;
+    --window-dropdownButtonHoverForeground: #ffffff;
+    --window-dropdownItemHoverBackground: #171717;
+    --window-dropdownItemHoverForeground: #ffffff;
+
+    --header-background: #2D2D2D;
+    --header-foreground: #ffffff;
+    --header-buttonHoverBackground: #414040;
+
+    --sidebar-background: transparent;
+    --sidebar-foreground: #ffffff;
+    --sidebar-tabHoverBackground: #363636;
+    --sidebar-tabHoverForeground: #ffffff;
+    --sidebar-tabActiveBackground: transparent;
+    --sidebar-tabActiveForeground: #ffffff;
+    --sidebar-tabActiveBorder: red;
+
+    --statusbar-background: transparent;
+    --statusbar-foreground: #ffffff;
+}
 
 html {
-    background-color: $window-background-color;
+    background-color: var(--window-background);
+    color: var(--window-foreground);
 }
 #handle, #header {
     height: $header-height;
@@ -30,24 +41,24 @@ html {
     height: $statusbar-height;
 }
 #header {
-    background-color: $header-background-color;
-    border-bottom: 1px solid $border-color;
+    background-color: var(--header-background);
+    box-shadow: rgb(29 29 29) 0px 1.5px 0px;
 }
 .dropdown-button {
     &:hover {
-        background-color: $toolbar-button-hover-color;
+        background-color: var(--header-buttonHoverBackground);
     }
 }
 .dropdown-list {
-    background-color: $dropdown-background-color;
+    background-color: var(--window-dropdownBackground);
 }
 .dropdown-item {
     &:hover {
-        background-color: $dropdownItem-hover-color;
+        background-color:  var(--window-dropdownItemHoverBackground);
     }
 }
 .divider {
-    background-color: $border-color;
+    background-color: var(--window-borderColor);
 }
 
 #main {
@@ -55,25 +66,31 @@ html {
 }
 
 #sidebar {
-    border-right: 1px solid $border-color;
+    border-right: 1px solid var(--window-borderColor);
 }
 
 .sidebar-tab {
     &.active {
-        box-shadow: inset -2px 0px 0 0 $tabBorder-active-color;
+        box-shadow: inset -2px 0px 0 0 var(--sidebar-tabActiveBorder);
     }
     &:hover {
-        background-color: $tab-hover-color;
+        background-color:  var(--sidebar-tabHoverBackground);
     }
 }
 
 .editor-panes .splitpanes__splitter {
-    background-color: $border-color;
+    background-color: var(--window-borderColor);
+}
+
+#editor-tabs {
+    background-color: var(--header-background);
+    height: $tab-container-height;
+    box-shadow: inset 0px -1px 0 0 var(--window-borderColor);
 }
 
 #statusbar {
-    border-top: 1px solid  $border-color;
+    border-top: 1px solid  var(--window-borderColor);
     #title {
-        border-right: 1px solid $border-color;
+        border-right: 1px solid var(--window-borderColor);
     }
 }

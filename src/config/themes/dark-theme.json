@@ -1,81 +1,39 @@
 {
     "theme-name": "Dark",
-    "author": "e",
+    "author": "mellobacon",
     "theme": {
         "window": {
-            "general": {
-                "borderColor": "#333",
-                "foreground": "#ffffff",
-                "accentForeground": "",
-                "background": "#161616",
-                "itemHoverBackground": "#363636",
-                "itemHoverForeground": "#ffffff",
-                "inputBackground": "#1f1f1f",
-                "inputActiveBackground": "",
-                "dropdownBackground": "#1f1f1f",
-                "dropdownActiveBackground": "",
-                "dropdownItemHoverBackground": "#373737",
-                "dropdownItemActiveBackground": "",
-                "dropdownItemActiveForeground": "",
-                "scrollbarBackground": "#4c4c4c38"
-            },
-            "titlebar": {
-                "background": "#161616",
-                "foreground": "#ffffff",
-                "menuItemHoverBackground": "#b1b1b133",
-                "menuItemHoverForeground": ""
-            },
-            "sidebar": {
-                "background": "#161616",
-                "foreground": "#ffffff",
-                "tabHoverBackground": "#363636",
-                "tabHoverForeground": "#ffffff",
-                "tabActiveBackground": "",
-                "tabActiveForeground": "#ffffff",
-                "tabActiveBorder": "#4589ff"
-            },
-            "statusbar": {
-                "background": "#161616",
-                "foreground": "#ffffff",
-                "toolHoverBackground": "#363636",
-                "toolHoverForeground": "#ffffff",
-                "toolActiveBackground": "",
-                "toolActiveForeground": "",
-                "toolAlertColor": "#4589ff",
-                "toolAlertBackgroundColor": {
-                    "message": "",
-                    "warning": "",
-                    "error": ""
-                }
-            },
-            "tabContainer": {
-                "background": "#161616",
-                "foreground": "#ffffff",
-                "tabBackground": "#1c1c1c",
-                "tabForeground": "#ffffff",
-                "tabBorderColor": "#bdd4ff",
-                "tabActiveBorderColor": "#1b5fdd",
-                "tabActiveBackground": "",
-                "tabActiveForeground": "",
-                "tabHoverBackground": "#2b2b2b",
-                "tabHoverForeground": "",
-                "tabUnsavedColor": "#ffffff",
-                "tabUnsavedBorderColor": "#dd6f1b"
-            },
-            "editor": {
-                "background": "#1c1c1c",
-                "foreground": "#ffffff"
-            }
+            "foreground": "#ffffff",
+            "background": "#171717",
+            "borderColor": "#414040",
+            "dropdownBackground": "#2D2D2D",
+            "dropdownButtonBackground": "#2D2D2D",
+            "dropdownButtonForeground": "#ffffff",
+            "dropdownButtonHoverForeground": "#ffffff",
+            "dropdownItemHoverBackground": "#171717",
+            "dropdownItemHoverForeground": "#ffffff",
+            "scrollbarBackground": "#4c4c4c38"
         },
-        "components": {
-            "filetree": {
-                "background": "#161616",
-                "foreground": "#ffffff",
-                "nodeHoverBackground": "#363636",
-                "nodeHoverForeground": "#ffffff",
-                "nodeActiveBackground": "#363636",
-                "nodeActiveForeground": ""
-            }
+        "header": {
+            "background": "#2D2D2D",
+            "foreground": "#ffffff",
+            "buttonHoverBackground": "#414040"
+        },
+        "sidebar": {
+            "background": "#171717",
+            "foreground": "#ffffff",
+            "tabHoverBackground": "#363636",
+            "tabHoverForeground": "#ffffff",
+            "tabActiveBackground": "",
+            "tabActiveForeground": "#ffffff",
+            "tabActiveBorder": "#4589ff"
+        },
+        "statusbar": {
+            "background": "#171717",
+            "foreground": "#ffffff"
+        },
+        "editor": {
+            "tabContainerBackground": "#2D2D2D"
         }
     }
 }
