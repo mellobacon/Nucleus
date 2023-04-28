@@ -5,20 +5,58 @@
     import SidebarView from "./lib/SidebarView.svelte";
     import Statusbar from "./lib/Statusbar.svelte";
     import EditorTabList from "./lib/EditorTabList.svelte";
-    import { onMount } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
     import { loadTheme } from "./config/themehandler";
+	import { appWindow } from '@tauri-apps/api/window';
+    import { writable } from "svelte/store";
+	let resolution = writable(0);
+
+	let minPanelSize = 10;
+	let panelSize = 15;
 
 	onMount(async () => {
 		await loadTheme("dark");
+		let size = await appWindow.innerSize();
+		resolution.set(size.width);
+		updateMinPanelSize();
+		appWindow.onResized((e) => {
+			resolution.set(e.payload.width);
+			updateMinPanelSize();
+		})
 	})
+
+	function updatePanelSize(e) {
+		if ($showsidebarview) {
+			panelSize = e.detail[0].size
+		}
+	}
+
+	function updateMinPanelSize() {
+		// TODO: make this better
+		if ($resolution <= 900) {
+			minPanelSize = 30;
+		}
+		else if ($resolution <= 1040) {
+			minPanelSize = 20;
+		}
+		else if ($resolution <= 1120) {
+			minPanelSize = 17;
+		}
+		else if ($resolution <= 1300) {
+			minPanelSize = 14;
+		}
+		else if ($resolution > 1300) {
+			minPanelSize = 10;
+		}
+	}
 </script>
 
 <Header />
 <div id="main">
 	<Sidebar />
-	<Splitpanes theme="editor-panes">
+	<Splitpanes on:resized={updatePanelSize} on:resize={updateMinPanelSize} theme="editor-panes">
 		{#if $showsidebarview}
-			<Pane size={25} minSize={10} maxSize={60}>
+			<Pane bind:size={panelSize} bind:minSize={minPanelSize} maxSize={60}>
 				<SidebarView content={$tool.content}></SidebarView>
 			</Pane>
 		{/if}
