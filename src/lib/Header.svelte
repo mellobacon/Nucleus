@@ -180,7 +180,7 @@
 				font-size: 10px;
 			}
 			&#maximize::before {
-				content: "\eabb"; // replace
+				content: "\2610";
 			}
 			&#close::before {
 				content: "\2715";
