@@ -15,11 +15,11 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 2.5rem;
+        height: 2.8rem;
         cursor: pointer;
         :global(svg) {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
         }
     }
 </style>

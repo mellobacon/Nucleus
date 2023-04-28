@@ -53,7 +53,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
+        font-size: 0.875rem;
         min-width: 2.2rem;
         padding: 0 5px;
         :global(svg) {
@@ -66,19 +66,20 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-width: 11rem;
+        min-width: 11.5rem;
         align-items: center;
         padding: 3px 0;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        box-shadow: rgb(0 0 0 / 10%) 0px 0px 4px 2px;
+        border-radius: 3px;
     }
     .dropdown-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 17px;
-        padding: 5px;
+        padding: 5px 0;
         width: 100%;
-        font-size: 14px;
+        font-size: 0.875rem;
     }
     .item-name, .shortcut {
         padding: 0 10px;

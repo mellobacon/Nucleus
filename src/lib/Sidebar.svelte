@@ -50,6 +50,6 @@
 <style lang="scss">
     #sidebar {
         height: 100%;
-        min-width: 2.5rem;
+        min-width: 2.8rem;
     }
 </style>

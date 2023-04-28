@@ -66,12 +66,12 @@ html {
 }
 
 #sidebar {
-    border-right: 1px solid var(--window-borderColor);
+    box-shadow: 1px 0px 0 0 var(--window-borderColor);
 }
 
 .sidebar-tab {
     &.active {
-        box-shadow: inset -2px 0px 0 0 var(--sidebar-tabActiveBorder);
+        box-shadow: inset 3.5px 0px 0 0 var(--sidebar-tabActiveBorder);
     }
     &:hover {
         background-color:  var(--sidebar-tabHoverBackground);
@@ -89,7 +89,7 @@ html {
 }
 
 #statusbar {
-    border-top: 1px solid  var(--window-borderColor);
+    box-shadow: 0px -1px 0 0px var(--window-borderColor);
     #title {
         border-right: 1px solid var(--window-borderColor);
     }

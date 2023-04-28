@@ -130,7 +130,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: 0 0.5rem;
-        font-size: 14px;
+        font-size: 0.875rem;
         color: #8c8c8c;
     }
 
@@ -166,7 +166,7 @@
 			line-height: 34px;
 			text-align: center;
 			padding: 0 5px;
-			font-size: 14px;
+			font-size: 0.875rem;
 			color: white;
 			cursor: pointer;
 			&:not(#close):hover {

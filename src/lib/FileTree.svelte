@@ -20,6 +20,8 @@
         margin-bottom: 5px;
         display: inline-block;
         cursor: pointer;
+        padding: 5px 25px;
+        font-size: 0.875rem;
     }
     .toolbar-button:hover {
         background-color: rgb(50 50 50);
@@ -36,6 +38,7 @@
             margin-top: 10px;
             margin-bottom: 5px;
             text-align: center;
+            font-size: 0.875rem;
         }
     }
 </style>
