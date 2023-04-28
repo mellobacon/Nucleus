@@ -98,6 +98,8 @@
         width: 100%;
         display: flex;
         align-items: center;
+        position: relative;
+        z-index: 3;
     }
     #logo {
         background-size: 20px;
