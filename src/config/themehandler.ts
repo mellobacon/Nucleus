@@ -10,6 +10,7 @@ export function getThemes() {
     return themelist;
 }
 
+const stylesheet = document.styleSheets[1].cssRules[0] as CSSStyleRule;
 export async function loadTheme(name: string) {
     let json = await import(`../config/themes/${name.toLowerCase()}-theme.json`);
     const theme = Object.entries(json.theme);
@@ -20,9 +21,11 @@ export async function loadTheme(name: string) {
             const value = property[1];
 
             const cssValue = `${category}-${name}`;
-            if (getComputedStyle(document.documentElement).getPropertyValue(`--${cssValue}`)) {
-                document.documentElement.style.setProperty(`--${cssValue}`, value);
-                //console.log(cssValue + ": " + value);
+
+            for (const style of stylesheet.style) {
+                if (style === `--${cssValue}`) {
+                    stylesheet.style.setProperty(`--${cssValue}`, value);
+                }
             }
         }
     }
