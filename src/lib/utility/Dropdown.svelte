@@ -2,16 +2,23 @@
     import { afterUpdate } from 'svelte';
     export let menu;
 
+    export let right = false;
+
     let button = null;
     let dropdownList = null;
     let open = false;
 
     afterUpdate(() => {
         if (open && dropdownList) {
-            const { height , left } = button.getBoundingClientRect();
+            const { height , left, width } = button.getBoundingClientRect();
             dropdownList.style.top = `${height}px`;
-            dropdownList.style.left = `${left}px`;
-            // TODO: make toggle for showing dropdown on the right of the button
+            if (right) {
+                dropdownList.style.right = `calc(100% - ${left + width}px`;
+                dropdownList.style.left = `auto`;
+            }
+            else {
+                dropdownList.style.left = `${left}px`;
+            }
         }
     })
 </script>
