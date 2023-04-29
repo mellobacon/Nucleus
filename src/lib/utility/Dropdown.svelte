@@ -35,7 +35,11 @@
     <div bind:this={dropdownList} class="dropdown-list">
         {#each menu.children as child}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div class="dropdown-item" on:click={child.action}>
+            <div class="dropdown-item" class:disabled={child.disabled} on:click={() => {
+                if (!child.disabled) {
+                    child.action();
+                }
+            }}>
                 <span class="item-name">
                     {child.name}
                 </span>
@@ -87,5 +91,9 @@
     .shortcut {
         color: #8c8c8c;
         margin-left: 20px;
+    }
+    .disabled {
+        color: #6b6b6b;
+        cursor: not-allowed;
     }
 </style>
