@@ -24,6 +24,9 @@
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
 			updateMinPanelSize();
+			if (panelSize < minPanelSize) {
+				panelSize = minPanelSize;
+			}
 		})
 	})
 
