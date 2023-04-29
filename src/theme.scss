@@ -25,6 +25,17 @@ $tab-container-height: 2rem;
     --sidebar-tabActiveForeground: #ffffff;
     --sidebar-tabActiveBorder: red;
 
+    --editor-tabContainerBackground: #2D2D2D;
+
+    --editor-tabBackground: #1c1c1c;
+    --editor-tabForeground: #ffffff;
+    --editor-tabBorderColor: #bdd4ff;
+    --editor-tabActiveBorderColor: #1b5fdd;
+    --editor-tabActiveBackground: #1c1c1c;
+    --editor-tabActiveForeground: #ffffff;
+    --editor-tabHoverBackground: #2b2b2b;
+    --editor-tabHoverForeground: #ffffff;
+
     --statusbar-background: transparent;
     --statusbar-foreground: #ffffff;
 }
@@ -86,6 +97,21 @@ html {
     background-color: var(--header-background);
     height: $tab-container-height;
     box-shadow: inset 0px -1px 0 0 var(--window-borderColor);
+
+    .tab {
+        background-color: var(--editor-tabBackground);
+        color: var(--editor-tabForeground);
+        box-shadow: inset 0px -1px 0 0 var(--editor-tabBorderColor);
+        &:not(.active):hover {
+            background-color: var(--editor-tabHoverBackground);
+            color: var(--editor-tabHoverForeground);
+        }
+        &.active {
+            background-color: var(--editor-tabActiveBackground);
+            box-shadow: inset 0px -2px 0 0 var(--editor-tabActiveBorderColor) !important;
+            color: var(--editor-tabActiveForeground);
+        }
+    }
 }
 
 #statusbar {
