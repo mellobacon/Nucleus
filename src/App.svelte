@@ -20,7 +20,7 @@
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
-		
+
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
 			updateMinPanelSize();
@@ -35,7 +35,7 @@
 
 	function updateMinPanelSize() {
 		// TODO: make this better
-		if ($resolution <= 900) {
+		if ($resolution <= 700) {
 			minPanelSize = 30;
 		}
 		else if ($resolution <= 1040) {

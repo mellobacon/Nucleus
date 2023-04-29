@@ -1,6 +1,7 @@
 <div id="statusbar">
     <div id="title">
         <span>Nucleus</span>
+        <div class="divider"></div>
     </div>
 </div>
 
@@ -17,10 +18,14 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        border-right: 1px solid #393939;
+        height: 100%;
         span {
             height: 100%;
             padding: 0 10px;
         }
+    }
+    .divider {
+        width: 0.0625rem;
+		height: 1rem;
     }
 </style>

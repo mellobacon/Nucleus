@@ -22,6 +22,7 @@
         cursor: pointer;
         padding: 5px 25px;
         font-size: 0.875rem;
+        border-radius: 2px;
     }
     .toolbar-button:hover {
         background-color: rgb(50 50 50);

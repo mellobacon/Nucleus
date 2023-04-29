@@ -1,6 +1,5 @@
 $header-height: 2rem;
 $statusbar-height: 1.5rem;
-$footer-height: 1.6rem;
 $tab-container-height: 2rem;
 
 :root {
@@ -91,7 +90,5 @@ html {
 
 #statusbar {
     box-shadow: 0px -1px 0 0px var(--window-borderColor);
-    #title {
-        border-right: 1px solid var(--window-borderColor);
-    }
+    height: calc($statusbar-height + 0.1rem);
 }

@@ -14,6 +14,8 @@
             <svelte:component this={tab.icon}/>
         </SidebarTab>
     {/each}
+
+    <div class="divider" />
 </div>
 
 <script lang="ts" context="module">
@@ -51,5 +53,11 @@
     #sidebar {
         height: 100%;
         min-width: 3rem;
+    }
+    .divider {
+        width: 2.3rem;
+        height: .0625rem;
+        background-color: #333;
+        margin: 5px auto;
     }
 </style>
