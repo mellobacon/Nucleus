@@ -24,9 +24,9 @@
             "foreground": "#ffffff",
             "tabHoverBackground": "#363636",
             "tabHoverForeground": "#ffffff",
-            "tabActiveBackground": "",
+            "tabActiveBackground": "#326ed6",
             "tabActiveForeground": "#ffffff",
-            "tabActiveBorder": "#4589ff"
+            "tabActiveBorder": ""
         },
         "statusbar": {
             "background": "#171717",

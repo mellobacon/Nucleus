@@ -14,8 +14,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height: 2.8rem;
+        height: 2.5rem;
+        margin: 5px;
+        border-radius: 3px;
         cursor: pointer;
         :global(svg) {
             width: 22px;

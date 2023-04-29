@@ -18,12 +18,13 @@ export async function loadTheme(name: string) {
         const category = entries[0];
         for (const property of Object.entries(entries[1])) {
             const name = property[0];
-            const value = property[1];
+            let value = property[1];
 
             const cssValue = `${category}-${name}`;
 
             for (const style of stylesheet.style) {
                 if (style === `--${cssValue}`) {
+                    value = value === "" ? "transparent" : value;
                     stylesheet.style.setProperty(`--${cssValue}`, value);
                 }
             }
