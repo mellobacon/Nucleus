@@ -49,7 +49,7 @@
             {name: "Show Release Notes", shortcut: "", action: () => {console.log("click")}},
             {name: "Check for Updates", shortcut: "", action: () => {console.log("click")}},
             {name: "About", shortcut: "", action: () => {console.log("click")}},
-            {name: "Toggle Developer Tools", shortcut: "", action: () => {console.log("click")}},
+            {name: "Toggle Developer Tools", shortcut: "Ctrl + Shift + I", action: () => {console.log("click")}},
         ]},
     ];
 </script>
