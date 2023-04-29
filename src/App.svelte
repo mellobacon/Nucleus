@@ -5,7 +5,7 @@
     import SidebarView from "./lib/SidebarView.svelte";
     import Statusbar from "./lib/Statusbar.svelte";
     import EditorTabList from "./lib/EditorTabList.svelte";
-    import { afterUpdate, onMount } from "svelte";
+    import { onMount } from "svelte";
     import { loadTheme } from "./config/themehandler";
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
@@ -16,9 +16,11 @@
 
 	onMount(async () => {
 		await loadTheme("dark");
+
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
+		
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
 			updateMinPanelSize();
