@@ -68,7 +68,7 @@
     <div class="tools">
         
         <div class="settings">
-            <Dropdown right menu={{icon: Settings, children: [{name: "Settings", shortcut: "", action: () => {console.log("click")}}, {name: "Keymap", shortcut: "", action: () => {console.log("click")}}]}} />
+            <Dropdown right menu={{icon: Settings, children: [{name: "Settings", shortcut: "", action: () => {console.log("click")}}, {name: "Keymap", disabled: true, shortcut: "", action: () => {console.log("click")}}]}} />
         </div>
     </div>
     <div id="window-controls">
