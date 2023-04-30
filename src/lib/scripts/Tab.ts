@@ -55,6 +55,32 @@ export function setActive(id: number) {
     tabs.set(tablist);
 }
 
+export function closeTab(tabid: number) {
+    if (activeid === tabid) {
+        for (let i = 0; i <= tablist.length - 1; i++) {
+            // set right tab active
+            if (tablist[i].id === tabid && tablist[i + 1]) {
+                setActive(tablist[i + 1].id);
+                break;
+            }
+            // set left tab active
+            else if (tablist[i].id === tabid && tablist[i - 1]) {
+                setActive(tablist[i - 1].id);
+                break;
+            }
+        }
+    }
+
+    //tablist.find(t => t.id === tabid).content.$destroy();
+    tablist = tablist.filter(t => t.id !== tabid);
+    tabs.set(tablist);
+    
+    if (tablist.length === 0) {
+        hidden.set(true);
+        id = 0;
+    }
+}
+
 function refreshTabs() {
     if (tablist.length > 0) {
         hidden.set(false);

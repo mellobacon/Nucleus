@@ -1,10 +1,13 @@
 <script lang="ts">
     import { setActive } from "./scripts/Tab";
+    import { closeTab } from "./scripts/Tab";
+
     export let id = 0;
     export let label = "Untitled-1";
     export let path = "";
     export let active = false;
-    let tab;
+
+    let tab = null;
 </script>
 <div bind:this={tab} title={path} id={`editorTab-${id}`} class="tab" class:active={active}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -17,7 +20,7 @@
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="close-tab">
-        <span title="Close tab"></span>
+        <span title="Close tab" on:click={() => {closeTab(id)}}></span>
     </div>
 </div>
 
