@@ -1,5 +1,26 @@
 <script lang="ts">
-    export let tree = [];
+    import FileTreeView from "./FileTree/FileTreeView.svelte";
+
+    let data = [{
+        id: 0, label: "FakeDir", path:"FakeDir/", children: [
+            {id: 1, label: "src", path:"FakeDir/src", children: [
+                {id: 2, label: "dist", path:"FakeDir/src/dist/", children: [
+                    {id: 3, label: "build.asm", path:"FakeDir/src/dist/buid.asm",},
+                    {id: 4, label: "model.py", path:"FakeDir/src/dist/model.py",},
+                    {id: 5, label: "something", path:"FakeDir/src/dist/something",},
+                ]},
+                {id: 6, label: "file1", path:"FakeDir/src/file1",},
+                {id: 7, label: "file2", path:"FakeDir/src/file2",},
+            ]},
+            {id: 8, label: "Misc", path:"FakeDir/Misc/", children: [
+                {id: 9, label: "misc1.txt", path:"FakeDir/Misc/misc1.txt",},
+                {id: 10, label: "misc2.png", path:"FakeDir/Misc/misc2.png",},
+                {id: 11, label: "misc3.nucleus", path:"FakeDir/Misc/misc3.nucleus",},
+            ]},
+        ],
+    }]
+    export let tree = data;
+
 </script>
 
 {#if tree.length === 0}
@@ -7,6 +28,8 @@
         <span>No folder/workspace open</span>
         <button class="toolbar-button">Open Folder</button>
     </div>
+{:else}
+<FileTreeView tree={tree} on:nodeselect={(e) => {console.log(e.detail.node)}}></FileTreeView>
 {/if}
 
 <style lang="scss">

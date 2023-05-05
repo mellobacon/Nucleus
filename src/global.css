@@ -66,6 +66,9 @@ button {
 	background: none;
 	border: none;
 }
+ul {
+	padding: 0
+}
 
 .editor-panes .splitpanes__pane {
     background-color: transparent;
@@ -85,7 +88,7 @@ button {
     transition: opacity 0.2s;
     background-color: #2d6fd2;
     opacity: 0;
-    z-index: 2;
+    z-index: 3;
 }
 .editor-panes .splitpanes__splitter:hover::before {
     opacity: 1;
