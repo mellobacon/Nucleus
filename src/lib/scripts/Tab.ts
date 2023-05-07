@@ -55,6 +55,12 @@ export function setActive(id: number) {
     tabs.set(tablist);
 }
 
+export function CloseAllTabs() {
+    for (const tab of tablist) {
+        closeTab(tab.id);
+    }
+}
+
 export function closeTab(tabid: number) {
     if (activeid === tabid) {
         for (let i = 0; i <= tablist.length - 1; i++) {

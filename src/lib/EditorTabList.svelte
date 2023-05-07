@@ -1,8 +1,10 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Tab from "./Tab.svelte";
-    import { tabs, hidden } from "./scripts/Tab";
+    import { tabs, hidden, CloseAllTabs } from "./scripts/Tab";
     import Sortable from 'sortablejs';
+    import VerticalDots from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
+    import Dropdown from "./utility/Dropdown.svelte";
 
     let tabcontainer = null;
 
@@ -22,6 +24,12 @@
             <Tab id={tab.id} label={tab.label} path={tab.path} active={tab.active} />
         {/each}
     </div>
+    <div class="tab-toolbar">
+        <Dropdown right menu={{icon: VerticalDots, children: [
+            {name: "Close All Tabs", action: () => {CloseAllTabs()}},
+            {name: "Close Saved Tabs", disabled: true}
+        ]}}></Dropdown>
+    </div>
 </div>
 
 <style lang="scss">
@@ -32,18 +40,23 @@
         width: -webkit-fill-available;
         display: flex;
         justify-content: space-between;
-        position: absolute;
-        left: 0.5px; /*temp fix to show over the sidebar border*/
         #editor-tablist {
             position: relative;
             display: flex;
             overflow-x: overlay;
             &::-webkit-scrollbar {
-                height: 7px;
+                height: 5px;
             }
             &::-webkit-scrollbar-thumb {
                 background-color: #e8e8e81f;
             }
         }
+    }
+    .tab-toolbar {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 0 5px;
     }
 </style>
