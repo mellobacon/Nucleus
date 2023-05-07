@@ -67,9 +67,7 @@
 		{/if}
 		<Pane>
 			<div id="container">
-				<div id="editor-view">
-					<EditorTabList />
-				</div>
+				<EditorTabList />
 			</div>
 		</Pane>
 	</Splitpanes>
@@ -82,12 +80,8 @@
 	#container {
 		height: 100%;
         overflow: hidden;
-	}
-	#editor-view {
 		background-image: url("/assets/images/Watermark(3).png");
         background-repeat: no-repeat;
         background-position: center;
-        position: relative;
-		height: 100%;
 	}
 </style>

@@ -10,8 +10,9 @@
 
     afterUpdate(() => {
         if (open && dropdownList) {
-            const { height , left, width } = button.getBoundingClientRect();
-            dropdownList.style.top = `${height}px`;
+            const { height , left, width, top } = button.getBoundingClientRect();
+            console.log(top)
+            dropdownList.style.top = `${height + top}px`;
             if (right) {
                 dropdownList.style.right = `calc(100% - ${left + width}px`;
                 dropdownList.style.left = `auto`;
