@@ -1,7 +1,13 @@
 <script lang="ts">
     import FileTreeView from "./FileTree/FileTreeView.svelte";
+    export let tree = $filetree;
 
-    let data = [{
+</script>
+
+<script lang="ts" context="module">
+    import { writable } from "svelte/store";
+
+    export let filetree = writable([{
         id: 0, label: "FakeDir", path:"FakeDir/", children: [
             {id: 1, label: "src", path:"FakeDir/src", children: [
                 {id: 2, label: "dist", path:"FakeDir/src/dist/", children: [
@@ -18,9 +24,7 @@
                 {id: 11, label: "misc3.nucleus", path:"FakeDir/Misc/misc3.nucleus",},
             ]},
         ],
-    }]
-    export let tree = data;
-
+    }]);
 </script>
 
 {#if tree.length === 0}

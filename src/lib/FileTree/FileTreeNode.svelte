@@ -18,7 +18,6 @@
     import { createEventDispatcher } from "svelte";
     import File from "../../util/icons/File.svelte";
 
-
     export let id;
     export let label;
     export let path;
@@ -28,6 +27,15 @@
     let ref = null;
     let refLabel = null;
     let icon = File;
+
+    function dragstart(e) {
+        e.dataTransfer.setData(
+            "text/html",
+            e.target.parentElement.outerHTML
+        );
+        let data = {element: `filetree-node-${id}`, id:id, type: "node"};
+        e.dataTransfer.setData("text/plain", JSON.stringify(data));
+    }
 
     const offset = () => computeTreeLeafDepth(refLabel) + (icon ? 2 : 1);
 
@@ -56,9 +64,9 @@
     }
 }}></svelte:window>
 
-<li id={id} bind:this={ref} class="treenode">
+<li id={`filetree-node-${id}`} bind:this={ref} class="treenode">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}}>
+    <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}} draggable={true} on:dragstart={dragstart}>
         <span class="no-arrow"></span>
         {#if icon}
             <svelte:component this={icon} />
