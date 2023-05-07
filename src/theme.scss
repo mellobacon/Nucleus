@@ -95,7 +95,7 @@ html {
 
 #editor-tabs {
     background-color: var(--header-background);
-    height: $tab-container-height;
+    height: calc($tab-container-height + 5px);
     box-shadow: inset 0px -1px 0 0 var(--window-borderColor);
 
     .tab {
@@ -108,9 +108,12 @@ html {
         }
         &.active {
             background-color: var(--editor-tabActiveBackground);
-            box-shadow: inset 0px -2px 0 0 var(--editor-tabActiveBorderColor) !important;
+            box-shadow: inset 0px 5px 0 0 var(--editor-tabActiveBorderColor) !important;
             color: var(--editor-tabActiveForeground);
         }
+    }
+    .tab-toolbar {
+        box-shadow: inset 1px 0px 0 0 var(--window-borderColor);
     }
 }
 
