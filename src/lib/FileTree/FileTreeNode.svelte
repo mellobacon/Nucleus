@@ -59,6 +59,7 @@
 <li id={id} bind:this={ref} class="treenode">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}}>
+        <span class="no-arrow"></span>
         {#if icon}
             <svelte:component this={icon} />
         {/if}
@@ -79,7 +80,7 @@
     }
     .tree-label {
         display: flex;
-        min-height: 1.5rem;
+        min-height: 1.6rem;
         align-items: center;
         flex: 1;
         white-space: nowrap;
@@ -92,5 +93,9 @@
     }
     .selected {
         color: #34b0f8;
+    }
+    .no-arrow {
+        display: flex;
+        margin-right: 15px;
     }
 </style>

@@ -106,7 +106,7 @@
     }
     .tree-label {
         display: flex;
-        min-height: 1.5rem;
+        min-height: 1.6rem;
         align-items: center;
         white-space: nowrap;
         :global(svg) {
