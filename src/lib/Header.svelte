@@ -2,10 +2,11 @@
     import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
     import Settings from "carbon-icons-svelte/lib/Settings.svelte";
+    import { addTab } from "./scripts/Tab";
 
     const items = [
         {menuname: "File", children: [
-            {name: "New File", shortcut: "Ctrl + N", action: () => {console.log("click")}},
+            {name: "New File", shortcut: "Ctrl + N", action: () => {addTab()}},
             {name: "Open File...", shortcut: "Ctrl + O", action: () => {console.log("click")}},
             {name: "Save File", shortcut: "Ctrl + S", action: () => {console.log("click")}},
             {name: "Save File As...", shortcut: "Ctrl + Shift + S", action: () => {console.log("click")}},
@@ -61,14 +62,18 @@
         {/each}
     </div>
     <div class="divider"></div>
-    <div id="workspace" title="path/to/deez/nuts/or/something/filename.txt">
+    <div id="workspace" title="filename.txt">
         filename.txt
     </div>
     <div id="handle" data-tauri-drag-region></div>
     <div class="tools">
         
         <div class="settings">
-            <Dropdown right menu={{icon: Settings, children: [{name: "Settings", shortcut: "", action: () => {console.log("click")}}, {name: "Keymap", disabled: true, shortcut: "", action: () => {console.log("click")}}]}} />
+            <Dropdown right menu={{icon: Settings, children: [
+                {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings")}}, 
+                {name: "Keymap", disabled: true, shortcut: "", action: () => {console.log("click")}}
+                ]
+            }} />
         </div>
     </div>
     <div id="window-controls">
@@ -132,6 +137,7 @@
 		padding: 0 0.5rem;
         font-size: 0.875rem;
         color: #8c8c8c;
+        z-index: 10;
     }
 
     #handle {
