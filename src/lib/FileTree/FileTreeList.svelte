@@ -159,10 +159,6 @@
         cursor: pointer;
         padding-left: 1rem;
     }
-    .tree-label:hover {
-        color: white;
-        background-color: #353535;
-    }
     .tree-label {
         display: flex;
         min-height: 1.6rem;
@@ -171,14 +167,10 @@
         :global(svg) {
             width: 20px;
             height: 20px;
-            color: white;
             padding: 0 5px 0 0;
         }
     }
     .root > .tree-label .item-label {
         font-weight: bold;
-    }
-    .selected {
-        color: #34b0f8;
     }
 </style>

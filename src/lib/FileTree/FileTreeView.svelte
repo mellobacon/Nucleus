@@ -22,7 +22,6 @@
     }
     .tree {
         width: 100%;
-        color: gray;
         padding: 10px 0;
     }
 </style>

@@ -36,6 +36,13 @@ $tab-container-height: 2rem;
     --editor-tabHoverBackground: #2b2b2b;
     --editor-tabHoverForeground: #ffffff;
 
+    --filetree-treeNodeBackground: transparent;
+    --filetree-treeNodeForeground: #808080;
+    --filetree-treeNodeHoverBackground: #353535;
+    --filetree-treeNodeHoverForeground: #ffffff;
+    --filetree-treeNodeSelectedBackground: transparent;
+    --filetree-treeNodeSelectedForeground: #34b0f8;
+
     --statusbar-background: transparent;
     --statusbar-foreground: #ffffff;
 }
@@ -91,6 +98,26 @@ html {
 
 .editor-panes .splitpanes__splitter {
     background-color: var(--window-borderColor);
+}
+
+.tree {
+    color: var(--filetree-treeNodeForeground);
+    .hover {
+        background-color: var(--header-background) !important;   
+    }
+    .tree-label {
+        svg {
+            color: var(--window-foreground);
+        }
+        &:hover {
+            color: var(--filetree-treeNodeHoverForeground);
+            background-color: var(--filetree-treeNodeHoverBackground);
+        }
+        &.selected {
+            color: var(--filetree-treeNodeSelectedForeground);
+            background-color: var(--filetree-treeNodeSelectedBackground);
+        }
+    }
 }
 
 #editor-tabs {
