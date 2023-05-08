@@ -31,3 +31,10 @@ export async function loadTheme(name: string) {
         }
     }
 }
+export function getThemeProperty(styleName: string) {
+    for (const style of stylesheet.style) {
+        if (style === `--${styleName}`) {
+            return stylesheet.style.getPropertyValue(style);
+        }
+    }
+}
