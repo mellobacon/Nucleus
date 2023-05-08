@@ -8,8 +8,6 @@
 
     import FileTreeNode, { computeTreeLeafDepth } from "./FileTreeNode.svelte";
     import Directory from "../../util/icons/Directory.svelte";
-    import Sortable from 'sortablejs';
-    import { afterUpdate, onMount } from "svelte";
     import {filetree} from "../FileTree.svelte";
 
     export let root = false;
@@ -27,10 +25,6 @@
     let selected = false;
 
     let icon = Directory;
-
-    onMount(() => {
-        
-    })
 
     function findNode(nodeid, tree = null) {
         if (!tree) {
@@ -76,6 +70,17 @@
 
         from.removeChild(el);
         to.appendChild(el);
+
+        filetree.set($filetree);
+
+        e.target.parentElement.classList.remove("hover");
+    }
+
+    function dragenter(e) {
+        e.target.parentElement.classList.add("hover");
+    }
+    function dragleave(e) {
+        e.target.parentElement.classList.remove("hover");
     }
 
     const toggleExpansion = (event) => {
@@ -114,7 +119,7 @@
         {/if}
     {/each}
 {:else}
-    <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot}>
+    <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div bind:this={refLabel} class:selected class="tree-label" on:click={toggleExpansion} draggable={true} on:dragstart={dragstart}>
             <span class="arrow" class:arrowDown>&#x25b6</span>

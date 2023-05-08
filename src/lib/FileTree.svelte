@@ -1,6 +1,5 @@
 <script lang="ts">
     import FileTreeView from "./FileTree/FileTreeView.svelte";
-    export let tree = $filetree;
 
 </script>
 
@@ -27,13 +26,13 @@
     }]);
 </script>
 
-{#if tree.length === 0}
+{#if $filetree.length === 0}
     <div class="container">
         <span>No folder/workspace open</span>
         <button class="toolbar-button">Open Folder</button>
     </div>
 {:else}
-<FileTreeView tree={tree} on:nodeselect={(e) => {console.log(e.detail.node)}}></FileTreeView>
+<FileTreeView tree={$filetree} on:nodeselect={(e) => {console.log(e.detail.node)}}></FileTreeView>
 {/if}
 
 <style lang="scss">

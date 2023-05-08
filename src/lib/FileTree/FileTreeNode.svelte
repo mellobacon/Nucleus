@@ -29,10 +29,6 @@
     let icon = File;
 
     function dragstart(e) {
-        e.dataTransfer.setData(
-            "text/html",
-            e.target.parentElement.outerHTML
-        );
         let data = {element: `filetree-node-${id}`, id:id, type: "node"};
         e.dataTransfer.setData("text/plain", JSON.stringify(data));
     }
