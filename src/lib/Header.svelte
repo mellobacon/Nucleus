@@ -62,8 +62,8 @@
         {/each}
     </div>
     <div class="divider"></div>
-    <div id="workspace" title="filename.txt">
-        filename.txt
+    <div id="workspace" title="WorkspaceName/filename.txt" data-tauri-drag-region>
+        WorkspaceName | filename.txt
     </div>
     <div id="handle" data-tauri-drag-region></div>
     <div class="tools">
@@ -129,15 +129,18 @@
 	}
     #workspace {
         height: 100%;
-		width: fit-content;
-		max-width: 200px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		transform: translateY(12%);
 		padding: 0 0.5rem;
-        font-size: 0.875rem;
+        font-size: 0.813rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         color: #8c8c8c;
         z-index: 10;
+
+        span {
+            height: 100%;
+        }
     }
 
     #handle {
@@ -154,15 +157,14 @@
         z-index: 10;
     }
     .tools {
-        width: -webkit-fill-available;
         display: flex;
         justify-content: end;
         padding: 0 5px;
         height: 100%;
+        margin-left: auto;
     }
 
     #window-controls {
-		margin-left: auto;
 		height: 100%;
 		display: flex;
 		z-index: 10;
