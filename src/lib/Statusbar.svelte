@@ -3,6 +3,9 @@
         <span>Nucleus</span>
         <div class="divider"></div>
     </div>
+    <div class="editor-tools">
+        
+    </div>
 </div>
 
 <style lang="scss">
@@ -27,5 +30,13 @@
     .divider {
         width: 0.0625rem;
 		height: 1rem;
+    }
+    .editor-tools {
+        height: 100%;
+        width: -webkit-fill-available;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 10px;
     }
 </style>
