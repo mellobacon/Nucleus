@@ -72,7 +72,7 @@
             <Dropdown right menu={{icon: Settings, children: [
                 {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings")}}, 
                 {name: "Keymap", disabled: true, shortcut: "", action: () => {console.log("click")}}
-                ]
+            ]
             }} />
         </div>
     </div>
@@ -129,7 +129,6 @@
 	}
     #workspace {
         height: 100%;
-		transform: translateY(12%);
 		padding: 0 0.5rem;
         font-size: 0.813rem;
         overflow: hidden;
@@ -137,10 +136,6 @@
         white-space: nowrap;
         color: #8c8c8c;
         z-index: 10;
-
-        span {
-            height: 100%;
-        }
     }
 
     #handle {

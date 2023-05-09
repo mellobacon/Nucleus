@@ -57,6 +57,9 @@ html {
 #statusbar {
     height: $statusbar-height;
 }
+#workspace {
+    line-height: $header-height;
+}
 #header {
     background-color: var(--header-background);
     box-shadow: rgb(29 29 29) 0px 1.5px 0px;
