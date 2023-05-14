@@ -52,6 +52,7 @@
         width: -webkit-fill-available;
         display: flex;
         justify-content: space-between;
+        position: absolute;
         #editor-tablist {
             position: relative;
             display: flex;
