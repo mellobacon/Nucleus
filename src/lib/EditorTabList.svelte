@@ -54,7 +54,6 @@
         justify-content: space-between;
         position: absolute;
         #editor-tablist {
-            position: relative;
             display: flex;
             overflow-x: overlay;
             &::-webkit-scrollbar {

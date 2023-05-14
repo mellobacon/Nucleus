@@ -39,7 +39,9 @@
 </div>
 
 {#if contextmenu}
+<!-- TODO: Fix menu position somehow
     <ContextMenu target={tab} items={contextmenuitems}></ContextMenu>
+-->
 {/if}
 
 <style lang="scss">
