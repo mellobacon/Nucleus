@@ -9,6 +9,7 @@
     import FileTreeNode, { computeTreeLeafDepth } from "./FileTreeNode.svelte";
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
+    import ContextMenu from "../utility/ContextMenu.svelte";
 
     export let root = false;
     export let isroot = false;
@@ -25,6 +26,18 @@
     let selected = false;
 
     let icon = Directory;
+
+    let contextmenu = false;
+    let contextmenuitems = [
+        {name: "Open in File Explorer", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.log("click")}},
+        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.log("click")}},
+        {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.log("click")}},
+        {name: "Copy Filename", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Copy Absolute Path", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
+        {name: "Delete", shortcut: "Delete", action: () => {console.log("click")}}
+    ]
 
     function findNode(nodeid, tree = null) {
         if (!tree) {
@@ -91,7 +104,9 @@
             event.target.classList.add("selected")
         }
 
-        expanded = _expansionState[label] = !expanded;
+        if (!contextmenu) {
+            expanded = _expansionState[label] = !expanded;
+        }
     };
 
     function offset () {
@@ -119,9 +134,14 @@
         {/if}
     {/each}
 {:else}
-    <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave}>
+    <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} class:selected class="tree-label" on:click={toggleExpansion} draggable={true} on:dragstart={dragstart}>
+        <div bind:this={refLabel} class:selected class="tree-label" on:click={toggleExpansion} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+            if (e.button === 2) {
+                contextmenu = true;
+            }
+            //toggleExpansion(e);
+        }}>
             <span class="arrow" class:arrowDown>&#x25b6</span>
             {#if icon}
                 <svelte:component this={icon} />
@@ -141,6 +161,11 @@
         {/if}
     </li>
 {/if}
+
+{#if contextmenu}
+    <ContextMenu target={refLabel} items={contextmenuitems}></ContextMenu>
+{/if}
+
 
 <style lang="scss">
     .arrow {

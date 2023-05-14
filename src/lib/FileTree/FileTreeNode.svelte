@@ -17,6 +17,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     import File from "../../util/icons/File.svelte";
+    import ContextMenu from "../utility/ContextMenu.svelte";
 
     export let id;
     export let label;
@@ -27,6 +28,18 @@
     let ref = null;
     let refLabel = null;
     let icon = File;
+
+    let contextmenu = false;
+    let contextmenuitems = [
+        {name: "Open in File Explorer", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.log("click")}},
+        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.log("click")}},
+        {name: "Copy Filename", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Copy Absolute Path", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Edit", shortcut: "AHHH", action: () => {console.log("click")}},
+        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
+        {name: "Delete", shortcut: "Delete", action: () => {console.log("click")}}
+    ]
 
     function dragstart(e) {
         let data = {element: `filetree-node-${id}`, id:id, type: "node"};
@@ -43,7 +56,9 @@
         if (event.target === refLabel) {
             event.target.classList.add("selected")
         }
-        dispatch("nodeselect", {node});
+        if (!contextmenu) {
+            dispatch("nodeselect", {node});
+        }
     }
 
     $: if (refLabel) {
@@ -60,9 +75,14 @@
     }
 }}></svelte:window>
 
-<li id={`filetree-node-${id}`} bind:this={ref} class="treenode">
+<li id={`filetree-node-${id}`} bind:this={ref} class="treenode" title={path}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}} draggable={true} on:dragstart={dragstart}>
+    <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+        if (e.button === 2) {
+            contextmenu = true;
+            handleSelect(treenode, e);
+        }
+    }}>
         <span class="no-arrow"></span>
         {#if icon}
             <svelte:component this={icon} />
@@ -70,6 +90,10 @@
         {label}
     </div>
 </li>
+
+{#if contextmenu}
+    <ContextMenu target={refLabel} items={contextmenuitems}></ContextMenu>
+{/if}
 
 <style lang="scss">
     .treenode {
