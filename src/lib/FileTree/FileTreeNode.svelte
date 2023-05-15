@@ -104,13 +104,14 @@
     }
     .tree-label {
         display: flex;
-        min-height: 1.6rem;
+        min-height: 1.5rem;
+        font-size: 14px;
         align-items: center;
         flex: 1;
         white-space: nowrap;
         :global(svg){
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             padding: 0 5px 0 0;
         }
     }
