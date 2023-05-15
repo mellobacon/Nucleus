@@ -177,7 +177,7 @@ html {
 .cm-cursor {
     border-left-color: var(--window-foreground) !important;
 }
-.ͼ4 .cm-line::selection {
+.ͼ4 .cm-line::selection, .ͼ2 .cm-selectionBackground {
     background-color: #4d5054 !important;
 }
 

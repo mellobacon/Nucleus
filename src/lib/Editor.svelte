@@ -63,7 +63,7 @@
     }
     :global(.cm-scroller) {
         font-size: 14px !important;
-        line-height: 1.3;
+        line-height: 1.3 !important;
         overflow-y: overlay;
         overflow-x: overlay !important;
         padding-top: 3px;
