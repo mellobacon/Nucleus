@@ -4,7 +4,7 @@
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./lib/SidebarView.svelte";
     import Statusbar from "./lib/Statusbar.svelte";
-    import EditorTabList from "./lib/EditorTabList.svelte";
+    import EditorTabList, {hidden} from "./lib/EditorTabList.svelte";
     import { onMount } from "svelte";
     import { loadTheme } from "./config/themehandler";
 	import { appWindow } from '@tauri-apps/api/window';
@@ -68,6 +68,7 @@
 		<Pane>
 			<div id="container">
 				<EditorTabList />
+				<div id="tabview" class:hidden={$hidden}></div>
 			</div>
 		</Pane>
 	</Splitpanes>
@@ -83,5 +84,14 @@
 		background-image: url("/assets/images/Watermark(3).png");
         background-repeat: no-repeat;
         background-position: center;
+	}
+	#tabview {
+		width: 100%;
+		margin-left: 0.1rem;
+        z-index: 1;
+        position: absolute;
+    }
+	.hidden {
+		visibility: hidden;
 	}
 </style>

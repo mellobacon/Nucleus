@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
+    "codemirror": "^6.0.1",
     "sass": "^1.62.0",
     "sortablejs": "^1.15.0",
     "svelte-splitpanes": "^0.7.13"

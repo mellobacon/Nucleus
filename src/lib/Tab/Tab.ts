@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import Editor from "../Editor.svelte";
 
 export class Tab {
     id = 0;
@@ -22,6 +23,7 @@ export class Tab {
             }
         }
         this.tabs.set(this.tablist);
+        this.updateView();
     }
     updateTabs() {
         if (this.tablist.length === 0) {
@@ -58,6 +60,20 @@ export class Tab {
 
         this.updateTabs();
     }
+    addEditorTab(path: string, label: string = "") {
+        if (this.tabOpen(path)) {
+            return;
+        }
+        let content = new Editor({target: document.getElementById("tabview"), props: {content: ""}});
+        
+        let tab = new this.Tab(this.id, label, content, path);
+        tab.isfile = true;
+        this.tablist = [...this.tablist, tab];
+
+        this.updateView();
+
+        this.updateTabs();
+    }
     closeTab(tabid: number) {
         if (this.activeid === tabid) {
             for (let i = 0; i <= this.tablist.length - 1; i++) {
@@ -74,7 +90,7 @@ export class Tab {
             }
         }
     
-        //tablist.find(t => t.id === tabid).content.$destroy();
+        this.tablist.find(t => t.id === tabid).content.$destroy();
         this.tablist = this.tablist.filter(t => t.id !== tabid);
         this.tabs.set(this.tablist);
         
@@ -83,9 +99,14 @@ export class Tab {
             this.id = 0;
         }
     }
-    CloseAllTabs() {
+    closeAllTabs() {
         for (const tab of this.tablist) {
             this.closeTab(tab.id);
+        }
+    }
+    updateView() {
+        for (let tab of this.tablist) {
+            tab.updateView(this.activeid);
         }
     }
 }

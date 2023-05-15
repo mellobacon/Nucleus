@@ -36,6 +36,13 @@ $tab-container-height: 2rem;
     --editor-tabHoverBackground: #2b2b2b;
     --editor-tabHoverForeground: #ffffff;
 
+    --editor-background: #171717;
+    --editor-gutter-foreground: #898989;
+    --editor-gutter-activeForeground: #ffffff;
+    --editor-gutter-activeBackground: #212121;
+    --editor-activeLineBackground: #212121;
+
+
     --filetree-treeNodeBackground: transparent;
     --filetree-treeNodeForeground: #808080;
     --filetree-treeNodeHoverBackground: #353535;
@@ -145,6 +152,33 @@ html {
     .tab-toolbar {
         box-shadow: inset 1px 0px 0 0 var(--window-borderColor);
     }
+}
+
+#tabview {
+    margin-top: calc($tab-container-height + 5px);
+    height: calc(100% - 6.1rem + 0.1rem);
+}
+
+.cm-activeLine {
+    background-color: var(--editor-activeLineBackground) !important;
+}
+.cm-gutters {
+    background-color: var(--editor-background) !important;
+    color: var(--editor-gutter-foreground);
+    border: none !important;
+}
+.cm-activeLineGutter {
+    color: var(--editor-gutter-activeForeground) !important;
+    background-color: var(--editor-gutter-activeBackground) !important;
+}
+.cm-scroller {
+    background-color: var(--editor-background);
+}
+.cm-cursor {
+    border-left-color: var(--window-foreground) !important;
+}
+.ͼ4 .cm-line::selection {
+    background-color: #4d5054 !important;
 }
 
 #statusbar {

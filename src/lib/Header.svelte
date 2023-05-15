@@ -2,11 +2,11 @@
     import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
     import Settings from "carbon-icons-svelte/lib/Settings.svelte";
-    import { addTab } from "../lib/EditorTabList.svelte";
+    import { addTab, addEditorTab } from "../lib/EditorTabList.svelte";
 
     const items = [
         {menuname: "File", children: [
-            {name: "New File", shortcut: "Ctrl + N", action: () => {addTab()}},
+            {name: "New File", shortcut: "Ctrl + N", action: () => {addEditorTab()}},
             {name: "Open File...", shortcut: "Ctrl + O", action: () => {console.log("click")}},
             {name: "Save File", shortcut: "Ctrl + S", action: () => {console.log("click")}},
             {name: "Save File As...", shortcut: "Ctrl + Shift + S", action: () => {console.log("click")}},

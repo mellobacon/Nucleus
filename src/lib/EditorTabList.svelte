@@ -34,11 +34,14 @@
     export function addTab(path?: string, label?: string) {
         editorTab.addTab(path, label);
     }
+    export function addEditorTab(path?: string, label?: string) {
+        editorTab.addEditorTab(path, label);
+    }
     export function closeTab(tabid: number) {
         editorTab.closeTab(tabid);
     }
 
-    let hidden = editorTab.hidden;
+    export let hidden = editorTab.hidden;
     let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" class:hidden={$hidden}>
