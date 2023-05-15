@@ -2,7 +2,7 @@
     import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
     import Settings from "carbon-icons-svelte/lib/Settings.svelte";
-    import { addTab } from "./scripts/Tab";
+    import { addTab } from "../lib/EditorTabList.svelte";
 
     const items = [
         {menuname: "File", children: [

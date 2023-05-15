@@ -1,44 +1,51 @@
 <script lang="ts">
-    import { afterUpdate, onMount } from "svelte";
-    import Tab from "./Tab.svelte";
-    import { tabs, hidden, CloseAllTabs } from "./scripts/Tab";
-    import Sortable from 'sortablejs';
     import VerticalDots from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
     import Dropdown from "./utility/Dropdown.svelte";
-    import { showsidebarview } from "./Sidebar.svelte";
-    import { getThemeProperty } from "../config/themehandler";
-
-    let tabcontainer = null;
-
-    onMount(() => {
-        Sortable.create(tabcontainer, {
-            draggable: ".tab",
-            animation: 150,
-            forceFallback: true,
-            easing: "cubic-bezier(1, 0, 0, 1)",
-            sort: true
-        })
-    })
-
-    afterUpdate(() => {
-        // css trick to take care of the tabs overlapping the sidebar border for some reason
-        if (!$showsidebarview) {
-            tabcontainer.style.borderLeft = `1px solid ${getThemeProperty("window-borderColor")}`;
+    import TabList from "./Tab/TabList.svelte";
+    import { Tab } from "./Tab/Tab";
+</script>
+<script lang="ts" context="module">
+    class EditorTab {
+        id: number;
+        label: string;
+        active: boolean;
+        path: string;
+        content;
+        isfile: boolean;
+        saved = true;
+        constructor(id: number, label = "", content = null, path = "") {
+            this.id = id;
+            this.label = label === "" ? `Untitled-${id}` : label;
+            this.path = path === "" ? this.label : path;
+            this.content = content;
         }
-        else {
-            tabcontainer.style.borderLeft = "";
+        updateView(id) {
+            this.content.$set({ hidden: !(this.id === id) });
         }
-    })
+        refreshView(tab) {
+            if (tab.isfile) {
+                tab.content.updateTheme();
+            }
+        }
+    }
+
+    const editorTab = new Tab(EditorTab);
+
+    export function addTab(path?: string, label?: string) {
+        editorTab.addTab(path, label);
+    }
+    export function closeTab(tabid: number) {
+        editorTab.closeTab(tabid);
+    }
+
+    let hidden = editorTab.hidden;
+    let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" class:hidden={$hidden}>
-    <div bind:this={tabcontainer} id="editor-tablist">
-        {#each $tabs as tab}
-            <Tab id={tab.id} label={tab.label} path={tab.path} active={tab.active} />
-        {/each}
-    </div>
+    <TabList tabs={tabs} on:closetab={(e) => {closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar">
         <Dropdown right menu={{icon: VerticalDots, children: [
-            {name: "Close All Tabs", action: () => {CloseAllTabs()}},
+            {name: "Close All Tabs", action: () => {editorTab.CloseAllTabs()}},
             {name: "Close Saved Tabs", disabled: true}
         ]}}></Dropdown>
     </div>
@@ -53,16 +60,6 @@
         display: flex;
         justify-content: space-between;
         position: absolute;
-        #editor-tablist {
-            display: flex;
-            overflow-x: overlay;
-            &::-webkit-scrollbar {
-                height: 5px;
-            }
-            &::-webkit-scrollbar-thumb {
-                background-color: #e8e8e81f;
-            }
-        }
     }
     .tab-toolbar {
         height: 100%;

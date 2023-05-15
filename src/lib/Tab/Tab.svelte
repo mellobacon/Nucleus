@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { setActive, closeTab } from "./scripts/Tab";
-    import ContextMenu from "./utility/ContextMenu.svelte";
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
 
     export let id = 0;
     export let label = "Untitled-1";
@@ -9,40 +9,27 @@
 
     let tab = null;
 
-    let contextmenu = false;
-    let contextmenuitems = [
-        {name: "Close Tab", shortcut: "AHHH", action: () => {console.log("click")}},
-        {name: "Close Others", shortcut: "Ctrl + C", action: () => {console.log("click")}},
-        {name: "Close All Right", shortcut: "Ctrl + X", action: () => {console.log("click")}},
-        {name: "Close All Left", shortcut: "AHHH", action: () => {console.log("click")}},
-        {name: "Close All Saved", shortcut: "AHHH", action: () => {console.log("click")}},
-        {name: "Close All", shortcut: "AHHH", action: () => {console.log("click")}},
-        {name: "Copy Filename", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
-        {name: "Copy Absolute Path", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
-        {name: "Show In File Explorer", shortcut: "Delete", action: () => {console.log("click")}}
-    ]
+    function handleSelect(tabid) {
+        dispatch("select", {tabid: tabid})
+    }
+    function handleClose(tabid) {
+        dispatch("closetab", {tabid: tabid});
+    }
 </script>
 <div bind:this={tab} title={path} id={`editorTab-${id}`} class="tab" class:active={active}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="tab-content" on:mousedown = {
         (e) => {
-            if (e.button === 0) setActive(id);
-            if (e.button === 2) contextmenu = true;
+            if (e.button === 0) handleSelect(id);
         }
     }>
         <span class="tab-label">{label}</span>
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="close-tab">
-        <span title="Close tab" on:click={() => {closeTab(id)}}></span>
+        <span title="Close tab" on:click={() => {handleClose(id)}}></span>
     </div>
 </div>
-
-{#if contextmenu}
-<!-- TODO: Fix menu position somehow
-    <ContextMenu target={tab} items={contextmenuitems}></ContextMenu>
--->
-{/if}
 
 <style lang="scss">
     .tab {
