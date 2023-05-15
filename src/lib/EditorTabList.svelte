@@ -44,10 +44,12 @@
 <div id="editor-tabs" class:hidden={$hidden}>
     <TabList tabs={tabs} on:closetab={(e) => {closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar">
-        <Dropdown right menu={{icon: VerticalDots, children: [
+        <!-- TODO: Fix dropdown position
+            <Dropdown right menu={{icon: VerticalDots, children: [
             {name: "Close All Tabs", action: () => {editorTab.CloseAllTabs()}},
             {name: "Close Saved Tabs", disabled: true}
         ]}}></Dropdown>
+        -->
     </div>
 </div>
 
