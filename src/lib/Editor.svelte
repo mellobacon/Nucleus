@@ -66,7 +66,7 @@
         line-height: 1.3 !important;
         overflow-y: overlay;
         overflow-x: overlay !important;
-        padding-top: 3px;
+        padding-top: 7px;
         &::-webkit-scrollbar {
             width: 5px;
             height: 5px;
