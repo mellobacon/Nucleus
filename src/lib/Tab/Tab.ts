@@ -7,6 +7,7 @@ export class Tab {
     tablist = [];
     Tab; // Tab class
     hidden = writable(true);
+    isfile = writable(false);
     tabs = writable([]);
     constructor (Tab) {
         this.Tab = Tab;
@@ -17,6 +18,12 @@ export class Tab {
             if (tab.id === id) {
                 this.activeid = id;
                 tab.active = true;
+                if (tab.isfile) {
+                    this.isfile.set(true);
+                }
+                else {
+                    this.isfile.set(false);
+                }
             }
             else {
                 tab.active = false;
@@ -26,12 +33,6 @@ export class Tab {
         this.updateView();
     }
     updateTabs() {
-        if (this.tablist.length === 0) {
-            this.hidden.set(true);
-            this.id = 0;
-            return;
-        }
-
         if (this.tablist.length > 0) {
             this.hidden.set(false);
         }
@@ -96,6 +97,7 @@ export class Tab {
         
         if (this.tablist.length === 0) {
             this.hidden.set(true);
+            this.isfile.set(false);
             this.id = 0;
         }
     }

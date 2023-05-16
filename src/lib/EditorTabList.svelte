@@ -3,6 +3,7 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import TabList from "./Tab/TabList.svelte";
     import { Tab } from "./Tab/Tab";
+    import Editor from "./Editor.svelte";
 </script>
 <script lang="ts" context="module">
     class EditorTab {
@@ -42,6 +43,7 @@
     }
 
     export let hidden = editorTab.hidden;
+    export let isfile = editorTab.isfile;
     let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" class:hidden={$hidden}>

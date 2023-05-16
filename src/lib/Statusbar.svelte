@@ -1,3 +1,7 @@
+<script lang="ts">
+    import { isfile } from "./EditorTabList.svelte";
+</script>
+
 <div id="statusbar">
     <div id="title">
         <span>Nucleus</span>
@@ -6,6 +10,15 @@
     <div class="editor-tools">
         
     </div>
+    {#if $isfile}
+        <div class="editor-info">
+            <span title="Ln: -, Col: -">- : -</span>
+            <div class="divider"></div>
+            <span>UTF-8</span>
+            <div class="divider"></div>
+            <span>Unknown</span>
+        </div>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -33,10 +46,24 @@
     }
     .editor-tools {
         height: 100%;
-        width: -webkit-fill-available;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         padding-left: 10px;
+    }
+    .editor-info {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-grow: 1;
+        font-size: 13px;
+        height: 100%;
+        color: #8c8c8c;
+        span {
+            padding: 0 7px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
     }
 </style>
