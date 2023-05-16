@@ -67,14 +67,14 @@
     <div use:getContextMenuDimension class="context-menu" bind:this={ref} style="top:{cursorPos.y}px; left:{cursorPos.x}px">
         {#each items as item}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div class="context-menu-option" class:disabled={item.disabled} on:click={() => {
+            <div class="context-menu-option" title="" class:disabled={item.disabled} on:click={() => {
                 if (!item.disabled) {
-                    item.action()
+                    item.action();
                 }
             }}>
                 <span class="option-name">{item.name}</span>
                 {#if item.shortcut}
-                    <span class="option-shortcut"></span>
+                    <span class="option-shortcut">{item.shortcut}</span>
                 {/if}
             </div>
         {/each}
@@ -100,6 +100,7 @@
         width: 100%;
         font-size: 0.875rem;
         cursor: pointer;
+        color: #ffffff;
         &:hover {
             background-color: #414040;
         }
@@ -110,6 +111,7 @@
     .option-shortcut {
         color: #8c8c8c;
         margin-left: 10px;
+        
     }
     .disabled {
         color: #6b6b6b;
