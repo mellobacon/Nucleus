@@ -62,15 +62,15 @@
         {/each}
     </div>
     <div class="divider"></div>
-    <div id="workspace" title="WorkspaceName/filename.txt" data-tauri-drag-region>
-        WorkspaceName | filename.txt
+    <div id="workspace" title="" data-tauri-drag-region>
+        Untitled Workspace
     </div>
     <div id="handle" data-tauri-drag-region></div>
     <div class="tools">
         
         <div class="settings">
             <Dropdown right menu={{icon: Settings, children: [
-                {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings")}}, 
+                {name: "Settings", disabled: true, shortcut: "", action: () => {addTab("Settings", "Settings")}}, 
                 {name: "Keymap", disabled: true, shortcut: "", action: () => {console.log("click")}}
             ]
             }} />
