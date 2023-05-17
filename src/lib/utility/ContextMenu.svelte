@@ -30,7 +30,7 @@
         cursorPos = {x: e.clientX, y: e.clientY}
 
         // Adjust context menu position based on where it is on the window
-        // If it overlaps with the window border then move it to the right/left accordingly
+        // If it overlaps with the window border then move it to the right/left/top/bottom accordingly
         if (windowSize.h -  cursorPos.y < menuPos.h) {
             cursorPos.y = cursorPos.y - menuPos.h
         }
@@ -41,7 +41,7 @@
 
     function getContextMenuDimension(node){
         // This function will get context menu dimension
-        // when navigation is shown => showMenu = true
+        // when navigation is shown
         let height = node.offsetHeight;
         let width = node.offsetWidth;
         menuPos = {
