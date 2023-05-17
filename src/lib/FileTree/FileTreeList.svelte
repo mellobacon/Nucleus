@@ -140,7 +140,6 @@
             if (e.button === 2) {
                 contextmenu = true;
             }
-            //toggleExpansion(e);
         }}>
             <span class="arrow" class:arrowDown>&#x25b6</span>
             {#if icon}
