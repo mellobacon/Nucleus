@@ -1,6 +1,28 @@
 <script lang="ts">
     import FileTreeView from "./FileTree/FileTreeView.svelte";
+    import ContextMenu from "./utility/ContextMenu.svelte";
+    let treeDom;
+    let contextmenu = false;
 
+    function handleClick(e) {
+        treeDom = e.detail.target;
+        console.log($filetree[0]);
+        contextmenu = e.detail.contextmenu;
+    }
+    function handleSelect(e) {
+        console.log(e.detail.node);
+    }
+
+    let contextmenuitems = [
+        {name: "Open in File Explorer", shortcut: "", action: () => {console.log("click")}},
+        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.log("click")}},
+        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.log("click")}},
+        {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.log("click")}},
+        {name: "Copy Filename", shortcut: "", action: () => {console.log("click")}},
+        {name: "Copy Absolute Path", shortcut: "", action: () => {console.log("click")}},
+        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
+        {name: "Delete", shortcut: "Delete", action: () => {console.log("click")}}
+    ]
 </script>
 
 <script lang="ts" context="module">
@@ -32,8 +54,12 @@
         <button class="toolbar-button">Open Folder</button>
     </div>
 {:else}
-<FileTreeView tree={$filetree} on:nodeselect={(e) => {console.log(e.detail.node)}}></FileTreeView>
+    <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:rightclick={handleClick}></FileTreeView>
 {/if}
+{#if treeDom && contextmenu}
+    <ContextMenu target={treeDom} items={contextmenuitems}></ContextMenu>
+{/if}
+
 
 <style lang="scss">
     .toolbar-button {
