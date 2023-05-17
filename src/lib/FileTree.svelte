@@ -56,6 +56,7 @@
 {:else}
     <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:rightclick={handleClick}></FileTreeView>
 {/if}
+
 {#if treeDom && contextmenu}
     <ContextMenu target={treeDom} items={contextmenuitems}></ContextMenu>
 {/if}
