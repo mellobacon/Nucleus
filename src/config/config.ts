@@ -1,6 +1,4 @@
 import { writable } from "svelte/store";
-import { openFile, openFolder, saveOpenFile, saveOpenFileAs } from "../components/Header/header_menus/FileMenu";
-import { addFileTab, tablist } from "../components/Tabs/scripts/Tab";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -21,10 +19,10 @@ export function getShortcut({ primaryKey, secondaryKey, modifier }) {
 export function executeEditorShortcut(shortcut) {
     switch (shortcut) {
         case "save-file-shortcut":
-            saveOpenFile();
+            console.log(shortcut);
             break;
         case "save-file-as-shortcut":
-            saveOpenFileAs();
+            console.log(shortcut);
             break;
         case "find-shortcut":
             console.log(shortcut);
@@ -36,13 +34,13 @@ export function executeEditorShortcut(shortcut) {
 export async function executeWindowShortcut(shortcut) {
     switch (shortcut) {
         case "new-file-shortcut":
-            await addFileTab();
+            console.log(shortcut);
             break;
         case "open-file-shortcut":
-            await openFile();
+            console.log(shortcut);
             break;
         case "open-folder-shortcut":
-            await openFolder();
+            console.log(shortcut);
             break;
         case "build-shortcut":
             console.log(shortcut);
@@ -72,12 +70,5 @@ export function getInstalledFonts(fonts: []) {
     systemfonts.set(fontlist);
 }
 export function setFont(efont) {
-    editorfont.set(efont);
-    editorfont.subscribe(f => (font = f));
-    for (const tab of tablist) {
-        if (tab.active && tab.isfile) {
-            tab.refreshView(tab);
-        }
-    }
     
 }
