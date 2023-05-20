@@ -3,12 +3,12 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import Settings from "carbon-icons-svelte/lib/Settings.svelte";
     import { addTab, addEditorTab } from "../lib/EditorTabList.svelte";
-    import { saveFile } from "./File";
+    import { saveFile, openFile } from "./File";
 
     const items = [
         {menuname: "File", children: [
             {name: "New File", shortcut: "Ctrl + N", action: () => {addEditorTab()}},
-            {name: "Open File...", shortcut: "Ctrl + O", action: () => {console.log("click")}},
+            {name: "Open File...", shortcut: "Ctrl + O", action: async () => {await openFile()}},
             {name: "Save File", shortcut: "Ctrl + S", action: async () => {await saveFile()}},
             {name: "Save File As...", shortcut: "Ctrl + Shift + S", action: async () => {await saveFile(true)}},
             {name: "Close Tab", disabled: true, shortcut: "", action: () => {console.log("click")}},

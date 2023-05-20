@@ -1,6 +1,13 @@
 import { dialog, fs, path } from "@tauri-apps/api";
 import { get } from 'svelte/store';
-import { tabs } from "./EditorTabList.svelte";
+import { tabs, addEditorTab } from "./EditorTabList.svelte";
+
+export async function openFile() {
+    let newPath = await dialog.open() as string;
+    if (newPath === null) return;
+    let filename = newPath.split(path.sep).pop();
+    addEditorTab(newPath, filename);
+}
 
 export async function saveFile(saveAs = false) {
     const tab = get(tabs).find(t => t.active && t.isfile);

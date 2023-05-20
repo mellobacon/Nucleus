@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
-import { path as p } from "@tauri-apps/api";
+import { path as p, fs } from "@tauri-apps/api";
 
 export class Tab {
     id = 0;
@@ -67,7 +67,13 @@ export class Tab {
         if (this.tabOpen(path)) {
             return;
         }
-        let content = new Editor({target: document.getElementById("tabview"), props: {content: ""}});
+        let fileContent = "";
+        try {
+            fileContent = await fs.readTextFile(path); //TODO: Fix performance issues/loading times on large files
+        } catch (error) {
+            console.warn("Can't read file content. Setting to empty string.");
+        }
+        let content = new Editor({target: document.getElementById("tabview"), props: {content: fileContent}});
         let tab = new this.Tab(this.id, label, content, path);
         tab.isfile = true;
         tab.saved = true;
@@ -78,6 +84,7 @@ export class Tab {
             console.warn("Cannot find file extension. Setting to empty string.")
             fileType = "";
         }
+
         content.updateFileInfo({
             "filename": tab.label,
             "path": tab.path,
