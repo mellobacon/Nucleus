@@ -30,6 +30,9 @@
         "scope": [],
         "writeFile": true
       },
+      "path": {
+        "all": true
+      },
       "dialog": {
         "all": false,
         "ask": false,
