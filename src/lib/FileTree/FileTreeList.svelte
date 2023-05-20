@@ -29,14 +29,14 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: () => {console.log("click")}},
-        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.log("click")}},
-        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.log("click")}},
-        {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.log("click")}},
-        {name: "Copy Filename", shortcut: "", action: () => {console.log("click")}},
-        {name: "Copy Absolute Path", shortcut: "", action: () => {console.log("click")}},
-        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.log("click")}},
-        {name: "Delete", shortcut: "Delete", action: () => {console.log("click")}}
+        {name: "Open in File Explorer", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy Filename", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy Absolute Path", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Delete", shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}}
     ]
 
     function findNode(nodeid, tree = null) {
