@@ -62,7 +62,6 @@
         await tick();
         await tick();
         editorView.focus();
-        //await updateContent();
     }
 </script>
 <script lang="ts" context="module">
