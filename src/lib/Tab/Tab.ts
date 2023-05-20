@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
+import { path as p } from "@tauri-apps/api";
 
 export class Tab {
     id = 0;
@@ -20,6 +21,7 @@ export class Tab {
                 tab.active = true;
                 if (tab.isfile) {
                     this.isfile.set(true);
+                    tab.content.focus();
                 }
                 else {
                     this.isfile.set(false);
@@ -61,14 +63,27 @@ export class Tab {
 
         this.updateTabs();
     }
-    addEditorTab(path: string, label: string = "") {
+    async addEditorTab(path: string, label: string = "") {
         if (this.tabOpen(path)) {
             return;
         }
         let content = new Editor({target: document.getElementById("tabview"), props: {content: ""}});
-        
         let tab = new this.Tab(this.id, label, content, path);
         tab.isfile = true;
+        tab.saved = true;
+        let fileType = "";
+        try {
+            fileType = await p.extname(tab.path);
+        } catch (error) {
+            console.warn("Cannot find file extension. Setting to empty string.")
+            fileType = "";
+        }
+        content.updateFileInfo({
+            "filename": tab.label,
+            "path": tab.path,
+            "fileType": fileType,
+            "readonly": false,
+        });
         this.tablist = [...this.tablist, tab];
 
         this.updateView();

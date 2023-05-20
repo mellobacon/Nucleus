@@ -38,7 +38,7 @@
 </script>
 <div bind:this={tabcontainer} id="tablist">
     {#each $tabs as tab}
-        <Tab on:closetab on:select id={tab.id} label={tab.label} path={tab.path} active={tab.active} />
+        <Tab on:closetab on:select id={tab.id} label={tab.label} path={tab.path} active={tab.active} saved={tab.saved} />
     {/each}
 </div>
 

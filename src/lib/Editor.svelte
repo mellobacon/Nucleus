@@ -7,11 +7,23 @@
     import {defaultKeymap, history, historyKeymap, indentWithTab} from "@codemirror/commands"
     import {searchKeymap} from "@codemirror/search"
     import { onMount, tick } from "svelte";
+    import { writable } from "svelte/store";
+    import { updateSaveState } from "./File";
 
     let ref;
-    let editorView;
+    let editorView: EditorView;
     export let hidden = false;
     export let content = "";
+
+    export function updateFileInfo(file) {
+        updateFile(file);
+    }
+    export function getFileInfo() {
+        return $file_info;
+    }
+    export function getFileContent() {
+        return content;
+    }
 
     onMount(() => {
         editorView = new EditorView({
@@ -40,9 +52,33 @@
             })
         })
     });
+    async function updateContent() {
+        await tick();
+        content = editorView.state.doc.toString();
+        updateSaveState(false);
+    }
+    export async function focus() {
+        // takes two ticks to focus for some reason
+        await tick();
+        await tick();
+        editorView.focus();
+        //await updateContent();
+    }
+</script>
+<script lang="ts" context="module">
+    export const file_info = writable({
+        "filename": "",
+        "path": "",
+        "fileType": "",
+        "readonly": false,
+    });
+
+    export function updateFile(fileinfo) {
+        file_info.set(fileinfo);
+    }
 </script>
 
-<div bind:this={ref} class="editor" class:hidden></div>
+<div bind:this={ref} class="editor" class:hidden on:input={updateContent}></div>
 
 <style lang="scss">
     .editor {

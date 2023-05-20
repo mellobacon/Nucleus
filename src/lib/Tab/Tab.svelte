@@ -6,6 +6,7 @@
     export let label = "Untitled-1";
     export let path = "";
     export let active = false;
+    export let saved = true;
 
     let tab = null;
 
@@ -18,12 +19,9 @@
 </script>
 <div bind:this={tab} title={path} id={`editorTab-${id}`} class="tab" class:active={active}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="tab-content" on:mousedown = {
-        (e) => {
-            if (e.button === 0) handleSelect(id);
-        }
-    }>
+    <div class="tab-content" on:mousedown = {(e) => { if (e.button === 0) handleSelect(id);}}>
         <span class="tab-label">{label}</span>
+        <span class="save-state" class:saved></span>
     </div>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="close-tab">
@@ -58,7 +56,10 @@
         overflow-y: hidden;
         height: 100%;
         padding-left: 2px;
-        :nth-child(2) {
+        .save-state {
+            &.saved {
+                display: none !important;   
+            }
             display: block;
             width: 6px;
             height: 6px;

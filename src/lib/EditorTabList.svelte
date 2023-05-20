@@ -28,6 +28,9 @@
                 tab.content.updateTheme();
             }
         }
+        setActive(id) {
+            editorTab.setActive(id);
+        }
     }
 
     const editorTab = new Tab(EditorTab);
@@ -44,7 +47,7 @@
 
     export let hidden = editorTab.hidden;
     export let isfile = editorTab.isfile;
-    let tabs = editorTab.tabs;
+    export let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" class:hidden={$hidden}>
     <TabList tabs={tabs} on:closetab={(e) => {closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
