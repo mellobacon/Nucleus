@@ -24,9 +24,6 @@
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
 			updateMinPanelSize();
-			if (panelSize < minPanelSize) {
-				panelSize = minPanelSize;
-			}
 		})
 	})
 
@@ -53,7 +50,11 @@
 		else if ($resolution > 1300) {
 			minPanelSize = 10;
 		}
-	}
+
+		if (panelSize < minPanelSize) {
+			panelSize = minPanelSize;
+		}
+}
 </script>
 
 <Header />
