@@ -62,6 +62,23 @@
         await tick();
         await tick();
         editorView.focus();
+        updateLineInfo();
+    }
+    function updateLineInfo() {
+        let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
+        let columnNumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from;
+        line_info.set({line: lineNumber.toString(), column: (columnNumber + 1).toString()})
+    }
+
+    async function handleKeyDown(e) {
+        let key = e.code;
+        switch(key) {
+            case "Backspace": case "Enter":
+                await updateContent();
+                updateLineInfo();
+            case "ArrowRight": case "ArrowLeft": case "ArrowDown": case "ArrowUp":
+                updateLineInfo();
+        }
     }
 </script>
 <script lang="ts" context="module">
@@ -71,13 +88,14 @@
         "fileType": "",
         "readonly": false,
     });
+    export const line_info = writable({line: "-", column: "-"});
 
     export function updateFile(fileinfo) {
         file_info.set(fileinfo);
     }
 </script>
 
-<div bind:this={ref} class="editor" class:hidden on:input={updateContent}></div>
+<div bind:this={ref} class="editor" class:hidden on:input={updateContent} on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
 
 <style lang="scss">
     .editor {
