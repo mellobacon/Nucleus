@@ -89,6 +89,7 @@ export class Tab {
             "filename": tab.label,
             "path": tab.path,
             "fileType": fileType,
+            "language": content.getLang(fileType),
             "readonly": false,
         });
         this.tablist = [...this.tablist, tab];

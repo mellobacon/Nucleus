@@ -20,10 +20,12 @@ export async function saveFile(saveAs = false) {
     }
     // write changes to the file
     fs.writeFile(tab.path, tab.content.getFileContent());
+    const fileType = await path.extname(tab.path);
     tab.content.updateFileInfo({
         "filename": tab.label,
         "path": tab.path,
-        "fileType": await path.extname(tab.path),
+        "fileType": fileType,
+        "language": tab.content.getLang(fileType),
         "readonly": false,
     });
     tab.setActive(tab.id);

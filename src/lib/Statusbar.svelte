@@ -1,6 +1,6 @@
 <script lang="ts">
     import { isfile } from "./EditorTabList.svelte";
-    import { line_info } from "./Editor.svelte";
+    import { line_info, language } from "./Editor.svelte";
 </script>
 
 <div id="statusbar">
@@ -17,7 +17,7 @@
             <div class="divider"></div>
             <span>UTF-8</span>
             <div class="divider"></div>
-            <span>Unknown</span>
+            <span>{$language}</span>
         </div>
     {/if}
 </div>

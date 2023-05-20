@@ -14,15 +14,25 @@
     let editorView: EditorView;
     export let hidden = false;
     export let content = "";
+    const file_info = writable({
+        "filename": "",
+        "path": "",
+        "fileType": "",
+        "language": "",
+        "readonly": false,
+    });
 
     export function updateFileInfo(file) {
-        updateFile(file);
+        file_info.set(file);
     }
     export function getFileInfo() {
         return $file_info;
     }
     export function getFileContent() {
         return content;
+    }
+    export function getLang(ext) {
+        return getLangFromExt(ext);
     }
 
     onMount(() => {
@@ -63,6 +73,7 @@
         await tick();
         editorView.focus();
         updateLineInfo();
+        language.set($file_info.language);
     }
     function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -82,16 +93,23 @@
     }
 </script>
 <script lang="ts" context="module">
-    export const file_info = writable({
-        "filename": "",
-        "path": "",
-        "fileType": "",
-        "readonly": false,
-    });
-    export const line_info = writable({line: "-", column: "-"});
+    import { languages as cmLangs } from "@codemirror/language-data";
 
-    export function updateFile(fileinfo) {
-        file_info.set(fileinfo);
+    export const line_info = writable({line: "-", column: "-"});
+    export const language = writable("Unknown");
+
+    export function getLangFromExt(ext: string) {
+        if (ext === "txt") {
+            return "Plain Text";
+        }
+
+        let cmlang = cmLangs.find(l => l.extensions.includes(ext));
+        if (cmlang) {
+            return cmlang.name;
+        }
+        else {
+            return "Unknown";
+        }
     }
 </script>
 
