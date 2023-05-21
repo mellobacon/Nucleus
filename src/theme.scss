@@ -12,6 +12,7 @@ $tab-container-height: 2rem;
     --window-dropdownButtonHoverForeground: #ffffff;
     --window-dropdownItemHoverBackground: #171717;
     --window-dropdownItemHoverForeground: #ffffff;
+    --window-scrollbar-backgroundColor: #eeffff17;
 
     --header-background: #2D2D2D;
     --header-foreground: #ffffff;
@@ -173,6 +174,12 @@ html {
 }
 .cm-scroller {
     background-color: var(--editor-background);
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--window-scrollbar-backgroundColor);
+        &:hover {
+            background-color: #1b83ddb5;
+        }
+    }
 }
 .cm-cursor {
     border-left-color: var(--window-foreground) !important;
