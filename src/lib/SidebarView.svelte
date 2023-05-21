@@ -26,5 +26,8 @@
         &::-webkit-scrollbar-thumb {
             background-color: #4c4c4c38;
         }
+        &::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
     }
 </style>
