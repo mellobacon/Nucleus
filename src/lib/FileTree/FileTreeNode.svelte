@@ -61,6 +61,18 @@
         }
     }
 
+    function handleDoubleSelect(node, event) {
+        for (let nodes of document.getElementsByClassName("tree-label")) {
+            nodes.classList.remove("selected")
+        }
+        if (event.target === refLabel) {
+            event.target.classList.add("selected")
+        }
+        if (!contextmenu) {
+            dispatch("dblnodeselect", {node});
+        }
+    }
+
     $: if (refLabel) {
         refLabel.style.marginLeft = `-${offset()}rem`;
         refLabel.style.paddingLeft = `${offset()}rem`;
@@ -77,7 +89,10 @@
 
 <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" title={path}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div bind:this={refLabel} class="tree-label" class:selected on:click={(e) => {handleSelect(treenode, e)}} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+    <div bind:this={refLabel} class="tree-label" class:selected 
+    on:click={(e) => {handleSelect(treenode, e)}} 
+    on:dblclick={(e) => {handleDoubleSelect(treenode, e)}} 
+    draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
         if (e.button === 2) {
             contextmenu = true;
             handleSelect(treenode, e);

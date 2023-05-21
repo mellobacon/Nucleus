@@ -128,9 +128,9 @@
 {#if root}
     {#each children as child}
         {#if Array.isArray(child.children)}
-            <svelte:self on:nodeselect isroot={root} {...child}></svelte:self>
+            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child}></svelte:self>
         {:else}
-            <FileTreeNode on:nodeselect {...child} />
+            <FileTreeNode on:nodeselect on:dblnodeselect {...child} />
         {/if}
     {/each}
 {:else}
@@ -151,9 +151,9 @@
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
                 {#each children as child (child.id) }
                     {#if Array.isArray(child.children)}
-                        <svelte:self on:nodeselect {...child}></svelte:self>
+                        <svelte:self on:nodeselect on:dblnodeselect {...child}></svelte:self>
                     {:else}
-                        <FileTreeNode on:nodeselect {...child} />
+                        <FileTreeNode on:nodeselect on:dblnodeselect {...child} />
                     {/if}
                 {/each}
             </ul>

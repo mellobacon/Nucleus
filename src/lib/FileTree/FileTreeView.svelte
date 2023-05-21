@@ -32,7 +32,7 @@
 </script>
 
 <ul bind:this={ref} class="tree" role="tree" on:mouseup={handleMouseUp}>
-    <FileTreeList on:nodeselect children={tree} root />
+    <FileTreeList on:nodeselect on:dblnodeselect children={tree} root />
 </ul>
 
 <style>
