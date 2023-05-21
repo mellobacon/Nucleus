@@ -138,8 +138,8 @@
         overflow-y: overlay;
         overflow-x: overlay !important;
         &::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
         }
         &::-webkit-scrollbar-thumb {
             border-radius: 20px;
