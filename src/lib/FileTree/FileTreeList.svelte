@@ -15,11 +15,11 @@
     export let isroot = false;
 
     export let id = "";
-    export let label = "";
+    export let name = "";
     export let path = "";
     export let children = [];
 
-    let expanded = _expansionState[label] || false;
+    let expanded = _expansionState[name] || false;
     let ref = null;
     let refLabel = null;
     let refChildren = null;
@@ -105,7 +105,7 @@
         }
 
         if (!contextmenu) {
-            expanded = _expansionState[label] = !expanded;
+            expanded = _expansionState[name] = !expanded;
         }
     };
 
@@ -145,7 +145,7 @@
             {#if icon}
                 <svelte:component this={icon} />
             {/if}
-            <div class="item-label">{label}</div>
+            <div class="item-label">{name}</div>
         </div>
         {#if expanded}
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
@@ -188,10 +188,11 @@
         min-height: 1.5rem;
         font-size: 14px;
         align-items: center;
+        flex: 1;
         white-space: nowrap;
         :global(svg) {
-            width: 18px;
-            height: 18px;
+            min-width: 18px;
+            min-height: 18px;
             padding: 0 5px 0 0;
         }
     }

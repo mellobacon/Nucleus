@@ -20,7 +20,7 @@
     import ContextMenu from "../utility/ContextMenu.svelte";
 
     export let id;
-    export let label;
+    export let name;
     export let path;
 
     let selected = false;
@@ -66,7 +66,7 @@
         refLabel.style.paddingLeft = `${offset()}rem`;
     }
 
-    $:treenode = {id, label, path}
+    $:treenode = {id, name, path}
 </script>
 
 <svelte:window on:click={(e) => {
@@ -87,7 +87,7 @@
         {#if icon}
             <svelte:component this={icon} />
         {/if}
-        {label}
+        {name}
     </div>
 </li>
 
@@ -110,8 +110,8 @@
         flex: 1;
         white-space: nowrap;
         :global(svg){
-            width: 18px;
-            height: 18px;
+            min-width: 18px;
+            min-height: 18px;
             padding: 0 5px 0 0;
         }
     }
