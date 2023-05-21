@@ -129,18 +129,17 @@
     }
     :global(.cm-editor),
     :global(.cm-wrap) {
-        cursor: text;
         height: 100%;
     }
     :global(.cm-scroller) {
         font-size: 14px !important;
         line-height: 1.3 !important;
+        padding-top: 7px;
         overflow-y: overlay;
         overflow-x: overlay !important;
-        padding-top: 7px;
         &::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 10px;
+            height: 10px;
         }
         &::-webkit-scrollbar-thumb {
             border-radius: 20px;
