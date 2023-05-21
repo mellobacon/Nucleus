@@ -22,7 +22,7 @@
         "copyFile": false,
         "createDir": false,
         "exists": false,
-        "readDir": false,
+        "readDir": true,
         "readFile": true,
         "removeDir": false,
         "removeFile": false,
