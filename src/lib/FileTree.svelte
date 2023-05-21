@@ -1,6 +1,8 @@
 <script lang="ts">
     import FileTreeView from "./FileTree/FileTreeView.svelte";
     import ContextMenu from "./utility/ContextMenu.svelte";
+    import { addEditorTab } from "./EditorTabList.svelte";
+    import { openFolder } from "./File";
     let treeDom;
     let contextmenu = false;
 
@@ -10,7 +12,10 @@
         contextmenu = e.detail.contextmenu;
     }
     function handleSelect(e) {
-        console.log(e.detail.node);
+        console.log(e.detail.node)
+    }
+    function handleDblSelect(e) {
+        addEditorTab(e.detail.node.path, e.detail.node.name);
     }
 
     let contextmenuitems = [
@@ -34,10 +39,10 @@
 {#if $filetree.length === 0}
     <div class="container">
         <span>No folder/workspace open</span>
-        <button class="toolbar-button" on:click={() => {console.warn("Feature not implemented yet.")}}>Open Folder</button>
+        <button class="toolbar-button" on:click={async () => {await openFolder()}}>Open Folder</button>
     </div>
 {:else}
-    <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:rightclick={handleClick}></FileTreeView>
+    <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:dblnodeselect={handleDblSelect} on:rightclick={handleClick}></FileTreeView>
 {/if}
 
 {#if treeDom && contextmenu}
