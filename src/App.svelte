@@ -87,7 +87,7 @@
         background-position: center;
 	}
 	#tabview {
-		width: 100%;
+		width: -webkit-fill-available;
 		margin-left: 0.1rem;
         z-index: 1;
         position: absolute;
