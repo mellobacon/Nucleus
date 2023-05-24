@@ -103,11 +103,17 @@ export async function saveFile(saveAs = false) {
         "readonly": false,
     });
     tab.setActive(tab.id);
+    updateSaveState(true);
 }
 
 export function updateSaveState(saved = true) {
-    if (saved) return; // prevents this being fired on every state check
     const tab = get(tabs).find(t => t.active && t.isfile);
-    tab.saved = false;
+    if (saved) {
+        tab.saved = true;
+        return; // prevents this being fired on every state check
+    }
+    else {
+        tab.saved = false;
+    }
     tab.setActive(tab.id);
 }
