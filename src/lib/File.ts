@@ -59,6 +59,30 @@ function sortTree(tree: fs.FileEntry[]) {
     return sortedTree;
 }
 
+export async function moveFile(source: string, dest: string, file: string, type: string) {
+
+    if (!await dialog.confirm(`Are you sure you want to move "${file.split(path.sep).pop()}" from "./${source.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
+        return;
+    }
+
+    try {
+        await fs.renameFile(source, dest);
+    } catch (error) {
+        console.error(error);
+    }
+    
+    /*
+    // Should use this as fallback
+    fs.copyFile(source, dest);
+    if (type === "directory") {
+        fs.removeDir(source);
+    }
+    else {
+        fs.removeFile(source);
+    }
+    */
+}
+
 export async function saveFile(saveAs = false) {
     const tab = get(tabs).find(t => t.active && t.isfile);
     if (!tab.path.includes(path.sep) || tab.path === "" || saveAs) {
