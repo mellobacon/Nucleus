@@ -63,7 +63,6 @@ html {
     height: $header-height;
 }
 #statusbar {
-    height: $statusbar-height;
     box-shadow: 0px -1px 0 0px var(--window-borderColor);
     height: calc($statusbar-height + 0.1rem);
 }
