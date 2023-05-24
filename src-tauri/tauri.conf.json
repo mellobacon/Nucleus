@@ -26,7 +26,7 @@
         "readFile": true,
         "removeDir": false,
         "removeFile": false,
-        "renameFile": false,
+        "renameFile": true,
         "scope": [],
         "writeFile": true
       },
