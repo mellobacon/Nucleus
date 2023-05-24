@@ -53,8 +53,8 @@ function sortTree(tree: fs.FileEntry[]) {
             files.push(node);
         }
     }
-    files.sort();
-    sortedTree.sort();
+    files.sort((a, b) => (a - b));
+    sortedTree.sort((a, b) => (a - b));
     sortedTree.push(...files);
     return sortedTree;
 }
@@ -70,7 +70,7 @@ export async function moveFile(source: string, dest: string, file: string, type:
     } catch (error) {
         console.error(error);
     }
-    
+
     /*
     // Should use this as fallback
     fs.copyFile(source, dest);
