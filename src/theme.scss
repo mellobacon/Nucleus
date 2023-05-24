@@ -64,6 +64,8 @@ html {
 }
 #statusbar {
     height: $statusbar-height;
+    box-shadow: 0px -1px 0 0px var(--window-borderColor);
+    height: calc($statusbar-height + 0.1rem);
 }
 #workspace {
     line-height: $header-height;
@@ -186,9 +188,4 @@ html {
 }
 .ͼ4 .cm-line::selection, .ͼ2 .cm-selectionBackground {
     background-color: #4d5054 !important;
-}
-
-#statusbar {
-    box-shadow: 0px -1px 0 0px var(--window-borderColor);
-    height: calc($statusbar-height + 0.1rem);
 }
