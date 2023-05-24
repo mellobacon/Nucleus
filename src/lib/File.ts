@@ -15,13 +15,13 @@ export async function openFolder() {
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
 
-    let tree = await fs.readDir(directory, {recursive: true});
+    let tree: any = await fs.readDir(directory, {recursive: true});
     if (!tree) {
         console.error("Cannot load directory");
         return;
     }
     let directoryName = directory.split(path.sep).pop();
-    tree = [{name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
+    tree = [{id: -1, name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
     filetree.set(tree);
     workspaceName.set(directoryName);
     id = 0;
