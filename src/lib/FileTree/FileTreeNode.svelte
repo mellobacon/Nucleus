@@ -42,7 +42,7 @@
     ]
 
     function dragstart(e) {
-        let data = {element: `filetree-node-${id}`, id:id, type: "node"};
+        let data = {element: `filetree-node-${id}`, id:id, type: "file"};
         e.dataTransfer.setData("text/plain", JSON.stringify(data));
     }
 

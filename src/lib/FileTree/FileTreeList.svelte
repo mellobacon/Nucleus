@@ -10,6 +10,7 @@
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
+    import { moveFile } from "../File";
 
     export let root = false;
     export let isroot = false;
@@ -61,39 +62,53 @@
     }
 
     function dragstart(e) {
-        let data = {element: `filetree-node-${id}`, id:id, type: "parent"};
+        let data = {element: `filetree-node-${id}`, id:id, type: "directory"};
         e.dataTransfer.setData("text/plain", JSON.stringify(data));
     }
 
-    function drop(e) {
+    async function drop(e) {
         let data = JSON.parse(e.dataTransfer.getData("text/plain"))
         let el = document.getElementById(data.element);
         let from = el.parentElement;
-        let to = e.target.parentElement.parentElement;
-
-        let fromid = from.getAttribute("data-id");
-        let toid = to.getAttribute("data-id");
-
+        let to = dropTarget.parentElement.parentElement;
+        if (dropTarget.hasAttribute("data-nodetype")) {
+            if (dropTarget.nextElementSibling) {
+                to = dropTarget.nextElementSibling;
+            }
+            else {
+                to = dropTarget;
+            }
+        }
+        
+        const fromid = from.getAttribute("data-id");
+        const toid = to.getAttribute("data-id");
         const element = findNode(parseInt(data.id));
         const fromlist = findNode(parseInt(fromid));
         const tolist = findNode(parseInt(toid));
+        
+        if (fromlist.path === tolist.path) return;
 
-        fromlist.children.splice(fromlist.children.indexOf(element), 1);
-        tolist.children = [...tolist.children, element];
+        await moveFile(fromlist.path, tolist.path, element.path, data.type);
 
-        from.removeChild(el);
-        to.appendChild(el);
-
-        filetree.set($filetree);
-
-        e.target.parentElement.classList.remove("hover");
+        e.target.classList.remove("hover");
     }
 
+    let dropTarget = null;
     function dragenter(e) {
-        e.target.parentElement.classList.add("hover");
+        switch (e.target.nodeName) {
+            case "svg": case "SPAN":
+                dropTarget = e.target.parentElement;
+                break;
+            case "path":
+                dropTarget = e.target.parentElement.parentElement;
+                break;
+            default:
+                dropTarget = e.target;
+        }
+        e.target.classList.add("hover");
     }
     function dragleave(e) {
-        e.target.parentElement.classList.remove("hover");
+        e.target.classList.remove("hover");
     }
 
     const toggleExpansion = (event) => {
@@ -136,7 +151,7 @@
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} class:selected class="tree-label" on:click={toggleExpansion} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
             if (e.button === 2) {
                 contextmenu = true;
             }
