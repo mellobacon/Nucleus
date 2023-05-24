@@ -145,7 +145,7 @@
             {#if icon}
                 <svelte:component this={icon} />
             {/if}
-            <div class="item-label">{name}</div>
+            {name}
         </div>
         {#if expanded}
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
@@ -196,7 +196,7 @@
             padding: 0 5px 0 0;
         }
     }
-    .root > .tree-label .item-label {
+    .root > .tree-label {
         font-weight: bold;
     }
 </style>
