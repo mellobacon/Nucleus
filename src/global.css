@@ -16,9 +16,6 @@ html {
 	font-size: 16px;
 	line-height: 24px;
 	font-weight: 400;
-
-	color: #ffffff;
-	background-color: #161616;
 	user-select: none;
 	-webkit-user-select: none;
 
@@ -30,7 +27,6 @@ html {
 }
 
 body {
-	padding: 8px;
 	box-sizing: border-box;
 }
 
@@ -41,10 +37,6 @@ a {
 
 a:hover {
 	text-decoration: underline;
-}
-
-a:visited {
-	color: rgb(0,80,160);
 }
 
 label {
@@ -73,5 +65,52 @@ button {
 	padding: 0;
 	background: none;
 	border: none;
-	color: white;
+}
+ul {
+	padding: 0
+}
+
+.editor-panes .splitpanes__pane {
+    background-color: transparent;
+    transition: none !important;
+}
+.editor-panes .splitpanes__splitter {
+    position: relative;
+}
+.editor-panes .splitpanes__splitter.splitpanes__splitter__active {
+    z-index: 5;
+}
+.editor-panes .splitpanes__splitter::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: opacity 0.2s;
+    background-color: #34b0f8;
+    opacity: 0;
+    z-index: 3;
+}
+.editor-panes .splitpanes__splitter:hover::before {
+    opacity: 1;
+}
+.editor-panes.splitpanes--vertical > .splitpanes__splitter::before {
+    left: -1.5px;
+    right: -1.5px;
+    height: 100%;
+    cursor: ew-resize;
+}
+.editor-panes.splitpanes--horizontal > .splitpanes__splitter::before {
+    top: -1.5px;
+    bottom: -1.5px;
+    width: 100%;
+    cursor: ns-resize;
+}
+.editor-panes.splitpanes--dragging .splitpanes__splitter::before {
+    opacity: 1;
+}
+.editor-panes.splitpanes--vertical.splitpanes--dragging {
+    cursor: ew-resize;
+}
+.editor-panes.splitpanes--horizontal.splitpanes--dragging {
+    cursor: ns-resize;
 }

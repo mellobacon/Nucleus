@@ -1,0 +1,190 @@
+$header-height: 2rem;
+$statusbar-height: 1.5rem;
+$tab-container-height: 2rem;
+
+:root {
+    --window-foreground: #ffffff;
+    --window-background: #171717;
+    --window-borderColor: #414040;
+
+    --window-dropdownBackground: #2D2D2D;
+    --window-dropdownButtonBackground: #2D2D2D;
+    --window-dropdownButtonHoverForeground: #ffffff;
+    --window-dropdownItemHoverBackground: #171717;
+    --window-dropdownItemHoverForeground: #ffffff;
+    --window-scrollbar-backgroundColor: #eeffff17;
+
+    --header-background: #2D2D2D;
+    --header-foreground: #ffffff;
+    --header-buttonHoverBackground: #414040;
+
+    --sidebar-background: transparent;
+    --sidebar-foreground: #ffffff;
+    --sidebar-tabHoverBackground: #363636;
+    --sidebar-tabHoverForeground: #ffffff;
+    --sidebar-tabActiveBackground: transparent;
+    --sidebar-tabActiveForeground: #ffffff;
+    --sidebar-tabActiveBorder: red;
+
+    --editor-tabContainerBackground: #2D2D2D;
+
+    --editor-tabBackground: #1c1c1c;
+    --editor-tabForeground: #ffffff;
+    --editor-tabBorderColor: #bdd4ff;
+    --editor-tabActiveBorderColor: #1b5fdd;
+    --editor-tabActiveBackground: #1c1c1c;
+    --editor-tabActiveForeground: #ffffff;
+    --editor-tabHoverBackground: #2b2b2b;
+    --editor-tabHoverForeground: #ffffff;
+
+    --editor-background: #171717;
+    --editor-gutter-foreground: #898989;
+    --editor-gutter-activeForeground: #ffffff;
+    --editor-gutter-activeBackground: #212121;
+    --editor-activeLineBackground: #212121;
+
+
+    --filetree-treeNodeBackground: transparent;
+    --filetree-treeNodeForeground: #808080;
+    --filetree-treeNodeHoverBackground: #353535;
+    --filetree-treeNodeHoverForeground: #ffffff;
+    --filetree-treeNodeSelectedBackground: transparent;
+    --filetree-treeNodeSelectedForeground: #34b0f8;
+
+    --statusbar-background: transparent;
+    --statusbar-foreground: #ffffff;
+}
+
+html {
+    background-color: var(--window-background);
+    color: var(--window-foreground);
+}
+#handle, #header {
+    height: $header-height;
+}
+#statusbar {
+    box-shadow: 0px -1px 0 0px var(--window-borderColor);
+    height: calc($statusbar-height + 0.1rem);
+}
+#workspace {
+    line-height: $header-height;
+}
+#header {
+    background-color: var(--header-background);
+    box-shadow: rgb(29 29 29) 0px 1.5px 0px;
+}
+.dropdown-button {
+    &:hover {
+        background-color: var(--header-buttonHoverBackground);
+    }
+}
+.dropdown-list {
+    background-color: var(--window-dropdownBackground);
+}
+.dropdown-item {
+    &:hover {
+        background-color:  var(--window-dropdownItemHoverBackground);
+    }
+}
+.divider {
+    background-color: var(--window-borderColor);
+}
+
+#main {
+    height: calc(100vh - $header-height - $statusbar-height - 0.063rem * 2);
+}
+
+#sidebar {
+    box-shadow: 1px 0px 0 0 var(--window-borderColor);
+}
+
+.sidebar-tab {
+    &.active {
+        box-shadow: inset 3.5px 0px 0 0 var(--sidebar-tabActiveBorder);
+        background-color: var(--sidebar-tabActiveBackground);
+    }
+    &:hover {
+        background-color:  var(--sidebar-tabHoverBackground);
+    }
+}
+
+.editor-panes .splitpanes__splitter {
+    background-color: var(--window-borderColor);
+}
+
+.tree {
+    color: var(--filetree-treeNodeForeground);
+    .hover {
+        background-color: var(--header-background) !important;   
+    }
+    .tree-label {
+        svg {
+            color: var(--window-foreground);
+        }
+        &:hover {
+            color: var(--filetree-treeNodeHoverForeground);
+            background-color: var(--filetree-treeNodeHoverBackground);
+        }
+        &.selected {
+            color: var(--filetree-treeNodeSelectedForeground);
+            background-color: var(--filetree-treeNodeSelectedBackground);
+        }
+    }
+}
+
+#editor-tabs {
+    background-color: var(--header-background);
+    height: calc($tab-container-height + 5px);
+    box-shadow: inset 0px -1px 0 0 var(--window-borderColor);
+
+    .tab {
+        background-color: var(--editor-tabBackground);
+        color: var(--editor-tabForeground);
+        box-shadow: inset 0px -1px 0 0 var(--editor-tabBorderColor);
+        &:not(.active):hover {
+            background-color: var(--editor-tabHoverBackground);
+            color: var(--editor-tabHoverForeground);
+        }
+        &.active {
+            background-color: var(--editor-tabActiveBackground);
+            box-shadow: inset 0px 5px 0 0 var(--editor-tabActiveBorderColor) !important;
+            color: var(--editor-tabActiveForeground);
+        }
+    }
+    .tab-toolbar {
+        box-shadow: inset 1px 0px 0 0 var(--window-borderColor);
+    }
+}
+
+#tabview {
+    margin-top: calc($tab-container-height + 5px);
+    height: calc(100% - 6.1rem + 0.1rem);
+}
+
+.cm-activeLine {
+    background-color: var(--editor-activeLineBackground) !important;
+}
+.cm-gutters {
+    background-color: var(--editor-background) !important;
+    color: var(--editor-gutter-foreground);
+    border: none !important;
+}
+.cm-activeLineGutter {
+    color: var(--editor-gutter-activeForeground) !important;
+    background-color: var(--editor-gutter-activeBackground) !important;
+}
+.cm-scroller {
+    background-color: var(--editor-background);
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--window-scrollbar-backgroundColor);
+        &:hover {
+            background-color: #1b83ddb5;
+        }
+    }
+}
+.cm-cursor {
+    border-left-color: var(--window-foreground) !important;
+}
+.ͼ4 .cm-line::selection, .ͼ2 .cm-selectionBackground {
+    background-color: #4d5054 !important;
+}
