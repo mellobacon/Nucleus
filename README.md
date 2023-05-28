@@ -17,6 +17,11 @@
   Download
 </p>
 
+___
+
+Please note that Nucleus is currently being rewritten. Features are being reworked and will be added again later. Refer to PR [#59](https://github.com/mellobacon/Nucleus/pull/59).
+___
+
 Nucleus is a text editor featuring a clean and easy to use user interface inspired by Visual Studio Code, Atom, Fleet, and others.
 
 <img width="600" alt="nucleus_emptyworkspace" src="https://github.com/mellobacon/Nucleus/assets/42365887/b66b6f69-218f-4aab-8ae2-d2c4c1b87203">
