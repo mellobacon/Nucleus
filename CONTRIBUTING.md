@@ -118,3 +118,14 @@ yarn tauri dev
 ```
 
 (*Note on building for desktop: Make sure you have these [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) as well as [the Tauri CLI](https://tauri.app/v1/guides/getting-started/tauri-cli)*.)
+
+## Compiling Nucleus
+
+To create an executable file...
+```bash
+yarn tauri build
+```
+
+The file should then be located in `src-tauri/target/release/Nucleus`.
+
+(*Note: this is for building a single executable for your current OS. To build for other operating systems, read [how to build a Tauri app](https://tauri.app/v1/guides/building/).*)
