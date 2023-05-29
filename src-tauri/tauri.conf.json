@@ -25,6 +25,11 @@
           }
         ]
       },
+      "clipboard": {
+        "all": false,
+        "readText": false,
+        "writeText": true
+      },
       "fs": {
         "all": false,
         "copyFile": false,
