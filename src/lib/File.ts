@@ -2,6 +2,7 @@ import { dialog, fs, path } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
+import { Command } from '@tauri-apps/api/shell';
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -116,4 +117,13 @@ export function updateSaveState(saved = true) {
         tab.saved = false;
     }
     tab.setActive(tab.id);
+}
+
+export async function openInExplorer(path) {
+    const explorer = new Command("explorer", path);
+    try {
+        await explorer.spawn();
+    } catch (error) {
+        console.error(error);
+    }
 }

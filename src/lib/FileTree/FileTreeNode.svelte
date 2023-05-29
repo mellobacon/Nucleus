@@ -18,6 +18,7 @@
     import { createEventDispatcher } from "svelte";
     import File from "../../util/icons/File.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
+    import { openInExplorer } from "../File";
 
     export let id;
     export let name;
@@ -31,7 +32,7 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
