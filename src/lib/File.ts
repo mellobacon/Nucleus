@@ -3,6 +3,7 @@ import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { Command } from '@tauri-apps/api/shell';
+import { watch } from "tauri-plugin-fs-watch-api";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -16,6 +17,20 @@ export async function openFolder() {
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
 
+    const directoryName = await updateTree(directory);
+    workspaceName.set(directoryName);
+
+    // load file watcher
+    await watch(
+        directory,
+        async () => {
+            await updateTree(directory);
+        },
+        { recursive: true }
+    )
+}
+
+async function updateTree(directory) {
     let tree: any = await fs.readDir(directory, {recursive: true});
     if (!tree) {
         console.error("Cannot load directory");
@@ -24,8 +39,8 @@ export async function openFolder() {
     let directoryName = directory.split(path.sep).pop();
     tree = [{id: -1, name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
     filetree.set(tree);
-    workspaceName.set(directoryName);
     id = 0;
+    return directoryName;
 }
 
 // Need to add ids to each node for svelte to iterate over them properly
