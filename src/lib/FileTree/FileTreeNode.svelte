@@ -19,6 +19,7 @@
     import File from "../../util/icons/File.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
     import { openInExplorer } from "../File";
+    import { addEditorTab } from "../EditorTabList.svelte";
 
     export let id;
     export let name;
@@ -37,7 +38,7 @@
         {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Absolute Path", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Edit", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Edit", shortcut: "", action: () => {addEditorTab(path, name)}},
         {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Delete", shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}}
     ]
