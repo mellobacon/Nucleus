@@ -136,3 +136,9 @@ export function updateSaveState(saved = true) {
 export async function openInExplorer(path: string) {
     invoke("open_in_explorer",{ path: path});
 }
+
+export async function moveToTrash(p: string) {
+    // open dialog to choose between recycling bin and perm delete
+    if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
+    await invoke("delete_file", {path: p, perm: false, isFile: p.includes(path.sep)})
+}
