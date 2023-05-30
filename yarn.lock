@@ -1216,6 +1216,12 @@ svelte@^3.58.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.58.0.tgz#d3e6f103efd6129e51c7d709225ad3b4c052b64e"
   integrity sha512-brIBNNB76mXFmU/Kerm4wFnkskBbluBDCjx/8TcpYRb298Yh2dztS2kQ6bhtjMcvUhd5ynClfwpz5h2gnzdQ1A==
 
+"tauri-plugin-fs-watch-api@https://github.com/tauri-apps/tauri-plugin-fs-watch":
+  version "0.0.0"
+  resolved "https://github.com/tauri-apps/tauri-plugin-fs-watch#5876048ff3d3d23c8863a37a0f0e91ed90553026"
+  dependencies:
+    "@tauri-apps/api" "^1.2.0"
+
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"

@@ -1,7 +1,8 @@
-import { dialog, fs, path } from "@tauri-apps/api";
+import { dialog, fs, path, invoke } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
+import { watch } from "tauri-plugin-fs-watch-api";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -15,6 +16,20 @@ export async function openFolder() {
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
 
+    const directoryName = await updateTree(directory);
+    workspaceName.set(directoryName);
+
+    // load file watcher
+    await watch(
+        directory,
+        async () => {
+            await updateTree(directory);
+        },
+        { recursive: true }
+    )
+}
+
+async function updateTree(directory) {
     let tree: any = await fs.readDir(directory, {recursive: true});
     if (!tree) {
         console.error("Cannot load directory");
@@ -23,8 +38,8 @@ export async function openFolder() {
     let directoryName = directory.split(path.sep).pop();
     tree = [{id: -1, name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
     filetree.set(tree);
-    workspaceName.set(directoryName);
     id = 0;
+    return directoryName;
 }
 
 // Need to add ids to each node for svelte to iterate over them properly
@@ -116,4 +131,14 @@ export function updateSaveState(saved = true) {
         tab.saved = false;
     }
     tab.setActive(tab.id);
+}
+
+export async function openInExplorer(path: string) {
+    invoke("open_in_explorer",{ path: path});
+}
+
+export async function moveToTrash(p: string) {
+    // open dialog to choose between recycling bin and perm delete
+    if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
+    await invoke("delete_file", {path: p, perm: false, isFile: p.includes(path.sep)})
 }

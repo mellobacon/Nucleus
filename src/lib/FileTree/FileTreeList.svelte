@@ -10,7 +10,8 @@
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
-    import { moveFile } from "../File";
+    import { moveFile, moveToTrash, openInExplorer } from "../File";
+    import { clipboard } from "@tauri-apps/api";
 
     export let root = false;
     export let isroot = false;
@@ -30,14 +31,14 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Cut", disabled: isroot, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Copy Filename", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Copy Absolute Path", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
+        {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Delete", shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}}
+        {name: "Delete", disabled: isroot, shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
     ]
 
     function findNode(nodeid, tree = null) {

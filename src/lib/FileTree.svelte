@@ -2,13 +2,19 @@
     import FileTreeView from "./FileTree/FileTreeView.svelte";
     import ContextMenu from "./utility/ContextMenu.svelte";
     import { addEditorTab } from "./EditorTabList.svelte";
-    import { openFolder } from "./File";
+    import { openFolder, openInExplorer } from "./File";
+    import { clipboard } from "@tauri-apps/api";
+
     let treeDom;
     let contextmenu = false;
 
+    let path = null;
+    let name = null;
+
     function handleClick(e) {
         treeDom = e.detail.target;
-        console.log($filetree[0]);
+        path = $filetree[0].path;
+        name = $filetree[0].name;
         contextmenu = e.detail.contextmenu;
     }
     function handleSelect(e) {
@@ -19,14 +25,14 @@
     }
 
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Cut", disabled: true, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Copy Filename", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Copy Absolute Path", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
+        {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Delete", shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}}
+        {name: "Delete", disabled: true, shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}}
     ]
 </script>
 
