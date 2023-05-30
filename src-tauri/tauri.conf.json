@@ -15,15 +15,7 @@
       "all": false,
       "shell": {
         "all": false,
-        "open": true,
-        "execute": true,
-        "scope": [
-          {
-            "name": "explorer",
-            "cmd": "explorer",
-            "args": [{ "validator": "\\S+" }]
-          }
-        ]
+        "open": true
       },
       "clipboard": {
         "all": false,

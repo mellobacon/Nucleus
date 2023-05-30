@@ -1,8 +1,7 @@
-import { dialog, fs, path } from "@tauri-apps/api";
+import { dialog, fs, path, invoke } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
-import { Command } from '@tauri-apps/api/shell';
 import { watch } from "tauri-plugin-fs-watch-api";
 
 export async function openFile() {
@@ -134,11 +133,6 @@ export function updateSaveState(saved = true) {
     tab.setActive(tab.id);
 }
 
-export async function openInExplorer(path) {
-    const explorer = new Command("explorer", path);
-    try {
-        await explorer.spawn();
-    } catch (error) {
-        console.error(error);
-    }
+export async function openInExplorer(path: string) {
+    invoke("open_in_explorer",{ path: path});
 }
