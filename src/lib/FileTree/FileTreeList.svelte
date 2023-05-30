@@ -33,12 +33,12 @@
     let contextmenuitems = [
         {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Cut", disabled: isroot, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
         {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Delete", shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
+        {name: "Delete", disabled: isroot, shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
     ]
 
     function findNode(nodeid, tree = null) {
