@@ -57,6 +57,8 @@
 }
 </script>
 
+<svelte:window on:contextmenu|preventDefault></svelte:window>
+
 <Header />
 <div id="main">
 	<Sidebar />
