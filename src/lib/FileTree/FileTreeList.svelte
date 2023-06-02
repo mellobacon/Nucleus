@@ -152,7 +152,7 @@
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false} on:dragstart={dragstart} on:mouseup={(e) => {
             if (e.button === 2) {
                 contextmenu = true;
             }
