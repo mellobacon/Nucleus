@@ -52,7 +52,6 @@
             {name: "Show Release Notes", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Check for Updates", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "About", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Toggle Developer Tools", shortcut: "Ctrl + Shift + I", action: () => {console.warn("Feature not implemented yet.")}},
         ]},
     ];
 </script>
