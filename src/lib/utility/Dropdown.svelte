@@ -11,13 +11,13 @@
     afterUpdate(() => {
         if (open && dropdownList) {
             const { height , left, width, top } = button.getBoundingClientRect();
-            dropdownList.style.top = `${height + top}px`;
+            dropdownList.style.top = `${height}px`;
             if (right) {
-                dropdownList.style.right = `calc(100% - ${left + width}px`;
+                dropdownList.style.right = `0px`;
                 dropdownList.style.left = `auto`;
             }
             else {
-                dropdownList.style.left = `${left}px`;
+                dropdownList.style.left = `${0}px`;
             }
         }
     })
@@ -36,27 +36,26 @@
     {:else}
         {menu.menuname}
     {/if}
+    {#if open}
+        <div bind:this={dropdownList} class="dropdown-list">
+            {#each menu.children as child}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <div class="dropdown-item" class:disabled={child.disabled} on:click={() => {
+                    if (!child.disabled) {
+                        child.action();
+                    }
+                }}>
+                    <span class="item-name">
+                        {child.name}
+                    </span>
+                    {#if child.shortcut}
+                        <span class="shortcut">{child.shortcut}</span>
+                    {/if}
+                </div>
+            {/each}
+        </div>
+    {/if}
 </div>
-
-{#if open}
-    <div bind:this={dropdownList} class="dropdown-list">
-        {#each menu.children as child}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div class="dropdown-item" class:disabled={child.disabled} on:click={() => {
-                if (!child.disabled) {
-                    child.action();
-                }
-            }}>
-                <span class="item-name">
-                    {child.name}
-                </span>
-                {#if child.shortcut}
-                    <span class="shortcut">{child.shortcut}</span>
-                {/if}
-            </div>
-        {/each}
-    </div>
-{/if}
 
 <style lang="scss">
     .dropdown-button {
@@ -67,6 +66,7 @@
         font-size: 0.875rem;
         min-width: 2.2rem;
         padding: 0 5px;
+        position: relative;
         :global(svg) {
             width: 18px;
             height: 18px;
@@ -78,10 +78,12 @@
         flex-direction: column;
         justify-content: center;
         min-width: 11.5rem;
+        width: max-content;
         align-items: center;
         padding: 3px 0;
         box-shadow: rgb(0 0 0 / 10%) 0px 0px 4px 2px;
         border-radius: 3px;
+        z-index: 9999;
     }
     .dropdown-item {
         display: flex;
