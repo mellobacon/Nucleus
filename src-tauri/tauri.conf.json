@@ -25,14 +25,14 @@
       "fs": {
         "all": false,
         "copyFile": false,
-        "createDir": false,
+        "createDir": true,
         "exists": false,
         "readDir": true,
         "readFile": true,
         "removeDir": false,
         "removeFile": false,
         "renameFile": true,
-        "scope": [],
+        "scope": ["$HOME/**"],
         "writeFile": true
       },
       "path": {

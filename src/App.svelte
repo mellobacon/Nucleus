@@ -9,6 +9,7 @@
     import { loadTheme } from "./config/themehandler";
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
+    import InputModal from "./lib/Modals/InputModal.svelte";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -56,6 +57,17 @@
 		}
 }
 </script>
+<script lang="ts" context="module">
+	const _openPopup = writable(false);
+	const popupAtt = writable({});
+
+	export function openInputModal(title: string, description: string, buttons: any[], options = undefined) {
+		popupAtt.set({title: title, description: description, buttons: buttons, options:options});
+		_openPopup.set(true);
+	}
+</script>
+
+<svelte:window on:contextmenu|preventDefault></svelte:window>
 
 <Header />
 <div id="main">
@@ -75,6 +87,11 @@
 	</Splitpanes>
 </div>
 <Statusbar />
+
+{#if $_openPopup}
+	<InputModal bind:open={$_openPopup} title={$popupAtt.title} buttons={$popupAtt.buttons} description={$popupAtt.description} options={$popupAtt.options}></InputModal>
+{/if}
+
 <style lang="scss">
 	#main {
 		display: flex;

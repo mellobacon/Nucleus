@@ -10,8 +10,10 @@
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
-    import { moveFile, moveToTrash, openInExplorer } from "../File";
+    import { createFile, createFolder, moveFile, moveToTrash, openInExplorer } from "../File";
     import { clipboard } from "@tauri-apps/api";
+    import { openInputModal } from "../../App.svelte";
+    import { path as p } from "@tauri-apps/api";
 
     export let root = false;
     export let isroot = false;
@@ -32,6 +34,16 @@
     let contextmenu = false;
     let contextmenuitems = [
         {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
+        {name: "New Folder...", shortcut: "", action: () => {openInputModal("Create New Folder", 
+        `Create a new folder in ${path}`, [
+            {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
+            {name: "Cancel", action: () => {}}
+        ], {label: "Folder Name"})}},
+        {name: "New File...", shortcut: "", action: () => {openInputModal("Create New File", 
+        `Create a new file in ${path}`, [
+            {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
+            {name: "Cancel", action: () => {}}
+        ], {label: "File Name"})}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Cut", disabled: isroot, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
@@ -152,7 +164,7 @@
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false} on:dragstart={dragstart} on:mouseup={(e) => {
             if (e.button === 2) {
                 contextmenu = true;
             }

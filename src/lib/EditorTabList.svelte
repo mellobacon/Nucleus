@@ -43,6 +43,9 @@
     export function closeTab(tabid: number) {
         editorTab.closeTab(tabid);
     }
+    function closeAllTabs() {
+        editorTab.closeAllTabs();
+    }
 
     export let hidden = editorTab.hidden;
     export let isfile = editorTab.isfile;
@@ -51,12 +54,9 @@
 <div id="editor-tabs" class:hidden={$hidden}>
     <TabList tabs={tabs} on:closetab={(e) => {closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar">
-        <!-- TODO: Fix dropdown position
-            <Dropdown right menu={{icon: VerticalDots, children: [
-            {name: "Close All Tabs", action: () => {editorTab.CloseAllTabs()}},
-            {name: "Close Saved Tabs", disabled: true}
+        <Dropdown right menu={{icon: VerticalDots, children: [
+            {name: "Close All Tabs", action: () => {closeAllTabs()}},
         ]}}></Dropdown>
-        -->
     </div>
 </div>
 
