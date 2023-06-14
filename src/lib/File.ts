@@ -142,3 +142,19 @@ export async function moveToTrash(p: string) {
     if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
     await invoke("delete_file", {path: p, perm: false, isFile: p.includes(path.sep)})
 }
+
+export async function createFolder(p) {
+    try {
+        await fs.createDir(p);
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function createFile(p) {
+    try {
+        await fs.writeFile(p, "");
+    } catch (error) {
+        console.log(error);
+    }
+    addEditorTab(p, p.split(path.sep).pop());
+}
