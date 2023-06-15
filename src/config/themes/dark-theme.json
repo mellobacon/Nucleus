@@ -54,7 +54,7 @@
             "treeNodeForeground": "#808080",
             "treeNodeHoverBackground": "#353535",
             "treeNodeHoverForeground": "#ffffff",
-            "treeNodeSelectedBackground": "",
+            "treeNodeSelectedBackground": "#353535",
             "treeNodeSelectedForeground": "#34b0f8"
         }
     }
