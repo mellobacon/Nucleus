@@ -88,8 +88,9 @@
         padding: 1rem 3rem 0.5rem 1rem;
         flex-direction: column;
         justify-content: center;
-        p {
+        .description {
             margin-top: -5px;
+            font-size: 0.9rem;
         }
         .content {
             width: 100%;
@@ -113,6 +114,9 @@
                 color: #f9f9f9;
                 cursor: pointer;
                 padding: 0 10px;
+                &:hover {
+                    background-color: #1c88d4;
+                }
             }
         }
     }
