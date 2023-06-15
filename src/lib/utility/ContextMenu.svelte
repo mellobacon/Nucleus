@@ -89,14 +89,15 @@
         padding: 0.25rem;
         z-index: 9999;
         position: absolute;
-        box-shadow: rgb(0 0 0 / 10%) 0px 0px 4px 2px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .8);
+        border-radius: 3px;
     }
     .context-menu-option {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 17px;
-        padding: 5px 0;
+        padding: 6px 0;
         width: 100%;
         font-size: 0.875rem;
         cursor: pointer;
