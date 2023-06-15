@@ -34,6 +34,7 @@
         },
         "editor": {
             "background": "#171717",
+            "foreground": "#e7e7e7",
             "tabContainerBackground": "#2D2D2D",
             "tabBackground": "#1c1c1c",
             "tabForeground": "#ffffff",

@@ -38,6 +38,7 @@ $tab-container-height: 2rem;
     --editor-tabHoverForeground: #ffffff;
 
     --editor-background: #171717;
+    --editor-foreground: #e7e7e7;
     --editor-gutter-foreground: #898989;
     --editor-gutter-activeForeground: #ffffff;
     --editor-gutter-activeBackground: #212121;
@@ -162,6 +163,10 @@ html {
 #tabview {
     margin-top: calc($tab-container-height + 5px);
     height: calc(100% - 6.1rem + 0.1rem);
+}
+
+.cm-content {
+    color: var(--editor-foreground);
 }
 
 .cm-activeLine {
