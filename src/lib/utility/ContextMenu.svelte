@@ -85,7 +85,6 @@
     .context-menu {
         min-width: 10rem;
         max-width: 18rem;
-        background-color: #2D2D2D;
         padding: 0.25rem;
         z-index: 9999;
         position: absolute;
@@ -101,10 +100,6 @@
         width: 100%;
         font-size: 0.875rem;
         cursor: pointer;
-        color: #ffffff;
-        &:hover {
-            background-color: #414040;
-        }
     }
     .option-name, .option-shortcut {
         padding: 0 10px;

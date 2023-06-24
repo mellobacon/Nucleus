@@ -10,8 +10,13 @@
             "dropdownButtonBackground": "#2D2D2D",
             "dropdownButtonForeground": "#ffffff",
             "dropdownButtonHoverForeground": "#ffffff",
-            "dropdownItemHoverBackground": "#171717",
+            "dropdownItemHoverBackground": "#414040",
             "dropdownItemHoverForeground": "#ffffff",
+            "inputBackground": "#333",
+            "inputForeground": "#ffffff",
+            "inputBorder": "#6f6f6f",
+            "inputFocusBorder": "",
+            "inputLabelForeground": "#c6c6c6",
             "scrollbarBackground": "#4c4c4c38"
         },
         "header": {
@@ -44,6 +49,7 @@
             "tabActiveForeground": "#ffffff",
             "tabHoverBackground": "2b2b2b",
             "tabHoverForeground": "#ffffff",
+            "tabSaveStateColor": "#ffffff",
             "gutterForeground": "#898989",
             "gutterActiveForeground": "#ffffff",
             "gutterActiveBackground": "#212121",
