@@ -10,6 +10,7 @@
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
     import InputModal from "./lib/Modals/InputModal.svelte";
+    import RenameModal from "./lib/Modals/RenameModal.svelte";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -59,10 +60,17 @@
 </script>
 <script lang="ts" context="module">
 	const _openPopup = writable(false);
-	const popupAtt = writable({});
+	const popupProps = writable({});
+	const popup = writable(null);
 
 	export function openInputModal(title: string, description: string, buttons: any[], options = undefined) {
-		popupAtt.set({title: title, description: description, buttons: buttons, options:options});
+		popup.set(InputModal);
+		popupProps.set({title: title, description: description, buttons: buttons, options: options, open: true});
+		_openPopup.set(true);
+	}
+	export function openRenameModal(title: string, description: string, buttons: any[]) {
+		popup.set(RenameModal);
+		popupProps.set({title: title, description: description, buttons: buttons, open: true});
 		_openPopup.set(true);
 	}
 </script>
@@ -89,7 +97,7 @@
 <Statusbar />
 
 {#if $_openPopup}
-	<InputModal bind:open={$_openPopup} title={$popupAtt.title} buttons={$popupAtt.buttons} description={$popupAtt.description} options={$popupAtt.options}></InputModal>
+	<svelte:component this={$popup} {...$popupProps}></svelte:component>
 {/if}
 
 <style lang="scss">
