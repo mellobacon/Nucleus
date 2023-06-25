@@ -12,6 +12,10 @@ $tab-container-height: 2rem;
     --window-dropdownButtonHoverForeground: #ffffff;
     --window-dropdownItemHoverBackground: #171717;
     --window-dropdownItemHoverForeground: #ffffff;
+    --window-inputBackground: "";
+    --window-inputForeground: "";
+    --window-inputBorder: "";
+    --window-inputLabelForeground: "";
     --window-scrollbar-backgroundColor: #eeffff17;
 
     --header-background: #2D2D2D;
@@ -36,8 +40,10 @@ $tab-container-height: 2rem;
     --editor-tabActiveForeground: #ffffff;
     --editor-tabHoverBackground: #2b2b2b;
     --editor-tabHoverForeground: #ffffff;
+    --editor-tabSaveStateColor: #ffffff;
 
     --editor-background: #171717;
+    --editor-foreground: #e7e7e7;
     --editor-gutter-foreground: #898989;
     --editor-gutter-activeForeground: #ffffff;
     --editor-gutter-activeBackground: #212121;
@@ -77,15 +83,29 @@ html {
     &:hover {
         background-color: var(--header-buttonHoverBackground);
     }
+    &.open {
+        background-color: var(--header-buttonHoverBackground);
+    }
 }
-.dropdown-list {
+.dropdown-list, .context-menu {
     background-color: var(--window-dropdownBackground);
 }
-.dropdown-item {
+.dropdown-item, .context-menu-option {
+    color: var(--window-foreground);
     &:hover {
         background-color:  var(--window-dropdownItemHoverBackground);
     }
 }
+
+label {
+    color: var(--window-inputLabelForeground);
+}
+input {
+    border-bottom: 1px solid var(--window-inputBorder) !important;
+    background-color: var(--window-inputBackground);
+    color: var(--window-inputForeground);
+}
+
 .divider {
     background-color: var(--window-borderColor);
 }
@@ -151,6 +171,9 @@ html {
             color: var(--editor-tabActiveForeground);
         }
     }
+    .tab-content.save-state {
+        background-color: var(--editor-tabSaveStateColor);
+    }
     .tab-toolbar {
         box-shadow: inset 1px 0px 0 0 var(--window-borderColor);
     }
@@ -159,6 +182,10 @@ html {
 #tabview {
     margin-top: calc($tab-container-height + 5px);
     height: calc(100% - 6.1rem + 0.1rem);
+}
+
+.cm-content {
+    color: var(--editor-foreground);
 }
 
 .cm-activeLine {

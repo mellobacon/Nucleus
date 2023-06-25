@@ -30,7 +30,7 @@
 }}></svelte:window>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={button} class="dropdown-button" on:click={() => {open = !open}}>
+<div bind:this={button} class="dropdown-button" class:open on:click={() => {open = !open}}>
     {#if menu.icon}
         <svelte:component this={menu.icon}></svelte:component>
     {:else}
@@ -67,6 +67,7 @@
         min-width: 2.2rem;
         padding: 0 5px;
         position: relative;
+        cursor: pointer;
         :global(svg) {
             width: 18px;
             height: 18px;
@@ -80,8 +81,7 @@
         min-width: 11.5rem;
         width: max-content;
         align-items: center;
-        padding: 3px 0;
-        box-shadow: rgb(0 0 0 / 10%) 0px 0px 4px 2px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .8);
         border-radius: 3px;
         z-index: 9999;
     }
@@ -90,9 +90,10 @@
         align-items: center;
         justify-content: space-between;
         height: 17px;
-        padding: 5px 0;
+        padding: 7px 0;
         width: 100%;
         font-size: 0.875rem;
+        cursor: pointer;
     }
     .item-name, .shortcut {
         padding: 0 10px;

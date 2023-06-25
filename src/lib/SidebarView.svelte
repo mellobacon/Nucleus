@@ -19,6 +19,7 @@
 	#tool-view {
         width: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
         height: 100%;
         &::-webkit-scrollbar {
             width: 12px;

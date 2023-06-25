@@ -78,7 +78,7 @@ ul {
     position: relative;
 }
 .editor-panes .splitpanes__splitter.splitpanes__splitter__active {
-    z-index: 5;
+    z-index: 1;
 }
 .editor-panes .splitpanes__splitter::before {
     content: '';
@@ -88,7 +88,7 @@ ul {
     transition: opacity 0.2s;
     background-color: #34b0f8;
     opacity: 0;
-    z-index: 3;
+    z-index: 1;
 }
 .editor-panes .splitpanes__splitter:hover::before {
     opacity: 1;

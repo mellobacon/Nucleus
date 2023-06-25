@@ -1,4 +1,4 @@
-import { dialog, fs, path, invoke } from "@tauri-apps/api";
+import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
@@ -15,6 +15,10 @@ export const workspaceName = writable("Untitled Workspace");
 export async function openFolder() {
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
+
+    // if file path is not in the configured scope already, add it
+    // TODO: should configure this so it doesnt access restricted paths based on user permissions
+    await invoke("attempt_file_access", {app_handle: window, p: directory});
 
     const directoryName = await updateTree(directory);
     workspaceName.set(directoryName);

@@ -149,7 +149,7 @@
         }
     }
     :global(.cm-content) {
-        padding: 0 !important;
+        padding: 0 0 200px 0 !important;
     }
     :global(.cm-lineNumbers), :global(.cm-gutterElement) {
         min-width: 50px !important;

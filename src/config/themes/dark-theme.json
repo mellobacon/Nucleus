@@ -10,8 +10,13 @@
             "dropdownButtonBackground": "#2D2D2D",
             "dropdownButtonForeground": "#ffffff",
             "dropdownButtonHoverForeground": "#ffffff",
-            "dropdownItemHoverBackground": "#171717",
+            "dropdownItemHoverBackground": "#414040",
             "dropdownItemHoverForeground": "#ffffff",
+            "inputBackground": "#333",
+            "inputForeground": "#ffffff",
+            "inputBorder": "#6f6f6f",
+            "inputFocusBorder": "",
+            "inputLabelForeground": "#c6c6c6",
             "scrollbarBackground": "#4c4c4c38"
         },
         "header": {
@@ -34,6 +39,7 @@
         },
         "editor": {
             "background": "#171717",
+            "foreground": "#e7e7e7",
             "tabContainerBackground": "#2D2D2D",
             "tabBackground": "#1c1c1c",
             "tabForeground": "#ffffff",
@@ -43,6 +49,7 @@
             "tabActiveForeground": "#ffffff",
             "tabHoverBackground": "2b2b2b",
             "tabHoverForeground": "#ffffff",
+            "tabSaveStateColor": "#ffffff",
             "gutterForeground": "#898989",
             "gutterActiveForeground": "#ffffff",
             "gutterActiveBackground": "#212121",
@@ -53,7 +60,7 @@
             "treeNodeForeground": "#808080",
             "treeNodeHoverBackground": "#353535",
             "treeNodeHoverForeground": "#ffffff",
-            "treeNodeSelectedBackground": "",
+            "treeNodeSelectedBackground": "#353535",
             "treeNodeSelectedForeground": "#34b0f8"
         }
     }

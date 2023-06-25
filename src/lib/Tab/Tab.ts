@@ -71,6 +71,7 @@ export class Tab {
         try {
             fileContent = await fs.readTextFile(path); //TODO: Fix performance issues/loading times on large files
         } catch (error) {
+            console.error(error);
             console.warn("Can't read file content. Setting to empty string.");
         }
         let content = new Editor({target: document.getElementById("tabview"), props: {content: fileContent}});
@@ -78,6 +79,7 @@ export class Tab {
         tab.isfile = true;
         tab.saved = true;
         let fileType = "";
+
         try {
             fileType = await p.extname(tab.path);
         } catch (error) {

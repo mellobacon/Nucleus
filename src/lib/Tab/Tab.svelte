@@ -63,7 +63,6 @@
             display: block;
             width: 6px;
             height: 6px;
-            background-color: white;
             border-radius: 50%;
             left: -11px;
             top: 0.5px;
