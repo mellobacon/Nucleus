@@ -21,6 +21,7 @@
     import { moveToTrash, openInExplorer } from "../File";
     import { addEditorTab } from "../EditorTabList.svelte";
     import { clipboard } from "@tauri-apps/api";
+    import { openRenameModal } from "../../App.svelte";
 
     export let id;
     export let name;
@@ -40,7 +41,11 @@
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
         {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Edit", shortcut: "", action: () => {addEditorTab(path, name)}},
-        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {openRenameModal(`Rename ${name}`,
+        `Give a new name to ${name}`, [
+            {name: "Rename", action: () => {}},
+            {name: "Cancel", action: () => {}}
+        ])}},
         {name: "Delete", shortcut: "Delete", action: async () => {await moveToTrash(path)}}
     ]
 
