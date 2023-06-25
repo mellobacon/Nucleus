@@ -1,6 +1,6 @@
 import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
-import { tabs, addEditorTab } from "./EditorTabList.svelte";
+import { tabs, addEditorTab, renameTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
 
@@ -161,4 +161,26 @@ export async function createFile(p) {
         console.log(error);
     }
     addEditorTab(p, p.split(path.sep).pop());
+}
+
+export async function renameFile(filename: string, oldpath: string) {
+    if (filename.length === 0) {
+        console.warn("filename length 0")
+        return false;
+    }
+    if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
+        console.warn("invalid filename")
+        return false;
+    }
+    let newpath = oldpath.replace(oldpath.split(path.sep).pop(), filename);
+
+    try {
+        await fs.renameFile(oldpath, newpath);
+    } catch (error) {
+        console.error(error);
+        return false;   
+    }
+    let tab = get(tabs).find(t => t.active && t.isfile);
+    renameTab(tab, filename, newpath);
+    return true;
 }

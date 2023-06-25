@@ -43,6 +43,13 @@
     export function closeTab(tabid: number) {
         editorTab.closeTab(tabid);
     }
+    export function renameTab(tab, label, path) {
+        if (tab) {
+            tab.label = label;
+            tab.path = path;
+            editorTab.setActive(tab.id);
+        }
+    }
     function closeAllTabs() {
         editorTab.closeAllTabs();
     }
