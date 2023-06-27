@@ -134,7 +134,8 @@ export class Tab {
     }
     async closeAllTabs() {
         await this.closeTab(this.activeid);
-        for (const tab of this.tablist.reverse()) {
+        const temp = [...this.tablist].reverse(); // js just loves to be inconsistent with its array functions innit
+        for (const tab of temp) {
             await this.closeTab(tab.id);
         }
     }
