@@ -10,9 +10,9 @@
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
-    import { createFile, createFolder, moveFile, moveToTrash, openInExplorer } from "../File";
+    import { createFile, createFolder, moveFile, moveToTrash, openInExplorer, renameFile } from "../File";
     import { clipboard } from "@tauri-apps/api";
-    import { openInputModal } from "../../App.svelte";
+    import { openInputModal, openRenameModal } from "../../App.svelte";
     import { path as p } from "@tauri-apps/api";
 
     export let root = false;
@@ -49,7 +49,11 @@
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
         {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
-        {name: "Rename...", shortcut: "F2", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Rename...", shortcut: "F2", action: () => {openRenameModal(`Rename ${name}`,
+        `Give a new name to ${name}/`, [
+            {name: "Rename", action: async (filename) => {await renameFile(filename, path)}},
+            {name: "Cancel", action: () => {}}
+        ])}},
         {name: "Delete", disabled: isroot, shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
     ]
 

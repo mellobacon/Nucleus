@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
-import { path as p, fs } from "@tauri-apps/api";
+import { path as p, fs, dialog } from "@tauri-apps/api";
+import { saveFile } from "../File";
 
 export class Tab {
     id = 0;
@@ -100,9 +101,14 @@ export class Tab {
 
         this.updateTabs();
     }
-    closeTab(tabid: number) {
+    async closeTab(tabid: number) {
         if (this.activeid === tabid) {
             for (let i = 0; i <= this.tablist.length - 1; i++) {
+                if (this.tablist[i].id === tabid && !this.tablist[i].saved) {
+                    if (await dialog.confirm(`Do you want to save ${this.tablist[i].label} before closing?`, {type: "warning"})) {
+                        await saveFile();
+                    }
+                }
                 // set right tab active
                 if (this.tablist[i].id === tabid && this.tablist[i + 1]) {
                     this.setActive(this.tablist[i + 1].id);
@@ -115,7 +121,7 @@ export class Tab {
                 }
             }
         }
-    
+        
         this.tablist.find(t => t.id === tabid).content.$destroy();
         this.tablist = this.tablist.filter(t => t.id !== tabid);
         this.tabs.set(this.tablist);
@@ -126,9 +132,11 @@ export class Tab {
             this.id = 0;
         }
     }
-    closeAllTabs() {
-        for (const tab of this.tablist) {
-            this.closeTab(tab.id);
+    async closeAllTabs() {
+        await this.closeTab(this.activeid);
+        const temp = [...this.tablist].reverse(); // js just loves to be inconsistent with its array functions innit
+        for (const tab of temp) {
+            await this.closeTab(tab.id);
         }
     }
     updateView() {

@@ -1,6 +1,6 @@
 import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
-import { tabs, addEditorTab } from "./EditorTabList.svelte";
+import { tabs, addEditorTab, renameTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
 
@@ -89,17 +89,6 @@ export async function moveFile(source: string, dest: string, file: string, type:
     } catch (error) {
         console.error(error);
     }
-
-    /*
-    // Should use this as fallback
-    fs.copyFile(source, dest);
-    if (type === "directory") {
-        fs.removeDir(source);
-    }
-    else {
-        fs.removeFile(source);
-    }
-    */
 }
 
 export async function saveFile(saveAs = false) {
@@ -144,7 +133,7 @@ export async function openInExplorer(path: string) {
 export async function moveToTrash(p: string) {
     // open dialog to choose between recycling bin and perm delete
     if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
-    await invoke("delete_file", {path: p, perm: false, isFile: p.includes(path.sep)})
+    await invoke("delete_file", {path: p, perm: false})
 }
 
 export async function createFolder(p) {
@@ -161,4 +150,26 @@ export async function createFile(p) {
         console.log(error);
     }
     addEditorTab(p, p.split(path.sep).pop());
+}
+
+export async function renameFile(filename: string, oldpath: string) {
+    if (filename.length === 0) {
+        console.warn("filename length 0")
+        return false;
+    }
+    if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
+        console.warn("invalid filename")
+        return false;
+    }
+    let newpath = oldpath.replace(oldpath.split(path.sep).pop(), filename);
+
+    try {
+        await fs.renameFile(oldpath, newpath);
+    } catch (error) {
+        console.error(error);
+        return false;   
+    }
+    let tab = get(tabs).find(t => t.active && t.isfile);
+    renameTab(tab, filename, newpath);
+    return true;
 }

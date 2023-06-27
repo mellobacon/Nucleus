@@ -171,7 +171,7 @@ input {
             color: var(--editor-tabActiveForeground);
         }
     }
-    .tab-content.save-state {
+    .tab-content .save-state {
         background-color: var(--editor-tabSaveStateColor);
     }
     .tab-toolbar {
@@ -214,4 +214,7 @@ input {
 }
 .ͼ4 .cm-line::selection, .ͼ2 .cm-selectionBackground {
     background-color: #4d5054 !important;
+}
+.rename-input .divider {
+    background-color: var(--window-inputBorder);
 }

@@ -22,14 +22,24 @@ fn open_in_explorer(path: &str) {
 }
 
 #[tauri::command]
+fn is_file(path: &str) -> bool {
+    fs::metadata(path).unwrap().is_file()
+}
+
+#[tauri::command]
+fn is_folder(path: &str) -> bool {
+    fs::metadata(path).unwrap().is_dir()
+}
+
+#[tauri::command]
 fn attempt_file_access(app_handle: tauri::AppHandle, p: &str) {
     app_handle.fs_scope().allow_directory(p, true).unwrap();
 }
 
 #[tauri::command]
-fn delete_file(path: &str, perm: bool, is_file: bool) {
+fn delete_file(path: &str, perm: bool) {
     if perm {
-        if is_file {
+        if is_file(path) {
             fs::remove_file(path).unwrap();
         }
         else {
@@ -43,7 +53,7 @@ fn delete_file(path: &str, perm: bool, is_file: bool) {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access])
+        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder])
         .plugin(tauri_plugin_fs_watch::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

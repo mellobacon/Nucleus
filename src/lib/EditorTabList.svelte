@@ -40,11 +40,18 @@
     export function addEditorTab(path?: string, label?: string) {
         editorTab.addEditorTab(path, label);
     }
-    export function closeTab(tabid: number) {
-        editorTab.closeTab(tabid);
+    export async function closeTab(tabid: number) {
+        await editorTab.closeTab(tabid);
     }
-    function closeAllTabs() {
-        editorTab.closeAllTabs();
+    export function renameTab(tab, label, path) {
+        if (tab) {
+            tab.label = label;
+            tab.path = path;
+            editorTab.setActive(tab.id);
+        }
+    }
+    async function closeAllTabs() {
+        await editorTab.closeAllTabs();
     }
 
     export let hidden = editorTab.hidden;
@@ -52,10 +59,10 @@
     export let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" class:hidden={$hidden}>
-    <TabList tabs={tabs} on:closetab={(e) => {closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
+    <TabList tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar">
         <Dropdown right menu={{icon: VerticalDots, children: [
-            {name: "Close All Tabs", action: () => {closeAllTabs()}},
+            {name: "Close All Tabs", action: async () => {await closeAllTabs()}},
         ]}}></Dropdown>
     </div>
 </div>
