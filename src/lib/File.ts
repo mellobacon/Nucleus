@@ -89,17 +89,6 @@ export async function moveFile(source: string, dest: string, file: string, type:
     } catch (error) {
         console.error(error);
     }
-
-    /*
-    // Should use this as fallback
-    fs.copyFile(source, dest);
-    if (type === "directory") {
-        fs.removeDir(source);
-    }
-    else {
-        fs.removeFile(source);
-    }
-    */
 }
 
 export async function saveFile(saveAs = false) {
@@ -144,7 +133,7 @@ export async function openInExplorer(path: string) {
 export async function moveToTrash(p: string) {
     // open dialog to choose between recycling bin and perm delete
     if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
-    await invoke("delete_file", {path: p, perm: false, isFile: p.includes(path.sep)})
+    await invoke("delete_file", {path: p, perm: false})
 }
 
 export async function createFolder(p) {
