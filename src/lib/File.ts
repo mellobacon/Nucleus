@@ -78,14 +78,14 @@ function sortTree(tree: fs.FileEntry[]) {
     return sortedTree;
 }
 
-export async function moveFile(source: string, dest: string, file: string, type: string) {
-
-    if (!await dialog.confirm(`Are you sure you want to move "${file.split(path.sep).pop()}" from "./${source.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
+export async function moveFile(source: string, dest: string, file: string) {
+    const filename = file.split(path.sep).pop();
+    if (!await dialog.confirm(`Are you sure you want to move "${filename}" from "./${source.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
         return;
     }
 
     try {
-        await fs.renameFile(source, dest);
+        await fs.renameFile(file, `${dest}${path.sep}${filename}`);
     } catch (error) {
         console.error(error);
     }

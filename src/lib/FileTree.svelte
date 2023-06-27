@@ -18,7 +18,7 @@
         contextmenu = e.detail.contextmenu;
     }
     function handleSelect(e) {
-        console.log(e.detail.node)
+        //console.log(e.detail.node)
     }
     function handleDblSelect(e) {
         addEditorTab(e.detail.node.path, e.detail.node.name);
