@@ -105,7 +105,7 @@ export class Tab {
         if (this.activeid === tabid) {
             for (let i = 0; i <= this.tablist.length - 1; i++) {
                 if (this.tablist[i].id === tabid && !this.tablist[i].saved) {
-                    if (await dialog.confirm(`Do you want to save ${this.tablist[i].label} before closing?`, {type: "warning"})) {
+                    if (await dialog.ask(`Do you want to save ${this.tablist[i].label} before closing?`, {type: "warning"})) {
                         await saveFile();
                     }
                 }
