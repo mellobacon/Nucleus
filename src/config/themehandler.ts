@@ -10,7 +10,7 @@ export function getThemes() {
     return themelist;
 }
 
-const stylesheet = document.styleSheets[1].cssRules[0] as CSSStyleRule;
+const stylesheet = document.styleSheets[0].cssRules[0] as CSSStyleRule;
 export async function loadTheme(name: string) {
     let json = await import(`../config/themes/${name.toLowerCase()}-theme.json`);
     const theme = Object.entries(json.theme);
