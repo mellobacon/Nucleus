@@ -5,7 +5,7 @@ on:
       - master
 
 jobs:
-  publish-tauri:
+  publish-nightly:
     strategy:
       fail-fast: false
       matrix:
@@ -33,14 +33,8 @@ jobs:
       - name: Install frontend dependencies    
         run: yarn install
 
-      - name: Build the app
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Produce artifacts
+        uses: actions/upload-artifact@v3
         with:
-          tagName: "nightly"
-          releaseName: "Nucleus v__VERSION__-nightly.${{github.run_number}}"
-          releaseBody: "This build is made on every merge to master for testing purposes. This is not an official release by any means.\nPlease refer to [the contribution guidelines](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md#submitting-issues) for info on submitting bug reports.\n\n### *Will have bugs/missing/incomplete features. Best for testing. Not production ready. Use at own risk.*"
-          releaseDraft: true
-          prerelease: true
-          includeDebug: true
+            name: "dist"
+            path: "dist/"
