@@ -33,6 +33,9 @@ jobs:
       - name: Install frontend dependencies    
         run: yarn install
 
+      - name: Build app
+        run: yarn tauri build
+
       - name: Produce artifacts
         uses: actions/upload-artifact@v3
         with:
