@@ -1,4 +1,4 @@
-name: "Test Build (master)"
+name: "Nightly Build (master)"
 on:
   push:
     branches:
@@ -38,9 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: Nucleus-v__VERSION__-alpha-debug # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: "Nucleus v__VERSION__-alpha-debug"
-          releaseBody: "See the assets to download this version and install."
+          releaseName: "Nucleus v__VERSION__-nightly.${{github.run_number}}"
+          releaseBody: "This build is made on every merge to master for testing purposes. This is not an official release by any means.\nPlease refer to [the contribution guidelines](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md#submitting-issues) for info on submitting bug reports.\n\n### *Will have bugs/missing/incomplete features. Best for testing. Not production ready. Use at own risk.*"
           releaseDraft: true
           prerelease: true
           includeDebug: true
