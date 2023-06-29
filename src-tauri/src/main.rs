@@ -51,9 +51,14 @@ fn delete_file(path: &str, perm: bool) {
     }
 }
 
+#[tauri::command]
+fn open_devtools(app_handle: tauri::AppHandle) {
+    app_handle.get_window("main").unwrap().open_devtools();
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder])
+        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder, open_devtools])
         .plugin(tauri_plugin_fs_watch::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
