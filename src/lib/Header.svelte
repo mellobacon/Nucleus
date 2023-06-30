@@ -2,7 +2,7 @@
     import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
     import Settings from "carbon-icons-svelte/lib/Settings.svelte";
-    import { addTab, addEditorTab } from "../lib/EditorTabList.svelte";
+    import { addTab, addEditorTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
     import { saveFile, openFile, openFolder, workspaceName } from "./File";
 
     const items = [
@@ -12,7 +12,7 @@
             {name: "Open Folder...", shortcut: "Ctrl + K", action: async () => {await openFolder()}},
             {name: "Save File", shortcut: "Ctrl + S", action: async () => {await saveFile()}},
             {name: "Save File As...", shortcut: "Ctrl + Shift + S", action: async () => {await saveFile(true)}},
-            {name: "Close Tab", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Close Tab", disabled: $tabs.length === 0, shortcut: "", action: async () => {await closeActiveTab()}},
         ]},
         {menuname: "Edit", children: [
             {name: "Undo", shortcut: "Ctrl + Z", action: () => {console.warn("Feature not implemented yet.")}},
@@ -40,9 +40,9 @@
         ]},
         {menuname: "Window", children: [
             {name: "New Window", disabled: true,  shortcut: "Ctrl + Shift + N", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Minimize Window", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Maximize Window", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Close Window", shortcut: "Alt + F4", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Minimize Window", shortcut: "", action: async () => {await appWindow.minimize()}},
+            {name: "Maximize Window", shortcut: "", action: async () => {await appWindow.maximize()}},
+            {name: "Close Window", shortcut: "Alt + F4", action: async () => {await appWindow.close()}},
         ]},
         {menuname: "Help", children: [
             {name: "Send Feedback", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
