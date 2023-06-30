@@ -5,6 +5,7 @@
     import { Tab } from "./Tab/Tab";
 </script>
 <script lang="ts" context="module">
+    let activetabid = null;
     class EditorTab {
         id: number;
         label: string;
@@ -29,6 +30,7 @@
         }
         setActive(id) {
             editorTab.setActive(id);
+            activetabid = id;
         }
     }
 
@@ -42,6 +44,9 @@
     }
     export async function closeTab(tabid: number) {
         await editorTab.closeTab(tabid);
+    }
+    export async function closeActiveTab() {
+        await editorTab.closeTab(activetabid);
     }
     export function renameTab(tab, label, path) {
         if (tab) {
