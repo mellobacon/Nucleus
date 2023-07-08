@@ -11,6 +11,7 @@
     import { writable } from "svelte/store";
     import InputModal from "./lib/Modals/InputModal.svelte";
     import RenameModal from "./lib/Modals/RenameModal.svelte";
+    import { getShortcuts } from "./config/config";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -18,6 +19,7 @@
 
 	onMount(async () => {
 		await loadTheme("dark");
+		await getShortcuts();
 
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
