@@ -12,7 +12,7 @@
         <label for="textInput">{label}:</label>
     {/if}
 
-    <input class:readonly bind:value type="text" name="textInput" id="textInput" readonly={readonly} placeholder={placeholder}>
+    <input class="mousetrap" class:readonly bind:value type="text" name="textInput" id="textInput" readonly={readonly} placeholder={placeholder}>
 </div>
 
 <style lang="scss">

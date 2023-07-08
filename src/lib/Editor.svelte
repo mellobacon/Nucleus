@@ -61,6 +61,7 @@
                 doc: content
             })
         })
+        editorView.contentDOM.classList.add("mousetrap");
     });
     async function updateContent() {
         await tick();
