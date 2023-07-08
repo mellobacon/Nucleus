@@ -1,48 +1,50 @@
 <script lang="ts">
     import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
-    import Settings from "carbon-icons-svelte/lib/Settings.svelte";
+    import settings from "./Settings.svelte";
+    import { Settings } from "carbon-icons-svelte";
     import { addTab, addEditorTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
     import { saveFile, openFile, openFolder, workspaceName } from "./File";
+    import { commands } from "../config/commands";
 
     const items = [
         {menuname: "File", children: [
-            {name: "New File", shortcut: "Ctrl + N", action: () => {addEditorTab()}},
-            {name: "Open File...", shortcut: "Ctrl + O", action: async () => {await openFile()}},
-            {name: "Open Folder...", shortcut: "Ctrl + K", action: async () => {await openFolder()}},
-            {name: "Save File", shortcut: "Ctrl + S", action: async () => {await saveFile()}},
-            {name: "Save File As...", shortcut: "Ctrl + Shift + S", action: async () => {await saveFile(true)}},
+            {name: "New File", shortcut: commands.addEditorTab.keybind, action: commands.addEditorTab.command},
+            {name: "Open File...", shortcut: commands.openFile.keybind, action: commands.openFile.command},
+            {name: "Open Folder...", shortcut: commands.openFolder.keybind, action: commands.openFolder.command},
+            {name: "Save File", shortcut: commands.saveFile.keybind, action: commands.saveFile.command},
+            {name: "Save File As...", shortcut: commands.saveFileAs.keybind, action: commands.saveFileAs.command},
             {name: "Close Tab", disabled: $tabs.length === 0, shortcut: "", action: async () => {await closeActiveTab()}},
         ]},
         {menuname: "Edit", children: [
-            {name: "Undo", shortcut: "Ctrl + Z", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Redo", shortcut: "Ctrl + Shift + Z", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Paste", shortcut: "Ctrl + V", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Paste From History...", disabled: true, shortcut: "Ctrl + Shift + V", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Delete", shortcut: "Delete", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Find", disabled: true,  shortcut: "Ctrl + F", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Replace", disabled: true,  shortcut: "Ctrl + H", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Undo", shortcut: commands.undo.keybind, action: commands.undo.command},
+            {name: "Redo", shortcut: commands.redo.keybind, action: commands.redo.command},
+            {name: "Cut", shortcut: commands.cut.keybind, action: commands.cut.command},
+            {name: "Copy", shortcut: commands.copy.keybind, action: commands.copy.command},
+            {name: "Paste", shortcut: commands.paste.keybind, action: commands.paste.command},
+            {name: "Paste From History...", disabled: true, shortcut: commands.pasteFromHistory.keybind, action: commands.pasteFromHistory.command},
+            {name: "Delete", shortcut: commands.delete.keybind, action: commands.delete.command},
+            {name: "Find", disabled: true,  shortcut: commands.find.keybind, action: () => commands.find.command},
+            {name: "Replace", disabled: true,  shortcut: commands.replace.keybind, action: commands.replace.command},
         ]},
         {menuname: "View", children: [
-            {name: "Command Pallete", disabled: true,  shortcut: "Ctrl + Shift + P", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Zoom In", shortcut: "Ctrl +", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Zoom Out", shortcut: "Ctrl -", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Command Pallete", disabled: true,  shortcut: commands.openCommandPallete.keybind, action: commands.openCommandPallete.command},
+            {name: "Zoom In", shortcut: commands.zoomIn.keybind, action: commands.zoomIn.command},
+            {name: "Zoom Out", shortcut: commands.zoomOut.keybind, action: commands.zoomOut.command},
             {name: "Reset Zoom", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Fullscreen", shortcut: "F11", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Fullscreen", shortcut: commands.fullscreen.keybind, action: commands.fullscreen.command},
         ]},
         {menuname: "Run", children: [
-            {name: "Run File", disabled: true,  shortcut: "F5", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Debug File", disabled: true,  shortcut: "Ctrl + F5", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Stop File", disabled: true,  shortcut: "Shift + F5", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Run File", disabled: true,  shortcut: commands.runFile.keybind, action: commands.runFile.command},
+            {name: "Debug File", disabled: true,  shortcut: commands.debugFile.keybind, action: commands.debugFile.command},
+            {name: "Stop File", disabled: true,  shortcut: commands.stopFile.keybind, action: commands.stopFile.command},
             {name: "Open Configurations", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
         ]},
         {menuname: "Window", children: [
-            {name: "New Window", disabled: true,  shortcut: "Ctrl + Shift + N", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "New Window", disabled: true,  shortcut: commands.openNewWindow.keybind, action: commands.openNewWindow.command},
             {name: "Minimize Window", shortcut: "", action: async () => {await appWindow.minimize()}},
             {name: "Maximize Window", shortcut: "", action: async () => {await appWindow.maximize()}},
-            {name: "Close Window", shortcut: "Alt + F4", action: async () => {await appWindow.close()}},
+            {name: "Close Window", shortcut: commands.closeWindow.keybind, action: commands.closeWindow.command},
         ]},
         {menuname: "Help", children: [
             {name: "Send Feedback", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
@@ -69,9 +71,9 @@
     <div id="handle" data-tauri-drag-region></div>
     <div class="tools">
         
-        <div class="settings">
+        <div class="settings-button">
             <Dropdown right menu={{icon: Settings, children: [
-                {name: "Settings", disabled: true, shortcut: "", action: () => {addTab("Settings", "Settings")}}, 
+                {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}}, 
                 {name: "Keymap", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}}
             ]
             }} />
@@ -94,7 +96,7 @@
         <div
             class="window-button"
             id="close"
-            on:click={async () => await appWindow.close()}
+            on:click={commands.closeWindow.command}
         />
     </div>
 </div>
@@ -145,7 +147,7 @@
         z-index: 9;
     }
 
-    .settings {
+    .settings-button {
         height: 100%;
         display: flex;
         justify-content: center;

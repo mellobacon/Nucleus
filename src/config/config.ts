@@ -1,4 +1,6 @@
 import { writable } from "svelte/store";
+import Mousetrap  from "mousetrap";
+import { getKeybinds } from "./commands";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -6,69 +8,48 @@ export const windowtheme = writable("");
 export let font = "";
 export const autosave = writable(false);
 
-export function getShortcut({ primaryKey, secondaryKey, modifier }) {
-    if (modifier) {
-        modifier = `${modifier} + `;
+// mousetrap is outdated and i hate the lowercase keymaps but cba to go into the code and fix everything so this will do
+function parseKeybind(keybind: string) {
+    const keys = keybind.split("+");
+    const keymap = {
+        "Shift": "shift",
+        "Control": "ctrl",
+        "Alt": "alt",
+        "Meta": "meta",
+        "Backspace": "backspace",
+        "Tab": "tab",
+        "Enter": "enter",
+        "Capslock": "capslock",
+        "Escape": "escape",
+        "Space": "space",
+        "Pageup": "pageup",
+        "Pagedown": "pagedown",
+        "Home": "home",
+        "Delete": "del",
+        "End": "end",
+        "+": "up",
+        "-": "down"
     }
-    if (secondaryKey) {
-        secondaryKey = `${secondaryKey} + `;
+    for (const key of keys) {
+        if (keymap[key]) {
+            keybind = keybind.replace(key, keymap[key]);
+        }
+        else {
+            keybind = keybind.replace(key, key.toLowerCase());
+        }
     }
-    return `${modifier}${secondaryKey}${primaryKey}`;
+    return keybind;
 }
 
-export function executeEditorShortcut(shortcut) {
-    switch (shortcut) {
-        case "save-file-shortcut":
-            console.log(shortcut);
-            break;
-        case "save-file-as-shortcut":
-            console.log(shortcut);
-            break;
-        case "find-shortcut":
-            console.log(shortcut);
-            break;
-        case "select-all-text-shortcut":
-            break;
-    }
-}
-export async function executeWindowShortcut(shortcut) {
-    switch (shortcut) {
-        case "new-file-shortcut":
-            console.log(shortcut);
-            break;
-        case "open-file-shortcut":
-            console.log(shortcut);
-            break;
-        case "open-folder-shortcut":
-            console.log(shortcut);
-            break;
-        case "build-shortcut":
-            console.log(shortcut);
-            break;
-        case "run-shortcut":
-            console.log(shortcut);
-            break;
-        case "run-no-debug-shortcut":
-            console.log(shortcut);
-            break;
+export async function getShortcuts() {
+    const shortcuts = getKeybinds();
+    for (const shortcut of shortcuts) {
+        const keybind = parseKeybind(shortcut.keybind);
+        Mousetrap.bind(keybind, async (e) => {e.preventDefault(); await fireAction(shortcut.command)});
     }
 }
 
-export function getTime() {
-    let time = new Intl.DateTimeFormat('en-US', {dateStyle: "short", timeStyle: "long"}).format();
-    return time;
-}
-
-export function getInstalledFonts(fonts: []) {
-    let fontlist = [];
-    let id = 0;
-    for (const f of fonts) {
-        let font = {id: id, name: f};
-        fontlist = [...fontlist, font];
-        id++;
-    }
-    systemfonts.set(fontlist);
-}
-export function setFont(efont) {
-    
+async function fireAction(callback: () => Promise<void>, args = []) {
+    await callback();
+    return false;
 }
