@@ -18,6 +18,7 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.2.5", features = ["clipboard-write-text", "dialog-ask", "dialog-confirm", "dialog-open", "dialog-save", "fs-create-dir", "fs-exists", "fs-read-dir", "fs-read-file", "fs-rename-file", "fs-write-file", "path-all", "shell-open", "window-center", "window-close", "window-create", "window-hide", "window-maximize", "window-minimize", "window-print", "window-set-decorations", "window-set-focus", "window-set-fullscreen", "window-set-icon", "window-show", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 trash = "3.0.2"
+tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
 [dev-dependencies]
 windows = "0.32.0"

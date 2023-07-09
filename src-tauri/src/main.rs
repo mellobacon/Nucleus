@@ -55,6 +55,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder])
         .plugin(tauri_plugin_fs_watch::init())
+        .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

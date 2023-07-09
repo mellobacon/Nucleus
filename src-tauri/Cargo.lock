@@ -1587,6 +1587,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-fs-watch",
+ "tauri-plugin-store",
  "trash",
  "windows 0.32.0",
 ]
@@ -2697,11 +2698,23 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-fs-watch"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#07406f1c9d7817c95dc9ebf4bfe2cdb1ea352045"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#0d0ed7b9075ee21f37d787217fba3ef0784b2449"
 dependencies = [
  "log",
  "notify",
  "notify-debouncer-mini",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
+]
+
+[[package]]
+name = "tauri-plugin-store"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#0d0ed7b9075ee21f37d787217fba3ef0784b2449"
+dependencies = [
+ "log",
  "serde",
  "serde_json",
  "tauri",

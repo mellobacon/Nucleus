@@ -1227,6 +1227,12 @@ svelte@^3.58.0:
   dependencies:
     "@tauri-apps/api" "^1.2.0"
 
+"tauri-plugin-store-api@https://github.com/tauri-apps/tauri-plugin-store#v1":
+  version "0.0.0"
+  resolved "https://github.com/tauri-apps/tauri-plugin-store#96e2eb3971c981ece96f0a9e47dad14a2d1d2539"
+  dependencies:
+    "@tauri-apps/api" "^1.2.0"
+
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
