@@ -8,7 +8,8 @@
     import {searchKeymap} from "@codemirror/search"
     import { onMount, tick } from "svelte";
     import { writable } from "svelte/store";
-    import { updateSaveState } from "./File";
+    import { saveFile, updateSaveState } from "./File";
+    import { appSettings } from "../config/config";
 
     let ref;
     let editorView: EditorView;
@@ -35,7 +36,7 @@
         return getLangFromExt(ext);
     }
 
-    onMount(() => {
+    onMount(async () => {
         editorView = new EditorView({
             parent: ref,
             state: EditorState.create({
@@ -62,11 +63,28 @@
             })
         })
         editorView.contentDOM.classList.add("mousetrap");
+        setEditorFontSize(await appSettings.get("editor.fontSize"));
     });
+
+    let _ = null;
     async function updateContent() {
         await tick();
         content = editorView.state.doc.toString();
-        updateSaveState(false);
+        if (await appSettings.get("editor.autosave")) {
+            clearTimeout(_);
+            _ = setTimeout(async () => {
+                if (!$file_info.path || $file_info.path === "") {
+                    console.warn("No path found. Cannot save");
+                    return;
+                }
+                else {
+                    await saveFile();
+                }
+            }, 1000)
+        }
+        else {
+            updateSaveState(false);
+        }
     }
     export async function focus() {
         // takes two ticks to focus for some reason
@@ -111,6 +129,14 @@
         else {
             return "Unknown";
         }
+    }
+    export function setEditorFontSize(value: number) {
+        const editorContainer = document.querySelector(".cm-scroller") as HTMLElement;
+        editorContainer.style.setProperty("font-size", `${value}px`, "important")
+    }
+    export function setEditorFontFamily(family: string) {
+        const editorContainer = document.querySelector(".cm-scroller") as HTMLElement;
+        editorContainer.style.setProperty("font-family", family, "important");
     }
 </script>
 
