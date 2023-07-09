@@ -1,6 +1,8 @@
 import { writable } from "svelte/store";
 import Mousetrap  from "mousetrap";
 import { getKeybinds } from "./commands";
+import { fs, path } from "@tauri-apps/api";
+import { loadTheme } from "./themehandler";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -52,4 +54,33 @@ export async function getShortcuts() {
 async function fireAction(callback: () => Promise<void>, args = []) {
     await callback();
     return false;
+}
+
+export async function getSettings() {
+    const settings = {
+        "nucleus.theme": "dark",
+        "editor.fontSize": 14,
+        "editor.fontFamily": "Uno",
+        "editor.autosave": false,
+        "nucleus.showKeybinds": false,
+        "nucleus.useExternalTerminal": true,
+        "terminal.external": {
+            "profile": "powershell"
+        },
+        "terminal.internal": {
+            "profile": "powershell"
+        },
+    };
+    const appdataLocal = await path.appLocalDataDir();
+
+    if (!await fs.exists(`${appdataLocal}/settings.json`)) {
+        await fs.writeFile(`${appdataLocal}/settings.json`, JSON.stringify(settings, null, "    "));
+    }
+}
+
+export async function loadDefaultSettings() {
+    await getSettings();
+    const settings = JSON.parse(await fs.readTextFile("settings.json", {dir: fs.BaseDirectory.AppLocalData}));
+    await loadTheme(settings["nucleus.theme"]);
+	await getShortcuts();
 }

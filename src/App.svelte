@@ -6,21 +6,18 @@
     import Statusbar from "./lib/Statusbar.svelte";
     import EditorTabList, {hidden} from "./lib/EditorTabList.svelte";
     import { onMount } from "svelte";
-    import { loadTheme } from "./config/themehandler";
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
     import InputModal from "./lib/Modals/InputModal.svelte";
     import RenameModal from "./lib/Modals/RenameModal.svelte";
-    import { getShortcuts } from "./config/config";
+    import { loadDefaultSettings } from "./config/config";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
 	let panelSize = 15;
 
 	onMount(async () => {
-		await loadTheme("dark");
-		await getShortcuts();
-
+		await loadDefaultSettings();
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
