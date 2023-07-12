@@ -5,6 +5,7 @@ import { fs, path } from "@tauri-apps/api";
 import { loadTheme } from "./themehandler";
 import { Store } from "tauri-plugin-store-api";
 import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
+import { watch } from "tauri-plugin-fs-watch-api";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -59,10 +60,10 @@ async function fireAction(callback: () => Promise<void>, args = []) {
 
 export let appSettings: Store;
 export async function getSettings() {
-    const settings = {
-        "nucleus.theme": "dark",
+    const settings = JSON.stringify({
+        "nucleus.theme": "Dark",
         "editor.fontSize": 14,
-        "editor.fontFamily": "Uno",
+        "editor.fontFamily": "monospace",
         "editor.autosave": false,
         "nucleus.showKeybinds": false,
         "nucleus.useExternalTerminal": true,
@@ -72,13 +73,21 @@ export async function getSettings() {
         "terminal.internal": {
             "profile": "powershell"
         },
-    };
+    }, null, 4);
     const appdataLocal = await path.appLocalDataDir();
+    const settingsPath = `${appdataLocal}settings.json`;
 
-    if (!await fs.exists(`${appdataLocal}/settings.json`)) {
-        await fs.writeFile(`${appdataLocal}/settings.json`, JSON.stringify(settings, null, "    "));
+    if (!await fs.exists(settingsPath)) {
+        await fs.writeFile(settingsPath, settings);
     }
-    appSettings = new Store(`${appdataLocal}/settings.json`);
+    appSettings = new Store(settingsPath);
+
+    await watch(
+        settingsPath,
+        async () => {
+            await appSettings.load();
+        }
+    )
 }
 
 export async function loadDefaultSettings() {
