@@ -69,11 +69,11 @@
     let _ = null;
     async function updateContent() {
         await tick();
-        content = editorView.state.doc.toString();
-        if (await appSettings.get("editor.autosave")) {
+        content = editorView.state.doc.toString();1
+        if (await appSettings.get("editor.autosave") === true) {
             clearTimeout(_);
             _ = setTimeout(async () => {
-                if (!$file_info.path || $file_info.path === "") {
+                if (!$file_info.path || $file_info.path === $file_info.filename || $file_info.path === "") {
                     console.warn("No path found. Cannot save");
                     return;
                 }
