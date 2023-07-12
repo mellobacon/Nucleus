@@ -53,13 +53,13 @@ export class Tab {
         }
         return false;
     }
-    addTab(path: string = "", label: string = "") {
+    addTab(path: string = "", label: string = "", content = null) {
         // dont add tabs that are already open
         if (this.tabOpen(path)) {
             return;
         }
         
-        let tab = new this.Tab(this.id, label, null, path);
+        let tab = new this.Tab(this.id, label, content, path);
         this.tablist = [...this.tablist, tab];
 
         this.updateTabs();
