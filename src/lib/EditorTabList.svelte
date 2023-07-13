@@ -36,8 +36,8 @@
 
     const editorTab = new Tab(EditorTab);
 
-    export function addTab(path?: string, label?: string) {
-        editorTab.addTab(path, label);
+    export function addTab(path?: string, label?: string, content = null) {
+        editorTab.addTab(path, label, content);
     }
     export function addEditorTab(path?: string, label?: string) {
         editorTab.addEditorTab(path, label);
