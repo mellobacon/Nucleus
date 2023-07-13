@@ -16,6 +16,7 @@
             draggable: ".tab",
             animation: 150,
             forceFallback: true,
+            filter: ".close-tab",
             easing: "cubic-bezier(1, 0, 0, 1)",
             sort: true
         })
