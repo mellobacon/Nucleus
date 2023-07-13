@@ -74,17 +74,27 @@
         white-space: nowrap;
         padding-right: 20px;
     }
-    .close-tab span::before {
-        content: "\2715";
+    .close-tab span {
         font-size: 11px;
         display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        &::before {
+            content: "\2715";
+        }
     }
     .close-tab span:hover {
-        color: gray;
+        background-color: #414040;
+        transition: 0.1s;
+        border-radius: 3px;
     }
     .close-tab {
-        width: 2rem;
-        margin-left: -1rem;
+        width: 18px;
+        height: 18px;
+        margin-left: -0.5rem;
+        margin-right: 0.5rem;
         display: flex;
         justify-content: center;
         position: relative;
