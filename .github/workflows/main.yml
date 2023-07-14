@@ -39,5 +39,5 @@ jobs:
       - name: Produce artifacts
         uses: actions/upload-artifact@v3
         with:
-            name: "nucleus-v0.1.1-nightly.${{github.run_number}}"
+            name: "nucleus-v0.2-nightly.${{github.run_number}}"
             path: "dist/"
