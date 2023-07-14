@@ -68,7 +68,7 @@ export const commands = {
     "pasteFromHistory": {
         "keybind": "Control+Shift+V",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "delete": {
@@ -80,31 +80,31 @@ export const commands = {
     "find": {
         "keybind": "Control+F",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "replace": {
         "keybind": "Control+H",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "openCommandPallete": {
         "keybind": "Control+Shift+P",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "zoomIn": {
         "keybind": "Control +",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "zoomOut": {
         "keybind": "Control -",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "fullscreen": {
@@ -121,25 +121,25 @@ export const commands = {
     "runFile": {
         "keybind": "F5",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "debugFile": {
         "keybind": "Control+F5",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "stopFile": {
         "keybind": "Shift+F5",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "openNewWindow": {
         "keybind": "Control+Shift+N",
         "command": () => {
-            console.warn("Feature not implemented yet.")
+            //
         }
     },
     "closeWindow": {
