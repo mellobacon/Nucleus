@@ -8,6 +8,7 @@ export class Tab {
     activeid = this.id;
     tablist = [];
     Tab; // Tab class
+    activeTab = null;
     hidden = writable(true);
     isfile = writable(false);
     tabs = writable([]);
@@ -27,6 +28,7 @@ export class Tab {
                 else {
                     this.isfile.set(false);
                 }
+                this.activeTab = tab;
             }
             else {
                 tab.active = false;
@@ -72,8 +74,7 @@ export class Tab {
         try {
             fileContent = await fs.readTextFile(path); //TODO: Fix performance issues/loading times on large files
         } catch (error) {
-            console.error(error);
-            console.warn("Can't read file content. Setting to empty string.");
+            console.warn("Can't read file content. Setting to empty string. Error: ", error);
         }
         let content = new Editor({target: document.getElementById("tabview"), props: {content: fileContent}});
         let tab = new this.Tab(this.id, label, content, path);
@@ -84,10 +85,9 @@ export class Tab {
         try {
             fileType = await p.extname(tab.path);
         } catch (error) {
-            console.warn("Cannot find file extension. Setting to empty string.")
+            console.warn("Cannot find file extension.")
             fileType = "";
         }
-
         content.updateFileInfo({
             "filename": tab.label,
             "path": tab.path,
