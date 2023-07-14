@@ -2,7 +2,7 @@ name: "Nightly Build (master)"
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   publish-nightly:
