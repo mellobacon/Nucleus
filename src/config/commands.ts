@@ -1,3 +1,4 @@
+import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
 import { addEditorTab } from "../lib/EditorTabList.svelte";
 import { saveFile, openFile, openFolder } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
@@ -35,32 +36,33 @@ export const commands = {
     },
     "undo": {
         "keybind": "Control+Z",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            await undoChange();
         }
     },
     "redo": {
         "keybind": "Control+Shift+Z",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            await redoChange();
         }
     },
     "cut": {
         "keybind": "Control+X",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            await cut();
         }
     },
     "copy": {
         "keybind": "Control+C",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+           await copy();
         }
     },
     "paste": {
         "keybind": "Control+V",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            const content = await navigator.clipboard.readText();
+            append(content);
         }
     },
     "pasteFromHistory": {
@@ -71,8 +73,8 @@ export const commands = {
     },
     "delete": {
         "keybind": "Delete",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            await deleteChars();
         }
     },
     "find": {
@@ -107,8 +109,13 @@ export const commands = {
     },
     "fullscreen": {
         "keybind": "F11",
-        "command": () => {
-            console.warn("Feature not implemented yet.")
+        "command": async () => {
+            if (await appWindow.isFullscreen()) {
+                appWindow.setFullscreen(false);
+            }
+            else {
+                appWindow.setFullscreen(true);
+            }
         }
     },
     "runFile": {
