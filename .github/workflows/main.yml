@@ -31,7 +31,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install frontend dependencies    
-        run: yarn install
+        run: yarn upgrade && yarn install
 
       - name: Build app
         run: yarn tauri build
