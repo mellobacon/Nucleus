@@ -5,6 +5,7 @@
     import { Tab } from "./Tab/Tab";
 </script>
 <script lang="ts" context="module">
+    let activetabid = null;
     class EditorTab {
         id: number;
         label: string;
@@ -29,19 +30,23 @@
         }
         setActive(id) {
             editorTab.setActive(id);
+            activetabid = id;
         }
     }
 
     const editorTab = new Tab(EditorTab);
 
-    export function addTab(path?: string, label?: string) {
-        editorTab.addTab(path, label);
+    export function addTab(path?: string, label?: string, content = null) {
+        editorTab.addTab(path, label, content);
     }
     export function addEditorTab(path?: string, label?: string) {
         editorTab.addEditorTab(path, label);
     }
     export async function closeTab(tabid: number) {
         await editorTab.closeTab(tabid);
+    }
+    export async function closeActiveTab() {
+        await editorTab.closeTab(activetabid);
     }
     export function renameTab(tab, label, path) {
         if (tab) {
@@ -52,6 +57,12 @@
     }
     async function closeAllTabs() {
         await editorTab.closeAllTabs();
+    }
+    export function getActiveTab() {
+        return editorTab.activeTab;
+    }
+    export function getCurrentEditor() {
+        return editorTab.activeTab.content;
     }
 
     export let hidden = editorTab.hidden;

@@ -22,8 +22,10 @@
     export let name = "";
     export let path = "";
     export let children = [];
+    export let contextMenuEnabled;
+    export let iconsEnabled;
 
-    let expanded = _expansionState[name] || false;
+    export let expanded = _expansionState[name] || false;
     let ref = null;
     let refLabel = null;
     let refChildren = null;
@@ -105,7 +107,7 @@
         
         if (fromlist.path === tolist.path) return;
 
-        await moveFile(fromlist.path, tolist.path, element.path, data.type);
+        await moveFile(fromlist.path, tolist.path, element.path);
 
         e.target.classList.remove("hover");
     }
@@ -160,21 +162,21 @@
 {#if root}
     {#each children as child}
         {#if Array.isArray(child.children)}
-            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child}></svelte:self>
+            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {expanded} {iconsEnabled}></svelte:self>
         {:else}
-            <FileTreeNode on:nodeselect on:dblnodeselect {...child} />
+            <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
         {/if}
     {/each}
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false} on:dragstart={dragstart} on:mouseup={(e) => {
-            if (e.button === 2) {
+            if (e.button === 2 && contextMenuEnabled) {
                 contextmenu = true;
             }
         }}>
             <span class="arrow" class:arrowDown>&#x25b6</span>
-            {#if icon}
+            {#if icon && iconsEnabled}
                 <svelte:component this={icon} />
             {/if}
             {name}
@@ -183,9 +185,9 @@
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
                 {#each children as child (child.id) }
                     {#if Array.isArray(child.children)}
-                        <svelte:self on:nodeselect on:dblnodeselect {...child}></svelte:self>
+                        <svelte:self on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {expanded} {iconsEnabled}></svelte:self>
                     {:else}
-                        <FileTreeNode on:nodeselect on:dblnodeselect {...child} />
+                        <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
                     {/if}
                 {/each}
             </ul>

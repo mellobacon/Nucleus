@@ -26,6 +26,8 @@
     export let id;
     export let name;
     export let path;
+    export let contextMenuEnabled;
+    export let iconsEnabled;
 
     let selected = false;
 
@@ -101,13 +103,13 @@
     on:click={(e) => {handleSelect(treenode, e)}} 
     on:dblclick={(e) => {handleDoubleSelect(treenode, e)}} 
     draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
-        if (e.button === 2) {
+        if (e.button === 2 && contextMenuEnabled) {
             contextmenu = true;
             handleSelect(treenode, e);
         }
     }}>
         <span class="no-arrow"></span>
-        {#if icon}
+        {#if icon && iconsEnabled}
             <svelte:component this={icon} />
         {/if}
         {name}
