@@ -3,8 +3,8 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import settings from "./Settings.svelte";
     import { Settings } from "carbon-icons-svelte";
-    import { addTab, addEditorTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
-    import { saveFile, openFile, openFolder, workspaceName } from "./File";
+    import { addTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
+    import { workspaceName } from "./File";
     import { commands } from "../config/commands";
 
     const items = [
@@ -28,10 +28,10 @@
             {name: "Replace", disabled: true,  shortcut: commands.replace.keybind, action: commands.replace.command},
         ]},
         {menuname: "View", children: [
-            {name: "Command Pallete", disabled: true,  shortcut: commands.openCommandPallete.keybind, action: commands.openCommandPallete.command},
-            {name: "Zoom In", shortcut: commands.zoomIn.keybind, action: commands.zoomIn.command},
-            {name: "Zoom Out", shortcut: commands.zoomOut.keybind, action: commands.zoomOut.command},
-            {name: "Reset Zoom", shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Command Pallete", disabled: true, shortcut: commands.openCommandPallete.keybind, action: commands.openCommandPallete.command},
+            {name: "Zoom In", disabled: true, shortcut: commands.zoomIn.keybind, action: commands.zoomIn.command},
+            {name: "Zoom Out", disabled: true, shortcut: commands.zoomOut.keybind, action: commands.zoomOut.command},
+            {name: "Reset Zoom", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Fullscreen", shortcut: commands.fullscreen.keybind, action: commands.fullscreen.command},
         ]},
         {menuname: "Run", children: [
