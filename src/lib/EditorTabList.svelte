@@ -58,6 +58,12 @@
     async function closeAllTabs() {
         await editorTab.closeAllTabs();
     }
+    export function getActiveTab() {
+        return editorTab.activeTab;
+    }
+    export function getCurrentEditor() {
+        return editorTab.activeTab.content;
+    }
 
     export let hidden = editorTab.hidden;
     export let isfile = editorTab.isfile;
