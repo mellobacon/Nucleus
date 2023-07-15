@@ -5,13 +5,13 @@
 </script>
 
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
 
     import FileTreeList from "./FileTreeList.svelte";
     
     export let tree;
     export let contextMenuEnabled = false;
-    export let expanded = false;
+    export let isExpanded = false;
     export let iconsEnabled = true;
 
     let ref;
@@ -35,7 +35,7 @@
 </script>
 
 <ul bind:this={ref} class="tree" role="tree" on:mouseup={handleMouseUp}>
-    <FileTreeList {expanded} on:nodeselect on:dblnodeselect children={tree} root {contextMenuEnabled} {iconsEnabled} />
+    <FileTreeList {isExpanded} on:nodeselect on:dblnodeselect children={tree} root {contextMenuEnabled} {iconsEnabled} />
 </ul>
 
 <style>
