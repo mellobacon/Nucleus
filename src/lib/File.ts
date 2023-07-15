@@ -12,37 +12,87 @@ export async function openFile() {
 }
 
 export const workspaceName = writable("Untitled Workspace");
+export const dirToLoad =  writable("");
+export const dirLoadFail = writable(false);
 export async function openFolder() {
+    dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
-
+    dirToLoad.set(directory.split(path.sep).pop());
     // if file path is not in the configured scope already, add it
     // TODO: should configure this so it doesnt access restricted paths based on user permissions
     await invoke("attempt_file_access", {app_handle: window, p: directory});
 
     const directoryName = await updateTree(directory);
-    workspaceName.set(directoryName);
-
+    if (!directoryName) {
+        return;
+    }
     // load file watcher
     await watch(
         directory,
-        async () => {
-            await updateTree(directory);
+        () => {
+            updateTree(directory);
         },
         { recursive: true }
     )
+
+    workspaceName.set(directoryName);
 }
 
+export const treeLoading = writable(false);
+let progressTimeout = null;
+let loadInterval = null;
 async function updateTree(directory) {
-    let tree: any = await fs.readDir(directory, {recursive: true});
-    if (!tree) {
-        console.error("Cannot load directory");
-        return;
+    let loadTime = 0;
+
+    clearTimeout(progressTimeout);
+    clearInterval(loadInterval);
+    treeLoading.set(true);
+    loadInterval = setInterval(() => {loadTime++}, 1000)
+    let tree;
+    try {
+        tree = await fs.readDir(directory, {recursive: true});
+    } catch (error) {
+        console.error(error);
     }
-    let directoryName = directory.split(path.sep).pop();
+    if (!tree || tree === undefined) {
+        console.error("Cannot load directory");
+
+        clearInterval(loadInterval);
+
+        dirLoadFail.set(true);
+        dirToLoad.set("Cannot load directory");
+
+        progressTimeout = setTimeout(() => {
+            treeLoading.set(false);
+        }, 5000)
+        return null;
+    }
+    if (loadTime > 100) {
+        console.error(`Directory load time was too long. Aborting...`);
+        console.warn(`Cancelled load after ${loadTime} seconds`);
+        clearInterval(loadInterval);
+
+        dirLoadFail.set(true);
+        dirToLoad.set("Error: Directory load timeout.");
+
+        progressTimeout = setTimeout(() => {
+            treeLoading.set(false);
+        }, 5000)
+        return null;
+    }
+    let directoryName = get(dirToLoad);
     tree = [{id: -1, name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
     filetree.set(tree);
+    clearInterval(loadInterval);
+    if (loadTime < 45) {
+        console.log(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+    }
+    else {
+        console.warn(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+    }
     id = 0;
+    treeLoading.set(false);
     return directoryName;
 }
 
