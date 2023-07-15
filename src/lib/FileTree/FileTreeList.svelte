@@ -14,6 +14,7 @@
     import { clipboard } from "@tauri-apps/api";
     import { openInputModal, openRenameModal } from "../../App.svelte";
     import { path as p } from "@tauri-apps/api";
+    import { onMount } from "svelte";
 
     export let root = false;
     export let isroot = false;
@@ -24,8 +25,9 @@
     export let children = [];
     export let contextMenuEnabled;
     export let iconsEnabled;
+    export let isExpanded;
 
-    export let expanded = _expansionState[name] || false;
+    let expanded = _expansionState[name] || false;
     let ref = null;
     let refLabel = null;
     let refChildren = null;
@@ -59,6 +61,11 @@
         {name: "Delete", disabled: isroot, shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
     ]
 
+    onMount(() => {
+        if (isExpanded) {
+            expanded = _expansionState[name] = !expanded;
+        }
+    })
     function findNode(nodeid, tree = null) {
         if (!tree) {
             tree = $filetree;
@@ -162,7 +169,7 @@
 {#if root}
     {#each children as child}
         {#if Array.isArray(child.children)}
-            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {expanded} {iconsEnabled}></svelte:self>
+            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
         {:else}
             <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
         {/if}
@@ -185,7 +192,7 @@
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
                 {#each children as child (child.id) }
                     {#if Array.isArray(child.children)}
-                        <svelte:self on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {expanded} {iconsEnabled}></svelte:self>
+                        <svelte:self on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
                     {:else}
                         <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
                     {/if}

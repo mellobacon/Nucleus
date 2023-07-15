@@ -40,7 +40,7 @@
 
 <div class="settings-container" class:hidden>
     <div class="settings-directory">
-        <FileTreeView expanded={true} iconsEnabled={false} tree={[
+        <FileTreeView isExpanded iconsEnabled={false} tree={[
             {id: 0, path: "", name: "General", children: [
                 {id: 1, path: "", name: "Theme"},
                 {id: 2, path: "", name: "Editor", children: [
