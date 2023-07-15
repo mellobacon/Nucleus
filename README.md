@@ -14,7 +14,7 @@
   </h3>
 <p align="center">
   <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
-  Download
+  <a href="https://github.com/mellobacon/Nucleus/releases">Download</a>
 </p>
 
 ___
