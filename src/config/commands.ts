@@ -142,6 +142,26 @@ export const commands = {
             //
         }
     },
+    "minimizeWindow": {
+        "keybind": "",
+        "command": () => {
+            appWindow.minimize()
+        }
+    },
+    "maximizeWindow": {
+        "keybind": "",
+        "command": async () => {
+            if (await appWindow.isFullscreen()) {
+                return;
+            }
+            if (await appWindow.isMaximized()) {
+                appWindow.unmaximize();
+            }
+            else {
+                appWindow.maximize()
+            }
+        }
+    },
     "closeWindow": {
         "keybind": "Alt+F4",
         "command": async () => {
