@@ -82,6 +82,7 @@
         })
         editorView.contentDOM.classList.add("mousetrap");
         setEditorFontSize(await appSettings.get("editor.fontSize"));
+        setEditorFontFamily(await appSettings.get("editor.fontFamily"));
     });
 
     let _ = null;
