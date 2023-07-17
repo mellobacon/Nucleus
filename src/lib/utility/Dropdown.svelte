@@ -3,7 +3,7 @@
     export let menu;
     
     export let getState = () => open;
-    export let onClick = () => {open=!open};
+    export let onClick = () => {open=true};
 
     export let right = false;
 
