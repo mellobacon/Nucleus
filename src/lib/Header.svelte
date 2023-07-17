@@ -6,12 +6,7 @@
     import { addTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
     import { workspaceName } from "./File";
     import { commands } from "../config/commands";
-    
-    let menuOpen = false;
-    const toggleMenu = () => {
-        menuOpen = !menuOpen;
-    }
-    
+
     const items = [
         {menuname: "File", children: [
             {name: "New File", shortcut: commands.addEditorTab.keybind, action: commands.addEditorTab.command},
@@ -70,7 +65,7 @@
         <div id="logo"></div>
         <div id="menubar">
             {#each items as item}
-                <Dropdown menu={item} getState={() => menuOpen} onClick={toggleMenu}></Dropdown>
+                <Dropdown menu={item}></Dropdown>
             {/each}
         </div>
         <div class="divider"></div>

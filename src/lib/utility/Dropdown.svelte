@@ -1,9 +1,6 @@
 <script lang="ts">
     import { afterUpdate } from 'svelte';
     export let menu;
-    
-    export let getState = () => open;
-    export let onClick = () => {open=true};
 
     export let right = false;
 
@@ -12,7 +9,7 @@
     let open = false;
 
     afterUpdate(() => {
-        if (open && getState() && dropdownList) {
+        if (open && dropdownList) {
             const { height , left, width, top } = button.getBoundingClientRect();
             dropdownList.style.top = `${height}px`;
             if (right) {
@@ -27,20 +24,19 @@
 </script>
 
 <svelte:window on:click={(e) => {
-    if (open && getState() && !button.contains(e.target)) {
+    if (open && !button.contains(e.target)) {
         open = false;
-        onClick();
     }
 }}></svelte:window>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={button} class="dropdown-button" class:open on:click={() => {onClick(); open=true}} on:mouseenter={() => open = true} on:mouseleave={() => open=false}>
+<div bind:this={button} class="dropdown-button" class:open on:click={() => {open = !open}}>
     {#if menu.icon}
         <svelte:component this={menu.icon}></svelte:component>
     {:else}
         {menu.menuname}
     {/if}
-    {#if open && getState()}
+    {#if open}
         <div bind:this={dropdownList} class="dropdown-list">
             {#each menu.children as child}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
