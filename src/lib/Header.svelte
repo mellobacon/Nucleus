@@ -56,55 +56,51 @@
             {name: "About", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
         ]},
     ];
-
-    const x = appWindow.isFullscreen()
 </script>
 
-{#if x}
-    <div id="header">
-        <div id="logo"></div>
-        <div id="menubar">
-            {#each items as item}
-                <Dropdown menu={item}></Dropdown>
-            {/each}
-        </div>
-        <div class="divider"></div>
-        <div id="workspace" title="" data-tauri-drag-region>
-            {$workspaceName}
-        </div>
-        <div id="handle" data-tauri-drag-region></div>
-        <div class="tools">
-            
-            <div class="settings-button">
-                <Dropdown right menu={{icon: Settings, children: [
-                    {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}}, 
-                    {name: "Keymap", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}}
-                ]
-                }} />
-            </div>
-        </div>
-        <div id="window-controls">
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
-                class="window-button"
-                id="minimize"
-                on:click={commands.minimizeWindow.command}
-            />
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
-                class="window-button"
-                id="maximize"
-                on:click={commands.maximizeWindow.command}
-            />
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
-                class="window-button"
-                id="close"
-                on:click={commands.closeWindow.command}
-            />
+<div id="header">
+    <div id="logo"></div>
+    <div id="menubar">
+        {#each items as item}
+            <Dropdown menu={item}></Dropdown>
+        {/each}
+    </div>
+    <div class="divider"></div>
+    <div id="workspace" title="" data-tauri-drag-region>
+        {$workspaceName}
+    </div>
+    <div id="handle" data-tauri-drag-region></div>
+    <div class="tools">
+        
+        <div class="settings-button">
+            <Dropdown right menu={{icon: Settings, children: [
+                {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}}, 
+                {name: "Keymap", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}}
+            ]
+            }} />
         </div>
     </div>
-{/if}
+    <div id="window-controls">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div
+            class="window-button"
+            id="minimize"
+            on:click={commands.minimizeWindow.command}
+        />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div
+            class="window-button"
+            id="maximize"
+            on:click={commands.maximizeWindow.command}
+        />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div
+            class="window-button"
+            id="close"
+            on:click={commands.closeWindow.command}
+        />
+    </div>
+</div>
 
 <style lang="scss">
     #header {
