@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { appWindow } from "@tauri-apps/api/window";
     import Dropdown from "./utility/Dropdown.svelte";
     import settings from "./Settings.svelte";
     import { Settings } from "carbon-icons-svelte";
     import { addTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
     import { workspaceName } from "./File";
     import { commands } from "../config/commands";
+    import { shell } from "@tauri-apps/api";
 
     const items = [
         {menuname: "File", children: [
@@ -49,11 +49,11 @@
         {menuname: "Help", children: [
             {name: "Send Feedback", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Contact Support", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Report Issue", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "Report Issue", shortcut: "", action: () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")}},
             {name: "Documentation", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Show Release Notes", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Check for Updates", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "About", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
+            {name: "About", shortcut: "", action: () => {shell.open("https://github.com/mellobacon/Nucleus")}},
         ]},
     ];
 </script>
