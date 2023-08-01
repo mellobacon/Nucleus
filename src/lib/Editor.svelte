@@ -40,22 +40,6 @@
     }
 
     onMount(async () => {
-        // disable default copy/paste/delete keys
-        // instead implement our own functions for copy/paste/delete so it can be bound to different keybindings
-        const disabledKeys = [
-            {
-                key: "Ctrl-v",
-                preventDefault: true
-            },
-            {
-                key: "Ctrl-c",
-                preventDefault: true
-            },
-            {
-                key: "Delete",
-                preventDefault: true
-            }
-        ]
         editorView = new EditorView({
             parent: ref,
             state: EditorState.create({
@@ -73,7 +57,6 @@
                     EditorState.allowMultipleSelections.of(true),
                     syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
                     keymap.of([
-                        ...disabledKeys,
                         ...defaultKeymap
                     ])
                 ],
@@ -163,6 +146,7 @@
         }
     }
 
+    // TODO: need to find a much better way of handling this
     // yes im aware how messy all these functions are but it works!
     export async function append(value: string) {
         let cursorpos = getCurrentEditor().getView().state.selection.main.head + value.length;

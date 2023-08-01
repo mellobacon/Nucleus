@@ -6,7 +6,6 @@ import { loadTheme } from "./themehandler";
 import { Store } from "tauri-plugin-store-api";
 import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
-import { getActiveTab } from "../lib/EditorTabList.svelte";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -49,15 +48,13 @@ function parseKeybind(keybind: string) {
 export async function getShortcuts() {
     const shortcuts = getKeybinds();
     for (const shortcut of shortcuts) {
+        // skip binding shorcuts that are disabled
+        if (shortcut.disabled === true) {
+            continue;
+        }
         const keybind = parseKeybind(shortcut.keybind);
         Mousetrap.bind(keybind, async (e) => {
-            // prevent editor functions firing outside editor instances
-            if (getActiveTab().isfile) {
-                e.preventDefault();
-            }
-            else {
-                return;
-            }
+            e.preventDefault();
             await fireAction(shortcut.command);
         });
     }

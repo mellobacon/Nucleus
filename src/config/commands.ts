@@ -36,30 +36,35 @@ export const commands = {
     },
     "undo": {
         "keybind": "Control+Z",
+        "disabled": "true",
         "command": async () => {
             await undoChange();
         }
     },
     "redo": {
         "keybind": "Control+Shift+Z",
+        "disabled": "true",
         "command": async () => {
             await redoChange();
         }
     },
     "cut": {
         "keybind": "Control+X",
+        "disabled": "true",
         "command": async () => {
             await cut();
         }
     },
     "copy": {
         "keybind": "Control+C",
+        "disabled": "true",
         "command": async () => {
            await copy();
         }
     },
     "paste": {
         "keybind": "Control+V",
+        "disabled": "true",
         "command": async () => {
             const content = await navigator.clipboard.readText();
             append(content);
@@ -73,6 +78,7 @@ export const commands = {
     },
     "delete": {
         "keybind": "Delete",
+        "disabled": "true",
         "command": async () => {
             await deleteChars();
         }
