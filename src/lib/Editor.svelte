@@ -46,7 +46,7 @@
                 extensions: [
                     lineNumbers(),
                     highlightActiveLineGutter(),
-                    highlightSpecialChars(),
+                    //highlightSpecialChars(), // disabled as an attempt to hide bom for now
                     highlightActiveLine(),
                     dropCursor(),
                     history(),
