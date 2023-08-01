@@ -58,7 +58,15 @@
                     syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
                     keymap.of([
                         ...defaultKeymap
-                    ])
+                    ]),
+                    EditorView.updateListener.of(async update => {
+                        if (update.docChanged) {
+                            await updateContent();
+                        }
+                        if (update.state.selection.ranges.some(r => !r.empty)) {
+                            updateLineInfo();
+                        }
+                    })
                 ],
                 doc: content
             })
@@ -69,7 +77,7 @@
     });
 
     let _ = null;
-    export async function updateContent() {
+    async function updateContent() {
         await tick();
         content = editorView.state.doc.toString();
         if (await appSettings.get("editor.autosave") === true) {
@@ -87,6 +95,7 @@
         else {
             updateSaveState(false);
         }
+        updateLineInfo();
     }
     export async function focus() {
         // takes two ticks to focus for some reason
@@ -105,9 +114,6 @@
     async function handleKeyDown(e) {
         let key = e.code;
         switch(key) {
-            case "Backspace": case "Enter":
-                await updateContent();
-                updateLineInfo();
             case "ArrowRight": case "ArrowLeft": case "ArrowDown": case "ArrowUp":
                 updateLineInfo();
         }
@@ -192,7 +198,7 @@
     }
 </script>
 
-<div bind:this={ref} class="editor" class:hidden on:input={updateContent} on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
+<div bind:this={ref} class="editor" class:hidden on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
 
 <style lang="scss">
     .editor {
