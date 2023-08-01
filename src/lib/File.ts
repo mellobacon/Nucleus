@@ -3,6 +3,7 @@ import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab, renameTab } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
+import { openFileTree } from "./Sidebar.svelte";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -37,6 +38,7 @@ export async function openFolder() {
     )
 
     workspaceName.set(directoryName);
+    openFileTree();
 }
 
 export const treeLoading = writable(false);
