@@ -19,6 +19,7 @@ tauri = { version = "1.2.5", features = ["clipboard-write-text", "dialog-ask", "
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 trash = "3.0.2"
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+encoding_rs = "0.8.32"
 
 [dev-dependencies]
 windows = "0.32.0"

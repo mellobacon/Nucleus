@@ -1582,6 +1582,7 @@ dependencies = [
 name = "nucleus"
 version = "0.2.1"
 dependencies = [
+ "encoding_rs",
  "serde",
  "serde_json",
  "tauri",

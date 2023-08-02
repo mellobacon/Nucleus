@@ -6,7 +6,7 @@
 use std::{env, fs};
 use std::process::Command;
 
-use tauri::{Manager};
+use tauri::Manager;
 
 #[tauri::command]
 fn open_in_explorer(path: &str) {
@@ -51,9 +51,17 @@ fn delete_file(path: &str, perm: bool) {
     }
 }
 
+#[tauri::command]
+fn read_file(path: &str) -> std::string::String {
+    let bytes = fs::read(path).unwrap();
+    let content = encoding_rs::UTF_8.decode(&bytes);
+    println!("{:?}", content);
+    content.0.to_string()
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder])
+        .invoke_handler(tauri::generate_handler![open_in_explorer, delete_file, attempt_file_access, is_file, is_folder, read_file])
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())

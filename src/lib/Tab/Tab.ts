@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
-import { path as p, fs, dialog } from "@tauri-apps/api";
+import { path as p, dialog, invoke } from "@tauri-apps/api";
 import { saveFile } from "../File";
 
 export class Tab {
@@ -72,7 +72,8 @@ export class Tab {
         }
         let fileContent = "";
         try {
-            fileContent = await fs.readTextFile(path); //TODO: Fix performance issues/loading times on large files
+            fileContent = await invoke("read_file", {path: path}) //TODO: Fix performance issues/loading times on large files
+            //console.log( await invoke("read_file", {path: path}));
         } catch (error) {
             console.warn("Can't read file content. Setting to empty string. Error: ", error);
         }
