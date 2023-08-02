@@ -23,6 +23,7 @@ export async function openFolder() {
     // if file path is not in the configured scope already, add it
     // TODO: should configure this so it doesnt access restricted paths based on user permissions
     await invoke("attempt_file_access", {app_handle: window, p: directory});
+    openFileTree();
 
     const directoryName = await updateTree(directory);
     if (!directoryName) {
@@ -38,7 +39,6 @@ export async function openFolder() {
     )
 
     workspaceName.set(directoryName);
-    openFileTree();
 }
 
 export const treeLoading = writable(false);
