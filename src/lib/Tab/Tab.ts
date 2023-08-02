@@ -144,4 +144,7 @@ export class Tab {
             tab.updateView(this.activeid);
         }
     }
+    refreshTabList() {
+        this.tabs.set(this.tablist);
+    }
 }

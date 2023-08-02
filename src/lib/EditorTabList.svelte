@@ -64,6 +64,9 @@
     export function getCurrentEditor() {
         return editorTab.activeTab.content;
     }
+    export function refreshTabs() {
+        editorTab.refreshTabList();
+    }
 
     export let hidden = editorTab.hidden;
     export let isfile = editorTab.isfile;

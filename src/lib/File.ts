@@ -1,6 +1,6 @@
 import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
-import { tabs, addEditorTab, renameTab } from "./EditorTabList.svelte";
+import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
@@ -138,6 +138,10 @@ export async function moveFile(source: string, dest: string, file: string) {
 
     try {
         await fs.renameFile(file, `${dest}${path.sep}${filename}`);
+        const  tab = get(tabs).find(t => t.path === `${source}${path.sep}${filename}`);
+        if (tab === undefined) return;
+        tab.path = `${dest}${path.sep}${filename}`;
+        refreshTabs();
     } catch (error) {
         console.error(error);
     }
@@ -186,6 +190,9 @@ export async function moveToTrash(p: string) {
     // open dialog to choose between recycling bin and perm delete
     if (!await dialog.ask(`Are you sure you want to delete ${p.split(path.sep).pop()}?`)) return;
     await invoke("delete_file", {path: p, perm: false})
+    const tab = get(tabs).find(t => t.path === p);
+    if (tab === undefined) return;
+    closeTab(tab.id);
 }
 
 export async function createFolder(p) {
