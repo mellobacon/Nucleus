@@ -158,12 +158,16 @@ export async function saveFile(saveAs = false) {
     }
     // write changes to the file
     // TODO: need to find a way to save files in different encodings. it saves as utf 8 by default (very annoying)
-    fs.writeFile(tab.path, tab.content.getFileContent());
+    //fs.writeFile(tab.path, tab.content.getFileContent());
+    //const bytes = new TextEncoder().encode(tab.content.getFileContent())
+    await invoke("write_file", {path: tab.path, content: tab.content.getFileContent(), enc: tab.content.getEncoding(), hasBom: tab.content.hasBom()})
     const fileType = await path.extname(tab.path);
     tab.content.updateFileInfo({
         "filename": tab.label,
         "path": tab.path,
         "fileType": fileType,
+        "encoding": tab.content.getEncoding(),
+        "hasBom": tab.content.hasBom(),
         "language": tab.content.getLang(fileType),
         "readonly": false,
     });

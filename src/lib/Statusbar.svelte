@@ -1,6 +1,6 @@
 <script lang="ts">
     import { isfile } from "./EditorTabList.svelte";
-    import { line_info, language } from "./Editor.svelte";
+    import { line_info, language, encoding } from "./Editor.svelte";
 </script>
 
 <div id="statusbar">
@@ -15,7 +15,7 @@
         <div class="editor-info">
             <span title="Ln: {$line_info.line}, Col: {$line_info.column}">{$line_info.line} : {$line_info.column}</span>
             <div class="divider"></div>
-            <span>UTF-8</span>
+            <span>{$encoding.value} {$encoding.hasBom === true ? " with BOM" : ""}</span>
             <div class="divider"></div>
             <span>{$language}</span>
         </div>

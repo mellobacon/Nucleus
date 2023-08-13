@@ -20,6 +20,8 @@
         "path": "",
         "fileType": "",
         "language": "",
+        "encoding": "",
+        "hasBom": false,
         "readonly": false,
     });
 
@@ -34,6 +36,12 @@
     }
     export function getLang(ext) {
         return getLangFromExt(ext);
+    }
+    export function getEncoding() {
+        return $file_info.encoding;
+    }
+    export function hasBom() {
+        return $file_info.hasBom;
     }
     export function getView() {
         return editorView;
@@ -104,6 +112,7 @@
         editorView.focus();
         updateLineInfo();
         language.set($file_info.language);
+        encoding.set({value: $file_info.encoding, hasBom: $file_info.hasBom});
     }
     export function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -124,6 +133,7 @@
 
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
+    export const encoding = writable({value: "UTF-8", hasBom: false});
 
     export function getLangFromExt(ext: string) {
         if (ext === "txt") {
