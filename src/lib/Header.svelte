@@ -32,7 +32,7 @@
             {name: "Zoom In", disabled: true, shortcut: commands.zoomIn.keybind, action: commands.zoomIn.command},
             {name: "Zoom Out", disabled: true, shortcut: commands.zoomOut.keybind, action: commands.zoomOut.command},
             {name: "Reset Zoom", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
-            {name: "Fullscreen", shortcut: commands.fullscreen.keybind, action: commands.fullscreen.command},
+            {name: "Fullscreen", disabled: commands.fullscreen.disabled, shortcut: commands.fullscreen.keybind, action: commands.fullscreen.command},
         ]},
         {menuname: "Run", children: [
             {name: "Run File", disabled: true,  shortcut: commands.runFile.keybind, action: commands.runFile.command},

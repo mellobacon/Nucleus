@@ -55,7 +55,7 @@
 		if (panelSize < minPanelSize) {
 			panelSize = minPanelSize;
 		}
-}
+	}
 </script>
 <script lang="ts" context="module">
 	const _openPopup = writable(false);
