@@ -88,7 +88,7 @@
     async function updateContent() {
         await tick();
         content = editorView.state.doc.toString();
-        if (await appSettings.get("editor.autosave") === true) {
+        if (await appSettings.get("editor.autosave") === "true") {
             clearTimeout(_);
             _ = setTimeout(async () => {
                 if (!$file_info.path || $file_info.path === $file_info.filename || $file_info.path === "") {
