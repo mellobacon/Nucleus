@@ -106,7 +106,6 @@ fn write_file(path: &str, content: &str, enc: &str, has_bom: bool) {
             }
         }
         output = [bom.as_slice(), c_bytes.as_slice()].concat();
-        println!("{:?}", output.as_slice());
     }
     let mut file = File::create(path).unwrap();
     file.write_all(&output).unwrap();
