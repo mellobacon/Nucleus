@@ -2,7 +2,7 @@ import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
-import { watch } from "tauri-plugin-fs-watch-api";
+import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
 
 export async function openFile() {
@@ -30,7 +30,7 @@ export async function openFolder() {
         return;
     }
     // load file watcher
-    await watch(
+    await watchImmediate(
         directory,
         () => {
             updateTree(directory);
