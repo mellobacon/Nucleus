@@ -32,8 +32,10 @@ export async function openFolder() {
     // load file watcher
     await watchImmediate(
         directory,
-        () => {
-            updateTree(directory);
+        (e) => {
+            const {type} = e;
+            const updateType = Object.entries(type)[0][0];
+            updateTree(directory, updateType);
         },
         { recursive: true }
     )
@@ -44,13 +46,18 @@ export async function openFolder() {
 export const treeLoading = writable(false);
 let progressTimeout = null;
 let loadInterval = null;
-async function updateTree(directory) {
+async function updateTree(directory, updateType = "") {
     let loadTime = 0;
 
     clearTimeout(progressTimeout);
     clearInterval(loadInterval);
-    treeLoading.set(true);
-    loadInterval = setInterval(() => {loadTime++}, 1000)
+
+    // dont show directory loading bar for simple file changes
+    if (updateType !== "modify") {
+        treeLoading.set(true);
+        loadInterval = setInterval(() => {loadTime++}, 1000)
+    }
+
     let tree;
     try {
         tree = await fs.readDir(directory, {recursive: true});
@@ -60,38 +67,31 @@ async function updateTree(directory) {
     if (!tree || tree === undefined) {
         console.error("Cannot load directory");
 
-        clearInterval(loadInterval);
-
-        dirLoadFail.set(true);
-        dirToLoad.set("Cannot load directory");
-
-        progressTimeout = setTimeout(() => {
-            treeLoading.set(false);
-        }, 5000)
+        cancelDirectoryLoad("Cannot load directory");
         return null;
     }
+
     if (loadTime > 100) {
         console.error(`Directory load time was too long. Aborting...`);
         console.warn(`Cancelled load after ${loadTime} seconds`);
-        clearInterval(loadInterval);
 
-        dirLoadFail.set(true);
-        dirToLoad.set("Error: Directory load timeout.");
-
-        progressTimeout = setTimeout(() => {
-            treeLoading.set(false);
-        }, 5000)
+        cancelDirectoryLoad("Error: Directory load timeout.");
         return null;
     }
+
     let directoryName = get(dirToLoad);
     tree = [{id: -1, name: directoryName, path: directory, children: buildTree(sortTree(tree))}];
     filetree.set(tree);
     clearInterval(loadInterval);
-    if (loadTime < 45) {
-        console.log(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
-    }
-    else {
-        console.warn(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+
+    //TODO: move this to a log file
+    if (updateType !== "modify") {
+        if (loadTime < 45) {
+            console.log(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+        }
+        else {
+            console.warn(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+        }
     }
     id = 0;
     treeLoading.set(false);
@@ -128,6 +128,16 @@ function sortTree(tree: fs.FileEntry[]) {
     sortedTree.sort((a, b) => (a - b));
     sortedTree.push(...files);
     return sortedTree;
+}
+
+export function cancelDirectoryLoad(msg: string) {
+    clearInterval(loadInterval);
+
+    dirLoadFail.set(true);
+    dirToLoad.set(msg);
+    progressTimeout = setTimeout(() => {
+        treeLoading.set(false);
+    }, 5000)
 }
 
 export async function moveFile(source: string, dest: string, file: string) {
