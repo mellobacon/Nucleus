@@ -5,8 +5,7 @@
     export let items = [];
     export let target: HTMLElement = null;
 
-    let ref = null;
-    let menuOpen = false;
+    export let menuOpen = false;
 
     let cursorPos = { x: 0, y: 0 }
     let menuPos = { h: 0, w: 0 }
@@ -26,8 +25,8 @@
         let windowHeight = appWindowSize.height;
 
         menuOpen = true;
-        windowSize = {w: windowWidth, h: windowHeight}
-        cursorPos = {x: e.clientX, y: e.clientY}
+        windowSize = {w: windowWidth, h: windowHeight};
+        cursorPos = {x: e.clientX, y: e.clientY};
 
         // Adjust context menu position based on where it is on the window
         // If it overlaps with the window border then move it to the right/left/top/bottom accordingly
@@ -55,16 +54,12 @@
     }
 </script>
 
-<svelte:window on:contextmenu|preventDefault={(e) => {
-    menuOpen = false;
-    if (target !== null) return;
-    openContextMenu(e);
-}} on:click={(e) => {
+<svelte:window on:contextmenu|preventDefault on:mousedown={(e) => {
     menuOpen = false;
 }}></svelte:window>
 
 {#if menuOpen}
-    <div use:getContextMenuDimension class="context-menu" bind:this={ref} style="top:{cursorPos.y}px; left:{cursorPos.x}px">
+    <div use:getContextMenuDimension class="context-menu" style="top:{cursorPos.y}px; left:{cursorPos.x}px">
         {#each items as item}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div class="context-menu-option" title="" class:disabled={item.disabled} on:click={() => {
