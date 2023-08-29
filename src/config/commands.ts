@@ -1,6 +1,7 @@
+import { openRenameModal } from "../App.svelte";
 import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
-import { addEditorTab } from "../lib/EditorTabList.svelte";
-import { saveFile, openFile, openFolder } from "../lib/File";
+import { addEditorTab, closeActiveTab, closeAllTabs } from "../lib/EditorTabList.svelte";
+import { saveFile, openFile, openFolder, openInExplorer, renameFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
 
 export const commands = {
@@ -115,7 +116,7 @@ export const commands = {
     },
     "fullscreen": {
         "keybind": "F11",
-        "disabled": "true",
+        //"disabled": "true",
         "command": async () => {
             if (await appWindow.isFullscreen()) {
                 appWindow.setFullscreen(false);
@@ -173,6 +174,36 @@ export const commands = {
         "keybind": "Alt+F4",
         "command": async () => {
             await appWindow.close();
+        }
+    },
+    "closeTab": {
+        "keybind": "Control+F4",
+        "command": () => {
+            closeActiveTab();
+        }
+    },
+    "closeAllTabs": {
+        "keybind": "",
+        "command": () => {
+            closeAllTabs();
+        }
+    },
+    "renameFile": {
+        "keybind": "F2",
+        "command": (filename, oldpath) => {
+            if (!oldpath || oldpath === "") return;
+            openRenameModal(`Rename ${filename}`,
+                `Give a new name to ${filename}`, [
+                    {name: "Rename", action: async () => {await renameFile(filename, oldpath)}},
+                    {name: "Cancel", action: () => {}}
+            ])
+        }
+    },
+    "openInExplorer": {
+        "keybind": "",
+        "command": (path) => {
+            if (!path || path === "") return;
+            openInExplorer(path);
         }
     }
 }

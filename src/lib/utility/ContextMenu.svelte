@@ -54,8 +54,12 @@
     }
 </script>
 
-<svelte:window on:contextmenu|preventDefault on:mousedown={(e) => {
+<svelte:window on:contextmenu|preventDefault on:click={(e) => {
     menuOpen = false;
+}} on:mouseup={(e) => {
+    if (e.button === 2) {
+        menuOpen = false;
+    }
 }}></svelte:window>
 
 {#if menuOpen}
