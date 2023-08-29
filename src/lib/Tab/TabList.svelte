@@ -8,6 +8,7 @@
 
     export let tabs: Writable<any[]>;
     export let addTab = false;
+    export let width = "unset";
 
     let tabcontainer = null;
 
@@ -37,7 +38,7 @@
         }
     })
 </script>
-<div bind:this={tabcontainer} id="tablist">
+<div bind:this={tabcontainer} id="tablist" style="max-width: {width};">
     {#each $tabs as tab}
         <Tab on:closetab on:select id={tab.id} label={tab.label} path={tab.path} active={tab.active} saved={tab.saved} />
     {/each}
@@ -45,7 +46,6 @@
 
 <style lang="scss">
     #tablist {
-        position: relative;
         display: flex;
         overflow-x: overlay;
         &::-webkit-scrollbar {

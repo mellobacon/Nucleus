@@ -1,5 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import ContextMenu from "../utility/ContextMenu.svelte";
+    import { commands } from "../../config/commands";
     const dispatch = createEventDispatcher();
 
     export let id = 0;
@@ -16,10 +18,18 @@
     function handleClose(tabid) {
         dispatch("closetab", {tabid: tabid});
     }
+
+    let contextmenu = false;
+    let contextmenuitems = [
+        {name: "Close Tab", shortcut: commands.closeTab.keybind, action: commands.closeTab.command},
+        {name: "Close All Tabs", shortcut: "", action: commands.closeAllTabs.command},
+        {name: "Open In Explorer", shortcut: commands.openInExplorer.keybind, action: () => {commands.openInExplorer.command(path)}},
+        {name: "Rename File", shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(label, path)}},
+    ]
 </script>
 <div bind:this={tab} title={path} id={`editorTab-${id}`} class="tab" class:active={active}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="tab-content" on:mousedown = {(e) => { if (e.button === 0) handleSelect(id);}}>
+    <div class="tab-content" on:mousedown = {(e) => { if (e.button === 0) handleSelect(id);}} on:mouseup={(e) => {if (e.button === 2) contextmenu = true;}}>
         <span class="tab-label">{label}</span>
         <span class="save-state" class:saved></span>
     </div>
@@ -28,6 +38,10 @@
         <span title="Close tab" on:click={() => {handleClose(id)}}></span>
     </div>
 </div>
+
+{#if contextmenu}
+    <ContextMenu target={tab} items={contextmenuitems}></ContextMenu>
+{/if}
 
 <style lang="scss">
     .tab {

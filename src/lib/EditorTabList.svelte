@@ -3,6 +3,17 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import TabList from "./Tab/TabList.svelte";
     import { Tab } from "./Tab/Tab";
+    import { afterUpdate } from "svelte";
+
+    let toolbar: HTMLElement = null;
+    let tablist: HTMLElement = null;
+
+    $: width = "";
+
+    afterUpdate(() => {
+        let tablistwidth = tablist.parentElement.parentElement.parentElement.clientWidth;
+        width = `${tablistwidth - toolbar.clientWidth}px`;
+    })
 </script>
 <script lang="ts" context="module">
     let activetabid = null;
@@ -55,7 +66,7 @@
             editorTab.setActive(tab.id);
         }
     }
-    async function closeAllTabs() {
+    export async function closeAllTabs() {
         await editorTab.closeAllTabs();
     }
     export function getActiveTab() {
@@ -72,9 +83,9 @@
     export let isfile = editorTab.isfile;
     export let tabs = editorTab.tabs;
 </script>
-<div id="editor-tabs" class:hidden={$hidden}>
-    <TabList tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
-    <div class="tab-toolbar">
+<div id="editor-tabs" bind:this={tablist} class:hidden={$hidden}>
+    <TabList tabs={tabs} {width} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
+    <div class="tab-toolbar" bind:this={toolbar}>
         <Dropdown right menu={{icon: VerticalDots, children: [
             {name: "Close All Tabs", action: async () => {await closeAllTabs()}},
         ]}}></Dropdown>
@@ -89,7 +100,6 @@
         width: -webkit-fill-available;
         display: flex;
         justify-content: space-between;
-        position: absolute;
     }
     .tab-toolbar {
         height: 100%;
