@@ -8,7 +8,8 @@
     "start": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "tauri": "tauri",
-    "start-window": "yarn tauri dev"
+    "start-window": "yarn tauri dev",
+    "tauri-build-debug": "yarn tauri build --debug"
   },
   "dependencies": {
     "@codemirror/language-data": "^6.3.1",
