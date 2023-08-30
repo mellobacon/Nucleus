@@ -1,6 +1,7 @@
+import { fs } from "@tauri-apps/api";
 import { openRenameModal } from "../App.svelte";
 import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
-import { addEditorTab, closeActiveTab, closeAllTabs } from "../lib/EditorTabList.svelte";
+import { addEditorTab, closeAllTabs } from "../lib/EditorTabList.svelte";
 import { saveFile, openFile, openFolder, openInExplorer, renameFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
 
@@ -178,9 +179,7 @@ export const commands = {
     },
     "closeTab": {
         "keybind": "Control+F4",
-        "command": () => {
-            closeActiveTab();
-        }
+        "command": () => {}
     },
     "closeAllTabs": {
         "keybind": "",
@@ -190,8 +189,8 @@ export const commands = {
     },
     "renameFile": {
         "keybind": "F2",
-        "command": (filename, oldpath) => {
-            if (!oldpath || oldpath === "") return;
+        "command": async (filename, oldpath) => {
+            if (!await fs.exists(oldpath)) return;
             openRenameModal(`Rename ${filename}`,
                 `Give a new name to ${filename}`, [
                     {name: "Rename", action: async () => {await renameFile(filename, oldpath)}},
@@ -201,8 +200,8 @@ export const commands = {
     },
     "openInExplorer": {
         "keybind": "",
-        "command": (path) => {
-            if (!path || path === "") return;
+        "command": async (path) => {
+            if (!await fs.exists(path)) return;
             openInExplorer(path);
         }
     }

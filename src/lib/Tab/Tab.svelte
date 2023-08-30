@@ -21,7 +21,7 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Close Tab", shortcut: commands.closeTab.keybind, action: commands.closeTab.command},
+        {name: "Close Tab", shortcut: commands.closeTab.keybind, action: () => {handleClose(id)}},
         {name: "Close All Tabs", shortcut: "", action: commands.closeAllTabs.command},
         {name: "Open In Explorer", shortcut: commands.openInExplorer.keybind, action: () => {commands.openInExplorer.command(path)}},
         {name: "Rename File", shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(label, path)}},
