@@ -3,19 +3,29 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import TabList from "./Tab/TabList.svelte";
     import { Tab } from "./Tab/Tab";
-    import { afterUpdate } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
+    import { appWindow } from "@tauri-apps/api/window";
+    import { writable } from "svelte/store";
 
-    let toolbar: HTMLElement = null;
-    let tablist: HTMLElement = null;
-
-    $: width = "";
+    onMount(() => {
+        appWindow.onResized(() => {
+            updateTablistWidth();
+        })
+    })
 
     afterUpdate(() => {
-        let tablistwidth = tablist.parentElement.parentElement.parentElement.clientWidth;
-        width = `${tablistwidth - toolbar.clientWidth}px`;
+        updateTablistWidth();
     })
 </script>
 <script lang="ts" context="module">
+
+    let computedWidth = writable("");
+    let toolbar: HTMLElement = null;
+    let tablist: HTMLElement = null;
+    export function updateTablistWidth() {
+        let tablistwidth = tablist.nextElementSibling.clientWidth;
+        computedWidth.set(`${tablistwidth - toolbar.clientWidth}px`);
+    }
     let activetabid = null;
     class EditorTab {
         id: number;
@@ -84,7 +94,7 @@
     export let tabs = editorTab.tabs;
 </script>
 <div id="editor-tabs" bind:this={tablist} class:hidden={$hidden}>
-    <TabList tabs={tabs} {width} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
+    <TabList width={$computedWidth} tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar" bind:this={toolbar}>
         <Dropdown right menu={{icon: VerticalDots, children: [
             {name: "Close All Tabs", action: async () => {await closeAllTabs()}},
@@ -97,7 +107,7 @@
         visibility: hidden;
     }
     #editor-tabs {
-        width: -webkit-fill-available;
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }

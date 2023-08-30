@@ -4,7 +4,7 @@
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./lib/SidebarView.svelte";
     import Statusbar from "./lib/Statusbar.svelte";
-    import EditorTabList, {hidden} from "./lib/EditorTabList.svelte";
+    import EditorTabList, {hidden, updateTablistWidth} from "./lib/EditorTabList.svelte";
     import { onMount } from "svelte";
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
@@ -35,6 +35,8 @@
 	}
 
 	async function updateMinPanelSize() {
+
+		updateTablistWidth();
 		if (!await appWindow.isFocused()) {
 			return;
 		}
