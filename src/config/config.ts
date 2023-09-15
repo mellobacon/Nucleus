@@ -49,7 +49,7 @@ export async function getShortcuts() {
     const shortcuts = getKeybinds();
     for (const shortcut of shortcuts) {
         // skip binding shorcuts that are disabled
-        if (shortcut.disabled === true) {
+        if (shortcut.disabled === "true") {
             continue;
         }
         const keybind = parseKeybind(shortcut.keybind);
