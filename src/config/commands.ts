@@ -193,7 +193,7 @@ export const commands = {
             if (!await fs.exists(oldpath)) return;
             openRenameModal(`Rename ${filename}`,
                 `Give a new name to ${filename}`, [
-                    {name: "Rename", action: async () => {await renameFile(filename, oldpath)}},
+                    {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
                     {name: "Cancel", action: () => {}}
             ])
         }
