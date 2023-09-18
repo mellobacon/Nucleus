@@ -161,51 +161,6 @@
             (editorContainer as HTMLElement).style.setProperty("font-family", family, "important")
         }
     }
-
-    // TODO: need to find a much better way of handling this
-    // yes im aware how messy all these functions are but it works!
-    export async function append(value: string) {
-        let cursorpos = getCurrentEditor().getView().state.selection.main.head + value.length;
-        const lines = value.split("\n").length - 1;
-        if (lines > 0) {
-            cursorpos -= lines;
-        }
-        getCurrentEditor().getView().dispatch({
-            changes: {
-                from: getCurrentEditor().getView().state.selection.ranges[0].from,
-                to: getCurrentEditor().getView().state.selection.ranges[0].to,
-                insert: value,
-            },
-            selection: {anchor: cursorpos, head: cursorpos},
-            scrollIntoView: true
-        })
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function copy() {
-        const selection = getCurrentEditor().getView().state.sliceDoc(getCurrentEditor().getView().state.selection.main.from, getCurrentEditor().getView().state.selection.main.to)
-        await navigator.clipboard.writeText(selection);
-    }
-    export async function cut() {
-        deleteToLineEnd(getCurrentEditor().getView())
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function undoChange() {
-        undo(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function redoChange() {
-        redo(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function deleteChars() {
-        deleteCharForward(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
 </script>
 
 <div bind:this={ref} class="editor" class:hidden on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
