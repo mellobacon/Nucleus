@@ -4,6 +4,7 @@ import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTa
 import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
+import { trace, error, warn } from "tauri-plugin-log-api";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -62,18 +63,18 @@ async function updateTree(directory, updateType = "") {
     try {
         tree = await fs.readDir(directory, {recursive: true});
     } catch (error) {
-        console.error(error);
+        error(error);
     }
     if (!tree || tree === undefined) {
-        console.error("Cannot load directory");
+        error("Cannot load directory");
 
         cancelDirectoryLoad("Cannot load directory");
         return null;
     }
 
     if (loadTime > 100) {
-        console.error(`Directory load time was too long. Aborting...`);
-        console.warn(`Cancelled load after ${loadTime} seconds`);
+        error(`Directory load time was too long. Aborting...`);
+        trace(`Cancelled load after ${loadTime} seconds`);
 
         cancelDirectoryLoad("Error: Directory load timeout.");
         return null;
@@ -87,10 +88,7 @@ async function updateTree(directory, updateType = "") {
     //TODO: move this to a log file
     if (updateType !== "modify") {
         if (loadTime < 45) {
-            console.log(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
-        }
-        else {
-            console.warn(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
+            trace(`Directory load time: ${loadTime < 1 ? "less than 1" : loadTime}s`);
         }
     }
     id = 0;
@@ -225,11 +223,11 @@ export async function createFile(p) {
 
 export async function renameFile(filename: string, oldpath: string) {
     if (filename.length === 0) {
-        console.warn("filename length 0")
+        warn("filename length 0");
         return false;
     }
     if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
-        console.warn("invalid filename")
+        warn("invalid filename");
         return false;
     }
     let newpath = oldpath.replace(oldpath.split(path.sep).pop(), filename);
@@ -237,7 +235,7 @@ export async function renameFile(filename: string, oldpath: string) {
     try {
         await fs.renameFile(oldpath, newpath);
     } catch (error) {
-        console.error(error);
+        error(error);
         return false;   
     }
     let tab = get(tabs).find(t => t.active && t.isfile);

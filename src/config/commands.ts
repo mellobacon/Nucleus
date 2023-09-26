@@ -1,9 +1,9 @@
 import { fs } from "@tauri-apps/api";
 import { openRenameModal } from "../App.svelte";
-import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
 import { addEditorTab, closeAllTabs } from "../lib/EditorTabList.svelte";
 import { saveFile, openFile, openFolder, openInExplorer, renameFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
+import { info, warn } from "tauri-plugin-log-api";
 
 export const commands = {
     "addEditorTab": {
@@ -40,36 +40,35 @@ export const commands = {
         "keybind": "Control+Z",
         "disabled": "true",
         "command": async () => {
-            await undoChange();
+            //
         }
     },
     "redo": {
         "keybind": "Control+Shift+Z",
         "disabled": "true",
         "command": async () => {
-            await redoChange();
+            //
         }
     },
     "cut": {
         "keybind": "Control+X",
         "disabled": "true",
         "command": async () => {
-            await cut();
+            //
         }
     },
     "copy": {
         "keybind": "Control+C",
         "disabled": "true",
         "command": async () => {
-           await copy();
+            //
         }
     },
     "paste": {
         "keybind": "Control+V",
         "disabled": "true",
         "command": async () => {
-            const content = await navigator.clipboard.readText();
-            append(content);
+            //
         }
     },
     "pasteFromHistory": {
@@ -82,7 +81,7 @@ export const commands = {
         "keybind": "Delete",
         "disabled": "true",
         "command": async () => {
-            await deleteChars();
+            return;
         }
     },
     "find": {
@@ -190,7 +189,10 @@ export const commands = {
     "renameFile": {
         "keybind": "F2",
         "command": async (filename, oldpath) => {
-            if (!await fs.exists(oldpath)) return;
+            if (!await fs.exists(oldpath)) {
+                warn(`${oldpath} does not exist!`);
+                return;
+            }
             openRenameModal(`Rename ${filename}`,
                 `Give a new name to ${filename}`, [
                     {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
@@ -209,7 +211,7 @@ export const commands = {
 
 export function registerCommand(name: string, keybind: string, command: () => void) {
     if (commands[name]) {
-        console.warn(`Command "${name}" already exists, skipping.`);
+        info(`Command "${name}" already exists, skipping.`)
         return;
     }
     commands[name] = { "keybind": keybind, "command": command }
