@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
 import { dialog, invoke } from "@tauri-apps/api";
 import { saveFile } from "../File";
+import { warn } from "tauri-plugin-log-api";
 
 export class Tab {
     id = 0;
@@ -75,7 +76,7 @@ export class Tab {
             // TODO: Fix performance issues/loading times on large files
             fileData = await invoke("read_file", {path: path});
         } catch (error) {
-            console.warn("Can't read file content. Setting to empty string. Error: ", error);
+            warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`);
         }
         let content = new Editor({target: document.getElementById("tabview"), props: {content: fileData.text}});
         let tab = new this.Tab(this.id, label, content, path);

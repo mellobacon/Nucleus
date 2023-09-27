@@ -13,7 +13,7 @@ use std::collections::HashMap;
 use std::ffi::OsStr;
 use std::fs::File;
 use std::io::Write;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::{env, fs};
 use std::process::Command;
 
@@ -23,7 +23,7 @@ mod encoding;
 use encoding::BOM;
 use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
-use log::info;
+use log::{info, error};
 
 use crate::encoding::convert_to_u16;
 
@@ -59,14 +59,27 @@ fn attempt_file_access(app_handle: tauri::AppHandle, p: &str) {
 fn delete_file(path: &str, perm: bool) {
     if perm {
         if is_file(path) {
-            fs::remove_file(path).unwrap();
+            match fs::remove_file(path) {
+                Ok(_) => {
+                    info!("{:?} sucessfully deleted.", PathBuf::from(path).file_name());
+                },
+                Err(err) => error!("Cannot remove {}. Error: {}.", path, err),
+            }
         }
         else {
-            fs::remove_dir_all(path).unwrap();
+            match fs::remove_dir_all(path) {
+                Ok(_) => info!("Path {} deleted sucessfully.", path),
+                Err(err) => error!("Cannot remove {}. Error: {}.", path, err)
+            }
         }
     }
     else {
-        trash::delete(path).unwrap();
+        match trash::delete(path) {
+            Ok(_) => {
+                info!("{:?} sucessfully moved to trash.", PathBuf::from(path).file_name());
+            },
+            Err(err) => error!("Cannot remove {}. Error: {}.", path, err),
+        }
     }
 }
 
@@ -81,30 +94,43 @@ struct FileData {
 
 #[tauri::command]
 fn read_file(path: &str) -> FileData {
-    let bytes = fs::read(path).unwrap();
+    info!("Attempting to read file in {}.", path);
+
+    let mut bytes: Vec<u8> = vec![];
+    match fs::read(path) {
+        Ok(b) => {
+            bytes = b;
+        },
+        Err(err) => error!("Cannot read {}. Error: {}", path, err)
+    }
     let ext = Path::new(path).extension().and_then(OsStr::to_str).unwrap();
     let file_data: FileData;
 
     // encode based on bom if present otherwise just default to utf8
     if let Some(data) = encoding_rs::Encoding::for_bom(&bytes) {
         let (text, encoding, _) = data.0.decode(&bytes);
-        file_data = FileData {text: text.to_string(), encoding: encoding.name().to_string(), extension: ext.to_string(), bom: true}
+        file_data = FileData {text: text.to_string(), encoding: encoding.name().to_string(), extension: ext.to_string(), bom: true};
+        info!("File BOM found. Encoding with {}...", encoding.name());
     }
     else {
         let (text, encoding, _) = encoding_rs::UTF_8.decode(&bytes);
-        file_data = FileData {text: text.to_string(), encoding: encoding.name().to_string(), extension: ext.to_string(), bom: false}
+        file_data = FileData {text: text.to_string(), encoding: encoding.name().to_string(), extension: ext.to_string(), bom: false};
+        info!("No file BOM found. Defaulting to {} encoding...", encoding.name());
     }
     file_data
 }
 
 #[tauri::command]
 fn write_file(path: &str, content: &str, enc: &str, has_bom: bool) {
+    info!("Attempting to write file to {}.", path);
+
     let mut output = Vec::new();
     if let Some(data) = encoding_rs::Encoding::for_label(enc.as_bytes()) {
         let (bytes, _, _) = data.encode(content);
         let mut c_bytes = bytes.to_vec();
         let mut bom: Vec<u8> = Vec::new();
         if has_bom {
+            info!("Encoding file to {} encoding...", enc);
             if enc == "UTF-8" {
                 bom = b"\xEF\xBB\xBF".to_vec();
             }
@@ -117,8 +143,18 @@ fn write_file(path: &str, content: &str, enc: &str, has_bom: bool) {
         }
         output = [bom.as_slice(), c_bytes.as_slice()].concat();
     }
-    let mut file = File::create(path).unwrap();
-    file.write_all(&output).unwrap();
+
+    if !PathBuf::from(path).exists() {
+        info!("{} not found. Creating new file...", path);
+    }
+
+    let file = File::create(path);
+    match file {
+        Ok(mut f) => {
+            f.write_all(&output).unwrap();
+        },
+        Err(err) => error!("Cannot write to {}. Error: {}", path, err)
+    }
 }
 
 fn configure_log() -> TauriPlugin<Wry> {
@@ -181,6 +217,9 @@ fn load_settings(app: &mut App) {
     if !settings_path.try_exists().unwrap() {
         fs::write(&settings_path, default_settings.to_string()).unwrap();
         info!("Default settings file not found. Created a new default settings file. Path: {:?}", &settings_path);
+    }
+    else {
+        info!("Settings path: {:?}:", settings_path);
     }
 
     let mut defaults = HashMap::new();

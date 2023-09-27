@@ -52,6 +52,7 @@ export async function getShortcuts() {
     for (const shortcut of shortcuts) {
         // skip binding shorcuts that are disabled
         if (shortcut.disabled === "true") {
+            info(`The keybind "${shortcut.keybind}" is disabled. Skipping and/or falling back to default...`);
             continue;
         }
         const keybind = parseKeybind(shortcut.keybind);

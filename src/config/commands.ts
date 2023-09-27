@@ -190,7 +190,7 @@ export const commands = {
         "keybind": "F2",
         "command": async (filename, oldpath) => {
             if (!await fs.exists(oldpath)) {
-                warn(`${oldpath} does not exist!`);
+                warn(`Unable to rename file. ${oldpath} does not exist.`);
                 return;
             }
             openRenameModal(`Rename ${filename}`,
@@ -211,7 +211,7 @@ export const commands = {
 
 export function registerCommand(name: string, keybind: string, command: () => void) {
     if (commands[name]) {
-        info(`Command "${name}" already exists, skipping.`)
+        info(`Command "${name}" already exists, skipping...`)
         return;
     }
     commands[name] = { "keybind": keybind, "command": command }

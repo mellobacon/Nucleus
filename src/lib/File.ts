@@ -4,7 +4,7 @@ import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTa
 import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
-import { trace, error, warn } from "tauri-plugin-log-api";
+import { trace, error, warn, info } from "tauri-plugin-log-api";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -19,7 +19,11 @@ export const dirLoadFail = writable(false);
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
-    if (!directory) return;
+    info(`Opening folder in: ${directory}`);
+    if (!directory) {
+        warn("Directory path is null. Aborting...");
+        return
+    };
     dirToLoad.set(directory.split(path.sep).pop());
     // if file path is not in the configured scope already, add it
     // TODO: should configure this so it doesnt access restricted paths based on user permissions
@@ -66,15 +70,15 @@ async function updateTree(directory, updateType = "") {
         error(error);
     }
     if (!tree || tree === undefined) {
-        error("Cannot load directory");
+        error(`Cannot load directory: ${tree}.`);
 
         cancelDirectoryLoad("Cannot load directory");
         return null;
     }
 
     if (loadTime > 100) {
-        error(`Directory load time was too long. Aborting...`);
-        trace(`Cancelled load after ${loadTime} seconds`);
+        warn(`Directory load time was too long. Aborting...`);
+        trace(`Cancelled directory load after ${loadTime} seconds. Directory: ${tree}`);
 
         cancelDirectoryLoad("Error: Directory load timeout.");
         return null;
@@ -151,7 +155,7 @@ export async function moveFile(source: string, dest: string, file: string) {
         tab.path = `${dest}${path.sep}${filename}`;
         refreshTabs();
     } catch (error) {
-        console.error(error);
+        error(`Cannot move ${file} into ${dest}. Error: ${error}`);
     }
 }
 
@@ -193,6 +197,7 @@ export function updateSaveState(saved = true) {
 }
 
 export async function openInExplorer(path: string) {
+    trace(`Opening ${path} in system explorer...`);
     invoke("open_in_explorer",{ path: path});
 }
 
@@ -209,14 +214,14 @@ export async function createFolder(p) {
     try {
         await fs.createDir(p);
     } catch (error) {
-        console.log(error);
+        error(`Cannot create folder in path ${p}. Error: ${error}`);
     }
 }
 export async function createFile(p) {
     try {
-        await fs.writeFile(p, "");
+        await invoke("write_file", {path: p, content: "", enc: "UTF-8", hasBom: false});
     } catch (error) {
-        console.log(error);
+        error(`Cannot create file in path ${p}. Error: ${error}`);
     }
     addEditorTab(p, p.split(path.sep).pop());
 }
@@ -235,7 +240,7 @@ export async function renameFile(filename: string, oldpath: string) {
     try {
         await fs.renameFile(oldpath, newpath);
     } catch (error) {
-        error(error);
+        error(`Cannot rename ${oldpath}. Error: ${error}`);
         return false;   
     }
     let tab = get(tabs).find(t => t.active && t.isfile);
