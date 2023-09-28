@@ -128,7 +128,8 @@
         "minWidth": 680,
         "minHeight": 430,
         "decorations": false,
-        "fileDropEnabled": false
+        "fileDropEnabled": false,
+        "maximized": true
       }
     ]
   }
