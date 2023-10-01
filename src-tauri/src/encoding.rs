@@ -2,7 +2,7 @@
 pub enum BOM {
     BigEndian,
     LittleEndian,
-    None
+    None,
 }
 
 pub fn convert_to_u16(str: &str, bom: BOM) -> Vec<u8> {
@@ -13,14 +13,12 @@ pub fn convert_to_u16(str: &str, bom: BOM) -> Vec<u8> {
             .chain(str.encode_utf16())
             .flat_map(|word| word.to_be_bytes())
             .collect::<Vec<_>>();
-    } 
-    else if bom == BOM::LittleEndian {
+    } else if bom == BOM::LittleEndian {
         bytes = core::iter::once(0xFFFE)
             .chain(str.encode_utf16())
             .flat_map(|word| word.to_le_bytes())
             .collect::<Vec<_>>();
-    }
-    else if bom == BOM::None {
+    } else if bom == BOM::None {
         let utf16 = str.encode_utf16();
 
         // autodetect endianess
@@ -28,8 +26,7 @@ pub fn convert_to_u16(str: &str, bom: BOM) -> Vec<u8> {
             bytes = utf16
                 .flat_map(|word| word.to_be_bytes())
                 .collect::<Vec<_>>();
-        } 
-        else {
+        } else {
             bytes = utf16
                 .flat_map(|word| word.to_le_bytes())
                 .collect::<Vec<_>>();
