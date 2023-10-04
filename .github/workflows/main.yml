@@ -41,3 +41,46 @@ jobs:
         with:
             name: "nucleus-nightly.${{github.run_number}}"
             path: "dist/"
+  attempt-test-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Install frontend dependencies    
+        run: yarn install
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__-test # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: "Nucleus v__VERSION__-test"
+          releaseBody: |
+            Please refer to [the contribution guidelines](https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md#submitting-issues) for info on submitting bug reports.
+            
+            ### *TEST BUILD NOT PRODUCTION READY*
+          releaseDraft: true
+          prerelease: true
+          includeDebug: true
+          includeRelease: false

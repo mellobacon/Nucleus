@@ -3,13 +3,10 @@
     import SidebarTab from "./SidebarTab.svelte";
     import FileTree from "./FileTree.svelte";
 
-    export let tabs = [
-        {id: 0, tabname: "Explorer", icon: Folder, content: FileTree}
-    ];
 </script>
 
 <div id="sidebar">
-    {#each tabs as tab}
+    {#each $sidebartabs as tab}
         <SidebarTab id={`tool-${tab.id}`} active={$activeid === tab.id} label={tab.tabname} on:click={() => {toggleActive(tab)}}>
             <svelte:component this={tab.icon}/>
         </SidebarTab>
@@ -19,7 +16,7 @@
 </div>
 
 <script lang="ts" context="module">
-    import { writable } from "svelte/store"; 
+    import { writable, get } from "svelte/store"; 
     class Tool {
         tabname: string;
         content;
@@ -28,6 +25,8 @@
             this.content = content;
         }
     }
+
+    const sidebartabs = writable([{id: 0, tabname: "Explorer", icon: Folder, content: FileTree}]);
 
     export let activeid = writable(-1);
     let active = -1;
@@ -46,6 +45,16 @@
             showsidebarview.set(true);
             tool.set(new Tool(tab.tabname, tab.content));
         }
+    }
+
+    export function openFileTree() {
+        const tab = get(sidebartabs)[0];
+        if (active === tab.id) return;
+        
+        activeid.set(tab.id);
+        active = tab.id;
+        showsidebarview.set(true);
+        tool.set(new Tool(tab.tabname, tab.content));
     }
 </script>
 

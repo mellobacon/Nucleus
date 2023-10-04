@@ -1,7 +1,9 @@
-import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
-import { addEditorTab } from "../lib/EditorTabList.svelte";
-import { saveFile, openFile, openFolder } from "../lib/File";
+import { fs } from "@tauri-apps/api";
+import { openRenameModal } from "../App.svelte";
+import { addEditorTab, closeAllTabs } from "../lib/EditorTabList.svelte";
+import { saveFile, openFile, openFolder, openInExplorer, renameFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
+import { info, warn } from "tauri-plugin-log-api";
 
 export const commands = {
     "addEditorTab": {
@@ -36,33 +38,37 @@ export const commands = {
     },
     "undo": {
         "keybind": "Control+Z",
+        "disabled": "true",
         "command": async () => {
-            await undoChange();
+            //
         }
     },
     "redo": {
         "keybind": "Control+Shift+Z",
+        "disabled": "true",
         "command": async () => {
-            await redoChange();
+            //
         }
     },
     "cut": {
         "keybind": "Control+X",
+        "disabled": "true",
         "command": async () => {
-            await cut();
+            //
         }
     },
     "copy": {
         "keybind": "Control+C",
+        "disabled": "true",
         "command": async () => {
-           await copy();
+            //
         }
     },
     "paste": {
         "keybind": "Control+V",
+        "disabled": "true",
         "command": async () => {
-            const content = await navigator.clipboard.readText();
-            append(content);
+            //
         }
     },
     "pasteFromHistory": {
@@ -73,8 +79,9 @@ export const commands = {
     },
     "delete": {
         "keybind": "Delete",
+        "disabled": "true",
         "command": async () => {
-            await deleteChars();
+            return;
         }
     },
     "find": {
@@ -109,6 +116,7 @@ export const commands = {
     },
     "fullscreen": {
         "keybind": "F11",
+        //"disabled": "true",
         "command": async () => {
             if (await appWindow.isFullscreen()) {
                 appWindow.setFullscreen(false);
@@ -167,12 +175,43 @@ export const commands = {
         "command": async () => {
             await appWindow.close();
         }
+    },
+    "closeTab": {
+        "keybind": "Control+F4",
+        "command": () => {}
+    },
+    "closeAllTabs": {
+        "keybind": "",
+        "command": () => {
+            closeAllTabs();
+        }
+    },
+    "renameFile": {
+        "keybind": "F2",
+        "command": async (filename, oldpath) => {
+            if (!await fs.exists(oldpath)) {
+                warn(`Unable to rename file. ${oldpath} does not exist.`);
+                return;
+            }
+            openRenameModal(`Rename ${filename}`,
+                `Give a new name to ${filename}`, [
+                    {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
+                    {name: "Cancel", action: () => {}}
+            ])
+        }
+    },
+    "openInExplorer": {
+        "keybind": "",
+        "command": async (path) => {
+            if (!await fs.exists(path)) return;
+            openInExplorer(path);
+        }
     }
 }
 
 export function registerCommand(name: string, keybind: string, command: () => void) {
     if (commands[name]) {
-        console.warn(`Command "${name}" already exists, skipping.`);
+        info(`Command "${name}" already exists, skipping...`)
         return;
     }
     commands[name] = { "keybind": keybind, "command": command }

@@ -3,8 +3,29 @@
     import Dropdown from "./utility/Dropdown.svelte";
     import TabList from "./Tab/TabList.svelte";
     import { Tab } from "./Tab/Tab";
+    import { afterUpdate, onMount } from "svelte";
+    import { appWindow } from "@tauri-apps/api/window";
+    import { writable } from "svelte/store";
+
+    onMount(() => {
+        appWindow.onResized(() => {
+            updateTablistWidth();
+        })
+    })
+
+    afterUpdate(() => {
+        updateTablistWidth();
+    })
 </script>
 <script lang="ts" context="module">
+
+    let computedWidth = writable("");
+    let toolbar: HTMLElement = null;
+    let tablist: HTMLElement = null;
+    export function updateTablistWidth() {
+        let tablistwidth = tablist.nextElementSibling.clientWidth;
+        computedWidth.set(`${tablistwidth - toolbar.clientWidth}px`);
+    }
     let activetabid = null;
     class EditorTab {
         id: number;
@@ -55,7 +76,7 @@
             editorTab.setActive(tab.id);
         }
     }
-    async function closeAllTabs() {
+    export async function closeAllTabs() {
         await editorTab.closeAllTabs();
     }
     export function getActiveTab() {
@@ -64,14 +85,17 @@
     export function getCurrentEditor() {
         return editorTab.activeTab.content;
     }
+    export function refreshTabs() {
+        editorTab.refreshTabList();
+    }
 
     export let hidden = editorTab.hidden;
     export let isfile = editorTab.isfile;
     export let tabs = editorTab.tabs;
 </script>
-<div id="editor-tabs" class:hidden={$hidden}>
-    <TabList tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
-    <div class="tab-toolbar">
+<div id="editor-tabs" bind:this={tablist} class:hidden={$hidden}>
+    <TabList width={$computedWidth} tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
+    <div class="tab-toolbar" bind:this={toolbar}>
         <Dropdown right menu={{icon: VerticalDots, children: [
             {name: "Close All Tabs", action: async () => {await closeAllTabs()}},
         ]}}></Dropdown>
@@ -83,10 +107,9 @@
         visibility: hidden;
     }
     #editor-tabs {
-        width: -webkit-fill-available;
+        width: 100%;
         display: flex;
         justify-content: space-between;
-        position: absolute;
     }
     .tab-toolbar {
         height: 100%;

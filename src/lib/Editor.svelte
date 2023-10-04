@@ -20,6 +20,8 @@
         "path": "",
         "fileType": "",
         "language": "",
+        "encoding": "",
+        "hasBom": false,
         "readonly": false,
     });
 
@@ -35,34 +37,24 @@
     export function getLang(ext) {
         return getLangFromExt(ext);
     }
+    export function getEncoding() {
+        return $file_info.encoding;
+    }
+    export function hasBom() {
+        return $file_info.hasBom;
+    }
     export function getView() {
         return editorView;
     }
 
     onMount(async () => {
-        // disable default copy/paste/delete keys
-        // instead implement our own functions for copy/paste/delete so it can be bound to different keybindings
-        const disabledKeys = [
-            {
-                key: "Ctrl-v",
-                preventDefault: true
-            },
-            {
-                key: "Ctrl-c",
-                preventDefault: true
-            },
-            {
-                key: "Delete",
-                preventDefault: true
-            }
-        ]
         editorView = new EditorView({
             parent: ref,
             state: EditorState.create({
                 extensions: [
                     lineNumbers(),
                     highlightActiveLineGutter(),
-                    highlightSpecialChars(),
+                    //highlightSpecialChars(), // disabled as an attempt to hide bom for now
                     highlightActiveLine(),
                     dropCursor(),
                     history(),
@@ -73,9 +65,16 @@
                     EditorState.allowMultipleSelections.of(true),
                     syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
                     keymap.of([
-                        ...disabledKeys,
                         ...defaultKeymap
-                    ])
+                    ]),
+                    EditorView.updateListener.of(async update => {
+                        if (update.docChanged) {
+                            await updateContent();
+                        }
+                        if (update.state.selection.ranges.some(r => !r.empty)) {
+                            updateLineInfo();
+                        }
+                    })
                 ],
                 doc: content
             })
@@ -86,10 +85,10 @@
     });
 
     let _ = null;
-    export async function updateContent() {
+    async function updateContent() {
         await tick();
         content = editorView.state.doc.toString();
-        if (await appSettings.get("editor.autosave") === true) {
+        if (await appSettings.get("editor.autosave") === "true") {
             clearTimeout(_);
             _ = setTimeout(async () => {
                 if (!$file_info.path || $file_info.path === $file_info.filename || $file_info.path === "") {
@@ -104,6 +103,7 @@
         else {
             updateSaveState(false);
         }
+        updateLineInfo();
     }
     export async function focus() {
         // takes two ticks to focus for some reason
@@ -112,6 +112,7 @@
         editorView.focus();
         updateLineInfo();
         language.set($file_info.language);
+        encoding.set({value: $file_info.encoding, hasBom: $file_info.hasBom});
     }
     export function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -122,9 +123,6 @@
     async function handleKeyDown(e) {
         let key = e.code;
         switch(key) {
-            case "Backspace": case "Enter":
-                await updateContent();
-                updateLineInfo();
             case "ArrowRight": case "ArrowLeft": case "ArrowDown": case "ArrowUp":
                 updateLineInfo();
         }
@@ -135,6 +133,7 @@
 
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
+    export const encoding = writable({value: "UTF-8", hasBom: false});
 
     export function getLangFromExt(ext: string) {
         if (ext === "txt") {
@@ -162,53 +161,9 @@
             (editorContainer as HTMLElement).style.setProperty("font-family", family, "important")
         }
     }
-
-    // yes im aware how messy all these functions are but it works!
-    export async function append(value: string) {
-        let cursorpos = getCurrentEditor().getView().state.selection.main.head + value.length;
-        const lines = value.split("\n").length - 1;
-        if (lines > 0) {
-            cursorpos -= lines;
-        }
-        getCurrentEditor().getView().dispatch({
-            changes: {
-                from: getCurrentEditor().getView().state.selection.ranges[0].from,
-                to: getCurrentEditor().getView().state.selection.ranges[0].to,
-                insert: value,
-            },
-            selection: {anchor: cursorpos, head: cursorpos},
-            scrollIntoView: true
-        })
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function copy() {
-        const selection = getCurrentEditor().getView().state.sliceDoc(getCurrentEditor().getView().state.selection.main.from, getCurrentEditor().getView().state.selection.main.to)
-        await navigator.clipboard.writeText(selection);
-    }
-    export async function cut() {
-        deleteToLineEnd(getCurrentEditor().getView())
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function undoChange() {
-        undo(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function redoChange() {
-        redo(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
-    export async function deleteChars() {
-        deleteCharForward(getCurrentEditor().getView());
-        await getCurrentEditor().updateContent();
-        getCurrentEditor().updateLineInfo();
-    }
 </script>
 
-<div bind:this={ref} class="editor" class:hidden on:input={updateContent} on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
+<div bind:this={ref} class="editor" class:hidden on:mousedown={updateLineInfo} on:keydown={handleKeyDown}></div>
 
 <style lang="scss">
     .editor {

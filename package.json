@@ -8,22 +8,24 @@
     "start": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "tauri": "tauri",
-    "start-window": "yarn tauri dev"
+    "start-window": "yarn tauri dev",
+    "tauri-build-debug": "yarn tauri build --debug"
   },
   "dependencies": {
     "@codemirror/language-data": "^6.3.1",
-    "@tauri-apps/api": "^1.2.0",
+    "@tauri-apps/api": "^1.4.0",
     "codemirror": "^6.0.1",
     "mousetrap": "^1.6.5",
     "sass": "^1.62.0",
     "sortablejs": "^1.15.0",
     "svelte-splitpanes": "^0.7.13",
     "tauri-plugin-fs-watch-api": "https://github.com/tauri-apps/tauri-plugin-fs-watch",
+    "tauri-plugin-log-api": "https://github.com/tauri-apps/tauri-plugin-log#v1",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store#v1"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.4",
-    "@tauri-apps/cli": "^1.2.3",
+    "@tauri-apps/cli": "^1.4.0",
     "@tsconfig/svelte": "^4.0.1",
     "@types/node": "^18.15.11",
     "carbon-icons-svelte": "^11.4.0",
