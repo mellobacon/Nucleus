@@ -4,7 +4,7 @@
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./lib/SidebarView.svelte";
     import Statusbar from "./lib/Statusbar.svelte";
-    import EditorTabList, {hidden} from "./lib/EditorTabList.svelte";
+    import EditorTabList, {hidden, updateTablistWidth} from "./lib/EditorTabList.svelte";
     import { onMount } from "svelte";
 	import { appWindow } from '@tauri-apps/api/window';
     import { writable } from "svelte/store";
@@ -34,7 +34,12 @@
 		}
 	}
 
-	function updateMinPanelSize() {
+	async function updateMinPanelSize() {
+
+		updateTablistWidth();
+		if (!await appWindow.isFocused()) {
+			return;
+		}
 		// TODO: make this better
 		if ($resolution <= 700) {
 			minPanelSize = 30;
@@ -55,12 +60,13 @@
 		if (panelSize < minPanelSize) {
 			panelSize = minPanelSize;
 		}
-}
+	}
 </script>
 <script lang="ts" context="module">
 	const _openPopup = writable(false);
 	const popupProps = writable({});
 	const popup = writable(null);
+	export const fullscreen = writable(false);
 
 	export function openInputModal(title: string, description: string, buttons: any[], options = undefined) {
 		popup.set(InputModal);
@@ -76,24 +82,28 @@
 
 <svelte:window on:contextmenu|preventDefault></svelte:window>
 
-<Header />
-<div id="main">
-	<Sidebar />
-	<Splitpanes on:resized={updatePanelSize} on:resize={updateMinPanelSize} theme="editor-panes">
-		{#if $showsidebarview}
-			<Pane bind:size={panelSize} bind:minSize={minPanelSize} maxSize={60}>
-				<SidebarView content={$tool.content}></SidebarView>
+{#if !$fullscreen}
+	<Header />
+{/if}
+<div id="_">
+	<div id="main" class:fullscreen={$fullscreen}>
+		<Sidebar />
+		<Splitpanes on:resized={updatePanelSize} on:resize={updateMinPanelSize} theme="editor-panes">
+			{#if $showsidebarview}
+				<Pane bind:size={panelSize} bind:minSize={minPanelSize} maxSize={60}>
+					<SidebarView content={$tool.content}></SidebarView>
+				</Pane>
+			{/if}
+			<Pane>
+				<div id="container">
+					<EditorTabList />
+					<div id="tabview" class:hidden={$hidden}></div>
+				</div>
 			</Pane>
-		{/if}
-		<Pane>
-			<div id="container">
-				<EditorTabList />
-				<div id="tabview" class:hidden={$hidden}></div>
-			</div>
-		</Pane>
-	</Splitpanes>
+		</Splitpanes>
+	</div>
+	<Statusbar />
 </div>
-<Statusbar />
 
 {#if $_openPopup}
 	<svelte:component this={$popup} {...$popupProps}></svelte:component>
