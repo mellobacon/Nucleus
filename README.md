@@ -1,17 +1,24 @@
-<h1 align="center" style="position: relative;">
+<p align="center">
   <img width="200" src="./public/assets/images/Icon(1).png" alt="The nucleus icon" /><br>
-  Nucleus
+</p>
+
+<h1 align="center">
+Nucleus
 </h1>
-<h3 align="center">
+
+<p align="center">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/mellobacon/Nucleus?style=for-the-badge">
   <img alt="Project License" src="https://img.shields.io/github/license/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/mellobacon/Nucleus?style=for-the-badge">
-  <img alt="GitHub Hacktoberfest combined status" src="https://img.shields.io/github/hacktoberfest/2022/mellobacon/Nucleus?style=for-the-badge">
-  
-  A text editor with better UI than [enter funny thing here]
-  </h3>
+  <img alt="Static Badge" src="https://img.shields.io/badge/Hacktoberfest-Participating-brightgreen?style=for-the-badge">
+</p>
+
+<h3 align="center">
+A text editor with better UI than [enter funny thing here]
+</h3>
+
 <p align="center">
   <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
   <a href="https://github.com/mellobacon/Nucleus/releases">Download</a>
@@ -26,9 +33,34 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 
 <img width="600" alt="nucleus_emptyworkspace" src="https://github.com/mellobacon/Nucleus/assets/42365887/b66b6f69-218f-4aab-8ae2-d2c4c1b87203">
 
+### Current Rewrite Progress
+
+✅ = Implemented
+
+🟡 = In Progress
+
+⭕ = Not Yet Implemented
+
+✅* = Implemented but limited for now
+
+#### General Features
+
+| Feature             | Progress |
+|---------------------|----------|
+| File Tree           | ✅        |
+| Syntax Highlighting | ⭕        |
+| Logging             | 🟡        |
+| Theming             | ✅*       |
+| Notifications       | ⭕        |
+| Settings            | ✅*        |
+| Context Menus       | ✅        |
+| Internal Terminal   | ⭕        |
+| Editor              | ✅        |
+
+
 ### Known issues
 
-- TBA
+- Opening a file has a chance to freeze the file tree. Temp workaround is to just close and reopen the sidebar.
 
 ## Contributing
 
