@@ -4,7 +4,7 @@ import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTa
 import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
-import { trace, error, warn, info } from "tauri-plugin-log-api";
+import { info, trace, warn, error } from "tauri-plugin-log-api";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -19,9 +19,9 @@ export const dirLoadFail = writable(false);
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
-    info(`Opening folder in: ${directory}`);
+    info(`Opening folder in: ${directory}`, {file: "File.ts", line: 22});
     if (!directory) {
-        warn("Directory path is null. Aborting...");
+        warn("Directory path is null. Aborting...", {file: "File.ts", line: 24});
         return
     };
     dirToLoad.set(directory.split(path.sep).pop());
@@ -70,14 +70,13 @@ async function updateTree(directory, updateType = "") {
         error(error);
     }
     if (!tree || tree === undefined) {
-        error(`Cannot load directory: ${tree}.`);
-
+        error(`Cannot load directory: ${tree}.`, {file: "File.ts", line: 73});
         cancelDirectoryLoad("Cannot load directory");
         return null;
     }
 
     if (loadTime > 100) {
-        warn(`Directory load time was too long. Aborting...`);
+        warn("Directory load time was too long. Aborting...", {file: "File.ts", line: 79});
         trace(`Cancelled directory load after ${loadTime} seconds. Directory: ${tree}`);
 
         cancelDirectoryLoad("Error: Directory load timeout.");
@@ -155,7 +154,7 @@ export async function moveFile(source: string, dest: string, file: string) {
         tab.path = `${dest}${path.sep}${filename}`;
         refreshTabs();
     } catch (error) {
-        error(`Cannot move ${file} into ${dest}. Error: ${error}`);
+        error(`Cannot move ${file} into ${dest}. Error: ${error}`, {file: "File.ts", line: 159});
     }
 }
 
@@ -214,25 +213,25 @@ export async function createFolder(p) {
     try {
         await fs.createDir(p);
     } catch (error) {
-        error(`Cannot create folder in path ${p}. Error: ${error}`);
+        error(`Cannot create folder in path ${p}. Error: ${error}`, {file: "File.ts", line: 216});
     }
 }
 export async function createFile(p) {
     try {
         await invoke("write_file", {path: p, content: "", enc: "UTF-8", hasBom: false});
     } catch (error) {
-        error(`Cannot create file in path ${p}. Error: ${error}`);
+        error(`Cannot create file in path ${p}. Error: ${error}`, {file: "File.ts", line: 223});
     }
     addEditorTab(p, p.split(path.sep).pop());
 }
 
 export async function renameFile(filename: string, oldpath: string) {
     if (filename.length === 0) {
-        warn("filename length 0");
+        warn("Cannot rename file with length 0", {file: "File.ts", line: 230});
         return false;
     }
     if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
-        warn("invalid filename");
+        warn("Cannot rename from invalid file name", {file: "File.ts", line: 234});
         return false;
     }
     let newpath = oldpath.replace(oldpath.split(path.sep).pop(), filename);
@@ -240,7 +239,7 @@ export async function renameFile(filename: string, oldpath: string) {
     try {
         await fs.renameFile(oldpath, newpath);
     } catch (error) {
-        error(`Cannot rename ${oldpath}. Error: ${error}`);
+        error(`Cannot rename ${oldpath}. Error: ${error}`, {file: "File.ts", line: 242})
         return false;   
     }
     let tab = get(tabs).find(t => t.active && t.isfile);
