@@ -196,7 +196,7 @@ export const commands = {
             openRenameModal(`Rename ${filename}`,
                 `Give a new name to ${filename}`, [
                     {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
-                    {name: "Cancel", action: () => {}}
+                    {name: "Cancel", cancel: true, action: () => {}}
             ])
         }
     },

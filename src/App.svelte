@@ -68,7 +68,7 @@
 	}
 </script>
 <script lang="ts" context="module">
-	const _openPopup = writable(false);
+	export const _openPopup = writable(false);
 	const popupProps = writable({});
 	const popup = writable(null);
 	export const fullscreen = writable(false);
