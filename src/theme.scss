@@ -104,6 +104,9 @@ input {
     border-bottom: 1px solid var(--window-inputBorder) !important;
     background-color: var(--window-inputBackground);
     color: var(--window-inputForeground);
+    &.invalid {
+        border-bottom: 1px solid #fa4d56 !important;
+    }
 }
 
 .divider {

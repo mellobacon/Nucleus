@@ -190,13 +190,13 @@ export const commands = {
         "keybind": "F2",
         "command": async (filename, oldpath) => {
             if (!await fs.exists(oldpath)) {
-                warn(`Unable to rename file. ${oldpath} does not exist.`);
+                warn(`Unable to rename file. ${oldpath} does not exist.`, {file: "commands.ts", line: 193});
                 return;
             }
             openRenameModal(`Rename ${filename}`,
                 `Give a new name to ${filename}`, [
                     {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
-                    {name: "Cancel", action: () => {}}
+                    {name: "Cancel", cancel: true, action: () => {}}
             ])
         }
     },
@@ -211,7 +211,7 @@ export const commands = {
 
 export function registerCommand(name: string, keybind: string, command: () => void) {
     if (commands[name]) {
-        info(`Command "${name}" already exists, skipping...`)
+        info(`Command "${name}" already exists, skipping...`, {file: "commands.ts", line: 214});
         return;
     }
     commands[name] = { "keybind": keybind, "command": command }

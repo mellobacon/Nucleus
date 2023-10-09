@@ -47,12 +47,12 @@ function parseKeybind(keybind: string) {
 }
 
 export async function getShortcuts() {
-    info("Intializing shortcut bindings...")
+    info("Intializing shortcut bindings...", {file: "config.ts", line: 50});
     const shortcuts = getKeybinds();
     for (const shortcut of shortcuts) {
         // skip binding shorcuts that are disabled
         if (shortcut.disabled === "true") {
-            info(`The keybind "${shortcut.keybind}" is disabled. Skipping and/or falling back to default...`);
+            info(`The keybind "${shortcut.keybind}" is disabled. Skipping and/or falling back to default...`, {file: "config.ts", line: 55});
             continue;
         }
         const keybind = parseKeybind(shortcut.keybind);
@@ -61,7 +61,7 @@ export async function getShortcuts() {
             await fireAction(shortcut.command);
         });
     }
-    info("Shortcuts loaded successfully.");
+    info("Shortcuts loaded successfully.", {file: "config.ts", line: 64});
 }
 
 async function fireAction(callback: () => Promise<void>, args = []) {
@@ -94,6 +94,5 @@ export async function loadDefaultSettings() {
     appSettings.onKeyChange("nucleus.theme", (value: string) => {
         loadTheme(value);
     })
-
-    info(`Settings initialized.`);
+    info("Settings initialized", {file: "config.ts", line: 97});
 }

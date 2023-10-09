@@ -4,7 +4,7 @@
 )]
 
 #[cfg(debug_assertions)]
-const LOG_TARGETS: [LogTarget; 3] = [LogTarget::Stdout, LogTarget::Webview, LogTarget::LogDir];
+const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Webview];
 
 #[cfg(not(debug_assertions))]
 const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::LogDir];
@@ -184,14 +184,20 @@ fn configure_log() -> TauriPlugin<Wry> {
                 "[[[year]-[month]-[day]][[[hour]:[minute]:[second]]",
             )
             .unwrap();
+            let file_info = record.file().map(|location| format!("::{}", location.split("\\").last().unwrap().to_owned()))
+                .unwrap_or("".to_string());
+            let line_info =  record.line().map(|line| format!(":{}", line))
+                .unwrap_or("".to_string());
             out.finish(format_args!(
-                "{}[{}][{}] {}",
+                "{}[{}][{}{}{}] {}",
                 time::OffsetDateTime::now_local()
                     .unwrap()
                     .format(&format)
                     .unwrap(),
-                record.target(),
                 record.level(),
+                record.target(),
+                file_info,
+                line_info,
                 message
             ))
         })
@@ -202,6 +208,11 @@ fn configure_log() -> TauriPlugin<Wry> {
 
 fn configure_log_path(app: &mut App) {
     let app_log_dir = tauri::api::path::app_log_dir(&app.config()).unwrap();
+    let old_log_path = app_log_dir.join("nucleus.log");
+    if !Path::exists(&old_log_path) {
+        return;
+    }
+
     let format = time::format_description::parse("[year]-[month]-[day]-[hour][minute]").unwrap();
     let time = time::OffsetDateTime::now_local()
         .unwrap()
@@ -210,7 +221,6 @@ fn configure_log_path(app: &mut App) {
     let log_name = format!("nucleus_log-{}.log", time);
 
     // changing the default log name to something more meaningful
-    let old_log_path = app_log_dir.join("nucleus.log");
     let new_log_path = app_log_dir.join(log_name);
     fs::rename(old_log_path, new_log_path).unwrap();
 }

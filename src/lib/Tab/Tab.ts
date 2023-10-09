@@ -76,7 +76,7 @@ export class Tab {
             // TODO: Fix performance issues/loading times on large files
             fileData = await invoke("read_file", {path: path});
         } catch (error) {
-            warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`);
+            warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
         }
         let content = new Editor({target: document.getElementById("tabview"), props: {content: fileData.text}});
         let tab = new this.Tab(this.id, label, content, path);

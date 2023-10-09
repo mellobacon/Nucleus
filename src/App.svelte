@@ -11,6 +11,7 @@
     import InputModal from "./lib/Modals/InputModal.svelte";
     import RenameModal from "./lib/Modals/RenameModal.svelte";
     import { loadDefaultSettings } from "./config/config";
+    import { error } from "tauri-plugin-log-api";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -26,6 +27,10 @@
 			resolution.set(e.payload.width);
 			updateMinPanelSize();
 		})
+
+		window.onunhandledrejection = (e) => {
+			error(e.reason);
+		}
 	})
 
 	function updatePanelSize(e) {
@@ -63,7 +68,7 @@
 	}
 </script>
 <script lang="ts" context="module">
-	const _openPopup = writable(false);
+	export const _openPopup = writable(false);
 	const popupProps = writable({});
 	const popup = writable(null);
 	export const fullscreen = writable(false);
