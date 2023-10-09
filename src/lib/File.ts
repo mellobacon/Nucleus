@@ -252,14 +252,17 @@ export function checkValidFileName(input: string) {
     // also https://gist.github.com/doctaphred/d01d05291546186941e1b7ddc02034d3
     const invalidChars = `<>:"|?*${path.sep}`;
     const invalidKeywords = ["CON", "PRN", "AUX", "NUL", "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"];
-    let nonprintable = new RegExp(/[\x00-\x1F]/); // covers all non printable ascii characters (https://en.wikipedia.org/wiki/Control_character)
+
+    // covers all non printable ascii characters (https://en.wikipedia.org/wiki/Control_character)
+    for (let i = 0; i < 32; i++) {
+        if (input.includes(String.fromCharCode(i))) return false;
+    }
     for (const c of invalidChars) {
         if (input.includes(c)) return false;
     }
     for (const keyword of invalidKeywords) {
         if (input.includes(keyword)) return false;
     }
-    if (nonprintable.test(input)) return false;
     if (input.endsWith(".")) return false;
     if (input === "") return false;
     return true;
