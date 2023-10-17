@@ -1,11 +1,12 @@
 import { writable } from "svelte/store";
 import Mousetrap  from "mousetrap";
 import { getKeybinds } from "./commands";
-import { fs, path } from "@tauri-apps/api";
+import { path } from "@tauri-apps/api";
 import { loadTheme } from "./themehandler";
 import { Store } from "tauri-plugin-store-api";
 import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
+import { info } from "tauri-plugin-log-api";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -46,11 +47,21 @@ function parseKeybind(keybind: string) {
 }
 
 export async function getShortcuts() {
+    info("Intializing shortcut bindings...", {file: "config.ts", line: 50});
     const shortcuts = getKeybinds();
     for (const shortcut of shortcuts) {
+        // skip binding shorcuts that are disabled
+        if (shortcut.disabled === "true") {
+            info(`The keybind "${shortcut.keybind}" is disabled. Skipping and/or falling back to default...`, {file: "config.ts", line: 55});
+            continue;
+        }
         const keybind = parseKeybind(shortcut.keybind);
-        Mousetrap.bind(keybind, async (e) => {e.preventDefault(); await fireAction(shortcut.command)});
+        Mousetrap.bind(keybind, async (e) => {
+            e.preventDefault();
+            await fireAction(shortcut.command);
+        });
     }
+    info("Shortcuts loaded successfully.", {file: "config.ts", line: 64});
 }
 
 async function fireAction(callback: () => Promise<void>, args = []) {
@@ -59,50 +70,29 @@ async function fireAction(callback: () => Promise<void>, args = []) {
 }
 
 export let appSettings: Store;
-export async function getSettings() {
-    const settings = JSON.stringify({
-        "nucleus.theme": "Dark",
-        "editor.fontSize": 14,
-        "editor.fontFamily": "monospace",
-        "editor.autosave": false,
-        "nucleus.showKeybinds": false,
-        "nucleus.useExternalTerminal": true,
-        "terminal.external": {
-            "profile": "powershell"
-        },
-        "terminal.internal": {
-            "profile": "powershell"
-        },
-    }, null, 4);
-    const appdataLocal = await path.appLocalDataDir();
-    const settingsPath = `${appdataLocal}settings.json`;
-
-    if (!await fs.exists(settingsPath)) {
-        await fs.writeFile(settingsPath, settings);
-    }
-    appSettings = new Store(settingsPath);
-
-    await watch(
-        settingsPath,
-        async () => {
-            await appSettings.load();
-        }
-    )
-}
 
 export async function loadDefaultSettings() {
-    await getSettings();
-    const settingsPath = await fs.readTextFile("settings.json", {dir: fs.BaseDirectory.AppLocalData});
-    const settings = JSON.parse(settingsPath);
-    await loadTheme(settings["nucleus.theme"]);
-	await getShortcuts();
+    const appdataLocal = await path.appLocalDataDir();
+    appSettings = new Store(`${appdataLocal}default_settings.json`);
+
+    await watch(
+        `${appdataLocal}default_settings.json`,
+        () => {
+            appSettings.load();
+        }
+    )
+
+    loadTheme(await appSettings.get("nucleus.theme"));
+    getShortcuts();
+
     appSettings.onKeyChange("editor.fontSize", (value: number) => {
         setEditorFontSize(value);
     })
     appSettings.onKeyChange("editor.fontFamily", (value: string) => {
         setEditorFontFamily(value);
     })
-    appSettings.onKeyChange("nucleus.theme", async (value: string) => {
-        await loadTheme(value);
+    appSettings.onKeyChange("nucleus.theme", (value: string) => {
+        loadTheme(value);
     })
+    info("Settings initialized", {file: "config.ts", line: 97});
 }

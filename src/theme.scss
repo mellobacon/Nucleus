@@ -104,6 +104,9 @@ input {
     border-bottom: 1px solid var(--window-inputBorder) !important;
     background-color: var(--window-inputBackground);
     color: var(--window-inputForeground);
+    &.invalid {
+        border-bottom: 1px solid #fa4d56 !important;
+    }
 }
 
 .divider {
@@ -112,6 +115,9 @@ input {
 
 #main {
     height: calc(100vh - $header-height - $statusbar-height - 0.063rem * 2);
+}
+#main.fullscreen {
+    height: calc(100vh - $header-height + 0.4rem) !important;
 }
 
 #sidebar {
@@ -180,8 +186,8 @@ input {
 }
 
 #tabview {
-    margin-top: calc($tab-container-height + 5px);
-    height: calc(100% - 6.1rem + 0.1rem);
+    margin-top: calc(5px);
+    height: calc(100% - 6.4rem);
 }
 
 .cm-content {

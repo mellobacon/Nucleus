@@ -21,7 +21,7 @@
     import { moveToTrash, openInExplorer, renameFile } from "../File";
     import { addEditorTab } from "../EditorTabList.svelte";
     import { clipboard } from "@tauri-apps/api";
-    import { openRenameModal } from "../../App.svelte";
+    import { commands } from "../../config/commands";
 
     export let id;
     export let name;
@@ -37,17 +37,13 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
+        {name: "Open in File Explorer", shortcut: commands.openInExplorer.keybind, action: async () => {commands.openInExplorer.command(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
         {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Edit", shortcut: "", action: () => {addEditorTab(path, name)}},
-        {name: "Rename...", shortcut: "F2", action: () => {openRenameModal(`Rename ${name}`,
-        `Give a new name to ${name}`, [
-            {name: "Rename", action: async (filename) => {await renameFile(filename, path)}},
-            {name: "Cancel", action: () => {}}
-        ])}},
+        {name: "Rename...", shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(name, path)}},
         {name: "Delete", shortcut: "Delete", action: async () => {await moveToTrash(path)}}
     ]
 

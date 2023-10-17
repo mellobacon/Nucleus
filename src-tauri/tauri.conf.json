@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "nucleus",
-    "version": "0.2.1"
+    "version": "0.3.0"
   },
   "tauri": {
     "allowlist": {
@@ -128,7 +128,8 @@
         "minWidth": 680,
         "minHeight": 430,
         "decorations": false,
-        "fileDropEnabled": false
+        "fileDropEnabled": false,
+        "maximized": true
       }
     ]
   }
