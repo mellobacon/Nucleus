@@ -87,7 +87,7 @@ export class Tab {
             "filename": tab.label,
             "path": tab.path,
             "fileType": fileData.extension,
-            "language": content.getLang(fileData.extension),
+            "language": await content.getLang(fileData.extension),
             "encoding": fileData.encoding,
             "hasBom": fileData.bom,
             "readonly": false,
