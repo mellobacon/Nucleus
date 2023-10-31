@@ -27,8 +27,7 @@ log = "^0.4"
 [dev-dependencies]
 windows = "0.32.0"
 
-[profile.dev.build-override]
-opt-level = 2
+
 
 [features]
 # by default Tauri runs in production mode
