@@ -1,15 +1,15 @@
 <script lang="ts">
     import {keymap, highlightSpecialChars, drawSelection, highlightActiveLine, dropCursor,
         rectangularSelection, crosshairCursor,
-        lineNumbers, highlightActiveLineGutter, EditorView} from "@codemirror/view"
-    import {EditorState} from "@codemirror/state"
-    import {defaultHighlightStyle, syntaxHighlighting} from "@codemirror/language"
-    import {defaultKeymap, history, indentWithTab, undo, redo, deleteCharForward, deleteToLineEnd} from "@codemirror/commands";
+        lineNumbers, highlightActiveLineGutter, EditorView} from "@codemirror/view";
+    import {EditorState, Compartment} from "@codemirror/state"
+    import {defaultKeymap, history, indentWithTab } from "@codemirror/commands";
     import { onMount, tick } from "svelte";
     import { writable } from "svelte/store";
     import { saveFile, updateSaveState } from "./File";
     import { appSettings } from "../config/config";
-    import { getCurrentEditor } from "./EditorTabList.svelte";
+    import { oneDark } from "../config/syntaxhighlighting/dark";
+    import { warn } from "tauri-plugin-log-api";
 
     let ref;
     let editorView: EditorView;
@@ -24,6 +24,7 @@
         "hasBom": false,
         "readonly": false,
     });
+    const lang = new Compartment();
 
     export function updateFileInfo(file) {
         file_info.set(file);
@@ -34,8 +35,28 @@
     export function getFileContent() {
         return content;
     }
-    export function getLang(ext) {
-        return getLangFromExt(ext);
+    export async function getLang(ext) {
+        if (ext === "txt") {
+            return "Plain Text";
+        }
+        let language = getLangFromExt(ext);
+        if (language) {
+            const mode = await language.load();
+            if (!mode) {
+                warn(`Syntax highlighting not supported for ${language.name}.`, {file: "Editor.svelte", line: 46});
+            }
+            else {
+                setLangMode(mode);
+            }
+            return language.name;
+        }
+        warn(`Language not found or extension "${ext}" not supported.`, {file: "Editor.svelte", line: 53});
+        return "Unknown";
+    }
+    function setLangMode(mode) {
+        editorView.dispatch({
+            effects: lang.reconfigure(mode)
+        })
     }
     export function getEncoding() {
         return $file_info.encoding;
@@ -62,8 +83,10 @@
                     crosshairCursor(),
                     rectangularSelection(),
                     keymap.of([indentWithTab]),
+                    lang.of([]),
                     EditorState.allowMultipleSelections.of(true),
-                    syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+                    //syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+                    oneDark,
                     keymap.of([
                         ...defaultKeymap
                     ]),
@@ -134,19 +157,11 @@
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
     export const encoding = writable({value: "UTF-8", hasBom: false});
+    const langmode = writable(null);
 
     export function getLangFromExt(ext: string) {
-        if (ext === "txt") {
-            return "Plain Text";
-        }
-
         let cmlang = cmLangs.find(l => l.extensions.includes(ext));
-        if (cmlang) {
-            return cmlang.name;
-        }
-        else {
-            return "Unknown";
-        }
+        return cmlang;
     }
     export function setEditorFontSize(value: number) {
         // there could be a better way to do all this but. eh
