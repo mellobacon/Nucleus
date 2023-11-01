@@ -6,6 +6,7 @@
     import { workspaceName } from "./File";
     import { commands } from "../config/commands";
     import { shell } from "@tauri-apps/api";
+    import { openLogFiles } from "../config/config";
 
     const items = [
         {menuname: "File", children: [
@@ -54,6 +55,7 @@
             {name: "Show Release Notes", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Check for Updates", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "About", shortcut: "", action: () => {shell.open("https://github.com/mellobacon/Nucleus")}},
+            {name: "Open Logs", shortcut: "", action: async () => {await openLogFiles()}},
         ]},
     ];
 </script>

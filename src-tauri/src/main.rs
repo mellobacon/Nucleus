@@ -40,6 +40,16 @@ fn open_in_explorer(path: &str) {
 }
 
 #[tauri::command]
+fn open_in_default(path: &str)  {
+    if env::consts::OS == "windows" {
+        Command::new("powershell")
+            .args(["&", path])
+            .spawn()
+            .unwrap();
+    }
+}
+
+#[tauri::command]
 fn is_file(path: &str) -> bool {
     fs::metadata(path).unwrap().is_file()
 }
@@ -219,7 +229,7 @@ fn configure_log_path(app: &mut App) {
         .format(&format)
         .unwrap();
     let log_name = format!("nucleus_log-{}.log", time);
-
+    
     // changing the default log name to something more meaningful
     let new_log_path = app_log_dir.join(log_name);
     fs::rename(old_log_path, new_log_path).unwrap();
@@ -286,7 +296,8 @@ fn main() {
             is_file,
             is_folder,
             read_file,
-            write_file
+            write_file,
+            open_in_default
         ])
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())

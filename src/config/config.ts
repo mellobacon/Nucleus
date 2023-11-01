@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import Mousetrap  from "mousetrap";
 import { getKeybinds } from "./commands";
-import { path } from "@tauri-apps/api";
+import { fs, invoke, path } from "@tauri-apps/api";
 import { loadTheme } from "./themehandler";
 import { Store } from "tauri-plugin-store-api";
 import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
@@ -95,4 +95,10 @@ export async function loadDefaultSettings() {
         loadTheme(value);
     })
     info("Settings initialized", {file: "config.ts", line: 97});
+}
+
+export async function openLogFiles() {
+    const log_dir = await path.appConfigDir();
+    let recent_log = (await fs.readDir(`${log_dir}logs`)).at(-1);
+    await invoke("open_in_explorer", {path: `${log_dir}logs${path.sep}${recent_log.name}`});
 }
