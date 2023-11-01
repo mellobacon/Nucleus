@@ -9,6 +9,7 @@
     import { saveFile, updateSaveState } from "./File";
     import { appSettings } from "../config/config";
     import { oneDark } from "../config/syntaxhighlighting/dark";
+    import { warn } from "tauri-plugin-log-api";
 
     let ref;
     let editorView: EditorView;
@@ -41,10 +42,15 @@
         let language = getLangFromExt(ext);
         if (language) {
             const mode = await language.load();
-            setLangMode(mode);
+            if (!mode) {
+                warn(`Syntax highlighting not supported for ${language.name}.`, {file: "Editor.svelte", line: 46});
+            }
+            else {
+                setLangMode(mode);
+            }
             return language.name;
         }
-        
+        warn(`Language not found or extension "${ext}" not supported.`, {file: "Editor.svelte", line: 53});
         return "Unknown";
     }
     function setLangMode(mode) {
