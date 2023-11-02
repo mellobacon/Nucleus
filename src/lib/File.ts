@@ -176,7 +176,7 @@ export async function saveFile(saveAs = false) {
         "fileType": fileType,
         "encoding": tab.content.getEncoding(),
         "hasBom": tab.content.hasBom(),
-        "language": tab.content.getLang(fileType),
+        "language": await tab.content.getLang(fileType),
         "readonly": false,
     });
     tab.setActive(tab.id);
