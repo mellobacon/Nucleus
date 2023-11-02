@@ -90,6 +90,7 @@
 <svelte:window on:click={(e) => {
     if (e.target !== refLabel) {
         refLabel.classList.remove("selected")
+        contextmenu = false;
     }
 }}></svelte:window>
 
