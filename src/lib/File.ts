@@ -149,7 +149,7 @@ export async function moveFile(source: string, dest: string, file: string) {
 
     try {
         await fs.renameFile(file, `${dest}${path.sep}${filename}`);
-        const  tab = get(tabs).find(t => t.path === `${source}${path.sep}${filename}`);
+        const tab = get(tabs).find(t => t.path === `${source}${path.sep}${filename}`);
         if (tab === undefined) return;
         tab.path = `${dest}${path.sep}${filename}`;
         refreshTabs();
@@ -226,11 +226,13 @@ export async function createFile(p) {
 }
 
 export async function renameFile(filename: string, oldpath: string) {
+    let isFile = false;
     if (filename.length === 0) {
         warn("Cannot rename file with length 0", {file: "File.ts", line: 230});
         return false;
     }
-    if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
+    isFile = await invoke("is_file", {path: oldpath});
+    if (isFile && filename.includes(path.sep)) {
         warn("Cannot rename from invalid file name", {file: "File.ts", line: 234});
         return false;
     }
@@ -242,8 +244,16 @@ export async function renameFile(filename: string, oldpath: string) {
         error(`Cannot rename ${oldpath}. Error: ${error}`, {file: "File.ts", line: 242})
         return false;   
     }
-    let tab = get(tabs).find(t => t.active && t.isfile);
-    renameTab(tab, filename, newpath);
+    if (isFile) {
+        let tab = get(tabs).find(t => t.active && t.isfile);
+        renameTab(tab, filename, newpath);
+        return true;
+    }
+    let openTabs = get(tabs).filter(t => t.path === `${oldpath}${path.sep}${t.label}`);
+    for (const tab of openTabs) {
+        tab.path = `${newpath}${path.sep}${tab.label}`;
+    }
+    refreshTabs();
     return true;
 }
 
