@@ -217,7 +217,7 @@ fn configure_log() -> TauriPlugin<Wry> {
             if cfg!(debug_assertions) {
                 filter = !matches!(l.level(), Level::Trace);
             }
-            else if !cfg!(not(debug_assertions)) {
+            else if cfg!(not(debug_assertions)) {
                 filter = !matches!(l.level(), Level::Trace | Level::Debug);
             }
             filter
