@@ -66,8 +66,8 @@ async function updateTree(directory, updateType = "") {
     let tree;
     try {
         tree = await fs.readDir(directory, {recursive: true});
-    } catch (error) {
-        error(error);
+    } catch (e) {
+        error(e);
     }
     if (!tree || tree === undefined) {
         error(`Cannot load directory: ${tree}.`, {file: "File.ts", line: 73});
@@ -149,12 +149,12 @@ export async function moveFile(source: string, dest: string, file: string) {
 
     try {
         await fs.renameFile(file, `${dest}${path.sep}${filename}`);
-        const  tab = get(tabs).find(t => t.path === `${source}${path.sep}${filename}`);
+        const tab = get(tabs).find(t => t.path === `${source}${path.sep}${filename}`);
         if (tab === undefined) return;
         tab.path = `${dest}${path.sep}${filename}`;
         refreshTabs();
-    } catch (error) {
-        error(`Cannot move ${file} into ${dest}. Error: ${error}`, {file: "File.ts", line: 159});
+    } catch (e) {
+        error(`Cannot move ${file} into ${dest}. Error: ${e}`, {file: "File.ts", line: 159});
     }
 }
 
@@ -176,7 +176,7 @@ export async function saveFile(saveAs = false) {
         "fileType": fileType,
         "encoding": tab.content.getEncoding(),
         "hasBom": tab.content.hasBom(),
-        "language": tab.content.getLang(fileType),
+        "language": await tab.content.getLang(fileType),
         "readonly": false,
     });
     tab.setActive(tab.id);
@@ -212,38 +212,47 @@ export async function moveToTrash(p: string) {
 export async function createFolder(p) {
     try {
         await fs.createDir(p);
-    } catch (error) {
-        error(`Cannot create folder in path ${p}. Error: ${error}`, {file: "File.ts", line: 216});
+    } catch (e) {
+        error(`Cannot create folder in path ${p}. Error: ${e}`, {file: "File.ts", line: 216});
     }
 }
 export async function createFile(p) {
     try {
         await invoke("write_file", {path: p, content: "", enc: "UTF-8", hasBom: false});
-    } catch (error) {
-        error(`Cannot create file in path ${p}. Error: ${error}`, {file: "File.ts", line: 223});
+    } catch (e) {
+        error(`Cannot create file in path ${p}. Error: ${e}`, {file: "File.ts", line: 223});
     }
     addEditorTab(p, p.split(path.sep).pop());
 }
 
 export async function renameFile(filename: string, oldpath: string) {
+    let isFile = false;
     if (filename.length === 0) {
         warn("Cannot rename file with length 0", {file: "File.ts", line: 230});
         return false;
     }
-    if (await invoke("is_file", {path: oldpath}) && filename.includes(path.sep)) {
+    isFile = await invoke("is_file", {path: oldpath});
+    if (isFile && filename.includes(path.sep)) {
         warn("Cannot rename from invalid file name", {file: "File.ts", line: 234});
         return false;
     }
-    let newpath = oldpath.replace(oldpath.split(path.sep).pop(), filename);
-
+    let newpath = oldpath.substring(0, oldpath.lastIndexOf(oldpath.split(path.sep).at(-1))) + filename; 
     try {
         await fs.renameFile(oldpath, newpath);
-    } catch (error) {
-        error(`Cannot rename ${oldpath}. Error: ${error}`, {file: "File.ts", line: 242})
+    } catch (e) {
+        error(`Cannot rename ${oldpath}. Error: ${e}`, {file: "File.ts", line: 242})
         return false;   
     }
-    let tab = get(tabs).find(t => t.active && t.isfile);
-    renameTab(tab, filename, newpath);
+    if (isFile) {
+        let tab = get(tabs).find(t => t.active && t.isfile);
+        renameTab(tab, filename, newpath);
+        return true;
+    }
+    let openTabs = get(tabs).filter(t => t.path === `${oldpath}${path.sep}${t.label}`);
+    for (const tab of openTabs) {
+        tab.path = `${newpath}${path.sep}${tab.label}`;
+    }
+    refreshTabs();
     return true;
 }
 

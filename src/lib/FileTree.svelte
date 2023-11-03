@@ -31,12 +31,12 @@
         `Create a new folder in ${path}`, [
             {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
             {name: "Cancel", cancel: true, action: () => {}}
-        ], {label: "Folder Name"})}},
+        ], {label: "Folder Name"}, path)}},
         {name: "New File...", shortcut: "", action: () => {openInputModal("Create New File", 
         `Create a new file in ${path}`, [
             {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
             {name: "Cancel", cancel: true, action: () => {}}
-        ], {label: "File Name"})}},
+        ], {label: "File Name"}, path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Cut", disabled: true, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},

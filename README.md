@@ -48,7 +48,7 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 | Feature             | Progress |
 |---------------------|----------|
 | File Tree           | ✅        |
-| Syntax Highlighting | ⭕        |
+| Syntax Highlighting | ✅*        |
 | Logging             | 🟡        |
 | Theming             | ✅*       |
 | Notifications       | ⭕        |
@@ -60,7 +60,7 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 
 ### Known issues
 
-- Opening a file has a chance to freeze the file tree. Temp workaround is to just close and reopen the sidebar.
+- N/A
 
 ## Contributing
 

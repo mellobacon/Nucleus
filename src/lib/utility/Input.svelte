@@ -30,6 +30,7 @@
     {/if}
 
     <input on:input={handleInput} 
+    autocomplete="off"
     class="mousetrap" 
     class:invalid 
     class:medium 

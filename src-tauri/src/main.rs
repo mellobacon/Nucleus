@@ -20,7 +20,7 @@ use tauri::{App, Manager, Wry};
 
 mod encoding;
 use encoding::BOM;
-use log::{error, info};
+use log::{error, info, Level};
 use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
 
@@ -212,6 +212,16 @@ fn configure_log() -> TauriPlugin<Wry> {
             ))
         })
         .targets(LOG_TARGETS)
+        .filter(|l| {
+            let mut filter = false;
+            if cfg!(debug_assertions) {
+                filter = !matches!(l.level(), Level::Trace);
+            }
+            else if cfg!(not(debug_assertions)) {
+                filter = !matches!(l.level(), Level::Trace | Level::Debug);
+            }
+            filter
+        })
         .rotation_strategy(RotationStrategy::KeepAll)
         .build()
 }
