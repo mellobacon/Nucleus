@@ -2,10 +2,12 @@
     import VerticalDots from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
     import Dropdown from "./utility/Dropdown.svelte";
     import TabList from "./Tab/TabList.svelte";
+    import NotSupported from "./utility/NotSupported.svelte";
     import { Tab } from "./Tab/Tab";
     import { afterUpdate, onMount } from "svelte";
     import { appWindow } from "@tauri-apps/api/window";
     import { writable } from "svelte/store";
+    import { invoke } from "@tauri-apps/api";
 
     onMount(() => {
         appWindow.onResized(() => {
@@ -60,7 +62,11 @@
     export function addTab(path?: string, label?: string, content = null) {
         editorTab.addTab(path, label, content);
     }
-    export function addEditorTab(path?: string, label?: string) {
+    export async function addEditorTab(path?: string, label?: string) {
+        if (path && !await invoke("is_supported", {path: path})) {
+            addTab(path, label, new NotSupported({target: document.getElementById("tabview"), props: {path: path}}));
+            return;
+        }
         editorTab.addEditorTab(path, label);
     }
     export async function closeTab(tabid: number) {

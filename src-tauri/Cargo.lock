@@ -1303,6 +1303,12 @@ dependencies = [
 
 [[package]]
 name = "infer"
+version = "0.3.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "865e8a58ae8e24d2c4412c31344afa1d302a3740ad67528c10f50d6876cdcf55"
+
+[[package]]
+name = "infer"
 version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a898e4b7951673fce96614ce5751d13c40fc5674bc2d759288e46c3ab62598b3"
@@ -1675,6 +1681,7 @@ name = "nucleus"
 version = "0.3.0"
 dependencies = [
  "encoding_rs",
+ "infer 0.3.7",
  "log",
  "serde",
  "serde_json",
@@ -2946,7 +2953,7 @@ dependencies = [
  "glob",
  "heck 0.4.1",
  "html5ever",
- "infer",
+ "infer 0.12.0",
  "json-patch",
  "kuchiki",
  "memchr",

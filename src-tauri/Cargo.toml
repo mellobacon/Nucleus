@@ -23,6 +23,7 @@ encoding_rs = "0.8.32"
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 time = "0.3.28"
 log = "^0.4"
+infer = "0.3"
 
 [dev-dependencies]
 windows = "0.32.0"

@@ -187,6 +187,23 @@ fn write_file(path: &str, content: &str, enc: &str, has_bom: bool) {
     }
 }
 
+#[tauri::command]
+fn is_supported(path: &str) -> bool {
+    match infer::get_from_path(path) {
+        Ok(Some(info)) => {
+            info!("File type detected: {}. Must be binary.", info.mime_type());
+            false
+        }
+        Ok(None) => {
+            true
+        }
+        Err(e) => {
+            error!("{}", e);
+            false
+        }
+    }
+}
+
 fn configure_log() -> TauriPlugin<Wry> {
     tauri_plugin_log::Builder::default()
         .format(move |out, message, record| {
@@ -307,7 +324,8 @@ fn main() {
             is_folder,
             read_file,
             write_file,
-            open_in_default
+            open_in_default,
+            is_supported
         ])
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())
