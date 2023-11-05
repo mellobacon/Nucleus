@@ -114,7 +114,8 @@
     }
     #editor-tabs {
         width: 100%;
-        display: flex;
+        display: grid;
+        grid-auto-flow: column;
         justify-content: space-between;
     }
     .tab-toolbar {
