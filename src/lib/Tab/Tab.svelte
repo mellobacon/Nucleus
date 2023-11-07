@@ -23,8 +23,8 @@
     let contextmenuitems = [
         {name: "Close Tab", shortcut: commands.closeTab.keybind, action: () => {handleClose(id)}},
         {name: "Close All Tabs", shortcut: "", action: commands.closeAllTabs.command},
-        {name: "Open In Explorer", shortcut: commands.openInExplorer.keybind, action: () => {commands.openInExplorer.command(path)}},
-        {name: "Rename File", shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(label, path)}},
+        {name: "Open In Explorer", disabled: path === label, shortcut: commands.openInExplorer.keybind, action: () => {commands.openInExplorer.command(path)}},
+        {name: "Rename File", disabled: path === label, shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(label, path)}},
     ]
 </script>
 <div bind:this={tab} title={path} id={`editorTab-${id}`} class="tab" class:active={active}>
