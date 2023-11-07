@@ -87,10 +87,10 @@
 
 <svelte:window on:contextmenu|preventDefault></svelte:window>
 
-{#if !$fullscreen}
-	<Header />
-{/if}
-<div id="_">
+<div id="_" inert={$_openPopup}>
+	{#if !$fullscreen}
+		<Header />
+	{/if}
 	<div id="main" class:fullscreen={$fullscreen}>
 		<Sidebar />
 		<Splitpanes on:resized={updatePanelSize} on:resize={updateMinPanelSize} theme="editor-panes">
