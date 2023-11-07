@@ -1,11 +1,18 @@
 <script lang="ts">
     import { isfile } from "./EditorTabList.svelte";
     import { line_info, language, encoding } from "./Editor.svelte";
+    import { getVersion } from '@tauri-apps/api/app';
+    import { onMount } from "svelte";
+
+    let appVersion = "";
+    onMount(async () => {
+        appVersion = await getVersion();
+    })
 </script>
 
 <div id="statusbar">
     <div id="title">
-        <span>Nucleus</span>
+        <span>Nucleus <span id="version">v{appVersion}-alpha</span></span>
         <div class="divider"></div>
     </div>
     <div class="editor-tools">
@@ -66,5 +73,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    #version {
+        font-size: 0.7rem;
+        padding: 0 !important;
+        color: #6d6d6d;
     }
 </style>
