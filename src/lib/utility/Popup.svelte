@@ -117,6 +117,9 @@
                 &:hover {
                     background-color: #1c88d4;
                 }
+                &:focus {
+                    outline-color: #2276b2;
+                }
             }
         }
     }

@@ -15,6 +15,7 @@ $tab-container-height: 2rem;
     --window-inputBackground: "";
     --window-inputForeground: "";
     --window-inputBorder: "";
+    --window-inputFocusBorder: "";
     --window-inputLabelForeground: "";
     --window-scrollbar-backgroundColor: #eeffff17;
 
@@ -107,6 +108,13 @@ input {
     &.invalid {
         border-bottom: 1px solid #fa4d56 !important;
     }
+    &:focus{
+        border-bottom: 1px solid var(--window-inputFocusBorder) !important;
+    }
+}
+button:focus {
+    outline: 1px solid;
+    outline-offset: 3px;
 }
 
 .divider {

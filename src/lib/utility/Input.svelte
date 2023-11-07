@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     const dispatch = createEventDispatcher();
 
     export let readonly = false;
@@ -13,6 +13,12 @@
     export let extra_small = false;
     export let medium = false;
     export let invalid = false;
+
+    let ref: HTMLElement = null;
+
+    onMount(() => {
+        ref.focus();
+    })
 
     let _ = null;
     async function handleInput(e) {
@@ -30,6 +36,7 @@
     {/if}
 
     <input on:input={handleInput} 
+    bind:this={ref}
     autocomplete="off"
     class="mousetrap" 
     class:invalid 
