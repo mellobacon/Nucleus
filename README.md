@@ -7,31 +7,33 @@ Nucleus
 </h1>
 
 <p align="center">
+  <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/mellobacon/Nucleus/.github%2Fworkflows%2Fpublish.yml?style=for-the-badge">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/mellobacon/Nucleus?style=for-the-badge">
-  <img alt="Project License" src="https://img.shields.io/github/license/mellobacon/Nucleus?style=for-the-badge">
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/mellobacon/Nucleus?style=for-the-badge">
-  <img alt="Static Badge" src="https://img.shields.io/badge/Hacktoberfest-Participating-brightgreen?style=for-the-badge">
+  <img alt="Release Version" src="https://img.shields.io/github/v/tag/mellobacon/Nucleus?style=for-the-badge&label=Current">
+  <img alt="Project License" src="https://img.shields.io/github/license/mellobacon/Nucleus?style=for-the-badge">
 </p>
 
 <h3 align="center">
-A text editor with better UI than [enter funny thing here]
-</h3>
-
-<p align="center">
   <a href="https://github.com/mellobacon/Nucleus/blob/d704ed7892344480fb6fcd3c94ef534f52cadc31/LICENSE">License</a> •
-  <a href="https://github.com/mellobacon/Nucleus/releases">Download</a>
-</p>
+  <a href="https://github.com/mellobacon/Nucleus/releases">Download</a> •
+  <a href="https://github.com/mellobacon/Nucleus/blob/master/CONTRIBUTING.md">How to Contribute</a> •
+  <a href="https://github.com/mellobacon/Nucleus/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a>
+</h3>
 
 ___
 
 Please note that Nucleus is currently being rewritten. Features are being reworked and will be added again later. Refer to PR [#59](https://github.com/mellobacon/Nucleus/pull/59).
 ___
 
+
+<img width="100%" alt="nucleus_emptyworkspace" src="https://github.com/mellobacon/Nucleus/assets/42365887/b66b6f69-218f-4aab-8ae2-d2c4c1b87203">
+
 Nucleus is a text editor featuring a clean and easy to use user interface inspired by Visual Studio Code, Atom, Fleet, and others.
 
-<img width="600" alt="nucleus_emptyworkspace" src="https://github.com/mellobacon/Nucleus/assets/42365887/b66b6f69-218f-4aab-8ae2-d2c4c1b87203">
+___
 
 ### Current Rewrite Progress
 
@@ -61,6 +63,11 @@ Nucleus is a text editor featuring a clean and easy to use user interface inspir
 ### Known issues
 
 - N/A
+
+## How to Install
+Download the most recent build of Nucleus [from the Release page](https://github.com/mellobacon/Nucleus/releases).
+
+**Note: Windows Only (for now)*
 
 ## Contributing
 
