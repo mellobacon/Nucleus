@@ -15,7 +15,7 @@
             "inputBackground": "#333",
             "inputForeground": "#ffffff",
             "inputBorder": "#6f6f6f",
-            "inputFocusBorder": "",
+            "inputFocusBorder": "#34b0f8",
             "inputLabelForeground": "#c6c6c6",
             "scrollbarBackground": "#4c4c4c38"
         },

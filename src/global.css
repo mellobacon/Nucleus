@@ -1,5 +1,5 @@
 *:focus-visible, *:focus {
-	outline: none !important;
+	outline: none;
 }
 
 html, body {
@@ -48,12 +48,12 @@ input, button, select, textarea {
 	font-size: inherit;
 	padding: 0.4em;
 	margin: 0;
-	outline: none !important;
+	outline: none;
 	box-sizing: border-box;
 }
 
-input:focus, button:focus, textarea:focus {
-	outline: none !important;
+input:focus, textarea:focus {
+	outline: none;
 }
 
 input:disabled {
