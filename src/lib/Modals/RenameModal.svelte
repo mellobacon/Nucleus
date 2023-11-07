@@ -33,8 +33,6 @@
 <Popup bind:open={$_openPopup} {title} {description}>
     <div class="rename-input">
         <Input bind:value bind:invalid label={"File Name"} placeholder={"Enter name..."} hintText={helpText} invalidText={invalidText} />
-        <div class="divider"></div>
-        <Input label={"File Type"} placeholder={"-"} readonly _class="ext" />
     </div>
     <svelte:fragment slot="buttons">
         {#each buttons as button}
@@ -61,15 +59,5 @@
 <style lang="scss">
     .rename-input {
         display: flex;
-    }
-    .divider {
-        width: 0.025rem;
-        height: 2.56rem;
-        margin: 24px 0px 0 0px;
-        content: "";
-    }
-    :global(.ext) {
-        flex-grow: inherit;
-        width: unset !important;
     }
 </style>
