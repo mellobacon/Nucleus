@@ -59,7 +59,7 @@
         <button class="toolbar-button" on:click={async () => {await openFolder()}}>Open Folder</button>
     </div>
 {:else}
-    <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:dblnodeselect={handleDblSelect} on:rightclick={handleClick} contextMenuEnabled></FileTreeView>
+    <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:dblnodeselect={handleDblSelect} on:rightclick={handleClick} contextMenuEnabled canDrag></FileTreeView>
 {/if}
 
 {#if treeDom && contextmenu}

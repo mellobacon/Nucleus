@@ -28,6 +28,7 @@
     export let path;
     export let contextMenuEnabled;
     export let iconsEnabled;
+    export let canDrag = false;
 
     let selected = false;
 
@@ -99,7 +100,7 @@
     <div bind:this={refLabel} class="tree-label" class:selected 
     on:click={(e) => {handleSelect(treenode, e)}} 
     on:dblclick={(e) => {handleDoubleSelect(treenode, e)}} 
-    draggable={true} on:dragstart={dragstart} on:mouseup={(e) => {
+    draggable={canDrag} on:dragstart={dragstart} on:mouseup={(e) => {
         if (e.button === 2 && contextMenuEnabled) {
             contextmenu = true;
             handleSelect(treenode, e);

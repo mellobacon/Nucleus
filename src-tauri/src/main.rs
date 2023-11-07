@@ -191,8 +191,14 @@ fn write_file(path: &str, content: &str, enc: &str, has_bom: bool) {
 fn is_supported(path: &str) -> bool {
     match infer::get_from_path(path) {
         Ok(Some(info)) => {
-            info!("File type detected: {}. Must be binary.", info.mime_type());
-            false
+            let mut supported = false;
+            if info.mime_type().contains("text") {
+                supported = true;
+            }
+            else {
+                info!("File type detected: {}. Must be binary.", info.mime_type());
+            }
+            supported
         }
         Ok(None) => {
             true

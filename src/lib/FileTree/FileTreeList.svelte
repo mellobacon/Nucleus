@@ -27,6 +27,7 @@
     export let contextMenuEnabled;
     export let iconsEnabled;
     export let isExpanded;
+    export let canDrag = false;
 
     let expanded = _expansionState[name] || false;
     let ref = null;
@@ -172,15 +173,15 @@
 {#if root}
     {#each children as child}
         {#if Array.isArray(child.children)}
-            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
+            <svelte:self {canDrag} on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
         {:else}
-            <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
+            <FileTreeNode {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
         {/if}
     {/each}
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false} on:dragstart={dragstart} on:mouseup={(e) => {
+        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false && canDrag} on:dragstart={dragstart} on:mouseup={(e) => {
             if (e.button === 2 && contextMenuEnabled) {
                 contextmenu = true;
             }
@@ -195,9 +196,9 @@
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
                 {#each children as child (child.id) }
                     {#if Array.isArray(child.children)}
-                        <svelte:self on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
+                        <svelte:self {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
                     {:else}
-                        <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
+                        <FileTreeNode {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
                     {/if}
                 {/each}
             </ul>
