@@ -3,7 +3,7 @@
     import Sidebar, { showsidebarview, tool} from "./lib/Sidebar.svelte";
 	import { Pane, Splitpanes } from 'svelte-splitpanes';
     import SidebarView from "./lib/SidebarView.svelte";
-    import Statusbar from "./lib/Statusbar.svelte";
+    import Statusbar, { showBottomPanel, editortool } from "./lib/Statusbar.svelte";
     import EditorTabList, {hidden, updateTablistWidth} from "./lib/EditorTabList.svelte";
     import { onMount } from "svelte";
 	import { appWindow } from '@tauri-apps/api/window';
@@ -12,10 +12,12 @@
     import RenameModal from "./lib/Modals/RenameModal.svelte";
     import { loadDefaultSettings } from "./config/config";
     import { error } from "tauri-plugin-log-api";
+    import ToolView from "./lib/ToolView.svelte";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
 	let panelSize = 15;
+	let bottomPanelSize = 20;
 
 	onMount(async () => {
 		await loadDefaultSettings();
@@ -100,9 +102,20 @@
 				</Pane>
 			{/if}
 			<Pane>
-				<div id="container">
-					<EditorTabList />
-					<div id="tabview" class:hidden={$hidden}></div>
+				<div class="__">
+					<Splitpanes horizontal theme="editor-panes">
+						<Pane>
+							<div id="container">
+								<EditorTabList />
+								<div id="tabview" class:hidden={$hidden}></div>
+							</div>
+						</Pane>
+						{#if $showBottomPanel}
+							<Pane minSize={5} bind:size={bottomPanelSize} class="view-bottom-pane">
+								<ToolView content={$editortool.content}></ToolView>
+							</Pane>
+						{/if}
+					</Splitpanes>
 				</div>
 			</Pane>
 		</Splitpanes>
@@ -115,6 +128,10 @@
 {/if}
 
 <style lang="scss">
+	.__ {
+		height: 100%;
+        overflow: hidden;
+	}
 	#main {
 		display: flex;
 	}
@@ -127,11 +144,12 @@
 	}
 	#tabview {
 		width: -webkit-fill-available;
-		margin-left: 0.1rem;
         z-index: 1;
-        position: absolute;
     }
 	.hidden {
 		visibility: hidden;
+	}
+	:global(.view-bottom-pane) {
+		z-index: 1;
 	}
 </style>
