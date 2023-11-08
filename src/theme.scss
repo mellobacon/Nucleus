@@ -129,7 +129,7 @@ button:focus {
 }
 
 #sidebar {
-    box-shadow: 1px 0px 0 0 var(--window-borderColor);
+    border-right: 1px solid var(--window-borderColor);
 }
 
 .sidebar-tab {
@@ -194,8 +194,7 @@ button:focus {
 }
 
 #tabview {
-    margin-top: calc(5px);
-    height: calc(100% - 6.4rem);
+    height: calc(100% - 2.3rem);
 }
 
 .cm-content {
