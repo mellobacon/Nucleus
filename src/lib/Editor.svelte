@@ -215,6 +215,7 @@
     }
     :global(.cm-content) {
         padding: 0 0 200px 0 !important;
+        text-wrap: wrap !important;
     }
     :global(.cm-lineNumbers), :global(.cm-gutterElement) {
         min-width: 50px !important;
