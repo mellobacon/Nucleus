@@ -3,11 +3,31 @@
     import { line_info, language, encoding } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
+    import { Terminal } from "carbon-icons-svelte";
 
     let appVersion = "";
     onMount(async () => {
         appVersion = await getVersion();
     })
+
+    const tools = [
+        {name: "Terminal", content: "terminal", icon: Terminal, action: (t) => toggleBottomPanel(t)}
+    ]
+</script>
+<script lang="ts" context="module">
+    import { writable } from "svelte/store";
+    export let showBottomPanel = writable(false);
+    let show = false;
+
+    export let editortool = writable({name: "", content: null});
+
+    export function toggleBottomPanel(x = null) {
+        show = !show;
+        showBottomPanel.set(show);
+        if (x) {
+            editortool.set({name: x.name, content: x.content});
+        }
+    }
 </script>
 
 <div id="statusbar">
@@ -16,7 +36,11 @@
         <div class="divider"></div>
     </div>
     <div class="editor-tools">
-        
+        {#each tools as tool}
+            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
+                <svelte:component this={tool.icon}></svelte:component>
+            </span>
+        {/each}
     </div>
     {#if $isfile}
         <div class="editor-info">
@@ -36,6 +60,10 @@
         display: flex;
         align-items: center;
         font-size: 0.9rem;
+        :global(span svg) {
+            width: 20px;
+            height: 20px;
+        }
     }
     #title {
         color: #8c8c8c;
@@ -58,6 +86,21 @@
         align-items: center;
         justify-content: flex-start;
         padding-left: 10px;
+        .tool {
+            height: 100%;
+            padding: 0 5px;
+            position: relative;
+            color: #8c8c8c;
+            &:hover {
+                cursor: pointer;
+                background-color: #363636;
+            }
+        }
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
     .editor-info {
         display: flex;
