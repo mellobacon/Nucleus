@@ -50,6 +50,25 @@ fn open_in_default(path: &str)  {
 }
 
 #[tauri::command]
+fn open_terminal(path: &str) {
+    if env::consts::OS == "windows" {
+        // programs for windows: [cmd, powershell, wt]
+        // programs for ubuntu: [gnome-terminal]
+        // .args(["/C", "start", "wt"])
+        Command::new("cmd")
+        .args(["/C", "wt", "-d", path])
+        .spawn()
+        .unwrap();
+    }
+    else {
+        Command::new("gnome-terminal")
+        .arg(format!("--working-directory={}", path).as_str())
+        .spawn()
+        .unwrap();
+    }
+}
+
+#[tauri::command]
 fn is_file(path: &str) -> bool {
     fs::metadata(path).unwrap().is_file()
 }
@@ -331,7 +350,8 @@ fn main() {
             read_file,
             write_file,
             open_in_default,
-            is_supported
+            is_supported,
+            open_terminal
         ])
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())

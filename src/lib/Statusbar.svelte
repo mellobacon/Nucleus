@@ -4,6 +4,9 @@
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
     import { Terminal } from "carbon-icons-svelte";
+    import { homeDir } from '@tauri-apps/api/path';
+    import { filetree } from "./FileTree.svelte";
+    import { invoke } from "@tauri-apps/api";
 
     let appVersion = "";
     onMount(async () => {
@@ -11,8 +14,16 @@
     })
 
     const tools = [
-        {name: "Terminal", content: "terminal", icon: Terminal, action: (t) => toggleBottomPanel(t)}
+        {name: "Terminal", content: null, icon: Terminal, action: spawnTerminal}
     ]
+
+    async function spawnTerminal() {
+        let workingdir = await homeDir();
+        if ($filetree.length !== 0) {
+            workingdir = $filetree[0].path;
+        }
+        invoke("open_terminal", {path: workingdir});
+    }
 </script>
 <script lang="ts" context="module">
     import { writable } from "svelte/store";
@@ -37,7 +48,8 @@
     </div>
     <div class="editor-tools">
         {#each tools as tool}
-            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <span class="tool" title={tool.name} on:click={() => {tool.action()}}>
                 <svelte:component this={tool.icon}></svelte:component>
             </span>
         {/each}
