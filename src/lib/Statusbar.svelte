@@ -3,7 +3,8 @@
     import { line_info, language, encoding } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
-    import { Terminal } from "carbon-icons-svelte";
+    import { Terminal as TerminalIcon } from "carbon-icons-svelte";
+    import Terminal from "./Terminal.svelte";
 
     let appVersion = "";
     onMount(async () => {
@@ -11,7 +12,7 @@
     })
 
     const tools = [
-        {name: "Terminal", content: "terminal", icon: Terminal, action: (t) => toggleBottomPanel(t)}
+        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => toggleBottomPanel(t)}
     ]
 </script>
 <script lang="ts" context="module">

@@ -17,7 +17,7 @@
 
 	let minPanelSize = 10;
 	let panelSize = 15;
-	let bottomPanelSize = 20;
+	let bottomPanelSize = 90;
 
 	onMount(async () => {
 		await loadDefaultSettings();
