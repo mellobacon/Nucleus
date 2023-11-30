@@ -14,9 +14,10 @@
     export let selected = items[0].name;
     const default_value = selected;
 
-    function handleSelect(name) {
+    function handleSelect(item) {
+        const name = item.name;
         selected = name;
-        dispatch("select", {selection: name});
+        dispatch("select", {selection: item});
     }
 
     afterUpdate(() => {
@@ -47,7 +48,7 @@
                 {#each items as item}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div id={item.id.toString()} class="item" on:click={() => {
-                        handleSelect(item.name);
+                        handleSelect(item);
                         open = false;
                     }}>
                     {item.name}
@@ -80,13 +81,11 @@
     .select-list {
         min-width: 7rem;
         button {
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 2rem;
             width: 100%;
-            background-color: #333;
             padding: 0 20px;
             span {
                 display: flex;
@@ -104,8 +103,6 @@
     }
     .item-list {
         position: absolute;
-        border: 1px solid #333;
-        background-color: #1f1f1f;
         max-height: 15rem;
         overflow-y: overlay;
         min-width: 20rem;
@@ -123,9 +120,6 @@
             justify-content: space-between;
             cursor: pointer;
             padding: 0 20px;
-            &:hover {
-                background-color: #373737;
-            }
         }
     }
     .default {

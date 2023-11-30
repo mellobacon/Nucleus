@@ -68,7 +68,6 @@
     .divider {
         width: 2.3rem;
         height: .0625rem;
-        background-color: #333;
         margin: 0 auto;
     }
 </style>

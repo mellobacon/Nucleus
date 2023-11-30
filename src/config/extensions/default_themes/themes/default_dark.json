@@ -6,6 +6,7 @@
             "foreground": "#ffffff",
             "background": "#171717",
             "borderColor": "#414040",
+            "accent": "#376ba3",
             "dropdownBackground": "#2D2D2D",
             "dropdownButtonBackground": "#2D2D2D",
             "dropdownButtonForeground": "#ffffff",
@@ -17,12 +18,31 @@
             "inputBorder": "#6f6f6f",
             "inputFocusBorder": "#34b0f8",
             "inputLabelForeground": "#c6c6c6",
-            "scrollbarBackground": "#4c4c4c38"
+            "scrollbarBackground": "#4c4c4c38",
+            "inputPlaceholderForeground": "#8C8C8C",
+            "selectBackground": "#1f1f1f",
+            "selectButtonBackground": "#333",
+            "selectButtonForeground": "#ffffff",
+            "selectItemHoverBackground": "#373737",
+            "selectItemHoverForeground": "#ffffff",
+            "buttonBackground": "#222222",
+            "buttonForeground": "#ffffff",
+            "buttonHoverBackground": "#323232",
+            "buttonHoverForeground": "#ffffff",
+            "boxShadow": "#000000cc",
+            "menuShortcutForeground": "#8c8c8c",
+            "disabledTextForeground": "#6b6b6b",
+            "invalidTextForeground": "#fa4d56",
+            "readonlyTextForeground": "#2d2d2d",
+            "linkForeground": "#939393",
+            "linkHoverForeground": "#4d73ad",
+            "descriptionForeground": "#939393"
         },
         "header": {
             "background": "#2D2D2D",
             "foreground": "#ffffff",
-            "buttonHoverBackground": "#414040"
+            "buttonHoverBackground": "#414040",
+            "borderColor": "#1d1d1d"
         },
         "sidebar": {
             "background": "#171717",
@@ -35,7 +55,9 @@
         },
         "statusbar": {
             "background": "#171717",
-            "foreground": "#ffffff"
+            "foreground": "#8c8c8c",
+            "buttonBackgroundHover": "#414040",
+            "buttonForegroundHover": "#ffffff"
         },
         "editor": {
             "background": "#171717",
@@ -53,7 +75,8 @@
             "gutterForeground": "#898989",
             "gutterActiveForeground": "#ffffff",
             "gutterActiveBackground": "#212121",
-            "activeLineBackground": "#212121"
+            "activeLineBackground": "#212121",
+            "activeLineBorder": ""
         },
         "filetree": {
             "treeNodeBackground": "",
@@ -62,6 +85,15 @@
             "treeNodeHoverForeground": "#ffffff",
             "treeNodeSelectedBackground": "#353535",
             "treeNodeSelectedForeground": "#34b0f8"
+        },
+        "modal": {
+            "background": "#fdfdfd",
+            "foreground": "#000000",
+            "shadow": "#acacac50",
+            "buttonBackground": "#2276b2",
+            "buttonForeground": "#f9f9f9",
+            "buttonHoverBackground": "#1c88d4",
+            "buttonHoverForeground": "#000000"
         }
     }
 }

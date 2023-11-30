@@ -15,7 +15,6 @@
 
 <style lang="scss">
     .container {
-        background-color: #171717;
         height: 100%;
         display: flex;
         .unsupported {
@@ -28,20 +27,12 @@
             :global(svg) {
                 width: 48px;
                 height: 48px;
-                color: #376ba3;
                 padding: 20px 0;
-            }
-            .desc {
-                color: #939393;
             }
             .link {
                 font-size: 0.9rem;
-                color: #939393;
                 cursor: pointer;
                 text-decoration: underline;
-                &:hover {
-                    color: #4d73ad;
-                }
                 padding: 5px 0;
             }
         }

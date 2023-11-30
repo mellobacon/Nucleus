@@ -176,11 +176,7 @@
 			text-align: center;
 			padding: 0 5px;
 			font-size: 0.875rem;
-			color: white;
 			cursor: pointer;
-			&:not(#close):hover {
-				background-color: #262626;
-			}
 			&#close:hover {
 				background-color: #ff3131;
 			}

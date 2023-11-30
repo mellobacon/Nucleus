@@ -3,63 +3,93 @@ $statusbar-height: 1.5rem;
 $tab-container-height: 2rem;
 
 :root {
-    --window-foreground: #ffffff;
-    --window-background: #171717;
-    --window-borderColor: #414040;
+    --window-foreground: "";
+    --window-background: "";
+    --window-borderColor: "";
+    --window-accent: "";
 
-    --window-dropdownBackground: #2D2D2D;
-    --window-dropdownButtonBackground: #2D2D2D;
-    --window-dropdownButtonHoverForeground: #ffffff;
-    --window-dropdownItemHoverBackground: #171717;
-    --window-dropdownItemHoverForeground: #ffffff;
+    --window-dropdownBackground: "";
+    --window-dropdownButtonBackground: "";
+    --window-dropdownButtonHoverForeground: "";
+    --window-dropdownItemHoverBackground: "";
+    --window-dropdownItemHoverForeground: "";
     --window-inputBackground: "";
     --window-inputForeground: "";
     --window-inputBorder: "";
     --window-inputFocusBorder: "";
     --window-inputLabelForeground: "";
     --window-scrollbar-backgroundColor: #eeffff17;
+    --window-selectBackground: "";
+    --window-selectForeground: "";
+    --window-selectButtonBackground: "";
+    --window-selectButtonForeground: "";
+    --window-selectItemHoverBackground: "";
+    --window-selectItemHoverForeground: "";
+    --window-buttonBackground: "";
+    --window-buttonForeground: "";
+    --window-buttonHoverBackground: "";
+    --window-buttonHoverForeground: "";
+    --window-boxShadow: "";
+    --window-menuShortcutForeground: "";
+    --window-disabledTextForeground: "";
+    --window-invalidTextForeground: "";
+    --window-readonlyTextForeground: "";
+    --window-linkForeground: "";
+    --window-linkHoverForeground: "";
+    --window-descriptionForeground: "";
 
-    --header-background: #2D2D2D;
-    --header-foreground: #ffffff;
-    --header-buttonHoverBackground: #414040;
+    --header-background: "";
+    --header-foreground: "";
+    --header-buttonHoverBackground: "";
+    --header-borderColor: "";
 
     --sidebar-background: transparent;
-    --sidebar-foreground: #ffffff;
-    --sidebar-tabHoverBackground: #363636;
-    --sidebar-tabHoverForeground: #ffffff;
+    --sidebar-foreground: "";
+    --sidebar-tabHoverBackground: "";
+    --sidebar-tabHoverForeground: "";
     --sidebar-tabActiveBackground: transparent;
-    --sidebar-tabActiveForeground: #ffffff;
+    --sidebar-tabActiveForeground: "";
     --sidebar-tabActiveBorder: red;
 
-    --editor-tabContainerBackground: #2D2D2D;
+    --editor-tabContainerBackground: "";
 
-    --editor-tabBackground: #1c1c1c;
-    --editor-tabForeground: #ffffff;
-    --editor-tabBorderColor: #bdd4ff;
-    --editor-tabActiveBorderColor: #1b5fdd;
-    --editor-tabActiveBackground: #1c1c1c;
-    --editor-tabActiveForeground: #ffffff;
-    --editor-tabHoverBackground: #2b2b2b;
-    --editor-tabHoverForeground: #ffffff;
-    --editor-tabSaveStateColor: #ffffff;
+    --editor-tabBackground: "";
+    --editor-tabForeground: "";
+    --editor-tabBorderColor: "";
+    --editor-tabActiveBorderColor: "";
+    --editor-tabActiveBackground: "";
+    --editor-tabActiveForeground: "";
+    --editor-tabHoverBackground: "";
+    --editor-tabHoverForeground: "";
+    --editor-tabSaveStateColor: "";
 
-    --editor-background: #171717;
-    --editor-foreground: #e7e7e7;
-    --editor-gutter-foreground: #898989;
-    --editor-gutter-activeForeground: #ffffff;
-    --editor-gutter-activeBackground: #212121;
-    --editor-activeLineBackground: #212121;
+    --editor-background: "";
+    --editor-foreground: "";
+    --editor-gutter-foreground: "";
+    --editor-gutterActiveForeground: "";
+    --editor-gutterActiveBackground: "";
+    --editor-activeLineBackground: "";
 
 
     --filetree-treeNodeBackground: transparent;
-    --filetree-treeNodeForeground: #808080;
-    --filetree-treeNodeHoverBackground: #353535;
-    --filetree-treeNodeHoverForeground: #ffffff;
+    --filetree-treeNodeForeground: "";
+    --filetree-treeNodeHoverBackground: "";
+    --filetree-treeNodeHoverForeground: "";
     --filetree-treeNodeSelectedBackground: transparent;
-    --filetree-treeNodeSelectedForeground: #34b0f8;
+    --filetree-treeNodeSelectedForeground: "";
+
+    --modal-background: "";
+    --modal-foreground: "";
+    --modal-shadow: "";
+    --modal-buttonBackground: "";
+    --modal-buttonForeground: "";
+    --modal-buttonHoverBackground: "";
+    --modal-buttonHoverForeground: ""
 
     --statusbar-background: transparent;
-    --statusbar-foreground: #ffffff;
+    --statusbar-foreground: "";
+    --statusbar-buttonBackgroundHover: "";
+    --statusbar-buttonForegroundHover: "";
 }
 
 html {
@@ -72,13 +102,22 @@ html {
 #statusbar {
     border-top: solid 1px var(--window-borderColor);
     height: calc($statusbar-height + 0.1rem);
+    color: var(--statusbar-foreground);
+    background-color: var(--statusbar-background);
+    .tool:hover {
+        background-color: var(--statusbar-buttonBackgroundHover);
+        color: var(--statusbar-buttonForegroundHover);
+    }
 }
 #workspace {
     line-height: $header-height;
 }
 #header {
     background-color: var(--header-background);
-    box-shadow: rgb(29 29 29) 0px 1.5px 0px;
+    box-shadow: var(--header-borderColor) 0px 1.5px 0px;
+}
+.window-button:not(.close):hover {
+    background-color: var(--header-buttonHoverBackground);
 }
 .dropdown-button {
     &:hover {
@@ -96,6 +135,44 @@ html {
     &:hover {
         background-color:  var(--window-dropdownItemHoverBackground);
     }
+}
+.select {
+    button {
+        background-color: var(--window-selectButtonBackground);
+        color: var(--window-selectButtonForeground);
+    }
+    .item-list {
+        border: 1px solid #333;
+        background-color: var(--window-selectBackground);
+        .item:hover {
+            background-color: var(--window-selectItemHoverBackground);
+            color: var(--window-selectItemHoverForeground);
+        }
+    }
+}
+.context-menu, .dropdown-list {
+    box-shadow: 0 2px 6px var(--window-boxShadow);
+}
+.option-shortcut, .shortcut {
+    color: var(--window-menuShortcutForeground);
+}
+.disabled {
+    color: var(--window-disabledTextForeground);
+}
+.invalid {
+    color: var(--window-invalidTextForeground);
+}
+.readonly {
+    color: var(--window-readonlyTextForeground);
+}
+.link {
+    color: var(--window-linkForeground);
+    &:hover {
+        color: var(--window-linkHoverForeground);
+    }
+}
+.desc {
+    color: var(--window-descriptionForeground);
 }
 
 label {
@@ -132,10 +209,22 @@ button:focus {
     border-right: 1px solid var(--window-borderColor);
 }
 
+#sidebarview {
+    #tool-view .toolbar-button {
+        background-color: var(--window-buttonBackground);
+        color: var(--window-buttonForeground);
+        &:hover {
+            background-color: var(--window-buttonHoverBackground);
+            color: var(--window-buttonHoverForeground);
+        }
+    }
+}
+
 .sidebar-tab {
     &.active {
         box-shadow: inset 3.5px 0px 0 0 var(--sidebar-tabActiveBorder);
         background-color: var(--sidebar-tabActiveBackground);
+        color: var(--sidebar-tabActiveForeground);
     }
     &:hover {
         background-color:  var(--sidebar-tabHoverBackground);
@@ -168,6 +257,7 @@ button:focus {
 
 #editor-tabs {
     background-color: var(--header-background);
+    color: var(--header-foreground);
     height: calc($tab-container-height + 5px);
     box-shadow: inset 0px -1px 0 0 var(--window-borderColor);
 
@@ -185,6 +275,9 @@ button:focus {
             color: var(--editor-tabActiveForeground);
         }
     }
+    .close-tab span:hover {
+        background-color: var(--editor-tabBorderColor);
+    }
     .tab-content .save-state {
         background-color: var(--editor-tabSaveStateColor);
     }
@@ -195,6 +288,21 @@ button:focus {
 
 #tabview {
     height: calc(100% - 2.3rem);
+    &>div:not(.editor) {
+        background-color: var(--window-background);
+    }
+    >.container svg {
+        color: var(--window-accent);
+    }
+}
+
+.settings {
+    .heading::after {
+        background-color: var(--window-borderColor);
+    }
+}
+.settings-directory {
+    border-right: 0.5px solid var(--window-borderColor);
 }
 
 .cm-content {
@@ -206,12 +314,12 @@ button:focus {
 }
 .cm-gutters {
     background-color: var(--editor-background) !important;
-    color: var(--editor-gutter-foreground);
+    color: var(--editor-gutter-foreground) !important;
     border: none !important;
 }
 .cm-activeLineGutter {
-    color: var(--editor-gutter-activeForeground) !important;
-    background-color: var(--editor-gutter-activeBackground) !important;
+    color: var(--editor-gutterActiveForeground) !important;
+    background-color: var(--editor-gutterActiveBackground) !important;
 }
 .cm-scroller {
     background-color: var(--editor-background);
@@ -230,4 +338,23 @@ button:focus {
 }
 .rename-input .divider {
     background-color: var(--window-inputBorder);
+}
+
+.popup-wrapper {
+    background-color: var(--modal-shadow);
+    .popup-container {
+        background-color: var(--modal-background);
+        color: var(--modal-foreground);
+        button {
+            background-color: var(--modal-buttonBackground);
+            color: var(--modal-buttonForeground);
+            &:hover {
+                background-color: var(--modal-buttonHoverBackground);
+                color: var(--modal-buttonHoverForeground);
+            }
+            &:focus {
+                outline-color: var(--window-inputFocusBorder);
+            }
+        }
+    }
 }

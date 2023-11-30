@@ -25,7 +25,7 @@
         await appSettings.save();
     }
     async function handleThemeSelect(e) {
-        await appSettings.set("nucleus.theme", e.detail.selection);
+        await appSettings.set("nucleus.theme", e.detail.selection.name);
         await appSettings.save();
     }
     async function handleInput(e) {
@@ -78,7 +78,6 @@
         display: none !important;
     }
     .settings-container {
-        background-color: #171717;
         height: 100%;
         display: flex;
     }
@@ -98,7 +97,6 @@
     .settings-directory {
         min-width: 13rem;
         height: 100%;
-        border-right: 0.5px solid #333;
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -123,7 +121,6 @@
         &::after {
             height: 0.05rem;
             width: 100%;
-            background-color: #333;
             content: "";
             display: block;
             margin-top: 10px;

@@ -81,7 +81,6 @@
         min-width: 11.5rem;
         width: max-content;
         align-items: center;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, .8);
         border-radius: 3px;
         z-index: 9999;
     }
@@ -99,11 +98,9 @@
         padding: 0 10px;
     }
     .shortcut {
-        color: #8c8c8c;
         margin-left: 20px;
     }
     .disabled {
-        color: #6b6b6b;
         cursor: not-allowed;
     }
 </style>

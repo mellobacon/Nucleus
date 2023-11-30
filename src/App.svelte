@@ -13,6 +13,7 @@
     import { loadDefaultSettings } from "./config/config";
     import { error } from "tauri-plugin-log-api";
     import ToolView from "./lib/ToolView.svelte";
+    import { getExtensions } from "./config/extensionhandler";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -20,6 +21,7 @@
 	let bottomPanelSize = 20;
 
 	onMount(async () => {
+		getExtensions();
 		await loadDefaultSettings();
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);

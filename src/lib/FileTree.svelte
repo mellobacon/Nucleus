@@ -69,8 +69,6 @@
 
 <style lang="scss">
     .toolbar-button {
-        background-color: #222222;
-        color: #fff;
         font-family: inherit;
         text-align: center;
         padding: 7px 30px;
@@ -81,9 +79,6 @@
         padding: 5px 25px;
         font-size: 0.875rem;
         border-radius: 2px;
-        &:hover {
-            background-color: #323232;
-        }
         &:focus {
             outline-color: #2276b2;
         }

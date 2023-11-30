@@ -48,14 +48,12 @@
         align-items: center;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.521);
         z-index: 3;
     }
     .popup-container {
         position: static;
         min-height: 25%;
         min-width: 45%;
-        background-color: #262626;
         border-radius: 2px;
     }
     @media(min-width: 42rem) {
@@ -110,16 +108,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #2276b2;
-                color: #f9f9f9;
                 cursor: pointer;
                 padding: 0 10px;
-                &:hover {
-                    background-color: #1c88d4;
-                }
-                &:focus {
-                    outline-color: #2276b2;
-                }
             }
         }
     }

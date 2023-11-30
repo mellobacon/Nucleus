@@ -37,7 +37,6 @@
             width: 100%;
             height: 15%;
             justify-self: end;
-            background-color: #171717;
             border-top: #414040 1px solid;
             border-left: #414040 1px solid;
             border-bottom: #414040 1px solid;

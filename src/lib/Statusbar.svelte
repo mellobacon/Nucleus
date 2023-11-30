@@ -78,7 +78,6 @@
         }
     }
     #title {
-        color: #8c8c8c;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -102,10 +101,8 @@
             height: 100%;
             padding: 0 5px;
             position: relative;
-            color: #8c8c8c;
             &:hover {
                 cursor: pointer;
-                background-color: #363636;
             }
         }
         span {
@@ -121,7 +118,6 @@
         flex-grow: 1;
         font-size: 13px;
         height: 100%;
-        color: #8c8c8c;
         span {
             padding: 0 7px;
             height: 100%;
