@@ -26,22 +26,12 @@ export async function loadTheme(name: string) {
     info("Theme loaded sucessfully.", {file: "themehandler.ts", line: 35});
 }
 function processStyles(json) {
-    const theme = Object.entries(json.theme);
+    const theme: any = Object.entries(json.theme);
     for (const entries of theme) {
-        const category = entries[0];
-        for (const property of Object.entries(entries[1])) {
-            const name = property[0];
-            let value = property[1];
-
-            const cssValue = `${category}-${name}`;
-
-            for (const style of stylesheet.style) {
-                if (style === `--${cssValue}`) {
-                    value = value === "" ? "transparent" : value;
-                    stylesheet.style.setProperty(`--${cssValue}`, value);
-                }
-            }
-        }
+        const [category, component] = entries[0].split(".");
+        const property = `--${category}-${component}`;
+        const value = entries[1] === "transparent" || "" ? "transparent" : entries[1];
+        stylesheet.style.setProperty(property, value);
     }
 }
 export function getThemeProperty(styleName: string) {

@@ -2,96 +2,6 @@ $header-height: 2rem;
 $statusbar-height: 1.5rem;
 $tab-container-height: 2rem;
 
-:root {
-    --window-foreground: "";
-    --window-background: "";
-    --window-borderColor: "";
-    --window-accent: "";
-
-    --window-dropdownBackground: "";
-    --window-dropdownButtonBackground: "";
-    --window-dropdownButtonHoverForeground: "";
-    --window-dropdownItemHoverBackground: "";
-    --window-dropdownItemHoverForeground: "";
-    --window-inputBackground: "";
-    --window-inputForeground: "";
-    --window-inputBorder: "";
-    --window-inputFocusBorder: "";
-    --window-inputLabelForeground: "";
-    --window-scrollbar-backgroundColor: #eeffff17;
-    --window-selectBackground: "";
-    --window-selectForeground: "";
-    --window-selectButtonBackground: "";
-    --window-selectButtonForeground: "";
-    --window-selectItemHoverBackground: "";
-    --window-selectItemHoverForeground: "";
-    --window-buttonBackground: "";
-    --window-buttonForeground: "";
-    --window-buttonHoverBackground: "";
-    --window-buttonHoverForeground: "";
-    --window-boxShadow: "";
-    --window-menuShortcutForeground: "";
-    --window-disabledTextForeground: "";
-    --window-invalidTextForeground: "";
-    --window-readonlyTextForeground: "";
-    --window-linkForeground: "";
-    --window-linkHoverForeground: "";
-    --window-descriptionForeground: "";
-
-    --header-background: "";
-    --header-foreground: "";
-    --header-buttonHoverBackground: "";
-    --header-borderColor: "";
-
-    --sidebar-background: transparent;
-    --sidebar-foreground: "";
-    --sidebar-tabHoverBackground: "";
-    --sidebar-tabHoverForeground: "";
-    --sidebar-tabActiveBackground: transparent;
-    --sidebar-tabActiveForeground: "";
-    --sidebar-tabActiveBorder: red;
-
-    --editor-tabContainerBackground: "";
-
-    --editor-tabBackground: "";
-    --editor-tabForeground: "";
-    --editor-tabBorderColor: "";
-    --editor-tabActiveBorderColor: "";
-    --editor-tabActiveBackground: "";
-    --editor-tabActiveForeground: "";
-    --editor-tabHoverBackground: "";
-    --editor-tabHoverForeground: "";
-    --editor-tabSaveStateColor: "";
-
-    --editor-background: "";
-    --editor-foreground: "";
-    --editor-gutter-foreground: "";
-    --editor-gutterActiveForeground: "";
-    --editor-gutterActiveBackground: "";
-    --editor-activeLineBackground: "";
-
-
-    --filetree-treeNodeBackground: transparent;
-    --filetree-treeNodeForeground: "";
-    --filetree-treeNodeHoverBackground: "";
-    --filetree-treeNodeHoverForeground: "";
-    --filetree-treeNodeSelectedBackground: transparent;
-    --filetree-treeNodeSelectedForeground: "";
-
-    --modal-background: "";
-    --modal-foreground: "";
-    --modal-shadow: "";
-    --modal-buttonBackground: "";
-    --modal-buttonForeground: "";
-    --modal-buttonHoverBackground: "";
-    --modal-buttonHoverForeground: ""
-
-    --statusbar-background: transparent;
-    --statusbar-foreground: "";
-    --statusbar-buttonBackgroundHover: "";
-    --statusbar-buttonForegroundHover: "";
-}
-
 html {
     background-color: var(--window-background);
     color: var(--window-foreground);
@@ -119,7 +29,7 @@ html {
 .window-button:not(.close):hover {
     background-color: var(--header-buttonHoverBackground);
 }
-.dropdown-button {
+.menu-button {
     &:hover {
         background-color: var(--header-buttonHoverBackground);
     }
@@ -127,13 +37,13 @@ html {
         background-color: var(--header-buttonHoverBackground);
     }
 }
-.dropdown-list, .context-menu {
-    background-color: var(--window-dropdownBackground);
+.menu-list, .context-menu {
+    background-color: var(--window-menuBackground);
 }
-.dropdown-item, .context-menu-option {
+.menu-item, .context-menu-option {
     color: var(--window-foreground);
     &:hover {
-        background-color:  var(--window-dropdownItemHoverBackground);
+        background-color:  var(--window-menuItemHoverBackground);
     }
 }
 .select {
@@ -150,7 +60,7 @@ html {
         }
     }
 }
-.context-menu, .dropdown-list {
+.context-menu, .menu-list {
     box-shadow: 0 2px 6px var(--window-boxShadow);
 }
 .option-shortcut, .shortcut {
@@ -187,6 +97,40 @@ input {
     }
     &:focus{
         border-bottom: 1px solid var(--window-inputFocusBorder) !important;
+    }
+}
+button {
+    &.primary {
+        background-color: var(--window-buttonBackground);
+        color: var(--window-buttonForeground);
+        &:hover {
+            background-color: var(--window-buttonHoverBackground);
+            color: var(--window-buttonHoverForeground);
+        }
+    }
+    &.secondary {
+        background-color: var(--window-buttonSecondaryBackground);
+        color: var(--window-buttonSecondaryForeground);
+        &:hover {
+            background-color: var(--window-buttonSecondaryHoverBackground);
+            color: var(--window-buttonSecondaryHoverForeground);
+        }
+    }
+    &.accent {
+        background-color: var(--window-buttonAccentBackground);
+        color: var(--window-buttonAccentForeground);
+        &:hover {
+            background-color: var(--window-buttonAccentHoverBackground);
+            color: var(--window-buttonHoverAccentForeground);
+        }
+    }
+    &.danger {
+        background-color: var(--window-buttonDangerBackground);
+        color: var(--window-buttonDangerForeground);
+        &:hover {
+            background-color: var(--window-buttonDangerHoverBackground);
+            color: var(--window-buttonDangerHoverForeground);
+        }
     }
 }
 button:focus {
@@ -314,7 +258,7 @@ button:focus {
 }
 .cm-gutters {
     background-color: var(--editor-background) !important;
-    color: var(--editor-gutter-foreground) !important;
+    color: var(--editor-gutter-foreground);
     border: none !important;
 }
 .cm-activeLineGutter {
@@ -346,11 +290,19 @@ button:focus {
         background-color: var(--modal-background);
         color: var(--modal-foreground);
         button {
-            background-color: var(--modal-buttonBackground);
-            color: var(--modal-buttonForeground);
+            &:first-child {
+                background-color: var(--modal-buttonBackground) !important;
+                color: var(--modal-buttonForeground) !important;
+                &:hover {
+                    background-color: var(--modal-buttonHoverBackground) !important;
+                    color: var(--modal-buttonHoverForeground) !important;
+                }
+            }
+            background-color: var(--window-buttonSecondaryBackground);
+            color: var(--window-buttonSecondaryForeground);
             &:hover {
-                background-color: var(--modal-buttonHoverBackground);
-                color: var(--modal-buttonHoverForeground);
+                background-color: var(--window-buttonSecondaryHoverBackground);
+                color: var(--window-buttonSecondaryHoverForeground);
             }
             &:focus {
                 outline-color: var(--window-inputFocusBorder);
