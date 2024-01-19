@@ -77,12 +77,21 @@
 	const popup = writable(null);
 	export const fullscreen = writable(false);
 
-	export function openInputModal(title: string, description: string, buttons: any[], options = undefined, path = "") {
+	type Button = {
+		name: string, 
+		action, 
+		disabled?: boolean, 
+		style?: "primary" | "secondary" | "accent" | "danger",
+		type?: "button" | "submit" | "reset",
+		cancel?: boolean
+	}
+
+	export function openInputModal(title: string, description: string, buttons: Button[], options = undefined, path = "") {
 		popup.set(InputModal);
 		popupProps.set({title: title, description: description, buttons: buttons, options: options, open: true, path: path});
 		_openPopup.set(true);
 	}
-	export function openRenameModal(title: string, description: string, buttons: any[], path: string) {
+	export function openRenameModal(title: string, description: string, buttons: Button[], path: string) {
 		popup.set(RenameModal);
 		popupProps.set({title: title, description: description, buttons: buttons, open: true, path: path});
 		_openPopup.set(true);
