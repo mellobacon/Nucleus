@@ -1,7 +1,7 @@
-import { fs } from "@tauri-apps/api";
-import { openRenameModal } from "../App.svelte";
+import { fs, path as p } from "@tauri-apps/api";
+import { openInputModal, openRenameModal } from "../App.svelte";
 import { addEditorTab, closeAllTabs } from "../lib/EditorTabList.svelte";
-import { saveFile, openFile, openFolder, openInExplorer, renameFile } from "../lib/File";
+import { saveFile, openFile, openFolder, openInExplorer, renameFile, createFolder, createFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
 import { info, warn } from "tauri-plugin-log-api";
 
@@ -197,10 +197,34 @@ export const commands = {
                 `Give a new name to ${filename}`, 
                 [
                     {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
-                    {name: "Cancel", cancel: true, action: () => {}}
+                    {name: "Cancel", cancel: true, style: "danger", action: () => {}}
                 ],
                 oldpath
             )
+        }
+    },
+    "createFolder": {
+        "keybind": "",
+        "command": (path) => {
+            openInputModal("Create New Folder", 
+            `Create a new folder in ${path}`, 
+            [
+                {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
+                {name: "Cancel", cancel: true, action: () => {}}
+            ], 
+            {label: "Folder Name"}, path)
+        }
+    },
+    "createFile": {
+        "keybind": "",
+        "command": (path) => {
+            openInputModal("Create New File", 
+            `Create a new file in ${path}`, 
+            [
+                {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
+                {name: "Cancel", cancel: true, action: () => {}}
+            ], 
+            {label: "File Name"}, path)
         }
     },
     "openInExplorer": {

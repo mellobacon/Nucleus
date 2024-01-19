@@ -2,9 +2,10 @@
     import FileTreeView from "./FileTree/FileTreeView.svelte";
     import ContextMenu from "./utility/ContextMenu.svelte";
     import { addEditorTab } from "./EditorTabList.svelte";
-    import { openFolder, openInExplorer, createFile, createFolder } from "./File";
-    import { clipboard, path as p } from "@tauri-apps/api";
-    import { openInputModal } from "../App.svelte";
+    import { openFolder } from "./File";
+    import { clipboard } from "@tauri-apps/api";
+    import Button from "./utility/Button.svelte";
+    import { commands } from "../config/commands";
 
     let treeDom;
     let contextmenu = false;
@@ -26,17 +27,9 @@
     }
 
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
-        {name: "New Folder...", shortcut: "", action: () => {openInputModal("Create New Folder", 
-        `Create a new folder in ${path}`, [
-            {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
-            {name: "Cancel", cancel: true, action: () => {}}
-        ], {label: "Folder Name"}, path)}},
-        {name: "New File...", shortcut: "", action: () => {openInputModal("Create New File", 
-        `Create a new file in ${path}`, [
-            {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
-            {name: "Cancel", cancel: true, action: () => {}}
-        ], {label: "File Name"}, path)}},
+        {name: "Open in File Explorer", shortcut: "", action: async () => commands.openInExplorer.command(path)},
+        {name: "New Folder...", shortcut: "", action: () => commands.createFolder.command(path)},
+        {name: "New File...", shortcut: "", action: () => {commands.createFile.command(path)}},
         {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Cut", disabled: true, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
@@ -56,7 +49,7 @@
 {#if $filetree.length === 0}
     <div class="container">
         <span>No folder/workspace open</span>
-        <button class="toolbar-button" on:click={async () => {await openFolder()}}>Open Folder</button>
+        <Button _class="toolbar-button" style="secondary" label="Open Folder" on:click={async () => {await openFolder()}} />
     </div>
 {:else}
     <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:dblnodeselect={handleDblSelect} on:rightclick={handleClick} contextMenuEnabled canDrag></FileTreeView>
@@ -68,7 +61,7 @@
 
 
 <style lang="scss">
-    .toolbar-button {
+    :global(.toolbar-button) {
         font-family: inherit;
         text-align: center;
         padding: 7px 30px;
