@@ -110,6 +110,7 @@
                 align-items: center;
                 cursor: pointer;
                 padding: 0 10px;
+                font-size: 15px;
             }
         }
     }
