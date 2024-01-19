@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Dropdown from "./utility/Dropdown.svelte";
+    import Menu from "./utility/Menu.svelte";
     import settings from "./Settings.svelte";
     import { Settings } from "carbon-icons-svelte";
     import { addTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
@@ -64,7 +64,7 @@
     <div id="logo"></div>
     <div id="menubar">
         {#each items as item}
-            <Dropdown menu={item}></Dropdown>
+            <Menu menu={item}></Menu>
         {/each}
     </div>
     <div class="divider"></div>
@@ -75,7 +75,7 @@
     <div class="tools">
         
         <div class="settings-button">
-            <Dropdown right menu={{icon: Settings, children: [
+            <Menu right menu={{icon: Settings, children: [
                 {name: "Settings", shortcut: "", action: () => {addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}}, 
                 {name: "Keymap", disabled: true, shortcut: "", action: () => {console.warn("Feature not implemented yet.")}}
             ]
