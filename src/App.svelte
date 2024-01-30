@@ -13,6 +13,7 @@
     import { loadDefaultSettings } from "./config/config";
     import { error } from "tauri-plugin-log-api";
     import ToolView from "./lib/ToolView.svelte";
+    import { fitTerminal } from "./lib/Terminal.svelte";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -103,18 +104,16 @@
 			{/if}
 			<Pane>
 				<div class="__">
-					<Splitpanes horizontal theme="editor-panes">
-						<Pane>
+					<Splitpanes horizontal theme="editor-panes" on:resize={fitTerminal} on:resized={fitTerminal} class="{!$showBottomPanel ? "hidden" : ""}">
+						<Pane size={$showBottomPanel ? 100 - bottomPanelSize : 100}>
 							<div id="container">
 								<EditorTabList />
 								<div id="tabview" class:hidden={$hidden}></div>
 							</div>
 						</Pane>
-						{#if $showBottomPanel}
-							<Pane minSize={5} bind:size={bottomPanelSize} class="view-bottom-pane">
-								<ToolView content={$editortool.content}></ToolView>
-							</Pane>
-						{/if}
+						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
+							<ToolView content={$editortool.content}></ToolView>
+						</Pane>
 					</Splitpanes>
 				</div>
 			</Pane>
@@ -131,6 +130,11 @@
 	.__ {
 		height: 100%;
         overflow: hidden;
+		:global(.hidden) {
+			:global(.splitpanes__splitter), :global(.view-bottom-pane) {
+				display: none;
+			}
+		}
 	}
 	#main {
 		display: flex;
