@@ -41,6 +41,9 @@ export async function loadTheme(name: string) {
         "brightMagenta": getThemeProperty("terminal-brightMagenta"),
         "brightCyan": getThemeProperty("terminal-brightCyan"),
         "brightWhite": getThemeProperty("terminal-brightWhite"),
+
+        "background": getThemeProperty("terminal-background"),
+        "foreground": getThemeProperty("terminal-foreground")
     })
 
     updateTermTheme();
