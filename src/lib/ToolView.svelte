@@ -14,6 +14,10 @@
 </div>
 
 <style lang="scss">
+#toolview {
+    height: calc(100% - 37px);
+    width: 100%;
+}
 .header {
     height: 35px;
     display: flex;
