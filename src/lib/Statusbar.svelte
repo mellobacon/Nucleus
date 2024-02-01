@@ -3,10 +3,10 @@
     import { line_info, language, encoding } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
-    import { Terminal } from "carbon-icons-svelte";
-    import { homeDir } from '@tauri-apps/api/path';
-    import { filetree } from "./FileTree.svelte";
+    import { Terminal as TerminalIcon } from "carbon-icons-svelte";
     import { invoke } from "@tauri-apps/api";
+    import Terminal from "./Terminal.svelte";
+    import { workingDir } from "./File";
 
     let appVersion = "";
     onMount(async () => {
@@ -14,20 +14,22 @@
     })
 
     const tools = [
-        {name: "Terminal", content: null, icon: Terminal, action: spawnTerminal}
+        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}}
     ]
 
-    async function spawnTerminal() {
-        let workingdir = await homeDir();
-        if ($filetree.length !== 0) {
-            workingdir = $filetree[0].path;
+    async function spawnTerminal(t) {
+        if ($externalTerminal) {
+            invoke("open_terminal", {path: $workingDir});
         }
-        invoke("open_terminal", {path: workingdir});
+        else {
+            toggleBottomPanel(t);
+        }
     }
 </script>
 <script lang="ts" context="module">
     import { writable } from "svelte/store";
     export let showBottomPanel = writable(false);
+    export let externalTerminal = writable(false);
     let show = false;
 
     export let editortool = writable({name: "", content: null});
@@ -39,6 +41,10 @@
             editortool.set({name: x.name, content: x.content});
         }
     }
+    export function setTerminalState(value) {
+        let v = value === "true" ? true : false;
+        externalTerminal.set(v);
+    }
 </script>
 
 <div id="statusbar">
@@ -49,7 +55,7 @@
     <div class="editor-tools">
         {#each tools as tool}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tool" title={tool.name} on:click={() => {tool.action()}}>
+            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
                 <svelte:component this={tool.icon}></svelte:component>
             </span>
         {/each}

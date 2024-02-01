@@ -5,6 +5,7 @@ import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
 import { info, trace, warn, error } from "tauri-plugin-log-api";
+import { homeDir } from "@tauri-apps/api/path";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -16,6 +17,7 @@ export async function openFile() {
 export const workspaceName = writable("Untitled Workspace");
 export const dirToLoad =  writable("");
 export const dirLoadFail = writable(false);
+export const workingDir = writable(await homeDir());
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
@@ -25,6 +27,7 @@ export async function openFolder() {
         return
     };
     dirToLoad.set(directory.split(path.sep).pop());
+    workingDir.set(directory);
     // if file path is not in the configured scope already, add it
     // TODO: should configure this so it doesnt access restricted paths based on user permissions
     await invoke("attempt_file_access", {app_handle: window, p: directory});
