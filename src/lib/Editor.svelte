@@ -202,16 +202,6 @@
         padding-top: 7px;
         overflow-y: overlay;
         overflow-x: overlay !important;
-        &::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 20px;
-        }
-        &::-webkit-scrollbar-corner {
-            background-color: transparent;
-        }
     }
     :global(.cm-content) {
         padding: 0 0 200px 0 !important;
