@@ -108,6 +108,26 @@
         "modal.buttonBackground": "#2276b2",
         "modal.buttonForeground": "#f9f9f9",
         "modal.buttonHoverBackground": "#1c88d4",
-        "modal.buttonHoverForeground": "#f9f9f9"
+        "modal.buttonHoverForeground": "#f9f9f9",
+
+        "terminal.background": "#fafafa",
+        "terminal.foreground": "#000000",
+
+        "terminal.Black": "#0f0f14",
+        "terminal.Red": "#8c4351",
+        "terminal.Green": "#33635c",
+        "terminal.Yellow": "#8f5e15",
+        "terminal.Blue": "#34548a",
+        "terminal.Magenta": "#5a4a78",
+        "terminal.Cyan": "#0f4b6e",
+        "terminal.White": "#828594",
+        "terminal.brightBlack": "#0f0f14",
+        "terminal.brightRed": "#8c4351",
+        "terminal.brightGreen": "#33635c",
+        "terminal.brightYellow": "#8f5e15",
+        "terminal.brightBlue": "#34548a",
+        "terminal.brightMagenta": "#5a4a78",
+        "terminal.brightCyan": "#0f4b6e",
+        "terminal.brightWhite": "#828594"
     }
 }

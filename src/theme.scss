@@ -310,3 +310,27 @@ button:focus {
         }
     }
 }
+
+#toolview {
+    .header {
+        border-bottom: solid 1px var(--window-borderColor);
+        .close {
+            color: var(--statusbar-foreground);
+            &:hover {
+                background-color: var(--statusbar-buttonBackgroundHover);
+                color: var(--statusbar-buttonForegroundHover);
+            }
+        }
+    }
+}
+
+#terminal {
+    background-color: var(--terminal-background);
+    color: var(--terminal-foreground);
+    .xterm-viewport {
+        background-color: var(--terminal-background) !important;
+    }
+    .xterm-rows {
+        color: var(--terminal-foreground);
+    }
+}

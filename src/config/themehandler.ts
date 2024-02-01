@@ -3,6 +3,7 @@ import { themes } from "./extensionhandler";
 import { info } from "tauri-plugin-log-api";
 import { exists, readDir } from "@tauri-apps/api/fs";
 import { get } from "svelte/store";
+import { termTheme, updateTermTheme } from "../lib/Terminal.svelte";
 
 export function getThemes() {
     return get(themes);
@@ -23,6 +24,27 @@ export async function loadTheme(name: string) {
         //const custom_themes = await readDir(path);
     //}
 
+    termTheme.set({
+        "black": getThemeProperty("terminal-black"),
+        "red": getThemeProperty("terminal-red"),
+        "green": getThemeProperty("terminal-green"),
+        "yellow": getThemeProperty("terminal-yellow"),
+        "blue": getThemeProperty("terminal-blue"),
+        "magenta": getThemeProperty("terminal-magenta"),
+        "cyan": getThemeProperty("terminal-cyan"),
+        "white": getThemeProperty("terminal-white"),
+        "brightBlack": getThemeProperty("terminal-brightBlack"),
+        "brightRed": getThemeProperty("terminal-brightRed"),
+        "brightGreen": getThemeProperty("terminal-brightGreen"),
+        "brightYellow": getThemeProperty("terminal-brightYellow"),
+        "brightBlue": getThemeProperty("terminal-brightBlue"),
+        "brightMagenta": getThemeProperty("terminal-brightMagenta"),
+        "brightCyan": getThemeProperty("terminal-brightCyan"),
+        "brightWhite": getThemeProperty("terminal-brightWhite"),
+    })
+
+    updateTermTheme();
+
     info("Theme loaded sucessfully.", {file: "themehandler.ts", line: 35});
 }
 function processStyles(json) {
@@ -40,4 +62,5 @@ export function getThemeProperty(styleName: string) {
             return stylesheet.style.getPropertyValue(style);
         }
     }
+    return "purple";
 }
