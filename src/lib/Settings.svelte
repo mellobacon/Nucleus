@@ -8,16 +8,18 @@
     import { addEditorTab } from "./EditorTabList.svelte";
 
     export let hidden = true;
-
+ 
     let editorFontSize;
     let editorFontFamily;
     let nucleusTheme;
     let editorAutosave;
+    let externalTerminal;
     onMount(async () => {
         editorFontSize = await appSettings.get("editor.fontSize");
         editorFontFamily = await appSettings.get("editor.fontFamily");
         editorAutosave = await appSettings.get("editor.autosave");
         nucleusTheme = await appSettings.get("nucleus.theme");
+        externalTerminal = await appSettings.get("nucleus.useExternalTerminal");
     })
 
     async function handleSelect(e) {
@@ -36,6 +38,10 @@
         await appSettings.set("editor.fontFamily", e.detail.value);
         await appSettings.save();
     }
+    async function handleTerminal(e) {
+        await appSettings.set("nucleus.useExternalTerminal", e.detail.selection.name);
+        await appSettings.save();
+    }
 </script>
 
 <div class="settings-container" class:hidden>
@@ -48,6 +54,7 @@
                     {id: 4, path: "", name: "Font Size"},
                     {id: 5, path: "", name: "Font Family"}
                 ]},
+                {id: 6, path: "", name: "Terminal"},
             ]},
         ]}></FileTreeView>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -69,6 +76,12 @@
                     <Input _class="settings-input" placeholder="monospace" value={editorFontFamily} medium label="Font Family" on:d_input={handleFamilySelect} />
                 </div>
             </div>
+            <div class="settings-category">
+                <div class="heading">Terminal</div>
+                <div class="content">
+                    <Select label="Use External Terminal" items={[{id: 0, name: "false"}, {id: 1, name: "true"}]} selected={externalTerminal} on:select={handleTerminal} />
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -84,7 +97,7 @@
     .settings {
         width: 100%;
         height: 100%;
-        overflow: hidden;
+        overflow: auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -97,7 +110,7 @@
     .settings-directory {
         min-width: 13rem;
         height: 100%;
-        overflow: hidden;
+        overflow: auto;
         display: flex;
         align-items: center;
         flex-direction: column;
