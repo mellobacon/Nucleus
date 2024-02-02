@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ChevronDown } from "carbon-icons-svelte";
-    import { afterUpdate, createEventDispatcher } from "svelte";
+    import { afterUpdate, createEventDispatcher, onMount } from "svelte";
     const dispatch = createEventDispatcher();
 
     export let label: string;
@@ -22,8 +22,9 @@
 
     afterUpdate(() => {
         if (open && list) {
-            const { _ , width } = button.getBoundingClientRect();
-            list.style.width = `${width}px`;
+            const { width, height, top } = list.getBoundingClientRect();
+            //list.style.width = `${width}px`;
+            //button.style.width = `${width}px`;
         }
     })
 
@@ -79,11 +80,11 @@
         }
     }
     .select-list {
-        min-width: 7rem;
+        min-width: 20rem;
         button {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             min-height: 2rem;
             width: 100%;
             padding: 0 20px;
@@ -102,10 +103,10 @@
         }
     }
     .item-list {
-        position: absolute;
+        position: relative;
+        top: 1px;
         max-height: 15rem;
         overflow-y: overlay;
-        min-width: 20rem;
         z-index: 1;
         &::-webkit-scrollbar {
             width: 12px;
