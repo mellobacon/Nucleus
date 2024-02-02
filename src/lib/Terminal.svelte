@@ -13,10 +13,10 @@
 	function initializeXterm() {
 		terminalController.loadAddon(termFit);
 		terminalController.open(terminalElement);
+		fitTerminal();
 
 		initShell();
 		terminalController.onData(writeToPty);
-		fitTerminal();
 
 		window.requestAnimationFrame(readFromPty);
 	}
@@ -81,8 +81,5 @@ async function readFromPty() {
 	#terminal {
 		height: 100%;
 		width: 100%;
-	}
-	:global(.xterm-screen) {
-		padding: 10px;
 	}
 </style>
