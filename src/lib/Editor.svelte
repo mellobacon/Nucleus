@@ -202,9 +202,15 @@
         padding-top: 7px;
         overflow-y: overlay;
         overflow-x: overlay !important;
+        width: -webkit-fill-available;
+        height: -webkit-fill-available !important;
+        position: absolute !important;
+    }
+    :global(.cm-gutters) {
+        z-index: 2;
     }
     :global(.cm-content) {
-        padding: 0 0 200px 0 !important;
+        padding: 0 10px 200px 0 !important;
         text-wrap: wrap !important;
     }
     :global(.cm-lineNumbers), :global(.cm-gutterElement) {
