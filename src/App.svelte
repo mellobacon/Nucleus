@@ -15,7 +15,6 @@
     import ToolView from "./lib/ToolView.svelte";
     import { getExtensions } from "./config/extensionhandler";
     import { fitTerminal } from "./lib/Terminal.svelte";
-    import { getThemeProperty } from "./config/themehandler";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
