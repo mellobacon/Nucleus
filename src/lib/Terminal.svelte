@@ -79,7 +79,7 @@ async function readFromPty() {
 
 <style>
 	#terminal {
-		height: 100%;
+		height: 97.5%;
 		width: 100%;
 	}
 </style>

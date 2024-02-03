@@ -10,13 +10,20 @@
 </script>
 <div id="toolview">
     <div class="header">{name} <span class="close" on:click={closePanel}></span></div>
-    <svelte:component this={content}></svelte:component>
+    <div class="toolview-container">
+        <svelte:component this={content}></svelte:component>
+    </div>
 </div>
 
 <style lang="scss">
 #toolview {
     height: calc(100% - 37px);
     width: 100%;
+}
+.toolview-container {
+    padding: 8px;
+    height: 100%;
+    
 }
 .header {
     height: 35px;
