@@ -14,15 +14,17 @@
     let nucleusTheme;
     let editorAutosave;
     let externalTerminal;
+    let terminalOptions = {"fontWeight": "", "fontSize": "", "fontFamily": "", "lineHeight": "", "cursorStyle": ""};
     onMount(async () => {
         editorFontSize = await appSettings.get("editor.fontSize");
         editorFontFamily = await appSettings.get("editor.fontFamily");
         editorAutosave = await appSettings.get("editor.autosave");
         nucleusTheme = await appSettings.get("nucleus.theme");
         externalTerminal = await appSettings.get("nucleus.useExternalTerminal");
+        terminalOptions = await appSettings.get("terminal.internal");
     })
 
-    async function handleSelect(e) {
+    async function handleAutosaveSelect(e) {
         await appSettings.set("editor.autosave", e.detail.selection);
         await appSettings.save();
     }
@@ -30,11 +32,11 @@
         await appSettings.set("nucleus.theme", e.detail.selection.name);
         await appSettings.save();
     }
-    async function handleInput(e) {
+    async function handleEditorFontSize(e) {
         await appSettings.set("editor.fontSize", e.detail.value);
         await appSettings.save();
     }
-    async function handleFamilySelect(e) {
+    async function handleEditorFontFamily(e) {
         await appSettings.set("editor.fontFamily", e.detail.value);
         await appSettings.save();
     }
@@ -42,6 +44,33 @@
         await appSettings.set("nucleus.useExternalTerminal", e.detail.selection.name);
         await appSettings.save();
     }
+    async function handleTerminalFontSize(e) {
+        terminalOptions.fontSize = e.detail.value;
+        await appSettings.set("terminal.internal", terminalOptions);
+        await appSettings.save();
+    }
+    async function handleTerminalFontFamily(e) {
+        terminalOptions.fontFamily = e.detail.value;
+        await appSettings.set("terminal.internal", terminalOptions);
+        await appSettings.save();
+    }
+    async function handleTerminalFontWeight(e) {
+        terminalOptions.fontWeight = e.detail.value;
+        await appSettings.set("terminal.internal", terminalOptions);
+        await appSettings.save();
+    }
+    async function handleTerminalLineHeight(e) {
+        terminalOptions.lineHeight = e.detail.value;
+        await appSettings.set("terminal.internal", terminalOptions);
+        await appSettings.save();
+    }
+    async function handleTerminalCursorStyle(e) {
+        terminalOptions.cursorStyle = e.detail.selection.name;
+        await appSettings.set("terminal.internal", terminalOptions);
+        await appSettings.save();
+
+    }
+
 </script>
 
 <div class="settings-container" class:hidden>
@@ -71,15 +100,20 @@
             <div class="settings-category">
                 <div class="heading">Editor</div>
                 <div class="content">
-                    <Select label="Autosave" items={[{id: 0, name: "false"}, {id: 1, name: "true"}]} selected={editorAutosave} on:select={handleSelect}></Select>
-                    <Input _class="settings-input" placeholder="default: 14" value={editorFontSize} extra_small label="Font Size" on:d_input={handleInput} />
-                    <Input _class="settings-input" placeholder="monospace" value={editorFontFamily} medium label="Font Family" on:d_input={handleFamilySelect} />
+                    <Select label="Autosave" items={[{id: 0, name: "false"}, {id: 1, name: "true"}]} selected={editorAutosave} on:select={handleAutosaveSelect}></Select>
+                    <Input _class="settings-input" placeholder="default: 14" value={editorFontSize} extra_small label="Font Size" on:d_input={handleEditorFontSize} />
+                    <Input _class="settings-input" placeholder="monospace" value={editorFontFamily} medium label="Font Family" on:d_input={handleEditorFontFamily} />
                 </div>
             </div>
             <div class="settings-category">
                 <div class="heading">Terminal</div>
                 <div class="content">
                     <Select label="Use External Terminal" items={[{id: 0, name: "false"}, {id: 1, name: "true"}]} selected={externalTerminal} on:select={handleTerminal} />
+                    <Input label="Font Weight" _class="settings-input" placeholder="Cascadia Mono" value={terminalOptions.fontWeight} medium on:d_input={handleTerminalFontWeight} hintText="Values: normal, bold, or 100-900" />
+                    <Input label="Font Size" _class="settings-input" placeholder="default: 14" value={terminalOptions.fontSize} extra_small on:d_input={handleTerminalFontSize} />
+                    <Input label="Font Family" _class="settings-input" placeholder="Cascadia Mono" value={terminalOptions.fontFamily} medium on:d_input={handleTerminalFontFamily} />
+                    <Input label="Line Height" _class="settings-input" placeholder="default: 1.2" value={terminalOptions.lineHeight} medium on:d_input={handleTerminalLineHeight} />
+                    <Select label="Cursor Style" items={[{id: 0, name: "bar"}, {id: 1, name: "block"}, {id: 2, name: "underline"}]} selected={terminalOptions.cursorStyle} on:select={handleTerminalCursorStyle} />
                 </div>
             </div>
         </div>

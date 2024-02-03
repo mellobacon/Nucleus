@@ -322,11 +322,14 @@ fn load_settings(app: &mut App) {
             "editor.autosave": false,
             "nucleus.showKeybinds": false,
             "nucleus.useExternalTerminal": true,
-            "terminal.external": {
-                "profile": "powershell"
-            },
+            "terminal.external.profile": "powershell",
             "terminal.internal": {
-                "profile": "powershell"
+                "profile": "powershell",
+                "fontSize": "14",
+                "fontFamily": "Cascadia Mono",
+                "lineHeight": "1.2",
+                "cursorStyle": "bar",
+                "fontWeight": "normal",
             }
         }
     );

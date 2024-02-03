@@ -6,7 +6,6 @@
 	import { invoke } from "@tauri-apps/api";
     import { get, writable } from "svelte/store";
     import { workingDir } from "./File";
-    import { getThemeProperty } from "../config/themehandler";
 
 	let terminalElement: HTMLElement;
 
@@ -28,13 +27,21 @@
 <script lang="ts" context="module">
 
 export const termTheme = writable();
+export const termOptions = writable();
 let terminalController = new Terminal({
 	fontFamily: "Cascadia Mono",
-	fontSize: 14
+	fontSize: 14,
 });
 
 export function updateTermTheme() {
 	terminalController.options.theme = get(termTheme);
+}
+export function updateTermOptions() {
+	const options: any = get(termOptions);
+	terminalController.options.fontFamily = options.fontFamily;
+	terminalController.options.fontSize = options.fontSize;
+	terminalController.options.lineHeight = options.lineHeight;
+	terminalController.options.cursorStyle = options.cursorStyle;
 }
 
 let termFit = new FitAddon();
@@ -59,6 +66,7 @@ function writeToPty(data: string) {
 
 function initShell() {
 	updateTermTheme();
+	updateTermOptions();
 	invoke("async_create_shell", {path: get(workingDir)}).catch((error) => {
 		// on linux it seem to to "Operation not permitted (os error 1)" but it still works because echo $SHELL give /bin/bash
 		console.error("Error creating shell:", error);

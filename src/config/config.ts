@@ -8,6 +8,7 @@ import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
 import { info } from "tauri-plugin-log-api";
 import { setTerminalState } from "../lib/Statusbar.svelte";
+import { termOptions, updateTermOptions } from "../lib/Terminal.svelte";
 
 export const systemfonts = writable([]);
 export const editorfont = writable("");
@@ -98,7 +99,12 @@ export async function loadDefaultSettings() {
     appSettings.onKeyChange("nucleus.useExternalTerminal", (value: string) => {
         setTerminalState(value);
     })
+    appSettings.onKeyChange("terminal.internal", (value: any) => {
+        termOptions.set(value);
+        updateTermOptions();
+    })
     setTerminalState(await appSettings.get("nucleus.useExternalTerminal"))
+    termOptions.set(await appSettings.get("terminal.internal"));
     info("Settings initialized", {file: "config.ts", line: 97});
 }
 
