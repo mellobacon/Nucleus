@@ -308,8 +308,14 @@ button:focus {
 #toolview {
     .header {
         border-bottom: solid 1px var(--window-borderColor);
+        color: var(--statusbar-foreground);
+        .tool-buttons > div {
+            &:hover {
+                background-color: var(--statusbar-buttonBackgroundHover);
+                color: var(--statusbar-buttonForegroundHover);
+            }
+        }
         .close {
-            color: var(--statusbar-foreground);
             &:hover {
                 background-color: var(--statusbar-buttonBackgroundHover);
                 color: var(--statusbar-buttonForegroundHover);
