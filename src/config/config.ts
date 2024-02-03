@@ -95,7 +95,7 @@ export async function loadDefaultSettings() {
     appSettings.onKeyChange("nucleus.theme", (value: string) => {
         loadTheme(value);
     })
-    appSettings.onKeyChange("nucleus.useExternalTerminal", (value: boolean) => {
+    appSettings.onKeyChange("nucleus.useExternalTerminal", (value: string) => {
         setTerminalState(value);
     })
     setTerminalState(await appSettings.get("nucleus.useExternalTerminal"))
