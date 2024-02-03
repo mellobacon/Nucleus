@@ -40,6 +40,7 @@
 	})
 
 	function updatePanelSize(e) {
+		fitTerminal();
 		if ($showsidebarview) {
 			panelSize = e.detail[0].size
 		}
@@ -48,6 +49,7 @@
 	async function updateMinPanelSize() {
 
 		updateTablistWidth();
+		fitTerminal();
 		if (!await appWindow.isFocused()) {
 			return;
 		}
