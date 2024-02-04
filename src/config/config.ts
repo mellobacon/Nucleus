@@ -4,7 +4,7 @@ import { getKeybinds } from "./commands";
 import { fs, invoke, path } from "@tauri-apps/api";
 import { loadTheme } from "./themehandler";
 import { Store } from "tauri-plugin-store-api";
-import { setEditorFontFamily, setEditorFontSize } from "../lib/Editor.svelte";
+import { setEditorFontFamily, setEditorFontSize, setEditorLineHeight, setEditorTabSize } from "../lib/Editor.svelte";
 import { watch } from "tauri-plugin-fs-watch-api";
 import { info } from "tauri-plugin-log-api";
 import { setTerminalState } from "../lib/Statusbar.svelte";
@@ -92,6 +92,12 @@ export async function loadDefaultSettings() {
     })
     appSettings.onKeyChange("editor.fontFamily", (value: string) => {
         setEditorFontFamily(value);
+    })
+    appSettings.onKeyChange("editor.lineHeight", (value: string) => {
+        setEditorLineHeight(value);
+    })
+    appSettings.onKeyChange("editor.tabSize", (value: number) => {
+        setEditorTabSize(value);
     })
     appSettings.onKeyChange("nucleus.theme", (value: string) => {
         loadTheme(value);

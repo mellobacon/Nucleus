@@ -319,6 +319,8 @@ fn load_settings(app: &mut App) {
             "nucleus.theme": "Dark",
             "editor.fontSize": 14,
             "editor.fontFamily": "monospace",
+            "editor.lineHeight": 1.3,
+            "editor.tabSize": 4,
             "editor.autosave": false,
             "nucleus.showKeybinds": false,
             "nucleus.useExternalTerminal": true,
@@ -335,6 +337,9 @@ fn load_settings(app: &mut App) {
     );
     let appdata_local = tauri::api::path::app_local_data_dir(&app.config()).unwrap();
     let settings_path = appdata_local.join("default_settings.json");
+
+    #[cfg(debug_assertions)]
+    fs::write(&settings_path, default_settings.to_string()).unwrap();
 
     if !settings_path.try_exists().unwrap() {
         fs::write(&settings_path, default_settings.to_string()).unwrap();

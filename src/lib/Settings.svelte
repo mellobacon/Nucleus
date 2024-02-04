@@ -11,6 +11,8 @@
  
     let editorFontSize;
     let editorFontFamily;
+    let editorLineHeight;
+    let editorTabSize;
     let nucleusTheme;
     let editorAutosave;
     let externalTerminal;
@@ -18,6 +20,8 @@
     onMount(async () => {
         editorFontSize = await appSettings.get("editor.fontSize");
         editorFontFamily = await appSettings.get("editor.fontFamily");
+        editorLineHeight = await appSettings.get("editor.lineHeight");
+        editorTabSize = await appSettings.get("editor.tabSize");
         editorAutosave = await appSettings.get("editor.autosave");
         nucleusTheme = await appSettings.get("nucleus.theme");
         externalTerminal = await appSettings.get("nucleus.useExternalTerminal");
@@ -38,6 +42,14 @@
     }
     async function handleEditorFontFamily(e) {
         await appSettings.set("editor.fontFamily", e.detail.value);
+        await appSettings.save();
+    }
+    async function handleEditorLineHeight(e) {
+        await appSettings.set("editor.lineHeight", e.detail.value);
+        await appSettings.save();
+    }
+    async function handleEditorTabSize(e) {
+        await appSettings.set("editor.tabSize", e.detail.value);
         await appSettings.save();
     }
     async function handleTerminal(e) {
@@ -70,7 +82,6 @@
         await appSettings.save();
 
     }
-
 </script>
 
 <div class="settings-container" class:hidden>
@@ -103,6 +114,8 @@
                     <Select label="Autosave" items={[{id: 0, name: "false"}, {id: 1, name: "true"}]} selected={editorAutosave} on:select={handleAutosaveSelect}></Select>
                     <Input _class="settings-input" placeholder="default: 14" value={editorFontSize} extra_small label="Font Size" on:d_input={handleEditorFontSize} />
                     <Input _class="settings-input" placeholder="monospace" value={editorFontFamily} medium label="Font Family" on:d_input={handleEditorFontFamily} />
+                    <Input _class="settings-input" placeholder="default: 1.3" value={editorLineHeight} medium label="Line Height" on:d_input={handleEditorLineHeight} />
+                    <Input _class="settings-input" placeholder="default: 4" value={editorTabSize} medium label="Tab Size" on:d_input={handleEditorTabSize} />
                 </div>
             </div>
             <div class="settings-category">

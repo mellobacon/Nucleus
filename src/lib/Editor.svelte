@@ -25,6 +25,7 @@
         "readonly": false,
     });
     const lang = new Compartment();
+    const tabSize = new Compartment();
 
     export function updateFileInfo(file) {
         file_info.set(file);
@@ -67,6 +68,12 @@
     export function getView() {
         return editorView;
     }
+    export function setTabSize(size) {
+        console.log(size)
+        editorView.dispatch({
+            effects: tabSize.reconfigure(EditorState.tabSize.of(size))
+        })
+    }
 
     onMount(async () => {
         editorView = new EditorView({
@@ -97,7 +104,8 @@
                         if (update.state.selection.ranges.some(r => !r.empty)) {
                             updateLineInfo();
                         }
-                    })
+                    }),
+                    tabSize.of(EditorState.tabSize.of(4))
                 ],
                 doc: content
             })
@@ -105,6 +113,7 @@
         editorView.contentDOM.classList.add("mousetrap");
         setEditorFontSize(await appSettings.get("editor.fontSize"));
         setEditorFontFamily(await appSettings.get("editor.fontFamily"));
+        setEditorLineHeight(await appSettings.get("editor.lineHeight"));
     });
 
     let _ = null;
@@ -153,6 +162,8 @@
 </script>
 <script lang="ts" context="module">
     import { languages as cmLangs } from "@codemirror/language-data";
+    import { tabs } from "./EditorTabList.svelte";
+    import { get } from "svelte/store";
 
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
@@ -174,6 +185,19 @@
         const editors = document.querySelectorAll(".cm-scroller");
         for (const editorContainer of editors) {
             (editorContainer as HTMLElement).style.setProperty("font-family", family, "important")
+        }
+    }
+    export function setEditorLineHeight(height: string) {
+        const editors = document.querySelectorAll(".cm-scroller");
+        for (const editorContainer of editors) {
+            (editorContainer as HTMLElement).style.setProperty("line-height", height, "important")
+        }
+    }
+    export function setEditorTabSize(size) {
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setTabSize(size);
+            }
         }
     }
 </script>
