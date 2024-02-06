@@ -39,6 +39,7 @@ html {
 }
 .menu-list, .context-menu {
     background-color: var(--window-menuBackground);
+    box-shadow: 0 2px 6px var(--window-boxShadow);
 }
 .menu-item, .context-menu-option {
     color: var(--window-foreground);
@@ -59,9 +60,6 @@ html {
             color: var(--window-selectItemHoverForeground);
         }
     }
-}
-.context-menu, .menu-list {
-    box-shadow: 0 2px 6px var(--window-boxShadow);
 }
 .option-shortcut, .shortcut {
     color: var(--window-menuShortcutForeground);
