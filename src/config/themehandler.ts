@@ -2,17 +2,21 @@ import { homeDir, join } from "@tauri-apps/api/path";
 import { themes } from "./extensionhandler";
 import { info } from "tauri-plugin-log-api";
 import { exists, readDir } from "@tauri-apps/api/fs";
-import { get } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { termTheme, updateTermTheme } from "../lib/Terminal.svelte";
+import { setColorScheme } from "../lib/Editor.svelte";
 
 export function getThemes() {
     return get(themes);
 }
 
 const stylesheet = document.styleSheets[0].cssRules[0] as CSSStyleRule;
+export const is_dark_theme = writable(true)
 export async function loadTheme(name: string) {
     let theme = get(themes).find(n => n.name === name);
     info(`Loading theme: ${name}...`, {file: "themehandler.ts", line: 16});
+    is_dark_theme.set(theme.scheme === "dark");
+
 
     // load base theme
     let json = await import(`./extensions/default_themes/themes/default_${theme.scheme}.json`);
@@ -24,6 +28,7 @@ export async function loadTheme(name: string) {
         //const custom_themes = await readDir(path);
     //}
 
+    setColorScheme();
     termTheme.set({
         "black": getThemeProperty("terminal-black"),
         "red": getThemeProperty("terminal-red"),

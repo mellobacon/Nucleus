@@ -88,12 +88,12 @@
         "editor.tabHoverBackground": "#e9e9e9",
         "editor.tabHoverForeground": "#212121",
         "editor.tabSaveStateColor": "#000000",
-
         "editor.gutterForeground": "#6E6E6E",
         "editor.gutterActiveForeground": "#000000",
         "editor.gutterActiveBackground": "#7e7e7e2b",
         "editor.activeLineBackground": "#7e7e7e2b",
         "editor.activeLineBorder": "",
+        "editor.activeIndentLineColor": "#000000",
 
         "filetree.treeNodeBackground": "",
         "filetree.treeNodeForeground": "#3D3D3D",

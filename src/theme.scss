@@ -256,7 +256,7 @@ button:focus {
 }
 .cm-gutters {
     background-color: var(--editor-background) !important;
-    color: var(--editor-gutter-foreground);
+    color: var(--editor-gutterForeground) !important;
     border: none !important;
 }
 .cm-activeLineGutter {
