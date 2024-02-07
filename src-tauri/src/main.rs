@@ -15,16 +15,14 @@ use std::io::{Write, BufReader};
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::{env, fs, sync::Arc};
-
 use tauri::{App, Manager, Wry, State, async_runtime::Mutex as AsyncMutex};
-
 use encoding::BOM;
 use log::{error, info, Level};
 use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
 use portable_pty::{native_pty_system, PtySize};
-
 use crate::encoding::convert_to_u16;
+use tauri::regex::Regex;
 
 mod encoding;
 mod terminal;
@@ -142,6 +140,7 @@ struct FileData {
     encoding: String,
     extension: String,
     bom: bool,
+    spaces: usize
 }
 
 #[tauri::command]
@@ -167,25 +166,33 @@ fn read_file(path: &str) -> FileData {
     };
 
     let file_data: FileData;
+    let regex = Regex::new(r"(?m)(^[ ]+)").unwrap();
 
     // encode based on bom if present otherwise just default to utf8
     if let Some(data) = encoding_rs::Encoding::for_bom(&bytes) {
         let (text, encoding, _) = data.0.decode(&bytes);
+        let hay = text.to_string();
+        let spaces = regex.captures(hay.as_str()).unwrap();
 
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: true,
+            spaces: spaces[1].to_owned().len()
         };
         info!("File BOM found. Encoding with {}...", encoding.name());
     } else {
         let (text, encoding, _) = encoding_rs::UTF_8.decode(&bytes);
+        let hay = text.to_string();
+        let spaces = regex.captures(hay.as_str()).unwrap();
+
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: false,
+            spaces: spaces[1].to_owned().len()
         };
         info!(
             "No file BOM found. Defaulting to {} encoding...",

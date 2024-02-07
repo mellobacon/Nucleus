@@ -27,6 +27,7 @@
         "language": "",
         "encoding": "",
         "hasBom": false,
+        "spaces": 0,
         "readonly": false,
     });
     const lang = new Compartment();
@@ -72,10 +73,14 @@
     export function hasBom() {
         return $file_info.hasBom;
     }
+    export function getSpaces() {
+        return $file_info.spaces;
+    }
     export function getView() {
         return editorView;
     }
     export function setTabSize(size) {
+        spaces.set(size);
         editorView.dispatch({
             effects: tabSize.reconfigure(EditorState.tabSize.of(size))
         })
@@ -109,7 +114,7 @@
                     drawSelection(),
                     crosshairCursor(),
                     rectangularSelection(),
-                    indentUnit.of("    "),
+                    indentSize.of(indentUnit.of("    ")),
                     indentationMarkers({
                         thickness: 1,
                         colors: {
@@ -177,6 +182,7 @@
         updateLineInfo();
         language.set($file_info.language);
         encoding.set({value: $file_info.encoding, hasBom: $file_info.hasBom});
+        setTabSize($file_info.spaces);
     }
     export function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -200,6 +206,7 @@
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
     export const encoding = writable({value: "UTF-8", hasBom: false});
+    export const spaces = writable(4);
     const langmode = writable(null);
 
     export function getLangFromExt(ext: string) {

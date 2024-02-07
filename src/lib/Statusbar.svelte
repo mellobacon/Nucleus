@@ -1,6 +1,6 @@
 <script lang="ts">
     import { isfile } from "./EditorTabList.svelte";
-    import { line_info, language, encoding } from "./Editor.svelte";
+    import { line_info, language, encoding, spaces } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
     import { Terminal as TerminalIcon } from "carbon-icons-svelte";
@@ -62,6 +62,8 @@
     </div>
     {#if $isfile}
         <div class="editor-info">
+            <span title="Indentation">Spaces: {$spaces}</span>
+            <div class="divider"></div>
             <span title="Ln: {$line_info.line}, Col: {$line_info.column}">{$line_info.line} : {$line_info.column}</span>
             <div class="divider"></div>
             <span>{$encoding.value} {$encoding.hasBom === true ? " with BOM" : ""}</span>
