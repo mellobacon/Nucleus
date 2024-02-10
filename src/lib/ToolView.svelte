@@ -1,22 +1,22 @@
 <script lang="ts">
-    import { showBottomPanel } from "./Statusbar.svelte";
+    import { hideBottomPanel } from "./Statusbar.svelte";
     import Ellipsis from "carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte";
     import Menu from "./utility/Menu.svelte";
+    import { clearTerminal } from "./Terminal.svelte";
 
     export let content = null;
     export let name = "Tool";
-
-    function hidePanel() {
-        showBottomPanel.set(false);
-    }
 </script>
 <div id="toolview">
     <div class="header">{name}
         <div class="header-tools">
             <div class="tool-buttons">
-                <Menu right menu={{icon: Ellipsis, children: [{name: "Kill Terminal", action: () => {}},]}}></Menu>
+                <Menu right menu={{icon: Ellipsis, children: [
+                    {name: "Clear Terminal", action: () => {
+                    clearTerminal();
+                }},]}}></Menu>
             </div>
-            <span class="close" on:click={hidePanel}></span>
+            <span class="close" on:click={hideBottomPanel}></span>
         </div>
     </div>
     <div class="toolview-container">
