@@ -172,27 +172,37 @@ fn read_file(path: &str) -> FileData {
     if let Some(data) = encoding_rs::Encoding::for_bom(&bytes) {
         let (text, encoding, _) = data.0.decode(&bytes);
         let hay = text.to_string();
-        let spaces = regex.captures(hay.as_str()).unwrap();
+        let spaces = regex.captures(hay.as_str());
+        
+        let space_count = match spaces {
+            Some(capture) => capture.len(),
+            None => 0
+        };
 
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: true,
-            spaces: spaces[1].to_owned().len()
+            spaces: space_count
         };
         info!("File BOM found. Encoding with {}...", encoding.name());
     } else {
         let (text, encoding, _) = encoding_rs::UTF_8.decode(&bytes);
         let hay = text.to_string();
-        let spaces = regex.captures(hay.as_str()).unwrap();
+        let spaces = regex.captures(hay.as_str());
+        
+        let space_count = match spaces {
+            Some(capture) => capture.len(),
+            None => 0
+        };
 
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: false,
-            spaces: spaces[1].to_owned().len()
+            spaces: space_count
         };
         info!(
             "No file BOM found. Defaulting to {} encoding...",

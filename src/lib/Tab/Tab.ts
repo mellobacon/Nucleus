@@ -75,6 +75,9 @@ export class Tab {
         let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false, spaces: await appSettings.get("editor.tabSize")};
         try {
             fileData = await invoke("read_file", {path: path});
+            if (fileData.spaces === 0) {
+                fileData.spaces = await appSettings.get("editor.tabSize")
+            }
         } catch (error) {
             warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
         }
