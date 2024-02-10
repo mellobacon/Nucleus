@@ -10,6 +10,7 @@
 	let terminalElement: HTMLElement;
 
 	function initializeXterm() {
+		createController();
 		terminalController.loadAddon(termFit);
 		terminalController.open(terminalElement);
 		fitTerminal();
@@ -28,15 +29,25 @@
 
 export const termTheme = writable();
 export const termOptions = writable();
-let terminalController = new Terminal({
-	fontFamily: "Cascadia Mono",
-	fontSize: 14,
-});
+let terminalController = null;
+
+export function createController() {
+	terminalController = new Terminal({
+		fontFamily: "Cascadia Mono",
+		fontSize: 14,
+	});
+}
+
+export function clearTerminal() {
+	terminalController.clear();
+}
 
 export function updateTermTheme() {
+	if (!terminalController) return;
 	terminalController.options.theme = get(termTheme);
 }
 export function updateTermOptions() {
+	if (!terminalController) return;
 	const options: any = get(termOptions);
 	terminalController.options.fontFamily = options.fontFamily;
 	terminalController.options.fontSize = options.fontSize;

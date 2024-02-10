@@ -41,6 +41,10 @@
             editortool.set({name: x.name, content: x.content});
         }
     }
+    export function hideBottomPanel() {
+        show = false;
+        showBottomPanel.set(false);
+    }
     export function setTerminalState(value) {
         let v = value === "true" ? true : false;
         externalTerminal.set(v);
