@@ -1,4 +1,4 @@
-import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
+import { dialog, fs, path, invoke, window, clipboard } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
 import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
@@ -6,6 +6,7 @@ import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
 import { info, trace, warn, error } from "tauri-plugin-log-api";
 import { homeDir } from "@tauri-apps/api/path";
+import { appSettings } from "../config/config";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -260,6 +261,39 @@ export async function renameFile(filename: string, oldpath: string) {
     }
     refreshTabs();
     return true;
+}
+
+export async function readFile(path) {
+    let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false, spaces: await appSettings.get("editor.tabSize")};
+    try {
+        fileData = await invoke("read_file", {path: path});
+        if (fileData.spaces === 0) {
+            fileData.spaces = await appSettings.get("editor.tabSize")
+        }
+    } catch (error) {
+        warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
+    }
+    return fileData;
+}
+
+export async function pasteFile(dest) {
+    const copied = await clipboard.readText();
+    const filename = copied.split(path.sep).pop();
+    if (!await fs.exists(copied) || await fs.exists(`${dest}${path.sep}${filename}`))
+        return
+    const fileData = await readFile(copied);
+
+    if (dest === copied) return;
+
+    if (!await dialog.confirm(`Are you sure you want to copy "${filename}" from "./${copied.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
+        return;
+    }
+    try {
+        await invoke("write_file", {path: dest, content: fileData.text, enc: fileData.encoding, hasBom: fileData.bom, spaces: fileData.spaces});
+    } catch (e) {
+        error(`Cannot create file in path ${dest}. Error: ${e}`, {file: "File.ts", line: 287});
+    }
+    addEditorTab(dest, filename);
 }
 
 export function checkValidFileName(input: string) {
