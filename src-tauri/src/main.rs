@@ -9,7 +9,7 @@ const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Webview];
 #[cfg(not(debug_assertions))]
 const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::LogDir];
 
-use std::collections::HashMap;
+use std::collections::{self, HashMap};
 use std::fs::File;
 use std::io::{Write, BufReader};
 use std::path::{Path, PathBuf};
@@ -22,7 +22,6 @@ use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
 use portable_pty::{native_pty_system, PtySize};
 use crate::encoding::convert_to_u16;
-use tauri::regex::Regex;
 
 mod encoding;
 mod terminal;
@@ -92,12 +91,24 @@ fn open_terminal(path: &str) {
 
 #[tauri::command]
 fn is_file(path: &str) -> bool {
-    fs::metadata(path).unwrap().is_file()
+    match fs::metadata(path) {
+        Ok(r) => r.is_file(),
+        Err(e) => {
+            error!("{}", e);
+            false
+        }
+    }
 }
 
 #[tauri::command]
 fn is_folder(path: &str) -> bool {
-    fs::metadata(path).unwrap().is_dir()
+    match fs::metadata(path) {
+        Ok(r) => r.is_dir(),
+        Err(e) => {
+            error!("{}", e);
+            false
+        }
+    }
 }
 
 #[tauri::command]
@@ -166,16 +177,16 @@ fn read_file(path: &str) -> FileData {
     };
 
     let file_data: FileData;
-    let regex = Regex::new(r"(?m)(^[ ]+)").unwrap();
 
     // encode based on bom if present otherwise just default to utf8
     if let Some(data) = encoding_rs::Encoding::for_bom(&bytes) {
         let (text, encoding, _) = data.0.decode(&bytes);
-        let hay = text.to_string();
-        let spaces = regex.captures(hay.as_str());
-        
+        let t = text.to_string();
+        let x = t.as_str();
+        let lines: Vec<&str> = x.lines().collect();
+        let spaces = detect_indent(&lines);
         let space_count = match spaces {
-            Some(capture) => capture.len(),
+            Some(capture) => capture,
             None => 0
         };
 
@@ -189,11 +200,12 @@ fn read_file(path: &str) -> FileData {
         info!("File BOM found. Encoding with {}...", encoding.name());
     } else {
         let (text, encoding, _) = encoding_rs::UTF_8.decode(&bytes);
-        let hay = text.to_string();
-        let spaces = regex.captures(hay.as_str());
-        
+        let t = text.to_string();
+        let x = t.as_str();
+        let lines: Vec<&str> = x.lines().collect();
+        let spaces = detect_indent(&lines);
         let space_count = match spaces {
-            Some(capture) => capture.len(),
+            Some(capture) => capture,
             None => 0
         };
 
@@ -268,6 +280,33 @@ fn is_supported(path: &str) -> bool {
             false
         }
     }
+}
+
+fn detect_indent(lines: &[&str]) -> Option<usize> {
+    let mut indents: collections::HashMap<usize, usize> = collections::HashMap::new(); // # spaces indent -> # times seen
+    let mut last = 0; // # leading spaces in the last line we saw
+
+    for &text in lines.iter() {
+        let width = text.find(|c: char| c != ' ').unwrap_or_else(|| text.len());
+
+        let indent = (width as isize - last as isize).abs() as usize;
+        if indent > 1 {
+            *indents.entry(indent).or_insert(0) += 1;
+        }
+        last = width;
+    }
+
+    // find most frequent non-zero width difference
+    let mut max = 0;
+    let mut indent = None;
+    for (&width, &tally) in &indents {
+        if tally > max {
+            max = tally;
+            indent = Some(width);
+        }
+    }
+
+    indent
 }
 
 fn configure_log() -> TauriPlugin<Wry> {
