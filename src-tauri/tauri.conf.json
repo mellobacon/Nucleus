@@ -19,12 +19,12 @@
       },
       "clipboard": {
         "all": false,
-        "readText": false,
+        "readText": true,
         "writeText": true
       },
       "fs": {
         "all": false,
-        "copyFile": false,
+        "copyFile": true,
         "createDir": true,
         "exists": true,
         "readDir": true,
