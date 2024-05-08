@@ -279,21 +279,20 @@ export async function readFile(path) {
 export async function pasteFile(dest) {
     const copied = await clipboard.readText();
     const filename = copied.split(path.sep).pop();
-    if (!await fs.exists(copied) || await fs.exists(`${dest}${path.sep}${filename}`))
+    let newpath = `${dest}${path.sep}${filename}`;
+    if (!await fs.exists(copied) || await fs.exists(newpath))
         return
     const fileData = await readFile(copied);
-
-    if (dest === copied) return;
 
     if (!await dialog.confirm(`Are you sure you want to copy "${filename}" from "./${copied.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
         return;
     }
     try {
-        await invoke("write_file", {path: dest, content: fileData.text, enc: fileData.encoding, hasBom: fileData.bom, spaces: fileData.spaces});
+        await invoke("write_file", {path: newpath, content: fileData.text, enc: fileData.encoding, hasBom: fileData.bom, spaces: fileData.spaces});
     } catch (e) {
         error(`Cannot create file in path ${dest}. Error: ${e}`, {file: "File.ts", line: 287});
     }
-    addEditorTab(dest, filename);
+    addEditorTab(newpath, filename);
 }
 
 export function checkValidFileName(input: string) {
