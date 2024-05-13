@@ -5,6 +5,7 @@ import { saveFile, openFile, openFolder, openInExplorer, renameFile, createFolde
 import { appWindow } from "@tauri-apps/api/window";
 import { info, warn } from "tauri-plugin-log-api";
 import { fitTerminal } from "../lib/Terminal.svelte";
+import { exit } from "@tauri-apps/api/process";
 
 export const commands = {
     "addEditorTab": {
@@ -175,7 +176,7 @@ export const commands = {
     "closeWindow": {
         "keybind": "Alt+F4",
         "command": async () => {
-            await appWindow.close();
+            await exit();
         }
     },
     "closeTab": {
