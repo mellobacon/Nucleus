@@ -2,6 +2,7 @@
     import Folder from "carbon-icons-svelte/lib/Folder.svelte";
     import SidebarTab from "./SidebarTab.svelte";
     import FileTree from "./FileTree.svelte";
+    import { fitTerminal } from "./Terminal.svelte";
 
 </script>
 
@@ -45,6 +46,7 @@
             showsidebarview.set(true);
             tool.set(new Tool(tab.tabname, tab.content));
         }
+        fitTerminal();
     }
 
     export function openFileTree() {

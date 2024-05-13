@@ -30,6 +30,7 @@
     import { writable } from "svelte/store";
     export let showBottomPanel = writable(false);
     export let externalTerminal = writable(false);
+    let currentTool = writable(null);
     let show = false;
 
     export let editortool = writable({name: "", content: null});
@@ -39,11 +40,17 @@
         showBottomPanel.set(show);
         if (x) {
             editortool.set({name: x.name, content: x.content});
+            currentTool.set(x.content);
         }
     }
     export function hideBottomPanel() {
         show = false;
         showBottomPanel.set(false);
+    }
+    export function closeBottomPanel() {
+        show = false;
+        showBottomPanel.set(false);
+        editortool.set(null);
     }
     export function setTerminalState(value) {
         let v = value === "true" ? true : false;

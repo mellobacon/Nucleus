@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { hideBottomPanel } from "./Statusbar.svelte";
+    import { closeBottomPanel, hideBottomPanel } from "./Statusbar.svelte";
     import Ellipsis from "carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte";
     import Menu from "./utility/Menu.svelte";
-    import { clearTerminal } from "./Terminal.svelte";
+    import { clearTerminal, closeTerminal } from "./Terminal.svelte";
 
     export let content = null;
     export let name = "Tool";
@@ -14,9 +14,13 @@
                 <Menu right menu={{icon: Ellipsis, children: [
                     {name: "Clear Terminal", action: () => {
                     clearTerminal();
-                }},]}}></Menu>
+                }}, {name: "Close Terminal", action: () => {
+                    closeBottomPanel();
+                    closeTerminal();
+                }}]}}></Menu>
             </div>
-            <span class="close" on:click={hideBottomPanel}></span>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <span class="close" title="Hide Panel" on:click={hideBottomPanel}></span>
         </div>
     </div>
     <div class="toolview-container">
