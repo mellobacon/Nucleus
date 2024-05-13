@@ -7,6 +7,7 @@ import { openFileTree } from "./Sidebar.svelte";
 import { info, trace, warn, error } from "tauri-plugin-log-api";
 import { homeDir } from "@tauri-apps/api/path";
 import { appSettings } from "../config/config";
+import { relaunch } from "@tauri-apps/api/process";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -22,9 +23,14 @@ export const workingDir = writable(await homeDir());
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
-    info(`Opening folder in: ${directory}`, {file: "File.ts", line: 22});
+    info(`Opening folder in: ${directory}`, {file: "File.ts", line: 25});
+    localStorage.setItem("lastDir", directory);
+    await relaunch();
+}
+
+export async function loadDir(directory) {
     if (!directory) {
-        warn("Directory path is null. Aborting...", {file: "File.ts", line: 24});
+        warn("Directory path is null. Aborting...", {file: "File.ts", line: 30});
         return
     };
     dirToLoad.set(directory.split(path.sep).pop());

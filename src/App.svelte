@@ -15,6 +15,7 @@
     import ToolView from "./lib/ToolView.svelte";
     import { getExtensions } from "./config/extensionhandler";
     import { fitTerminal } from "./lib/Terminal.svelte";
+    import { loadDir } from "./lib/File";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -24,6 +25,11 @@
 	onMount(async () => {
 		await getExtensions();
 		await loadDefaultSettings();
+		let dir = localStorage.getItem("lastDir");
+		if (dir) {
+			loadDir(dir);
+		}
+
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
@@ -39,16 +45,14 @@
 	})
 
 	function updatePanelSize(e) {
-		fitTerminal();
 		if ($showsidebarview) {
 			panelSize = e.detail[0].size
 		}
 	}
 
 	async function updateMinPanelSize() {
-
-		updateTablistWidth();
 		fitTerminal();
+		updateTablistWidth();
 		if (!await appWindow.isFocused()) {
 			return;
 		}
@@ -117,16 +121,18 @@
 			{/if}
 			<Pane>
 				<div class="__">
-					<Splitpanes horizontal theme="editor-panes" on:resize={fitTerminal} on:resized={fitTerminal} class="{!$showBottomPanel ? "hidden" : ""}">
+					<Splitpanes horizontal theme="editor-panes" on:resize={fitTerminal} class="{!$showBottomPanel ? "hidden" : ""}">
 						<Pane size={$showBottomPanel ? 100 - bottomPanelSize : 100}>
 							<div id="container">
 								<EditorTabList />
 								<div id="tabview" class:hidden={$hidden}></div>
 							</div>
 						</Pane>
+						{#if $editortool}
 						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
 							<ToolView content={$editortool.content} name={$editortool.name}></ToolView>
 						</Pane>
+						{/if}
 					</Splitpanes>
 				</div>
 			</Pane>
