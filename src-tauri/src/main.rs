@@ -11,41 +11,18 @@ const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::LogDir];
 
 use std::collections::{self, HashMap};
 use std::fs::File;
-use std::io::{Write, BufReader};
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::{env, fs, sync::Arc};
-use tauri::{App, Manager, Wry, State, async_runtime::Mutex as AsyncMutex};
+use std::{env, fs};
+use tauri::{App, Manager, Wry};
 use encoding::BOM;
 use log::{error, info, Level};
 use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
-use portable_pty::{native_pty_system, PtySize};
 use crate::encoding::convert_to_u16;
 
 mod encoding;
-mod terminal;
-
-#[tauri::command]
-// create a shell and add to it the $TERM env variable so we can use clear and other commands
-async fn async_create_shell(state: State<'_, terminal::AppState>, path: &str) -> Result<(), String> {
-    terminal::async_create_shell(state, path).await
-}
-
-#[tauri::command]
-async fn async_write_to_pty(data: &str, state: State<'_, terminal::AppState>) -> Result<(), ()> {
-    terminal::async_write_to_pty(data, state).await
-}
-
-#[tauri::command]
-async fn async_read_from_pty(state: State<'_, terminal::AppState>) -> Result<Option<String>, ()> {
-    terminal::async_read_from_pty(state).await
-}
-
-#[tauri::command]
-async fn async_resize_pty(rows: u16, cols: u16, state: State<'_, terminal::AppState>) -> Result<(), ()> {
-    terminal::async_resize_pty(rows, cols, state).await
-}
 
 #[tauri::command]
 fn open_in_explorer(path: &str) {
@@ -429,26 +406,7 @@ fn main() {
         error!("[FATAL]: {:?}", info.to_string());
     }));
 
-    let pty_system = native_pty_system();
-
-    let pty_pair = pty_system
-        .openpty(PtySize {
-            rows: 24,
-            cols: 80,
-            pixel_width: 0,
-            pixel_height: 0,
-        })
-        .unwrap();
-
-    let reader = pty_pair.master.try_clone_reader().unwrap();
-    let writer = pty_pair.master.take_writer().unwrap();
-
     tauri::Builder::default()
-        .manage(terminal::AppState {
-            pty_pair: Arc::new(AsyncMutex::new(pty_pair)),
-            writer: Arc::new(AsyncMutex::new(writer)),
-            reader: Arc::new(AsyncMutex::new(BufReader::new(reader))),
-        })
         .invoke_handler(tauri::generate_handler![
             open_in_explorer,
             delete_file,
@@ -459,15 +417,12 @@ fn main() {
             write_file,
             open_in_default,
             is_supported,
-            open_terminal,
-            async_create_shell,
-            async_read_from_pty,
-            async_resize_pty,
-            async_write_to_pty
+            open_terminal
         ])
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(configure_log())
+        .plugin(tauri_plugin_pty::init())
         .setup(|app| {
             configure_log_path(app);
             load_settings(app);

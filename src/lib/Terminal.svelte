@@ -3,25 +3,18 @@
 	import { onMount } from "svelte";
 	import {Terminal} from "xterm";
 	import {FitAddon} from "xterm-addon-fit";
-	import { invoke } from "@tauri-apps/api";
     import { get, writable } from "svelte/store";
     import { workingDir } from "./File";
+	import { spawn, type IPty } from "tauri-pty";
 
 	let terminalElement: HTMLElement;
 
 	function initializeXterm() {
-		createController();
-		terminalController.loadAddon(termFit);
-		terminalController.open(terminalElement);
-		fitTerminal();
-
-		initShell();
-		terminalController.onData(writeToPty);
-
-		window.requestAnimationFrame(readFromPty);
+		initShell(terminalElement);
 	}
 
 	onMount(async () => {
+		console.log("mount");
 		initializeXterm();
 	});
 </script>
@@ -29,17 +22,17 @@
 
 export const termTheme = writable();
 export const termOptions = writable();
-let terminalController = null;
-
-export function createController() {
-	terminalController = new Terminal({
-		fontFamily: "Cascadia Mono",
-		fontSize: 14,
-	});
-}
+let terminalController: Terminal = null;
+let termFit = new FitAddon();
+let pty: IPty;
 
 export function clearTerminal() {
 	terminalController.clear();
+	pty.clear();
+}
+
+export function closeTerminal() {
+	pty.kill();
 }
 
 export function updateTermTheme() {
@@ -55,40 +48,29 @@ export function updateTermOptions() {
 	terminalController.options.cursorStyle = options.cursorStyle;
 }
 
-let termFit = new FitAddon();
 export function fitTerminal() {
+	if (!terminalController) return;
 	termFit.fit();
-	void invoke<string>("async_resize_pty", {
-		rows: terminalController.rows,
-		cols: terminalController.cols,
-	});
-}
-function writeToTerminal(data: string) {
-	return new Promise<void>((r) => {
-		terminalController.write(data, () => r());
-	});
+	pty.resize(terminalController.cols, terminalController.rows);
 }
 
-function writeToPty(data: string) {
-	void invoke("async_write_to_pty", {
-		data,
+function initShell(terminalElement: HTMLElement) {
+	terminalController = new Terminal({
+		fontFamily: "Cascadia Mono",
+		fontSize: 14,
 	});
-}
-
-function initShell() {
 	updateTermTheme();
 	updateTermOptions();
-	invoke("async_create_shell", {path: get(workingDir)}).catch((error) => {
-		// on linux it seem to to "Operation not permitted (os error 1)" but it still works because echo $SHELL give /bin/bash
-		console.error("Error creating shell:", error);
-	});
-}
-async function readFromPty() {
-	const data = await invoke<string>("async_read_from_pty");
-	if (data) {
-		await writeToTerminal(data);
-	}
-	window.requestAnimationFrame(readFromPty);
+	let dir = localStorage.getItem("lastDir");
+	pty = spawn("powershell.exe", [], {
+		cols: terminalController.cols,
+		rows: terminalController.rows,
+		cwd: dir
+	})
+	terminalController.loadAddon(termFit);
+	terminalController.open(terminalElement);
+	pty.onData(data => terminalController.write(data));
+	terminalController.onData(data => pty.write(data));
 }
 </script>
 
