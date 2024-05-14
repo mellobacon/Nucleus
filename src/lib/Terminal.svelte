@@ -4,7 +4,6 @@
 	import {Terminal} from "xterm";
 	import {FitAddon} from "xterm-addon-fit";
     import { get, writable } from "svelte/store";
-    import { workingDir } from "./File";
 	import { spawn, type IPty } from "tauri-pty";
 
 	let terminalElement: HTMLElement;
