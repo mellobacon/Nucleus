@@ -9,22 +9,20 @@ const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Webview];
 #[cfg(not(debug_assertions))]
 const LOG_TARGETS: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::LogDir];
 
-use std::collections::HashMap;
+use std::collections::{self, HashMap};
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::{env, fs};
-
 use tauri::{App, Manager, Wry};
-
-mod encoding;
 use encoding::BOM;
 use log::{error, info, Level};
 use tauri::plugin::TauriPlugin;
 use tauri_plugin_log::{LogTarget, RotationStrategy};
-
 use crate::encoding::convert_to_u16;
+
+mod encoding;
 
 #[tauri::command]
 fn open_in_explorer(path: &str) {
@@ -70,12 +68,24 @@ fn open_terminal(path: &str) {
 
 #[tauri::command]
 fn is_file(path: &str) -> bool {
-    fs::metadata(path).unwrap().is_file()
+    match fs::metadata(path) {
+        Ok(r) => r.is_file(),
+        Err(e) => {
+            error!("{}", e);
+            false
+        }
+    }
 }
 
 #[tauri::command]
 fn is_folder(path: &str) -> bool {
-    fs::metadata(path).unwrap().is_dir()
+    match fs::metadata(path) {
+        Ok(r) => r.is_dir(),
+        Err(e) => {
+            error!("{}", e);
+            false
+        }
+    }
 }
 
 #[tauri::command]
@@ -118,6 +128,7 @@ struct FileData {
     encoding: String,
     extension: String,
     bom: bool,
+    spaces: usize
 }
 
 #[tauri::command]
@@ -147,21 +158,40 @@ fn read_file(path: &str) -> FileData {
     // encode based on bom if present otherwise just default to utf8
     if let Some(data) = encoding_rs::Encoding::for_bom(&bytes) {
         let (text, encoding, _) = data.0.decode(&bytes);
+        let t = text.to_string();
+        let x = t.as_str();
+        let lines: Vec<&str> = x.lines().collect();
+        let spaces = detect_indent(&lines);
+        let space_count = match spaces {
+            Some(capture) => capture,
+            None => 0
+        };
 
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: true,
+            spaces: space_count
         };
         info!("File BOM found. Encoding with {}...", encoding.name());
     } else {
         let (text, encoding, _) = encoding_rs::UTF_8.decode(&bytes);
+        let t = text.to_string();
+        let x = t.as_str();
+        let lines: Vec<&str> = x.lines().collect();
+        let spaces = detect_indent(&lines);
+        let space_count = match spaces {
+            Some(capture) => capture,
+            None => 0
+        };
+
         file_data = FileData {
             text: text.to_string(),
             encoding: encoding.name().to_string(),
             extension: ext.to_string(),
             bom: false,
+            spaces: space_count
         };
         info!(
             "No file BOM found. Defaulting to {} encoding...",
@@ -227,6 +257,33 @@ fn is_supported(path: &str) -> bool {
             false
         }
     }
+}
+
+fn detect_indent(lines: &[&str]) -> Option<usize> {
+    let mut indents: collections::HashMap<usize, usize> = collections::HashMap::new(); // # spaces indent -> # times seen
+    let mut last = 0; // # leading spaces in the last line we saw
+
+    for &text in lines.iter() {
+        let width = text.find(|c: char| c != ' ').unwrap_or_else(|| text.len());
+
+        let indent = (width as isize - last as isize).abs() as usize;
+        if indent > 1 {
+            *indents.entry(indent).or_insert(0) += 1;
+        }
+        last = width;
+    }
+
+    // find most frequent non-zero width difference
+    let mut max = 0;
+    let mut indent = None;
+    for (&width, &tally) in &indents {
+        if tally > max {
+            max = tally;
+            indent = Some(width);
+        }
+    }
+
+    indent
 }
 
 fn configure_log() -> TauriPlugin<Wry> {
@@ -295,19 +352,27 @@ fn load_settings(app: &mut App) {
             "nucleus.theme": "Dark",
             "editor.fontSize": 14,
             "editor.fontFamily": "monospace",
+            "editor.lineHeight": 1.3,
+            "editor.tabSize": 4,
             "editor.autosave": false,
             "nucleus.showKeybinds": false,
             "nucleus.useExternalTerminal": true,
-            "terminal.external": {
-                "profile": "powershell"
-            },
+            "terminal.external.profile": "powershell",
             "terminal.internal": {
-                "profile": "powershell"
+                "profile": "powershell",
+                "fontSize": "14",
+                "fontFamily": "Cascadia Mono",
+                "lineHeight": "1.2",
+                "cursorStyle": "bar",
+                "fontWeight": "normal",
             }
         }
     );
     let appdata_local = tauri::api::path::app_local_data_dir(&app.config()).unwrap();
     let settings_path = appdata_local.join("default_settings.json");
+
+    #[cfg(debug_assertions)]
+    fs::write(&settings_path, default_settings.to_string()).unwrap();
 
     if !settings_path.try_exists().unwrap() {
         fs::write(&settings_path, default_settings.to_string()).unwrap();
@@ -340,6 +405,7 @@ fn main() {
         original(info);
         error!("[FATAL]: {:?}", info.to_string());
     }));
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             open_in_explorer,
@@ -356,6 +422,7 @@ fn main() {
         .plugin(tauri_plugin_fs_watch::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(configure_log())
+        .plugin(tauri_plugin_pty::init())
         .setup(|app| {
             configure_log_path(app);
             load_settings(app);

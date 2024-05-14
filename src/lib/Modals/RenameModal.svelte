@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import Input from "../utility/Input.svelte";
     import Popup from "../utility/Popup.svelte";
+    import Button from "../utility/Button.svelte";
     import { _openPopup } from "../../App.svelte";
     import { checkValidFileName } from "../File";
     import { fs, path as p, invoke } from "@tauri-apps/api";
@@ -28,7 +29,23 @@
             _openPopup.set(false);
         }
     }
-
+    async function validateInput(button) {
+        if (!button.cancel && (!checkValidFileName(value) || value === undefined || !value)) {
+            invalid = true;
+            invalidText = `{${value === "" ? "null" : value}} is not a valid file name`;
+            return;
+        }
+        if (!button.cancel && await fs.exists(`${path}${p.sep}${value}`)) {
+            invalid = true;
+            if (await invoke("is_file", {path: path})) {
+                path = path.slice(0, path.indexOf(value));
+            }
+            invalidText = `${value} in ${path} already exists`;
+            return;
+        }
+        await handleButtonClick(button.action, button.cancel);
+    }
+// {name: "Cancel", cancel: true, style: "danger", action: () => {}}
 </script>
 <Popup bind:open={$_openPopup} {title} {description}>
     <div class="rename-input">
@@ -36,22 +53,7 @@
     </div>
     <svelte:fragment slot="buttons">
         {#each buttons as button}
-            <button on:click={async () => {
-                if (!button.cancel && (!checkValidFileName(value) || value === undefined || !value)) {
-                    invalid = true;
-                    invalidText = `{${value === "" ? "null" : value}} is not a valid file name`;
-                    return;
-                }
-                if (!button.cancel && await fs.exists(`${path}${p.sep}${value}`)) {
-                    invalid = true;
-                    if (await invoke("is_file", {path: path})) {
-                        path = path.slice(0, path.indexOf(value));
-                    }
-                    invalidText = `${value} in ${path} already exists`;
-                    return;
-                }
-                await handleButtonClick(button.action, button.cancel);
-            }}>{button.name}</button>
+            <Button label={button.name} style={button.style} on:click={() => {validateInput(button)}} />
         {/each}
     </svelte:fragment>
 </Popup>

@@ -39,10 +39,9 @@
     let contextmenu = false;
     let contextmenuitems = [
         {name: "Open in File Explorer", shortcut: commands.openInExplorer.keybind, action: async () => {commands.openInExplorer.command(path)}},
-        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Copy", shortcut: "Ctrl + C", action: async () => {await clipboard.writeText(path)}},
         {name: "Cut", shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
-        {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
         {name: "Edit", shortcut: "", action: () => {addEditorTab(path, name)}},
         {name: "Rename...", shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(name, path)}},
         {name: "Delete", shortcut: "Delete", action: async () => {await moveToTrash(path)}}

@@ -13,6 +13,9 @@
     import { loadDefaultSettings } from "./config/config";
     import { error } from "tauri-plugin-log-api";
     import ToolView from "./lib/ToolView.svelte";
+    import { getExtensions } from "./config/extensionhandler";
+    import { fitTerminal } from "./lib/Terminal.svelte";
+    import { loadDir } from "./lib/File";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -20,7 +23,13 @@
 	let bottomPanelSize = 20;
 
 	onMount(async () => {
+		await getExtensions();
 		await loadDefaultSettings();
+		let dir = localStorage.getItem("lastDir");
+		if (dir) {
+			loadDir(dir);
+		}
+
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
@@ -42,7 +51,7 @@
 	}
 
 	async function updateMinPanelSize() {
-
+		fitTerminal();
 		updateTablistWidth();
 		if (!await appWindow.isFocused()) {
 			return;
@@ -75,12 +84,21 @@
 	const popup = writable(null);
 	export const fullscreen = writable(false);
 
-	export function openInputModal(title: string, description: string, buttons: any[], options = undefined, path = "") {
+	type Button = {
+		name: string, 
+		action, 
+		disabled?: boolean, 
+		style?: "primary" | "secondary" | "accent" | "danger",
+		type?: "button" | "submit" | "reset",
+		cancel?: boolean
+	}
+
+	export function openInputModal(title: string, description: string, buttons: Button[], options = undefined, path = "") {
 		popup.set(InputModal);
 		popupProps.set({title: title, description: description, buttons: buttons, options: options, open: true, path: path});
 		_openPopup.set(true);
 	}
-	export function openRenameModal(title: string, description: string, buttons: any[], path: string) {
+	export function openRenameModal(title: string, description: string, buttons: Button[], path: string) {
 		popup.set(RenameModal);
 		popupProps.set({title: title, description: description, buttons: buttons, open: true, path: path});
 		_openPopup.set(true);
@@ -103,17 +121,17 @@
 			{/if}
 			<Pane>
 				<div class="__">
-					<Splitpanes horizontal theme="editor-panes">
-						<Pane>
+					<Splitpanes horizontal theme="editor-panes" on:resize={fitTerminal} class="{!$showBottomPanel ? "hidden" : ""}">
+						<Pane size={$showBottomPanel ? 100 - bottomPanelSize : 100}>
 							<div id="container">
 								<EditorTabList />
 								<div id="tabview" class:hidden={$hidden}></div>
 							</div>
 						</Pane>
-						{#if $showBottomPanel}
-							<Pane minSize={5} bind:size={bottomPanelSize} class="view-bottom-pane">
-								<ToolView content={$editortool.content}></ToolView>
-							</Pane>
+						{#if $editortool}
+						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
+							<ToolView content={$editortool.content} name={$editortool.name}></ToolView>
+						</Pane>
 						{/if}
 					</Splitpanes>
 				</div>
@@ -131,6 +149,11 @@
 	.__ {
 		height: 100%;
         overflow: hidden;
+		:global(.hidden) {
+			:global(.splitpanes__splitter), :global(.view-bottom-pane) {
+				display: none;
+			}
+		}
 	}
 	#main {
 		display: flex;
