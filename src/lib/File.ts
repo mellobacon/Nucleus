@@ -23,6 +23,7 @@ export const workingDir = writable(await homeDir());
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
+    if (!directory) return;
     info(`Opening folder in: ${directory}`, {file: "File.ts", line: 25});
     localStorage.setItem("lastDir", directory);
     await relaunch();
