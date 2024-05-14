@@ -53,7 +53,7 @@
         editortool.set(null);
     }
     export function setTerminalState(value) {
-        let v = value === "true" ? true : false;
+        let v = value === true ? true : false;
         externalTerminal.set(v);
     }
 </script>
