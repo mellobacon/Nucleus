@@ -7,7 +7,7 @@
 <script lang="ts">
 
     import FileTreeNode, { computeTreeLeafDepth } from "./FileTreeNode.svelte";
-    import Directory from "../../util/icons/Directory.svelte";
+    import Directory from "../Icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
     import { moveFile, moveToTrash, pasteFile } from "../File";
