@@ -1,13 +1,14 @@
 import { dialog, fs, path, invoke, window, clipboard } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
-import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTabList.svelte";
+import { tabs, addEditorTab, renameTab, closeTab, refreshTabs, closeAllTabs } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
 import { info, trace, warn, error } from "tauri-plugin-log-api";
 import { homeDir } from "@tauri-apps/api/path";
 import { appSettings } from "../config/config";
-import { relaunch } from "@tauri-apps/api/process";
+import { closeBottomPanel } from "./Statusbar.svelte";
+import { closeTerminal } from "./Terminal.svelte";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -26,7 +27,10 @@ export async function openFolder() {
     if (!directory) return;
     info(`Opening folder in: ${directory}`, {file: "File.ts", line: 25});
     localStorage.setItem("lastDir", directory);
-    await relaunch();
+    closeBottomPanel();
+    closeTerminal();
+    closeAllTabs();
+    loadDir(directory);
 }
 
 export async function loadDir(directory) {
