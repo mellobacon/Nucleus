@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "nucleus",
-    "version": "0.2.1"
+    "version": "0.3.1"
   },
   "tauri": {
     "allowlist": {
@@ -19,12 +19,12 @@
       },
       "clipboard": {
         "all": false,
-        "readText": false,
+        "readText": true,
         "writeText": true
       },
       "fs": {
         "all": false,
-        "copyFile": false,
+        "copyFile": true,
         "createDir": true,
         "exists": true,
         "readDir": true,
@@ -77,6 +77,12 @@
         "startDragging": true,
         "unmaximize": true,
         "unminimize": true
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": true,
+        "relaunchDangerousAllowSymlinkMacos": false
       }
     },
     "bundle": {
@@ -128,7 +134,8 @@
         "minWidth": 680,
         "minHeight": 430,
         "decorations": false,
-        "fileDropEnabled": false
+        "fileDropEnabled": false,
+        "maximized": true
       }
     ]
   }

@@ -1,7 +1,11 @@
-import { append, copy, cut, deleteChars, redoChange, undoChange } from "../lib/Editor.svelte";
-import { addEditorTab } from "../lib/EditorTabList.svelte";
-import { saveFile, openFile, openFolder } from "../lib/File";
+import { fs, path as p } from "@tauri-apps/api";
+import { openInputModal, openRenameModal } from "../App.svelte";
+import { addEditorTab, closeAllTabs } from "../lib/EditorTabList.svelte";
+import { saveFile, openFile, openFolder, openInExplorer, renameFile, createFolder, createFile } from "../lib/File";
 import { appWindow } from "@tauri-apps/api/window";
+import { info, warn } from "tauri-plugin-log-api";
+import { fitTerminal } from "../lib/Terminal.svelte";
+import { exit } from "@tauri-apps/api/process";
 
 export const commands = {
     "addEditorTab": {
@@ -36,33 +40,37 @@ export const commands = {
     },
     "undo": {
         "keybind": "Control+Z",
+        "disabled": "true",
         "command": async () => {
-            await undoChange();
+            //
         }
     },
     "redo": {
         "keybind": "Control+Shift+Z",
+        "disabled": "true",
         "command": async () => {
-            await redoChange();
+            //
         }
     },
     "cut": {
         "keybind": "Control+X",
+        "disabled": "true",
         "command": async () => {
-            await cut();
+            //
         }
     },
     "copy": {
         "keybind": "Control+C",
+        "disabled": "true",
         "command": async () => {
-           await copy();
+            //
         }
     },
     "paste": {
         "keybind": "Control+V",
+        "disabled": "true",
         "command": async () => {
-            const content = await navigator.clipboard.readText();
-            append(content);
+            //
         }
     },
     "pasteFromHistory": {
@@ -73,8 +81,9 @@ export const commands = {
     },
     "delete": {
         "keybind": "Delete",
+        "disabled": "true",
         "command": async () => {
-            await deleteChars();
+            return;
         }
     },
     "find": {
@@ -109,6 +118,7 @@ export const commands = {
     },
     "fullscreen": {
         "keybind": "F11",
+        //"disabled": "true",
         "command": async () => {
             if (await appWindow.isFullscreen()) {
                 appWindow.setFullscreen(false);
@@ -160,19 +170,78 @@ export const commands = {
             else {
                 appWindow.maximize()
             }
+            fitTerminal();
         }
     },
     "closeWindow": {
         "keybind": "Alt+F4",
         "command": async () => {
-            await appWindow.close();
+            await exit();
+        }
+    },
+    "closeTab": {
+        "keybind": "Control+F4",
+        "command": () => {}
+    },
+    "closeAllTabs": {
+        "keybind": "",
+        "command": () => {
+            closeAllTabs();
+        }
+    },
+    "renameFile": {
+        "keybind": "F2",
+        "command": async (filename, oldpath) => {
+            if (!await fs.exists(oldpath)) {
+                warn(`Unable to rename file. ${oldpath} does not exist.`, {file: "commands.ts", line: 193});
+                return;
+            }
+            openRenameModal(`Rename ${filename}`,
+                `Give a new name to ${filename}`, 
+                [
+                    {name: "Rename", action: async (name) => {await renameFile(name, oldpath)}},
+                    {name: "Cancel", cancel: true, style: "danger", action: () => {}}
+                ],
+                oldpath
+            )
+        }
+    },
+    "createFolder": {
+        "keybind": "",
+        "command": (path) => {
+            openInputModal("Create New Folder", 
+            `Create a new folder in ${path}`, 
+            [
+                {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
+                {name: "Cancel", cancel: true, action: () => {}}
+            ], 
+            {label: "Folder Name"}, path)
+        }
+    },
+    "createFile": {
+        "keybind": "",
+        "command": (path) => {
+            openInputModal("Create New File", 
+            `Create a new file in ${path}`, 
+            [
+                {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
+                {name: "Cancel", cancel: true, action: () => {}}
+            ], 
+            {label: "File Name"}, path)
+        }
+    },
+    "openInExplorer": {
+        "keybind": "",
+        "command": async (path) => {
+            if (!await fs.exists(path)) return;
+            openInExplorer(path);
         }
     }
 }
 
 export function registerCommand(name: string, keybind: string, command: () => void) {
     if (commands[name]) {
-        console.warn(`Command "${name}" already exists, skipping.`);
+        info(`Command "${name}" already exists, skipping...`, {file: "commands.ts", line: 214});
         return;
     }
     commands[name] = { "keybind": keybind, "command": command }

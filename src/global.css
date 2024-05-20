@@ -1,5 +1,5 @@
 *:focus-visible, *:focus {
-	outline: none !important;
+	outline: none;
 }
 
 html, body {
@@ -48,12 +48,12 @@ input, button, select, textarea {
 	font-size: inherit;
 	padding: 0.4em;
 	margin: 0;
-	outline: none !important;
+	outline: none;
 	box-sizing: border-box;
 }
 
-input:focus, button:focus, textarea:focus {
-	outline: none !important;
+input:focus, textarea:focus {
+	outline: none;
 }
 
 input:disabled {
@@ -78,7 +78,7 @@ ul {
     position: relative;
 }
 .editor-panes .splitpanes__splitter.splitpanes__splitter__active {
-    z-index: 1;
+    z-index: 2;
 }
 .editor-panes .splitpanes__splitter::before {
     content: '';
@@ -105,9 +105,7 @@ ul {
     width: 100%;
     cursor: ns-resize;
 }
-.editor-panes.splitpanes--dragging .splitpanes__splitter::before {
-    opacity: 1;
-}
+
 .editor-panes.splitpanes--vertical.splitpanes--dragging {
     cursor: ew-resize;
 }

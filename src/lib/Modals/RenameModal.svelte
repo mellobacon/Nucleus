@@ -2,12 +2,19 @@
     import { onMount } from "svelte";
     import Input from "../utility/Input.svelte";
     import Popup from "../utility/Popup.svelte";
+    import Button from "../utility/Button.svelte";
+    import { _openPopup } from "../../App.svelte";
+    import { checkValidFileName } from "../File";
+    import { fs, path as p, invoke } from "@tauri-apps/api";
 
     export let title;
     export let buttons;
     export let description = "";
     export let options = {label: "Name: ", placeholder: "Enter text..."};
-    export let open = false;
+    export let path = "";
+    let invalid = false;
+    let helpText = ""
+    let invalidText = "";
 
     onMount(() => {
         if (!options.placeholder) {
@@ -16,21 +23,37 @@
     })
 
     let value = "";
-    async function handleButtonClick(buttonAction) {
+    async function handleButtonClick(buttonAction, cancel) {
         await buttonAction(value);
-        open = false;
+        if (!invalid || cancel) {
+            _openPopup.set(false);
+        }
     }
-
+    async function validateInput(button) {
+        if (!button.cancel && (!checkValidFileName(value) || value === undefined || !value)) {
+            invalid = true;
+            invalidText = `{${value === "" ? "null" : value}} is not a valid file name`;
+            return;
+        }
+        if (!button.cancel && await fs.exists(`${path}${p.sep}${value}`)) {
+            invalid = true;
+            if (await invoke("is_file", {path: path})) {
+                path = path.slice(0, path.indexOf(value));
+            }
+            invalidText = `${value} in ${path} already exists`;
+            return;
+        }
+        await handleButtonClick(button.action, button.cancel);
+    }
+// {name: "Cancel", cancel: true, style: "danger", action: () => {}}
 </script>
-<Popup bind:open {title} {description}>
+<Popup bind:open={$_openPopup} {title} {description}>
     <div class="rename-input">
-        <Input bind:value label={"File Name"} placeholder={"Enter name..."} />
-        <div class="divider"></div>
-        <Input label={"File Type"} placeholder={"-"} readonly _class="ext" />
+        <Input bind:value bind:invalid label={"File Name"} placeholder={"Enter name..."} hintText={helpText} invalidText={invalidText} />
     </div>
     <svelte:fragment slot="buttons">
         {#each buttons as button}
-            <button on:click={async () => {await handleButtonClick(button.action)}}>{button.name}</button>
+            <Button label={button.name} style={button.style} on:click={() => {validateInput(button)}} />
         {/each}
     </svelte:fragment>
 </Popup>
@@ -38,15 +61,5 @@
 <style lang="scss">
     .rename-input {
         display: flex;
-    }
-    .divider {
-        width: 0.025rem;
-        height: 2.56rem;
-        margin: 24px 0px 0 0px;
-        content: "";
-    }
-    :global(.ext) {
-        flex-grow: inherit;
-        width: unset !important;
     }
 </style>

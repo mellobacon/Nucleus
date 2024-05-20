@@ -10,11 +10,10 @@
     import Directory from "../../util/icons/Directory.svelte";
     import {filetree} from "../FileTree.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
-    import { createFile, createFolder, moveFile, moveToTrash, openInExplorer, renameFile } from "../File";
+    import { moveFile, moveToTrash, pasteFile } from "../File";
     import { clipboard } from "@tauri-apps/api";
-    import { openInputModal, openRenameModal } from "../../App.svelte";
-    import { path as p } from "@tauri-apps/api";
     import { onMount } from "svelte";
+    import { commands } from "../../config/commands";
 
     export let root = false;
     export let isroot = false;
@@ -26,6 +25,7 @@
     export let contextMenuEnabled;
     export let iconsEnabled;
     export let isExpanded;
+    export let canDrag = false;
 
     let expanded = _expansionState[name] || false;
     let ref = null;
@@ -37,27 +37,14 @@
 
     let contextmenu = false;
     let contextmenuitems = [
-        {name: "Open in File Explorer", shortcut: "", action: async () => {await openInExplorer(path)}},
-        {name: "New Folder...", shortcut: "", action: () => {openInputModal("Create New Folder", 
-        `Create a new folder in ${path}`, [
-            {name: "Create Folder", action: async (name) => { await createFolder(`${path}${p.sep}${name}`)}},
-            {name: "Cancel", action: () => {}}
-        ], {label: "Folder Name"})}},
-        {name: "New File...", shortcut: "", action: () => {openInputModal("Create New File", 
-        `Create a new file in ${path}`, [
-            {name: "Create File", action: (name) => {createFile(`${path}${p.sep}${name}`)}},
-            {name: "Cancel", action: () => {}}
-        ], {label: "File Name"})}},
-        {name: "Copy", shortcut: "Ctrl + C", action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Open in File Explorer", shortcut: commands.openInExplorer.keybind, action: async () => commands.openInExplorer.command(path)},
+        {name: "New Folder...", shortcut: "", action: () => commands.createFolder.command(path)},
+        {name: "New File...", shortcut: "", action: () => commands.createFile.command(path)},
+        {name: "Copy", shortcut: "Ctrl + C", action: async () => {await clipboard.writeText(path)}},
         {name: "Cut", disabled: isroot, shortcut: "Ctrl + X", action: () => {console.warn("Feature not implemented yet.")}},
-        {name: "Paste", shortcut: "Ctrl + X", disabled: true, action: () => {console.warn("Feature not implemented yet.")}},
+        {name: "Paste", shortcut: "Ctrl + V", action: async () => {await pasteFile(path)}},
         {name: "Copy Filename", shortcut: "", action: async () => {await clipboard.writeText(name)}},
-        {name: "Copy Absolute Path", shortcut: "", action: async () => {await clipboard.writeText(path)}},
-        {name: "Rename...", shortcut: "F2", action: () => {openRenameModal(`Rename ${name}`,
-        `Give a new name to ${name}/`, [
-            {name: "Rename", action: async (filename) => {await renameFile(filename, path)}},
-            {name: "Cancel", action: () => {}}
-        ])}},
+        {name: "Rename...", disabled: isroot, shortcut: commands.renameFile.keybind, action: () => {commands.renameFile.command(name, path)}},
         {name: "Delete", disabled: isroot, shortcut: "Delete", action:  async () => {await moveToTrash(path)}}
     ]
 
@@ -166,18 +153,24 @@
     }
 </script>
 
+<svelte:window on:click={(e) => {
+    if (e.target !== refLabel) {
+        contextmenu = false;
+    }
+}}></svelte:window>
+
 {#if root}
     {#each children as child}
         {#if Array.isArray(child.children)}
-            <svelte:self on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
+            <svelte:self {canDrag} on:nodeselect on:dblnodeselect isroot={root} {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
         {:else}
-            <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
+            <FileTreeNode {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled}/>
         {/if}
     {/each}
 {:else}
     <li id={`filetree-node-${id}`} bind:this={ref} class="treenode" class:root={isroot} on:dragenter|stopPropagation={dragenter} on:dragleave|stopPropagation={dragleave} on:dragend|stopPropagation={dragleave} title={path}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false} on:dragstart={dragstart} on:mouseup={(e) => {
+        <div bind:this={refLabel} data-id={id} class:selected class="tree-label" data-nodetype="directory" on:click={toggleExpansion} on:dragover|preventDefault on:drop|stopPropagation={drop} draggable={isroot === false && canDrag} on:dragstart={dragstart} on:mouseup={(e) => {
             if (e.button === 2 && contextMenuEnabled) {
                 contextmenu = true;
             }
@@ -192,9 +185,9 @@
             <ul role="group" bind:this={refChildren} data-id={id} class="tree-children" on:dragover|preventDefault on:drop|stopPropagation={drop}>
                 {#each children as child (child.id) }
                     {#if Array.isArray(child.children)}
-                        <svelte:self on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
+                        <svelte:self {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} {isExpanded}></svelte:self>
                     {:else}
-                        <FileTreeNode on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
+                        <FileTreeNode {canDrag} on:nodeselect on:dblnodeselect {...child} {contextMenuEnabled} {iconsEnabled} />
                     {/if}
                 {/each}
             </ul>

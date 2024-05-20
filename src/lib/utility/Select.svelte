@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ChevronDown } from "carbon-icons-svelte";
-    import { afterUpdate, createEventDispatcher } from "svelte";
+    import { afterUpdate, createEventDispatcher, onMount } from "svelte";
     const dispatch = createEventDispatcher();
 
     export let label: string;
@@ -14,15 +14,17 @@
     export let selected = items[0].name;
     const default_value = selected;
 
-    function handleSelect(name) {
+    function handleSelect(item) {
+        const name = item.name;
         selected = name;
-        dispatch("select", {selection: name});
+        dispatch("select", {selection: item});
     }
 
     afterUpdate(() => {
         if (open && list) {
-            const { _ , width } = button.getBoundingClientRect();
-            list.style.width = `${width}px`;
+            const { width, height, top } = list.getBoundingClientRect();
+            //list.style.width = `${width}px`;
+            //button.style.width = `${width}px`;
         }
     })
 
@@ -47,7 +49,7 @@
                 {#each items as item}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div id={item.id.toString()} class="item" on:click={() => {
-                        handleSelect(item.name);
+                        handleSelect(item);
                         open = false;
                     }}>
                     {item.name}
@@ -78,15 +80,13 @@
         }
     }
     .select-list {
-        min-width: 7rem;
+        min-width: 20rem;
         button {
-            color: white;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             min-height: 2rem;
             width: 100%;
-            background-color: #333;
             padding: 0 20px;
             span {
                 display: flex;
@@ -103,12 +103,10 @@
         }
     }
     .item-list {
-        position: absolute;
-        border: 1px solid #333;
-        background-color: #1f1f1f;
+        position: relative;
+        top: 1px;
         max-height: 15rem;
         overflow-y: overlay;
-        min-width: 20rem;
         z-index: 1;
         &::-webkit-scrollbar {
             width: 12px;
@@ -123,9 +121,6 @@
             justify-content: space-between;
             cursor: pointer;
             padding: 0 20px;
-            &:hover {
-                background-color: #373737;
-            }
         }
     }
     .default {

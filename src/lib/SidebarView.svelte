@@ -1,8 +1,18 @@
 <script lang="ts">
+    import { onDestroy, onMount } from "svelte";
     import { treeLoading, dirToLoad, dirLoadFail } from "./File";
     import ProgressBar from "./utility/ProgressBar.svelte";
+    import { updateTablistWidth } from "./EditorTabList.svelte";
 
     export let content = null;
+
+    onMount(() => {
+        updateTablistWidth();
+    })
+
+    onDestroy(() => {
+        updateTablistWidth();
+    })
 </script>
 <div id="sidebarview">
     {#if content}
@@ -27,7 +37,6 @@
             width: 100%;
             height: 15%;
             justify-self: end;
-            background-color: #171717;
             border-top: #414040 1px solid;
             border-left: #414040 1px solid;
             border-bottom: #414040 1px solid;

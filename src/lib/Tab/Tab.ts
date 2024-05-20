@@ -1,7 +1,9 @@
 import { writable } from "svelte/store";
 import Editor from "../Editor.svelte";
-import { path as p, fs, dialog } from "@tauri-apps/api";
+import { dialog, invoke } from "@tauri-apps/api";
 import { saveFile } from "../File";
+import { warn } from "tauri-plugin-log-api";
+import { appSettings } from "../../config/config";
 
 export class Tab {
     id = 0;
@@ -70,29 +72,28 @@ export class Tab {
         if (this.tabOpen(path)) {
             return;
         }
-        let fileContent = "";
+        let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false, spaces: await appSettings.get("editor.tabSize")};
         try {
-            fileContent = await fs.readTextFile(path); //TODO: Fix performance issues/loading times on large files
+            fileData = await invoke("read_file", {path: path});
+            if (fileData.spaces === 0) {
+                fileData.spaces = await appSettings.get("editor.tabSize")
+            }
         } catch (error) {
-            console.warn("Can't read file content. Setting to empty string. Error: ", error);
+            warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
         }
-        let content = new Editor({target: document.getElementById("tabview"), props: {content: fileContent}});
+        let content = new Editor({target: document.getElementById("tabview"), props: {content: fileData.text}});
         let tab = new this.Tab(this.id, label, content, path);
         tab.isfile = true;
         tab.saved = true;
-        let fileType = "";
 
-        try {
-            fileType = await p.extname(tab.path);
-        } catch (error) {
-            console.warn("Cannot find file extension.")
-            fileType = "";
-        }
         content.updateFileInfo({
             "filename": tab.label,
             "path": tab.path,
-            "fileType": fileType,
-            "language": content.getLang(fileType),
+            "fileType": fileData.extension,
+            "language": await content.getLang(fileData.extension),
+            "encoding": fileData.encoding,
+            "hasBom": fileData.bom,
+            "spaces": fileData.spaces,
             "readonly": false,
         });
         this.tablist = [...this.tablist, tab];
@@ -143,5 +144,8 @@ export class Tab {
         for (let tab of this.tablist) {
             tab.updateView(this.activeid);
         }
+    }
+    refreshTabList() {
+        this.tabs.set(this.tablist);
     }
 }

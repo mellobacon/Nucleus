@@ -30,17 +30,17 @@
 }}></svelte:window>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={button} class="dropdown-button" class:open on:click={() => {open = !open}}>
+<div bind:this={button} class="menu-button" class:open on:click={() => {open = !open}}>
     {#if menu.icon}
         <svelte:component this={menu.icon}></svelte:component>
     {:else}
         {menu.menuname}
     {/if}
     {#if open}
-        <div bind:this={dropdownList} class="dropdown-list">
+        <div bind:this={dropdownList} class="menu-list">
             {#each menu.children as child}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div class="dropdown-item" class:disabled={child.disabled} on:click={() => {
+                <div class="menu-item" class:disabled={child.disabled} on:click={() => {
                     if (!child.disabled) {
                         child.action();
                     }
@@ -58,7 +58,7 @@
 </div>
 
 <style lang="scss">
-    .dropdown-button {
+    .menu-button {
         height: 100%;
         display: flex;
         align-items: center;
@@ -73,7 +73,7 @@
             height: 18px;
         }
     }
-    .dropdown-list {
+    .menu-list {
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -81,11 +81,10 @@
         min-width: 11.5rem;
         width: max-content;
         align-items: center;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, .8);
         border-radius: 3px;
         z-index: 9999;
     }
-    .dropdown-item {
+    .menu-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -99,11 +98,9 @@
         padding: 0 10px;
     }
     .shortcut {
-        color: #8c8c8c;
         margin-left: 20px;
     }
     .disabled {
-        color: #6b6b6b;
         cursor: not-allowed;
     }
 </style>
