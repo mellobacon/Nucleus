@@ -15,7 +15,7 @@
         let timer = setTimeout(() => {
             notification.remove();
             clearTimeout(timer);
-        }, 1500000)
+        }, 1500)
         return () => {
             clearTimeout(timer)
         }
