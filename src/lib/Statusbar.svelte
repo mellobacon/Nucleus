@@ -24,9 +24,9 @@
             }}
         ]},
         {name: "Notifications", content: NotificationList, icon: NotificationIcon, action: (t) => {toggleBottomPanel(t)}, options: [
-        {name: "Mark all as Read", action: () => {markAllRead()}}], 
-        buttons: [
-            {icon: TrashCan, title: "Clear Notifications", action: () => {clearNotifications()}}
+            {name: "Mark all as Read", action: () => {markAllRead()}}], 
+            buttons: [
+                {icon: TrashCan, title: "Clear Notifications", action: () => {clearNotifications()}}
         ]}
     ]
 
