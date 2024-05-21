@@ -1,40 +1,35 @@
 <script lang="ts">
-    import { getTime } from "../../config/config";
-    import { closeNotification, updateReadStatus } from "./notifications";
+    import { onMount } from "svelte";
+    import { closeToast } from "./notifications";
+    import { fade } from "svelte/transition";
 
-    export let id;
+    export let id: number;
     export let type = "";
     export let title = "";
     export let message = "";
-    export let read = false;
     export let actions = [];
 
     let notification: HTMLElement | null;
+
+    onMount(() => {
+        let timer = setTimeout(() => {
+            notification.remove();
+            clearTimeout(timer);
+        }, 1500000)
+        return () => {
+            clearTimeout(timer)
+        }
+    })
 </script>
 
-<div class="info">
-    <span>{getTime()}</span>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <span class="mark-read" on:click|preventDefault={() => {
-            read = !read
-            updateReadStatus(id, read); 
-        }
-    }>
-        {#if read}
-            Mark as unread
-        {:else}
-            Mark as read
-        {/if}
-    </span>
-</div>
-<div bind:this={notification} class="notification" class:error={type === "Error"} class:warning={type === "Warning"} class:read>
+<div bind:this={notification} class="notification-toast" class:error={type === "Error"} class:warning={type === "Warning"} transition:fade={{ duration: 150 }}>
     <div class="notification-info">
         <div class="details">
             <div class="icon"></div>
             <div class="title">{type}: {title}</div>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span class="close-button" on:click={() => {closeNotification(id)}}></span>
+        <span class="close-button" on:click={() => {closeToast(id)}}></span>
     </div>
 
     <div class="message">{message}</div>
@@ -55,26 +50,7 @@
     $error-color: #c02b2b;
     $warning-color: #ffeb10;
     $default-color: #4589ff;
-    .info {
-        color: #6d6d6d;
-        font-weight: 200;
-        font-size: 0.7rem;
-        margin-bottom: 0.5rem;
-        margin-top: 0.2rem;
-        display: flex;
-        align-items: center;
-        span {
-            margin: 0 5px;
-        }
-        .mark-read {
-            text-decoration: underline;
-            cursor: pointer;
-            &:hover {
-                color: #939393;
-            }
-        }
-    }
-    .notification {
+    .notification-toast {
         display: flex;
         min-height: $notification-height;
         background-color: #1f1f1f;
@@ -83,6 +59,8 @@
         border-top: 3px solid $default-color;
         flex-direction: column;
         justify-content: center;
+        box-shadow: 0 2px 6px #000000cc;
+        z-index: 10;
         &.warning {
             border-top: 3px solid $warning-color;
             .icon {
@@ -93,22 +71,6 @@
             border-top: 3px solid $error-color;
             .icon {
                 background-color: $error-color !important;
-            }
-        }
-        &.read {
-            border-top-color: #333;
-            color: #838383;
-            .icon {
-                background-color: #333 !important;
-            }
-            .action-button {
-                color: #bdd4ff75 !important;
-            }
-            :global(.bx--toast-notification__close-button .bx--toast-notification__close-icon) {
-                fill: #bdd4ff75 !important;
-            }
-            .message {
-                color: #333;
             }
         }
         &::before {

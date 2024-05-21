@@ -8,14 +8,21 @@ export enum NotifType {
 class Notification {
     id;
     type: string;
+    title: string;
     message: string;
     read: boolean;
     actions;
-    constructor(message, type, read = false, actions = []) {
+    constructor(title, type, read = false, message = "", actions = []) {
+        this.title = title;
         this.message = message;
         this.type = getType(type);
         this.read = read;
         this.actions = actions;
+    }
+}
+class ToastNotification extends Notification {
+    constructor(title, type, message = "", actions = []) {
+        super(title, type, false, message, actions);
     }
 }
 export class Action {
@@ -42,15 +49,28 @@ const actions = [
 let id = 0;
 export const unreadnotifications = writable(false);
 export const notifications = writable([]);
-let notificationlist = [];
+export const toasts = writable([]);
+let notificationlist: Notification[] = [];
+let toastlist: ToastNotification[] = [];
 
-export function addNotification(type: NotifType, message: string, actions = []) {
-    let notification = new Notification(message, type, false, actions);
+export function addNotification(type: NotifType, title: string, actions: Action[] = [], message = "") {
+    let notification = new Notification(title, type, false, message, actions);
+    let toast = new ToastNotification(title, type, message, actions);
     notification.id = id;
+    toast.id = id;
     notificationlist = [...notificationlist, notification];
+    toastlist = [...toastlist, toast];
     notifications.set(notificationlist);
+    toasts.set(toastlist);
     updateNotificationStatus();
     id++;
+}
+
+export function markAllRead() {
+    for (const notification of notificationlist) {
+        notification.read = true;
+    }
+    updateNotificationStatus();
 }
 
 export function updateReadStatus(id, read) {
@@ -65,7 +85,9 @@ export function updateReadStatus(id, read) {
 
 export function clearNotifications() {
     notificationlist = [];
+    toastlist = [];
     notifications.set(notificationlist);
+    toasts.set(toastlist);
     updateNotificationStatus();
 }
 
@@ -73,6 +95,11 @@ export function closeNotification(id) {
     notificationlist = notificationlist.filter(n => n.id !== id);
     notifications.set(notificationlist);
     updateNotificationStatus();
+}
+
+export function closeToast(id) {
+    toastlist = toastlist.filter(n => n.id !== id);
+    toasts.set(toastlist);
 }
 
 function getType(type: NotifType) {

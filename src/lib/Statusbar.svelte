@@ -3,10 +3,12 @@
     import { line_info, language, encoding, spaces } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
-    import { Terminal as TerminalIcon } from "carbon-icons-svelte";
+    import { Terminal as TerminalIcon, Notification as NotificationIcon, TrashCan } from "carbon-icons-svelte";
     import { invoke } from "@tauri-apps/api";
-    import Terminal from "./Terminal.svelte";
+    import Terminal, { clearTerminal, closeTerminal } from "./Terminal.svelte";
     import { workingDir } from "./File";
+    import NotificationList from "./Notifications/NotificationList.svelte";
+    import { NotifType, addNotification, clearNotifications, markAllRead, unreadnotifications } from "./Notifications/notifications";
 
     let appVersion = "";
     onMount(async () => {
@@ -14,7 +16,18 @@
     })
 
     const tools = [
-        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}}
+        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}, options: [
+            {name: "Clear Terminal", action: () => {clearTerminal();}}, 
+            {name: "Close Terminal", action: () => {
+                closeBottomPanel();
+                closeTerminal();
+            }}
+        ]},
+        {name: "Notifications", content: NotificationList, icon: NotificationIcon, action: (t) => {toggleBottomPanel(t)}, options: [
+        {name: "Mark all as Read", action: () => {markAllRead()}}], 
+        buttons: [
+            {icon: TrashCan, title: "Clear Notifications", action: () => {clearNotifications()}}
+        ]}
     ]
 
     async function spawnTerminal(t) {
@@ -33,13 +46,13 @@
     let currentTool = writable(null);
     let show = false;
 
-    export let editortool = writable({name: "", content: null});
+    export let editortool = writable({name: "", content: null, options: [], buttons: []});
 
     export function toggleBottomPanel(x = null) {
         show = !show;
         showBottomPanel.set(show);
         if (x) {
-            editortool.set({name: x.name, content: x.content});
+            editortool.set({name: x.name, content: x.content, options: x.options, buttons: x.buttons});
             currentTool.set(x.content);
         }
     }
@@ -66,8 +79,11 @@
     <div class="editor-tools">
         {#each tools as tool}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
+            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}} class:updated={$unreadnotifications}>
                 <svelte:component this={tool.icon}></svelte:component>
+                {#if tool.name === "Notifications"}
+                    <span class="notification"></span>
+                {/if}
             </span>
         {/each}
     </div>
@@ -122,6 +138,18 @@
             position: relative;
             &:hover {
                 cursor: pointer;
+            }
+            &.updated {
+                .notification {
+                    position: absolute;
+                    width: 8px;
+                    height: 8px;
+                    display: block;
+                    background-color: #4589ff;
+                    border-radius: 50%;
+                    top: 5px;
+                    left: 5px;
+                }
             }
         }
         span {

@@ -4,9 +4,13 @@
 </script>
 
 <div id="notifications">
+{#if $notifications.length == 0}
+    <span class="empty">You have no notifications</span>
+{:else}
 {#each $notifications as notification}
-    <Notification id={notification.id} type={notification.type} message={notification.message} read={notification.read} actions={notification.actions}></Notification>
+    <Notification id={notification.id} type={notification.type} title={notification.title} message={notification.message} read={notification.read} actions={notification.actions}></Notification>
 {/each}
+{/if}
 </div>
 
 <style lang="scss">
@@ -14,5 +18,8 @@
     height: calc(100% - 1.5rem);
     padding: 5px;
     overflow: auto;
+}
+.empty {
+    color: #8c8c8c;
 }
 </style>

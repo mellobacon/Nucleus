@@ -16,6 +16,7 @@
     import { getExtensions } from "./config/extensionhandler";
     import { fitTerminal } from "./lib/Terminal.svelte";
     import { loadDir } from "./lib/File";
+    import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -130,7 +131,7 @@
 						</Pane>
 						{#if $editortool}
 						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
-							<ToolView content={$editortool.content} name={$editortool.name}></ToolView>
+							<ToolView content={$editortool.content} name={$editortool.name} options={$editortool.options} buttons={$editortool.buttons}></ToolView>
 						</Pane>
 						{/if}
 					</Splitpanes>
@@ -139,6 +140,7 @@
 		</Splitpanes>
 	</div>
 	<Statusbar />
+	<NotificationToasts />
 </div>
 
 {#if $_openPopup}
