@@ -68,9 +68,8 @@ export function addNotification(type: NotifType, title: string, actions: Action[
 
 export function markAllRead() {
     for (const notification of notificationlist) {
-        notification.read = true;
+        updateReadStatus(notification.id, true);
     }
-    updateNotificationStatus();
 }
 
 export function updateReadStatus(id, read) {
