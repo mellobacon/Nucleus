@@ -17,6 +17,7 @@
     import { fitTerminal } from "./lib/Terminal.svelte";
     import { loadDir } from "./lib/File";
     import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
+    import { NotifType, addNotification } from "./lib/Notifications/notifications";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -34,6 +35,8 @@
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
+
+		addNotification(NotifType.Message, "Startup", [{label: "Test action", action: () => {}}], "test message");
 
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
