@@ -49,17 +49,13 @@
     $notification-border-width: 1px;
     $error-color: #c02b2b;
     $warning-color: #ffeb10;
-    $default-color: #4589ff;
     .notification-toast {
         display: flex;
         min-height: $notification-height;
-        background-color: #1f1f1f;
         margin-bottom: 0.8rem;
         position: relative;
-        border-top: 3px solid $default-color;
         flex-direction: column;
         justify-content: center;
-        box-shadow: 0 2px 6px #000000cc;
         z-index: 10;
         &.warning {
             border-top: 3px solid $warning-color;
@@ -80,7 +76,6 @@
             border-width: 0 $notification-border-width $notification-border-width $notification-border-width;
             border-style: solid;
             box-sizing: border-box;
-            border-color: #333;
             content: "";
         }
         .notification-info {
@@ -96,7 +91,6 @@
             align-items: center;
             .icon {
                 border-radius: 50%;
-                background-color: $default-color;
                 min-width: 20px;
                 min-height: 20px;
                 margin-right: 10px;
@@ -121,7 +115,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: #BDD4FF;
                 cursor: pointer;
                 &:nth-child(2) {
                     margin: 0 0.6rem;

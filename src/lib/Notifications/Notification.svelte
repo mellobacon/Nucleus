@@ -54,7 +54,6 @@
     $notification-border-width: 1px;
     $error-color: #c02b2b;
     $warning-color: #ffeb10;
-    $default-color: #4589ff;
     .info {
         color: #6d6d6d;
         font-weight: 200;
@@ -77,10 +76,8 @@
     .notification {
         display: flex;
         min-height: $notification-height;
-        background-color: #1f1f1f;
         margin-bottom: 0.8rem;
         position: relative;
-        border-top: 3px solid $default-color;
         flex-direction: column;
         justify-content: center;
         &.warning {
@@ -96,19 +93,11 @@
             }
         }
         &.read {
-            border-top-color: #333;
-            color: #838383;
-            .icon {
-                background-color: #333 !important;
-            }
             .action-button {
                 color: #bdd4ff75 !important;
             }
             :global(.bx--toast-notification__close-button .bx--toast-notification__close-icon) {
                 fill: #bdd4ff75 !important;
-            }
-            .message {
-                color: #333;
             }
         }
         &::before {
@@ -118,7 +107,6 @@
             border-width: 0 $notification-border-width $notification-border-width $notification-border-width;
             border-style: solid;
             box-sizing: border-box;
-            border-color: #333;
             content: "";
         }
         .notification-info {
@@ -134,7 +122,6 @@
             align-items: center;
             .icon {
                 border-radius: 50%;
-                background-color: $default-color;
                 min-width: 20px;
                 min-height: 20px;
                 margin-right: 10px;
@@ -159,7 +146,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: #BDD4FF;
                 cursor: pointer;
                 &:nth-child(2) {
                     margin: 0 0.6rem;
