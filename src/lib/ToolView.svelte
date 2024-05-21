@@ -6,11 +6,12 @@
     export let content = null;
     export let name = "Tool";
     export let options = [];
-    export let buttons;
+    export let buttons = [];
 </script>
 <div id="toolview">
     <div class="header">{name}
         <div class="header-tools">
+            {#if buttons}
             <div class="tool-buttons">
                 {#each buttons as button}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -18,10 +19,11 @@
                         <svelte:component this={button.icon}></svelte:component>
                     </div>
                 {/each}
-                {#if options}
-                    <Menu right menu={{icon: Ellipsis, children: options}}></Menu>
-                {/if}
             </div>
+            {/if}
+            {#if options}
+                <Menu right menu={{icon: Ellipsis, children: options}}></Menu>
+            {/if}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span class="close" title="Hide Panel" on:click={hideBottomPanel}></span>
         </div>
