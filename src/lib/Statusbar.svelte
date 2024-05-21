@@ -8,7 +8,7 @@
     import Terminal, { clearTerminal, closeTerminal } from "./Terminal.svelte";
     import { workingDir } from "./File";
     import NotificationList from "./Notifications/NotificationList.svelte";
-    import { NotifType, addNotification, clearNotifications, markAllRead, unreadnotifications } from "./Notifications/notifications";
+    import { clearNotifications, markAllRead, unreadnotifications } from "./Notifications/notifications";
 
     let appVersion = "";
     onMount(async () => {
