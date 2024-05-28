@@ -1,9 +1,11 @@
 <script lang="ts">
     import { notifications } from "./notifications";
     import Notification from "./Notification.svelte";
+
+    export let hidden = false;
 </script>
 
-<div id="notifications">
+<div id="notifications" class:hidden>
 {#if $notifications.length == 0}
     <span class="empty">You have no notifications</span>
 {:else}
@@ -21,5 +23,8 @@
 }
 .empty {
     color: #8c8c8c;
+}
+.hidden {
+    display: none;
 }
 </style>

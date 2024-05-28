@@ -134,7 +134,7 @@
 						</Pane>
 						{#if $editortool}
 						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
-							<ToolView content={$editortool.content} name={$editortool.name} options={$editortool.options} buttons={$editortool.buttons}></ToolView>
+							<ToolView name={$editortool.name} options={$editortool.options} buttons={$editortool.buttons}></ToolView>
 						</Pane>
 						{/if}
 					</Splitpanes>

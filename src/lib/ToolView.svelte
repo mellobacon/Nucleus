@@ -3,7 +3,6 @@
     import Ellipsis from "carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte";
     import Menu from "./utility/Menu.svelte";
 
-    export let content = null;
     export let name = "Tool";
     export let options = [];
     export let buttons = [];
@@ -28,9 +27,7 @@
             <span class="close" title="Hide Panel" on:click={hideBottomPanel}></span>
         </div>
     </div>
-    <div class="toolview-container">
-        <svelte:component this={content}></svelte:component>
-    </div>
+    <div id="toolview-container"></div>
 </div>
 
 <style lang="scss">
@@ -38,7 +35,7 @@
     height: calc(100% - 37px);
     width: 100%;
 }
-.toolview-container {
+#toolview-container {
     padding: 8px;
     height: 100%;
 }

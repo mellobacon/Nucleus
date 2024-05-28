@@ -40,20 +40,53 @@
     }
 </script>
 <script lang="ts" context="module">
-    import { writable } from "svelte/store";
+    import { get, writable } from "svelte/store";
     export let showBottomPanel = writable(false);
     export let externalTerminal = writable(false);
-    let currentTool = writable(null);
+    let lastTool = writable({tool: null, element: null});
+    let activeTools: {tool: any, element: any}[] = [];
     let show = false;
 
-    export let editortool = writable({name: "", content: null, options: [], buttons: []});
+    export let editortool = writable({name: "", options: [], buttons: []});
 
-    export function toggleBottomPanel(x = null) {
-        show = !show;
-        showBottomPanel.set(show);
-        if (x) {
-            editortool.set({name: x.name, content: x.content, options: x.options, buttons: x.buttons});
-            currentTool.set(x.content);
+    export function toggleBottomPanel(tool = null) {
+        let last = get(lastTool);
+        if (tool === last.tool) {
+            show = !show;
+            showBottomPanel.set(show);
+            return;
+        }
+        if (activeTools.length === 0) {
+            let element = new tool.content({target: document.getElementById("toolview-container")});
+            lastTool.set({tool: tool, element: element});
+            activeTools = [...activeTools, {tool: tool, element: element}];
+            show = true;
+            showBottomPanel.set(true);
+        }
+        else {
+            let mountedTool = activeTools.find(f => f.tool === tool);
+            if (!mountedTool) {
+                if (last.element) {
+                    last.element.$set({hidden: true});
+                }
+                let element = new tool.content({target: document.getElementById("toolview-container")});
+                lastTool.set({tool: tool, element: element});
+                activeTools = [...activeTools, {tool: tool, element: element}];
+                show = true;
+                showBottomPanel.set(true);
+            }
+            else {
+                if (last.element) {
+                    last.element.$set({hidden: true});
+                    mountedTool.element.$set({hidden: false});
+                    lastTool.set(mountedTool);
+                    showBottomPanel.set(true);
+                }
+            }
+        }
+
+        if (tool) {
+            editortool.set({name: tool.name, options: tool.options, buttons: tool.buttons});
         }
     }
     export function hideBottomPanel() {
@@ -63,7 +96,11 @@
     export function closeBottomPanel() {
         show = false;
         showBottomPanel.set(false);
-        editortool.set(null);
+        let current = activeTools.find(t => t.tool.name === get(editortool).name);
+        current.element.$destroy();
+        activeTools = activeTools.filter(t => t.tool.name !== get(editortool).name);
+        editortool.set({name: "", options: [], buttons: []});
+        lastTool.set({tool: null, element: null});
     }
     export function setTerminalState(value) {
         let v = value === true ? true : false;
