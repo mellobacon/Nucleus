@@ -2,6 +2,9 @@
     import { onMount } from "svelte";
     import { closeToast } from "./notifications";
     import { fade } from "svelte/transition";
+    import Info from "carbon-icons-svelte/lib/Information.svelte";
+    import Warning from "carbon-icons-svelte/lib/WarningAlt.svelte";
+    import Error from "carbon-icons-svelte/lib/CloseOutline.svelte";
 
     export let id: number;
     export let type = "";
@@ -15,7 +18,7 @@
         let timer = setTimeout(() => {
             notification.remove();
             clearTimeout(timer);
-        }, 10000)
+        }, 100000)
         return () => {
             clearTimeout(timer)
         }
@@ -25,7 +28,15 @@
 <div bind:this={notification} class="notification-toast" class:error={type === "Error"} class:warning={type === "Warning"} transition:fade={{ duration: 150 }}>
     <div class="notification-info">
         <div class="details">
-            <div class="icon"></div>
+            <div class="icon">
+                {#if type === "Error"}
+                    <Error />
+                {:else if type === "Warning"}
+                    <Warning />
+                {:else}
+                    <Info />
+                {/if}
+            </div>
             <div class="title">{type}: {title}</div>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -57,16 +68,25 @@
         flex-direction: column;
         justify-content: center;
         z-index: 10;
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            :global(svg) {
+                height: 22px;
+                width: 22px;
+            }
+        }
         &.warning {
             border-top: 3px solid $warning-color;
             .icon {
-                background-color: $warning-color !important;
+                color: $warning-color !important;
             }
         }
         &.error {
             border-top: 3px solid $error-color;
             .icon {
-                background-color: $error-color !important;
+                color: $error-color !important;
             }
         }
         &::before {

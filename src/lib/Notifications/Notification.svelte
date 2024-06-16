@@ -1,6 +1,9 @@
 <script lang="ts">
     import { getTime } from "../../config/config";
     import { closeNotification, updateReadStatus } from "./notifications";
+    import Info from "carbon-icons-svelte/lib/Information.svelte";
+    import Warning from "carbon-icons-svelte/lib/WarningAlt.svelte";
+    import Error from "carbon-icons-svelte/lib/CloseOutline.svelte";
 
     export let id;
     export let type = "";
@@ -30,7 +33,15 @@
 <div bind:this={notification} class="notification" class:error={type === "Error"} class:warning={type === "Warning"} class:read>
     <div class="notification-info">
         <div class="details">
-            <div class="icon"></div>
+            <div class="icon">
+                {#if type === "Error"}
+                    <Error />
+                {:else if type === "Warning"}
+                    <Warning />
+                {:else}
+                    <Info />
+                {/if}
+            </div>
             <div class="title">{type}: {title}</div>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -80,16 +91,25 @@
         position: relative;
         flex-direction: column;
         justify-content: center;
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            :global(svg) {
+                height: 22px;
+                width: 22px;
+            }
+        }
         &.warning {
             border-top: 3px solid $warning-color;
             .icon {
-                background-color: $warning-color !important;
+                color: $warning-color;
             }
         }
         &.error {
             border-top: 3px solid $error-color;
             .icon {
-                background-color: $error-color !important;
+                color: $error-color;
             }
         }
         &.read {

@@ -347,17 +347,17 @@ button:focus {
     border-top: 3px solid var(--notification-defaultBorderColor);
     color: var(--notification-foreground);
     &.read {
-        border-top-color: var(--notification-unreadBorderColor);
+        border-top-color: var(--notification-unreadBorderColor) !important;
         color: var(--notification-unreadColor);
         .icon {
-            background-color: var(--notification-unreadBorderColor) !important;
+            color: var(--notification-unreadBorderColor) !important;
         }
         .message {
             color: var(--notification-unreadBorderColor);
         }
     }
     .details .icon {
-        background-color: var(--notification-defaultBorderColor);
+        color: var(--notification-defaultBorderColor);
     }
     &::before {
         border-color: var(--window-inputBackground);

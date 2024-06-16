@@ -20,5 +20,6 @@
         display: flex;
         justify-content: flex-end;
         flex-direction: column;
+        padding-bottom: 1.5rem;
     }
 </style>
