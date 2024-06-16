@@ -185,7 +185,8 @@
                     background-color: #4589ff;
                     border-radius: 50%;
                     top: 5px;
-                    left: 5px;
+                    right: 5px;
+                    border: none;
                 }
             }
         }
