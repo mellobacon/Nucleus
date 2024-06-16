@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Detect indentation size on files
   - Indent markers
 - Copy/paste files in file tree
+- Notification system
 
 ### Changed
 
