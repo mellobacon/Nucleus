@@ -247,31 +247,6 @@ button:focus {
     border-right: 0.5px solid var(--window-borderColor);
 }
 
-.cm-content {
-    color: var(--editor-foreground);
-}
-
-.cm-activeLine {
-    background-color: var(--editor-activeLineBackground) !important;
-}
-.cm-gutters {
-    background-color: var(--editor-background) !important;
-    color: var(--editor-gutterForeground) !important;
-    border: none !important;
-}
-.cm-activeLineGutter {
-    color: var(--editor-gutterActiveForeground) !important;
-    background-color: var(--editor-gutterActiveBackground) !important;
-}
-.cm-scroller {
-    background-color: var(--editor-background);
-}
-.cm-cursor {
-    border-left-color: var(--window-foreground) !important;
-}
-.ͼ4 .cm-line::selection, .ͼ2 .cm-selectionBackground {
-    background-color: #4d5054 !important;
-}
 .rename-input .divider {
     background-color: var(--window-inputBorder);
 }
