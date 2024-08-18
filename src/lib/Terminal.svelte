@@ -31,7 +31,7 @@ export function clearTerminal() {
 }
 
 export function closeTerminal() {
-	pty.kill();
+	if (pty) pty.kill();
 }
 
 export function updateTermTheme() {
