@@ -10,10 +10,12 @@
     import { appSettings } from "../config/config";
     import { color, oneDark } from "../config/syntaxhighlighting/dark";
     import { warn } from "tauri-plugin-log-api";
-    import { foldGutter, bracketMatching, indentUnit } from "@codemirror/language";
+    import { foldGutter, bracketMatching, indentUnit, syntaxHighlighting } from "@codemirror/language";
     import { closeBrackets } from "@codemirror/autocomplete";
     import { indentationMarkers } from '@replit/codemirror-indentation-markers';
-    import { getThemeProperty, is_dark_theme } from "../config/themehandler";
+    import { editorHighlightStyle, editorTheme, getThemeProperty, is_dark_theme } from "../config/themehandler";
+    import { autocompletion } from "@codemirror/autocomplete";
+
 
 
     let ref;
@@ -34,6 +36,9 @@
     const tabSize = new Compartment();
     const indentSize = new Compartment();
     const colorScheme = new Compartment();
+    const theme = new Compartment();
+    const fontFamily = new Compartment();
+    const fontSize = new Compartment();
 
     export function updateFileInfo(file) {
         file_info.set(file);
@@ -96,6 +101,27 @@
             effects: colorScheme.reconfigure(EditorView.darkTheme.of(scheme))
         })
     }
+    export function setTheme() {
+        editorView.dispatch({
+            effects: theme.reconfigure([get(editorTheme), syntaxHighlighting(get(editorHighlightStyle))])
+        })
+    }
+    export function setFontFamily(family: string) {
+        editorView.dispatch({
+            effects: fontFamily.reconfigure(EditorView.theme(
+            {
+                "*": { fontFamily: family }
+            }))
+        })
+    }
+    export function setFontSize(size: number) {
+        editorView.dispatch({
+            effects: fontSize.reconfigure(EditorView.theme(
+            {
+                "*": { fontSize: `${size}px` }
+            }))
+        })
+    }
 
     onMount(async () => {
         editorView = new EditorView({
@@ -114,6 +140,10 @@
                     drawSelection(),
                     crosshairCursor(),
                     rectangularSelection(),
+                    autocompletion({
+                        aboveCursor: true,
+                        closeOnBlur: false
+                    }),
                     indentSize.of(indentUnit.of("    ")),
                     indentationMarkers({
                         thickness: 1,
@@ -127,8 +157,9 @@
                     keymap.of([indentWithTab]),
                     lang.of([]),
                     EditorState.allowMultipleSelections.of(true),
-                    //syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
-                    oneDark,
+                    theme.of([]),
+                    fontFamily.of([]),
+                    fontSize.of([]),
                     colorScheme.of(EditorView.darkTheme.of($is_dark_theme)),
                     keymap.of([
                         ...defaultKeymap
@@ -147,10 +178,10 @@
             })
         })
         editorView.contentDOM.classList.add("mousetrap");
-        setEditorFontSize(await appSettings.get("editor.fontSize"));
-        setEditorFontFamily(await appSettings.get("editor.fontFamily"));
+        setTheme();
+        setFontSize(await appSettings.get("editor.fontSize"));
+        setFontFamily(await appSettings.get("editor.fontFamily"));
         setEditorLineHeight(await appSettings.get("editor.lineHeight"));
-        
     });
 
     let _ = null;
@@ -214,16 +245,17 @@
         return cmlang;
     }
     export function setEditorFontSize(value: number) {
-        // there could be a better way to do all this but. eh
-        const editors = document.querySelectorAll(".cm-scroller");
-        for (const editorContainer of editors) {
-            (editorContainer as HTMLElement).style.setProperty("font-size", `${value}px`, "important")
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setFontSize(value);
+            }
         }
     }
     export function setEditorFontFamily(family: string) {
-        const editors = document.querySelectorAll(".cm-scroller");
-        for (const editorContainer of editors) {
-            (editorContainer as HTMLElement).style.setProperty("font-family", family, "important")
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setFontFamily(family);
+            }
         }
     }
     export function setEditorLineHeight(height: string) {
@@ -243,6 +275,13 @@
         for (const tab of get(tabs)) {
             if (tab.isfile) {
                 tab.content.setScheme(get(is_dark_theme))
+            }
+        }
+    }
+    export function setEditorTheme() {
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setTheme();
             }
         }
     }

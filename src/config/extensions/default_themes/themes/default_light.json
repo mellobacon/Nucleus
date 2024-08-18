@@ -128,6 +128,8 @@
         "terminal.brightBlue": "#34548a",
         "terminal.brightMagenta": "#5a4a78",
         "terminal.brightCyan": "#0f4b6e",
-        "terminal.brightWhite": "#828594"
+        "terminal.brightWhite": "#828594",
+
+        "test.color": "#f52891cc"
     }
 }

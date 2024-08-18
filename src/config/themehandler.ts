@@ -1,17 +1,19 @@
-import { homeDir, join } from "@tauri-apps/api/path";
 import { themes } from "./extensionhandler";
 import { info } from "tauri-plugin-log-api";
-import { exists, readDir } from "@tauri-apps/api/fs";
 import { get, writable } from "svelte/store";
 import { termTheme, updateTermTheme } from "../lib/Terminal.svelte";
-import { setColorScheme } from "../lib/Editor.svelte";
+import { setColorScheme, setEditorTheme } from "../lib/Editor.svelte";
+import { EditorView } from "@codemirror/view";
+import { HighlightStyle } from "@codemirror/language"
 
 export function getThemes() {
     return get(themes);
 }
 
 const stylesheet = document.styleSheets[0].cssRules[0] as CSSStyleRule;
-export const is_dark_theme = writable(true)
+export const is_dark_theme = writable(true);
+export const editorTheme = writable(EditorView.theme({}));
+export const editorHighlightStyle = writable(HighlightStyle.define([]))
 export async function loadTheme(name: string) {
     let theme = get(themes).find(n => n.name === name);
     info(`Loading theme: ${name}...`, {file: "themehandler.ts", line: 16});
@@ -20,6 +22,8 @@ export async function loadTheme(name: string) {
 
     // load base theme
     let json = await import(`./extensions/default_themes/themes/default_${theme.scheme}.json`);
+    let { tokenStyles } = await import(`./extensions/default_themes/script`);
+    const tokens = tokenStyles[theme.scheme];
     processStyles(json);
 
     // load custom theme if it exists
@@ -51,6 +55,52 @@ export async function loadTheme(name: string) {
         "foreground": getThemeProperty("terminal-foreground")
     })
 
+    editorTheme.set(EditorView.theme(
+        {
+            "&": {
+                color: getThemeProperty("editor-foreground"),
+                backgroundColor: getThemeProperty("editor-background"),
+            },
+            ".cm-content": {
+                caretColor: getThemeProperty("editor-foreground")
+            },
+
+            "&.cm-focused .cm-cursor": {
+                borderLeftColor: getThemeProperty("editor-foreground")
+            },
+
+            "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": {
+                backgroundColor: "#4d5054"
+            },
+            ".cm-activeLine": {
+                backgroundColor: getThemeProperty("editor-activeLineBackground"),
+            },
+            ".cm-gutters": {
+                backgroundColor: getThemeProperty("editor-background"),
+                color: getThemeProperty("editor-gutterForeground"),
+                border: "none"
+            },
+            ".cm-activeLineGutter": {
+                backgroundColor: getThemeProperty("editor-gutterActiveBackground"),
+                color: getThemeProperty("editor-gutterActiveForeground")
+            },
+            ".cm-tooltip": {
+                border: "0.5px solid #292929",
+                backgroundColor: getThemeProperty("editor-background"),
+                color: getThemeProperty("window-foreground")
+            },
+            ".cm-tooltip-autocomplete": {
+                "& > ul > li[aria-selected]": {
+                    backgroundColor: getThemeProperty("editor-activeLineBackground"),
+                    color: getThemeProperty("test-color")
+                }
+        }
+        },
+        { dark: true }
+    ))
+    editorHighlightStyle.set(HighlightStyle.define(tokens));
+
+    setEditorTheme();
     updateTermTheme();
 
     info("Theme loaded sucessfully.", {file: "themehandler.ts", line: 35});
