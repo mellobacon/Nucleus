@@ -1,31 +1,33 @@
 <script lang="ts">
-    import { closeBottomPanel, hideBottomPanel } from "./Statusbar.svelte";
+    import { hideBottomPanel } from "./Statusbar.svelte";
     import Ellipsis from "carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte";
     import Menu from "./utility/Menu.svelte";
-    import { clearTerminal, closeTerminal } from "./Terminal.svelte";
 
-    export let content = null;
     export let name = "Tool";
+    export let options = [];
+    export let buttons = [];
 </script>
 <div id="toolview">
     <div class="header">{name}
         <div class="header-tools">
+            {#if buttons}
             <div class="tool-buttons">
-                <Menu right menu={{icon: Ellipsis, children: [
-                    {name: "Clear Terminal", action: () => {
-                    clearTerminal();
-                }}, {name: "Close Terminal", action: () => {
-                    closeBottomPanel();
-                    closeTerminal();
-                }}]}}></Menu>
+                {#each buttons as button}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <div class="tool-button" title={button.title} on:click={button.action}>
+                        <svelte:component this={button.icon}></svelte:component>
+                    </div>
+                {/each}
             </div>
+            {/if}
+            {#if options}
+                <Menu right menu={{icon: Ellipsis, children: options}}></Menu>
+            {/if}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span class="close" title="Hide Panel" on:click={hideBottomPanel}></span>
         </div>
     </div>
-    <div class="toolview-container">
-        <svelte:component this={content}></svelte:component>
-    </div>
+    <div id="toolview-container"></div>
 </div>
 
 <style lang="scss">
@@ -33,10 +35,9 @@
     height: calc(100% - 37px);
     width: 100%;
 }
-.toolview-container {
+#toolview-container {
     padding: 8px;
     height: 100%;
-    
 }
 .header {
     height: 35px;
@@ -53,11 +54,26 @@
         flex-direction: row;
         .tool-buttons {
             height: 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
-        :global(.menu-button) {
+        .tool-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            cursor: pointer;
+        }
+        :global(.menu-button), .tool-button {
             min-width: unset;
             padding: 0 7px;
             border-radius: 3px;
+        }
+        :global(.tool-button svg) {
+            width: 18px;
+            height: 18px;
         }
     }
     .close {

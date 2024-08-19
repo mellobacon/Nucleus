@@ -3,10 +3,12 @@
     import { line_info, language, encoding, spaces } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
-    import { Terminal as TerminalIcon } from "carbon-icons-svelte";
+    import { Terminal as TerminalIcon, Notification as NotificationIcon, TrashCan } from "carbon-icons-svelte";
     import { invoke } from "@tauri-apps/api";
-    import Terminal from "./Terminal.svelte";
+    import Terminal, { clearTerminal, closeTerminal } from "./Terminal.svelte";
     import { workingDir } from "./File";
+    import NotificationList from "./Notifications/NotificationList.svelte";
+    import { clearNotifications, markAllRead, unreadnotifications } from "./Notifications/notifications";
 
     let appVersion = "";
     onMount(async () => {
@@ -14,7 +16,18 @@
     })
 
     const tools = [
-        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}}
+        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}, options: [
+            {name: "Clear Terminal", action: () => {clearTerminal();}}, 
+            {name: "Close Terminal", action: () => {
+                closeBottomPanel();
+                closeTerminal();
+            }}
+        ]},
+        {name: "Notifications", content: NotificationList, icon: NotificationIcon, action: (t) => {toggleBottomPanel(t)}, options: [
+            {name: "Mark all as Read", action: () => {markAllRead()}}], 
+            buttons: [
+                {icon: TrashCan, title: "Clear Notifications", action: () => {clearNotifications()}}
+        ]}
     ]
 
     async function spawnTerminal(t) {
@@ -27,20 +40,53 @@
     }
 </script>
 <script lang="ts" context="module">
-    import { writable } from "svelte/store";
+    import { get, writable } from "svelte/store";
     export let showBottomPanel = writable(false);
     export let externalTerminal = writable(false);
-    let currentTool = writable(null);
+    let lastTool = writable({tool: null, element: null});
+    let activeTools: {tool: any, element: any}[] = [];
     let show = false;
 
-    export let editortool = writable({name: "", content: null});
+    export let editortool = writable({name: "", options: [], buttons: []});
 
-    export function toggleBottomPanel(x = null) {
-        show = !show;
-        showBottomPanel.set(show);
-        if (x) {
-            editortool.set({name: x.name, content: x.content});
-            currentTool.set(x.content);
+    export function toggleBottomPanel(tool = null) {
+        let last = get(lastTool);
+        if (tool === last.tool) {
+            show = !show;
+            showBottomPanel.set(show);
+            return;
+        }
+        if (activeTools.length === 0) {
+            let element = new tool.content({target: document.getElementById("toolview-container")});
+            lastTool.set({tool: tool, element: element});
+            activeTools = [...activeTools, {tool: tool, element: element}];
+            show = true;
+            showBottomPanel.set(true);
+        }
+        else {
+            let mountedTool = activeTools.find(f => f.tool === tool);
+            if (!mountedTool) {
+                if (last.element) {
+                    last.element.$set({hidden: true});
+                }
+                let element = new tool.content({target: document.getElementById("toolview-container")});
+                lastTool.set({tool: tool, element: element});
+                activeTools = [...activeTools, {tool: tool, element: element}];
+                show = true;
+                showBottomPanel.set(true);
+            }
+            else {
+                if (last.element) {
+                    last.element.$set({hidden: true});
+                    mountedTool.element.$set({hidden: false});
+                    lastTool.set(mountedTool);
+                    showBottomPanel.set(true);
+                }
+            }
+        }
+
+        if (tool) {
+            editortool.set({name: tool.name, options: tool.options, buttons: tool.buttons});
         }
     }
     export function hideBottomPanel() {
@@ -50,7 +96,11 @@
     export function closeBottomPanel() {
         show = false;
         showBottomPanel.set(false);
-        editortool.set(null);
+        let current = activeTools.find(t => t.tool.name === get(editortool).name);
+        current.element.$destroy();
+        activeTools = activeTools.filter(t => t.tool.name !== get(editortool).name);
+        editortool.set({name: "", options: [], buttons: []});
+        lastTool.set({tool: null, element: null});
     }
     export function setTerminalState(value) {
         let v = value === true ? true : false;
@@ -66,8 +116,11 @@
     <div class="editor-tools">
         {#each tools as tool}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
+            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}} class:updated={$unreadnotifications}>
                 <svelte:component this={tool.icon}></svelte:component>
+                {#if tool.name === "Notifications"}
+                    <span class="notification"></span>
+                {/if}
             </span>
         {/each}
     </div>
@@ -122,6 +175,19 @@
             position: relative;
             &:hover {
                 cursor: pointer;
+            }
+            &.updated {
+                .notification {
+                    position: absolute;
+                    width: 8px;
+                    height: 8px;
+                    display: block;
+                    background-color: #4589ff;
+                    border-radius: 50%;
+                    top: 5px;
+                    right: 5px;
+                    border: none;
+                }
             }
         }
         span {
