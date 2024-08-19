@@ -1,6 +1,6 @@
 <script lang="ts">
     import VerticalDots from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
-    import Dropdown from "./utility/Dropdown.svelte";
+    import Menu from "./utility/Menu.svelte";
     import TabList from "./Tab/TabList.svelte";
     import NotSupported from "./utility/NotSupported.svelte";
     import { Tab } from "./Tab/Tab";
@@ -102,9 +102,9 @@
 <div id="editor-tabs" bind:this={tablist} class:hidden={$hidden}>
     <TabList width={$computedWidth} tabs={tabs} on:closetab={async (e) => {await closeTab(e.detail.tabid)}} on:select={(e) => {editorTab.setActive(e.detail.tabid)}}></TabList>
     <div class="tab-toolbar" bind:this={toolbar}>
-        <Dropdown right menu={{icon: VerticalDots, children: [
+        <Menu right menu={{icon: VerticalDots, children: [
             {name: "Close All Tabs", action: async () => {await closeAllTabs()}},
-        ]}}></Dropdown>
+        ]}}></Menu>
     </div>
 </div>
 
@@ -122,7 +122,6 @@
         height: 100%;
         display: flex;
         align-items: center;
-        color: white;
         padding: 0 5px;
     }
 </style>

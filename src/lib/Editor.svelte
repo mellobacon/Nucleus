@@ -8,8 +8,13 @@
     import { writable } from "svelte/store";
     import { saveFile, updateSaveState } from "./File";
     import { appSettings } from "../config/config";
-    import { oneDark } from "../config/syntaxhighlighting/dark";
+    import { color, oneDark } from "../config/syntaxhighlighting/dark";
     import { warn } from "tauri-plugin-log-api";
+    import { foldGutter, bracketMatching, indentUnit } from "@codemirror/language";
+    import { closeBrackets } from "@codemirror/autocomplete";
+    import { indentationMarkers } from '@replit/codemirror-indentation-markers';
+    import { getThemeProperty, is_dark_theme } from "../config/themehandler";
+
 
     let ref;
     let editorView: EditorView;
@@ -22,9 +27,13 @@
         "language": "",
         "encoding": "",
         "hasBom": false,
+        "spaces": 0,
         "readonly": false,
     });
     const lang = new Compartment();
+    const tabSize = new Compartment();
+    const indentSize = new Compartment();
+    const colorScheme = new Compartment();
 
     export function updateFileInfo(file) {
         file_info.set(file);
@@ -64,8 +73,28 @@
     export function hasBom() {
         return $file_info.hasBom;
     }
+    export function getSpaces() {
+        return $file_info.spaces;
+    }
     export function getView() {
         return editorView;
+    }
+    export function setTabSize(size) {
+        spaces.set(size);
+        editorView.dispatch({
+            effects: tabSize.reconfigure(EditorState.tabSize.of(size))
+        })
+        setIndentSize(size)
+    }
+    function setIndentSize(size) {
+        editorView.dispatch({
+            effects: indentSize.reconfigure(indentUnit.of(" ".repeat(size)))
+        })
+    }
+    export function setScheme(scheme) {
+        editorView.dispatch({
+            effects: colorScheme.reconfigure(EditorView.darkTheme.of(scheme))
+        })
     }
 
     onMount(async () => {
@@ -74,6 +103,9 @@
             state: EditorState.create({
                 extensions: [
                     lineNumbers(),
+                    foldGutter({openText:"▼", closedText: "►"}),
+                    bracketMatching(),
+                    closeBrackets(),
                     highlightActiveLineGutter(),
                     //highlightSpecialChars(), // disabled as an attempt to hide bom for now
                     highlightActiveLine(),
@@ -82,11 +114,22 @@
                     drawSelection(),
                     crosshairCursor(),
                     rectangularSelection(),
+                    indentSize.of(indentUnit.of("    ")),
+                    indentationMarkers({
+                        thickness: 1,
+                        colors: {
+                            dark: getThemeProperty("editor-gutterForeground"),
+                            activeDark: getThemeProperty("editor-activeIndentLineColor"),
+                            light: getThemeProperty("editor-gutterForeground"),
+                            activeLight: getThemeProperty("editor-activeIndentLineColor")
+                        }
+                    }),
                     keymap.of([indentWithTab]),
                     lang.of([]),
                     EditorState.allowMultipleSelections.of(true),
                     //syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
                     oneDark,
+                    colorScheme.of(EditorView.darkTheme.of($is_dark_theme)),
                     keymap.of([
                         ...defaultKeymap
                     ]),
@@ -97,7 +140,8 @@
                         if (update.state.selection.ranges.some(r => !r.empty)) {
                             updateLineInfo();
                         }
-                    })
+                    }),
+                    tabSize.of(EditorState.tabSize.of(4))
                 ],
                 doc: content
             })
@@ -105,6 +149,8 @@
         editorView.contentDOM.classList.add("mousetrap");
         setEditorFontSize(await appSettings.get("editor.fontSize"));
         setEditorFontFamily(await appSettings.get("editor.fontFamily"));
+        setEditorLineHeight(await appSettings.get("editor.lineHeight"));
+        
     });
 
     let _ = null;
@@ -136,6 +182,7 @@
         updateLineInfo();
         language.set($file_info.language);
         encoding.set({value: $file_info.encoding, hasBom: $file_info.hasBom});
+        setTabSize($file_info.spaces);
     }
     export function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
@@ -153,10 +200,13 @@
 </script>
 <script lang="ts" context="module">
     import { languages as cmLangs } from "@codemirror/language-data";
+    import { tabs } from "./EditorTabList.svelte";
+    import { get } from "svelte/store";
 
     export const line_info = writable({line: "-", column: "-"});
     export const language = writable("Unknown");
     export const encoding = writable({value: "UTF-8", hasBom: false});
+    export const spaces = writable(4);
     const langmode = writable(null);
 
     export function getLangFromExt(ext: string) {
@@ -174,6 +224,26 @@
         const editors = document.querySelectorAll(".cm-scroller");
         for (const editorContainer of editors) {
             (editorContainer as HTMLElement).style.setProperty("font-family", family, "important")
+        }
+    }
+    export function setEditorLineHeight(height: string) {
+        const editors = document.querySelectorAll(".cm-scroller");
+        for (const editorContainer of editors) {
+            (editorContainer as HTMLElement).style.setProperty("line-height", height, "important")
+        }
+    }
+    export function setEditorTabSize(size) {
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setTabSize(size);
+            }
+        }
+    }
+    export function setColorScheme() {
+        for (const tab of get(tabs)) {
+            if (tab.isfile) {
+                tab.content.setScheme(get(is_dark_theme))
+            }
         }
     }
 </script>
@@ -202,23 +272,44 @@
         padding-top: 7px;
         overflow-y: overlay;
         overflow-x: overlay !important;
-        &::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 20px;
-        }
-        &::-webkit-scrollbar-corner {
-            background-color: transparent;
-        }
+        width: -webkit-fill-available;
+        height: -webkit-fill-available !important;
+        position: absolute !important;
+    }
+    :global(.cm-gutters) {
+        z-index: 2;
     }
     :global(.cm-content) {
-        padding: 0 0 200px 0 !important;
+        padding: 0 10px 200px 0 !important;
         text-wrap: wrap !important;
     }
-    :global(.cm-lineNumbers), :global(.cm-gutterElement) {
-        min-width: 50px !important;
+    :global(.cm-lineNumbers) {
+        min-width: 60px !important;
+        &:hover {
+            ~:global(.cm-foldGutter) {
+                opacity: 100;
+                pointer-events: all;
+            }
+        }
+    }
+    :global(.cm-gutterElement) {
         text-align: center !important;
+    }
+    :global(.cm-foldGutter) {
+        position: absolute;
+        left: 49px;
+        pointer-events: none;
+        opacity: 0;
+        transition: 0.4s;
+        &:hover {
+            opacity: 100;
+            pointer-events: all;
+        }
+    }
+    :global(.cm-indent-markers)::before {
+        z-index: 0 !important;
+    }
+    :global(.cm-line) {
+        padding: 0 2px 0 1px !important;
     }
 </style>

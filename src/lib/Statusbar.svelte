@@ -1,12 +1,12 @@
 <script lang="ts">
     import { isfile } from "./EditorTabList.svelte";
-    import { line_info, language, encoding } from "./Editor.svelte";
+    import { line_info, language, encoding, spaces } from "./Editor.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
-    import { Terminal } from "carbon-icons-svelte";
-    import { homeDir } from '@tauri-apps/api/path';
-    import { filetree } from "./FileTree.svelte";
+    import { Terminal as TerminalIcon } from "carbon-icons-svelte";
     import { invoke } from "@tauri-apps/api";
+    import Terminal from "./Terminal.svelte";
+    import { workingDir } from "./File";
 
     let appVersion = "";
     onMount(async () => {
@@ -14,20 +14,23 @@
     })
 
     const tools = [
-        {name: "Terminal", content: null, icon: Terminal, action: spawnTerminal}
+        {name: "Terminal", content: Terminal, icon: TerminalIcon, action: (t) => {spawnTerminal(t)}}
     ]
 
-    async function spawnTerminal() {
-        let workingdir = await homeDir();
-        if ($filetree.length !== 0) {
-            workingdir = $filetree[0].path;
+    async function spawnTerminal(t) {
+        if ($externalTerminal) {
+            invoke("open_terminal", {path: $workingDir});
         }
-        invoke("open_terminal", {path: workingdir});
+        else {
+            toggleBottomPanel(t);
+        }
     }
 </script>
 <script lang="ts" context="module">
     import { writable } from "svelte/store";
     export let showBottomPanel = writable(false);
+    export let externalTerminal = writable(false);
+    let currentTool = writable(null);
     let show = false;
 
     export let editortool = writable({name: "", content: null});
@@ -37,7 +40,21 @@
         showBottomPanel.set(show);
         if (x) {
             editortool.set({name: x.name, content: x.content});
+            currentTool.set(x.content);
         }
+    }
+    export function hideBottomPanel() {
+        show = false;
+        showBottomPanel.set(false);
+    }
+    export function closeBottomPanel() {
+        show = false;
+        showBottomPanel.set(false);
+        editortool.set(null);
+    }
+    export function setTerminalState(value) {
+        let v = value === true ? true : false;
+        externalTerminal.set(v);
     }
 </script>
 
@@ -49,13 +66,15 @@
     <div class="editor-tools">
         {#each tools as tool}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tool" title={tool.name} on:click={() => {tool.action()}}>
+            <span class="tool" title={tool.name} on:click={() => {tool.action(tool)}}>
                 <svelte:component this={tool.icon}></svelte:component>
             </span>
         {/each}
     </div>
     {#if $isfile}
         <div class="editor-info">
+            <span title="Indentation">Spaces: {$spaces}</span>
+            <div class="divider"></div>
             <span title="Ln: {$line_info.line}, Col: {$line_info.column}">{$line_info.line} : {$line_info.column}</span>
             <div class="divider"></div>
             <span>{$encoding.value} {$encoding.hasBom === true ? " with BOM" : ""}</span>
@@ -78,7 +97,6 @@
         }
     }
     #title {
-        color: #8c8c8c;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -102,10 +120,8 @@
             height: 100%;
             padding: 0 5px;
             position: relative;
-            color: #8c8c8c;
             &:hover {
                 cursor: pointer;
-                background-color: #363636;
             }
         }
         span {
@@ -121,7 +137,6 @@
         flex-grow: 1;
         font-size: 13px;
         height: 100%;
-        color: #8c8c8c;
         span {
             padding: 0 7px;
             height: 100%;

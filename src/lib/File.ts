@@ -1,10 +1,14 @@
-import { dialog, fs, path, invoke, window } from "@tauri-apps/api";
+import { dialog, fs, path, invoke, window, clipboard } from "@tauri-apps/api";
 import { get, writable } from 'svelte/store';
-import { tabs, addEditorTab, renameTab, closeTab, refreshTabs } from "./EditorTabList.svelte";
+import { tabs, addEditorTab, renameTab, closeTab, refreshTabs, closeAllTabs } from "./EditorTabList.svelte";
 import { filetree } from "./FileTree.svelte";
 import { watchImmediate } from "tauri-plugin-fs-watch-api";
 import { openFileTree } from "./Sidebar.svelte";
 import { info, trace, warn, error } from "tauri-plugin-log-api";
+import { homeDir } from "@tauri-apps/api/path";
+import { appSettings } from "../config/config";
+import { closeBottomPanel } from "./Statusbar.svelte";
+import { closeTerminal } from "./Terminal.svelte";
 
 export async function openFile() {
     let newPath = await dialog.open() as string;
@@ -16,15 +20,26 @@ export async function openFile() {
 export const workspaceName = writable("Untitled Workspace");
 export const dirToLoad =  writable("");
 export const dirLoadFail = writable(false);
+export const workingDir = writable(await homeDir());
 export async function openFolder() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
-    info(`Opening folder in: ${directory}`, {file: "File.ts", line: 22});
+    if (!directory) return;
+    info(`Opening folder in: ${directory}`, {file: "File.ts", line: 25});
+    localStorage.setItem("lastDir", directory);
+    closeBottomPanel();
+    closeTerminal();
+    closeAllTabs();
+    loadDir(directory);
+}
+
+export async function loadDir(directory) {
     if (!directory) {
-        warn("Directory path is null. Aborting...", {file: "File.ts", line: 24});
+        warn("Directory path is null. Aborting...", {file: "File.ts", line: 30});
         return
     };
     dirToLoad.set(directory.split(path.sep).pop());
+    workingDir.set(directory);
     // if file path is not in the configured scope already, add it
     // TODO: should configure this so it doesnt access restricted paths based on user permissions
     await invoke("attempt_file_access", {app_handle: window, p: directory});
@@ -257,6 +272,38 @@ export async function renameFile(filename: string, oldpath: string) {
     }
     refreshTabs();
     return true;
+}
+
+export async function readFile(path) {
+    let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false, spaces: await appSettings.get("editor.tabSize")};
+    try {
+        fileData = await invoke("read_file", {path: path});
+        if (fileData.spaces === 0) {
+            fileData.spaces = await appSettings.get("editor.tabSize")
+        }
+    } catch (error) {
+        warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
+    }
+    return fileData;
+}
+
+export async function pasteFile(dest) {
+    const copied = await clipboard.readText();
+    const filename = copied.split(path.sep).pop();
+    let newpath = `${dest}${path.sep}${filename}`;
+    if (!await fs.exists(copied) || await fs.exists(newpath))
+        return
+    const fileData = await readFile(copied);
+
+    if (!await dialog.confirm(`Are you sure you want to copy "${filename}" from "./${copied.split(path.sep).pop()}" into "./${dest.split(path.sep).pop()}?"`, {title: "Nucleus: Move File"})) {
+        return;
+    }
+    try {
+        await invoke("write_file", {path: newpath, content: fileData.text, enc: fileData.encoding, hasBom: fileData.bom, spaces: fileData.spaces});
+    } catch (e) {
+        error(`Cannot create file in path ${dest}. Error: ${e}`, {file: "File.ts", line: 287});
+    }
+    addEditorTab(newpath, filename);
 }
 
 export function checkValidFileName(input: string) {

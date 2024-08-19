@@ -100,7 +100,6 @@
         }
     }
     .close-tab span:hover {
-        background-color: #414040;
         transition: 0.1s;
         border-radius: 3px;
     }

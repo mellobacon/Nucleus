@@ -1,0 +1,20 @@
+{
+    "name": "default_themes",
+    "author": "mellobacon",
+    "version": "0.1.0",
+    "description": "",
+    "theme": [
+        {
+            "theme-name": "Dark",
+            "identifier": "default_dark",
+            "path": "./themes/default_dark.json",
+            "color-scheme": "dark"
+        },
+        {
+            "theme-name": "Light",
+            "identifier": "default_light",
+            "path": "./themes/default_light.json",
+            "color-scheme": "light"
+        }
+    ]
+}

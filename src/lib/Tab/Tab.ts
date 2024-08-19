@@ -3,6 +3,7 @@ import Editor from "../Editor.svelte";
 import { dialog, invoke } from "@tauri-apps/api";
 import { saveFile } from "../File";
 import { warn } from "tauri-plugin-log-api";
+import { appSettings } from "../../config/config";
 
 export class Tab {
     id = 0;
@@ -71,9 +72,12 @@ export class Tab {
         if (this.tabOpen(path)) {
             return;
         }
-        let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false};
+        let fileData = {text: "", encoding: "UTF-8", extension: "", bom: false, spaces: await appSettings.get("editor.tabSize")};
         try {
             fileData = await invoke("read_file", {path: path});
+            if (fileData.spaces === 0) {
+                fileData.spaces = await appSettings.get("editor.tabSize")
+            }
         } catch (error) {
             warn(`Can't read file content in ${path}. Setting to empty string. Error: ${error}`, {file: "Tab.ts", line: 79});
         }
@@ -89,6 +93,7 @@ export class Tab {
             "language": await content.getLang(fileData.extension),
             "encoding": fileData.encoding,
             "hasBom": fileData.bom,
+            "spaces": fileData.spaces,
             "readonly": false,
         });
         this.tablist = [...this.tablist, tab];

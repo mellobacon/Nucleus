@@ -53,7 +53,6 @@
 </div>
 
 <style lang="scss">
-    $invalid-color: #fa4d56;
     .input-container {
         display: flex;
         flex-direction: column;
@@ -78,12 +77,8 @@
     .hint-text {
         padding: 0 2px;
         font-size: 0.9rem;
-        &.invalid {
-            color: $invalid-color;
-        }
     }
     .readonly {
         cursor: not-allowed;
-        background-color: #2d2d2d;
     }
 </style>

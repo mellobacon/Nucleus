@@ -87,7 +87,6 @@
         padding: 0.25rem;
         z-index: 9999;
         position: absolute;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, .8);
         border-radius: 3px;
     }
     .context-menu-option {
@@ -104,12 +103,9 @@
         padding: 0 10px;
     }
     .option-shortcut {
-        color: #8c8c8c;
         margin-left: 10px;
-        
     }
     .disabled {
-        color: #6b6b6b;
         cursor: not-allowed;
     }
 </style>
