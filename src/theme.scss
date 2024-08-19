@@ -316,3 +316,35 @@ button:focus {
         background-color: #1b83ddb5;
     }
 }
+
+.notification, .notification-toast {
+    background-color: var(--notification-background);
+    border-top: 3px solid var(--notification-defaultBorderColor);
+    color: var(--notification-foreground);
+    &.read {
+        border-top-color: var(--notification-unreadBorderColor) !important;
+        color: var(--notification-unreadColor);
+        .icon {
+            color: var(--notification-unreadBorderColor) !important;
+        }
+        .message {
+            color: var(--notification-unreadBorderColor);
+        }
+    }
+    .details .icon {
+        color: var(--notification-defaultBorderColor);
+    }
+    &::before {
+        border-color: var(--window-inputBackground);
+    }
+    .action-button {
+        color: var(--notification-actionButtonColor);
+    }
+}
+.notification-toast {
+    box-shadow: 0 2px 6px var(--window-boxShadow);
+}
+
+.editor-panes .splitpanes__splitter::before {
+    background-color: var(--window-panelBorderColor);
+}

@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Indent markers
 - Copy/paste files in file tree
 - Autocomplete in the editor
+- Notification system
 
 ### Changed
 

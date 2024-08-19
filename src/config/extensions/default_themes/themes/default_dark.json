@@ -6,6 +6,7 @@
         "window.background": "#171717",
         "window.borderColor": "#414040",
         "window.accent": "#376ba3",
+        "window.panelBorderColor": "#34b0f8",
 
         "window.menuBackground": "#2D2D2D",
         "window.menuButtonBackground": "#2D2D2D",
@@ -137,6 +138,13 @@
         "terminal.brightCyan": "#7dcfff",
         "terminal.brightWhite": "#acb0d0",
 
-        "test.color": "#f52891cc"
+        "test.color": "#f52891cc",
+      
+        "notification.background": "#1f1f1f",
+        "notification.foreground": "#fff",
+        "notification.defaultBorderColor": "#4589ff",
+        "notification.unreadColor": "#838383",
+        "notification.unreadBorderColor": "#333",
+        "notification.actionButtonColor": "#bdd4ff"
     }
 }
