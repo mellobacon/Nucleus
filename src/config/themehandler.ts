@@ -85,18 +85,33 @@ export async function loadTheme(name: string) {
                 color: getThemeProperty("editor-gutterActiveForeground")
             },
             ".cm-tooltip": {
-                border: "0.5px solid #292929",
-                backgroundColor: getThemeProperty("editor-background"),
-                color: getThemeProperty("window-foreground")
+                border: `1px solid ${getThemeProperty("editor-tooltipBorder")}`,
+                backgroundColor: getThemeProperty("editor-tooltipBackground"),
+                color: getThemeProperty("editor-tooltipForeground"),
             },
             ".cm-tooltip-autocomplete": {
+                "& > ul": {
+                    maxHeight: "12em !important",
+                    fontWeight: "500"
+                },
                 "& > ul > li[aria-selected]": {
-                    backgroundColor: getThemeProperty("editor-activeLineBackground"),
-                    color: getThemeProperty("test-color")
+                    backgroundColor: getThemeProperty("editor-tooltipActiveBackground"),
+                    color: getThemeProperty("editor-tooltipActiveForeground")
+                },
+                "& > ul > li": {
+                    padding: "2px 3px !important"
                 }
-        }
+            },
+            ".cm-completionMatchedText": {
+                textDecoration: "none",
+                color: getThemeProperty("editor-tooltipCompletionForeground")
+            },
+            "&.cm-focused .cm-matchingBracket": {
+                backgroundColor: "transparent",
+                outline: "0.5px solid #5c5c5c"
+            }
         },
-        { dark: true }
+        { dark: get(is_dark_theme) }
     ))
     editorHighlightStyle.set(HighlightStyle.define(tokens));
 

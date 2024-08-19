@@ -94,6 +94,12 @@
         "editor.activeLineBackground": "#7e7e7e2b",
         "editor.activeLineBorder": "",
         "editor.activeIndentLineColor": "#000000",
+        "editor.tooltipForeground": "#3a3a3a",
+        "editor.tooltipBackground": "#f5f5f5",
+        "editor.tooltipActiveBackground": "#4371c1",
+        "editor.tooltipActiveForeground": "#e4e4e4",
+        "editor.tooltipBorder": "#bbbbbb",
+        "editor.tooltipCompletionForeground": "#56a8ff",
 
         "filetree.treeNodeBackground": "",
         "filetree.treeNodeForeground": "#3D3D3D",
