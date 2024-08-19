@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {keymap, highlightSpecialChars, drawSelection, highlightActiveLine, dropCursor,
+    import {keymap, drawSelection, highlightActiveLine, dropCursor,
         rectangularSelection, crosshairCursor,
         lineNumbers, highlightActiveLineGutter, EditorView} from "@codemirror/view";
     import {EditorState, Compartment} from "@codemirror/state"
@@ -8,7 +8,6 @@
     import { writable } from "svelte/store";
     import { saveFile, updateSaveState } from "./File";
     import { appSettings } from "../config/config";
-    import { color, oneDark } from "../config/syntaxhighlighting/dark";
     import { warn } from "tauri-plugin-log-api";
     import { foldGutter, bracketMatching, indentUnit, syntaxHighlighting } from "@codemirror/language";
     import { closeBrackets } from "@codemirror/autocomplete";
