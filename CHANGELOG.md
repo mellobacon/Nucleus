@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Detect indentation size on files
   - Indent markers
 - Copy/paste files in file tree
+- Autocomplete in the editor
 
 ### Changed
 
@@ -38,7 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - If the app crashes, the error outputs to the log file
   - You can open the log file folder from the editor toolbar menu under "Help"
 - Syntax Highlighting
-  - (LIST LANGAUGES HERE)
 - Handling of opening a binary file or unsupported file type. Now shows prompt in editor view telling you so
 - Ability to focus on buttons and inputs via Tab
   - Keyboard support for the file tree is not yet included
