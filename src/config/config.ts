@@ -119,3 +119,8 @@ export async function openLogFiles() {
     let recent_log = (await fs.readDir(`${log_dir}logs`)).at(-1);
     await invoke("open_in_explorer", {path: `${log_dir}logs${path.sep}${recent_log.name}`});
 }
+
+export function getTime() {
+    let time = new Intl.DateTimeFormat('en-US', {dateStyle: "short", timeStyle: "long"}).format();
+    return time;
+}
