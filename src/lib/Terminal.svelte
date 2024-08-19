@@ -7,13 +7,13 @@
 	import { spawn, type IPty } from "tauri-pty";
 
 	let terminalElement: HTMLElement;
+	export let hidden = false;
 
 	function initializeXterm() {
 		initShell(terminalElement);
 	}
 
 	onMount(async () => {
-		console.log("mount");
 		initializeXterm();
 	});
 </script>
@@ -75,11 +75,14 @@ function initShell(terminalElement: HTMLElement) {
 
 <svelte:window on:resize={fitTerminal}></svelte:window>
 
-<div id="terminal" bind:this={terminalElement} />
+<div id="terminal" bind:this={terminalElement} class:hidden />
 
 <style>
 	#terminal {
 		height: 97.5%;
 		width: 100%;
+	}
+	.hidden {
+		display: none;
 	}
 </style>
