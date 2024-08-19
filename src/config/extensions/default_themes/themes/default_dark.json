@@ -96,6 +96,12 @@
         "editor.activeLineBackground": "#212121",
         "editor.activeLineBorder": "",
         "editor.activeIndentLineColor": "#a5a5a5",
+        "editor.tooltipForeground": "#e4e4e4",
+        "editor.tooltipBackground": "#212121",
+        "editor.tooltipActiveBackground": "#1d4a97",
+        "editor.tooltipActiveForeground": "#e4e4e4",
+        "editor.tooltipBorder": "#353535",
+        "editor.tooltipCompletionForeground": "#50a5ff",
 
         "filetree.treeNodeBackground": "",
         "filetree.treeNodeForeground": "#808080",
@@ -132,6 +138,8 @@
         "terminal.brightCyan": "#7dcfff",
         "terminal.brightWhite": "#acb0d0",
 
+        "test.color": "#f52891cc",
+      
         "notification.background": "#1f1f1f",
         "notification.foreground": "#fff",
         "notification.defaultBorderColor": "#4589ff",
