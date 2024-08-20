@@ -25,13 +25,12 @@ Nucleus
 
 ___
 
-Please note that Nucleus is currently being rewritten. Features are being reworked and will be added again later. Refer to PR [#59](https://github.com/mellobacon/Nucleus/pull/59).
+Please note that Nucleus is currently being rewritten. Features are being reworked. Refer to PR [#59](https://github.com/mellobacon/Nucleus/pull/59).
 ___
 
-
-<img width="100%" alt="nucleus_emptyworkspace" src="https://github.com/mellobacon/Nucleus/assets/42365887/b66b6f69-218f-4aab-8ae2-d2c4c1b87203">
-
 Nucleus is a text editor featuring a clean and easy to use user interface inspired by Visual Studio Code, Atom, Fleet, and others.
+
+![nucleus_themes](https://github.com/user-attachments/assets/7d6cc992-3070-42c8-87ea-de1f642c42f1)
 
 ___
 
@@ -50,14 +49,15 @@ ___
 | Feature             | Progress |
 |---------------------|----------|
 | File Tree           | ✅        |
-| Syntax Highlighting | ✅*        |
+| Syntax Highlighting | ✅        |
 | Logging             | 🟡        |
-| Theming             | ✅*       |
-| Notifications       | ⭕        |
-| Settings            | ✅*        |
+| Theming             | ✅       |
+| Notifications       | ✅*        |
+| Settings            | ✅        |
 | Context Menus       | ✅        |
-| Internal Terminal   | ⭕        |
+| Internal Terminal   | ✅        |
 | Editor              | ✅        |
+| Themes              | ✅        |
 
 
 ### Known issues
