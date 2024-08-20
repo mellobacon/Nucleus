@@ -17,7 +17,7 @@
     import { fitTerminal } from "./lib/Terminal.svelte";
     import { loadDir } from "./lib/File";
     import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
-    import { NotifType, addNotification } from "./lib/Notifications/notifications";
+    import { NotifType, addNotification, toasts } from "./lib/Notifications/notifications";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -143,7 +143,9 @@
 		</Splitpanes>
 	</div>
 	<Statusbar />
-	<NotificationToasts />
+	{#if $toasts.length != 0}
+		<NotificationToasts />
+	{/if}
 </div>
 
 {#if $_openPopup}
