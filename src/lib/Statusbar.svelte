@@ -97,7 +97,7 @@
         show = false;
         showBottomPanel.set(false);
         let current = activeTools.find(t => t.tool.name === get(editortool).name);
-        current.element.$destroy();
+        if (current) current.element.$destroy();
         activeTools = activeTools.filter(t => t.tool.name !== get(editortool).name);
         editortool.set({name: "", options: [], buttons: []});
         lastTool.set({tool: null, element: null});

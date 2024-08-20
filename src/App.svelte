@@ -17,7 +17,8 @@
     import { fitTerminal } from "./lib/Terminal.svelte";
     import { loadDir } from "./lib/File";
     import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
-    import { NotifType, addNotification } from "./lib/Notifications/notifications";
+    import { NotifType, addNotification, toasts } from "./lib/Notifications/notifications";
+	import { shell } from "@tauri-apps/api";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -36,7 +37,10 @@
 		resolution.set(size.width);
 		updateMinPanelSize();
 
-		addNotification(NotifType.Message, "Startup", [{label: "Test action", action: () => {}}], "test message");
+		addNotification(NotifType.Message, "Welcome to Nucleus", [
+			{label: "Learn More", action: () => {shell.open("https://github.com/mellobacon/Nucleus")}}, 
+			{label: "Create Issue", action: () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")}}
+		], "Nucleus is in alpha. If there are any bugs present or features you want to add, create an issue below.");
 
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
@@ -143,7 +147,9 @@
 		</Splitpanes>
 	</div>
 	<Statusbar />
-	<NotificationToasts />
+	{#if $toasts.length != 0}
+		<NotificationToasts />
+	{/if}
 </div>
 
 {#if $_openPopup}
