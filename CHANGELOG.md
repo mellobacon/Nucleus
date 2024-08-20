@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Tab context menu options disabled for new files with no path
 - Custom styled scrollbars
+- Improved syntax highlighting look
 
 ### Fixed
 
