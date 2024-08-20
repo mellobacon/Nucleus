@@ -17,6 +17,7 @@
     onMount(() => {
         let timer = setTimeout(() => {
             notification.remove();
+            closeToast(id)
             clearTimeout(timer);
         }, 100000)
         return () => {
