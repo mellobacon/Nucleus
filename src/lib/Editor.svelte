@@ -319,7 +319,6 @@
     }
     :global(.cm-content) {
         padding: 0 10px 200px 0 !important;
-        text-wrap: wrap !important;
     }
     :global(.cm-lineNumbers) {
         min-width: 60px !important;
