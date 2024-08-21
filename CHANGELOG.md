@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- N/A
+
+## [0.4.0 Alpha] 8-21-2024
+
 ### Added
 
 - External terminal
@@ -17,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings for changing editor tab size and line height
 - Editor code folding, bracket matching, auto indent, indentation markers
 - Detect indentation size on files
-  - Indent markers
 - Copy/paste files in file tree
 - Autocomplete in the editor
 - Notification system
