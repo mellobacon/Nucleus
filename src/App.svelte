@@ -16,6 +16,9 @@
     import { getExtensions } from "./config/extensionhandler";
     import { fitTerminal } from "./lib/Terminal.svelte";
     import { loadDir } from "./lib/File";
+    import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
+    import { NotifType, addNotification, toasts } from "./lib/Notifications/notifications";
+	import { shell } from "@tauri-apps/api";
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -33,6 +36,11 @@
 		let size = await appWindow.innerSize();
 		resolution.set(size.width);
 		updateMinPanelSize();
+
+		addNotification(NotifType.Message, "Welcome to Nucleus", [
+			{label: "Learn More", action: () => {shell.open("https://github.com/mellobacon/Nucleus")}}, 
+			{label: "Create Issue", action: () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")}}
+		], "Nucleus is in alpha. If there are any bugs present or features you want to add, create an issue below.");
 
 		appWindow.onResized((e) => {
 			resolution.set(e.payload.width);
@@ -130,7 +138,7 @@
 						</Pane>
 						{#if $editortool}
 						<Pane bind:size={bottomPanelSize} maxSize={90} minSize={10} class="view-bottom-pane">
-							<ToolView content={$editortool.content} name={$editortool.name}></ToolView>
+							<ToolView name={$editortool.name} options={$editortool.options} buttons={$editortool.buttons}></ToolView>
 						</Pane>
 						{/if}
 					</Splitpanes>
@@ -139,6 +147,9 @@
 		</Splitpanes>
 	</div>
 	<Statusbar />
+	{#if $toasts.length != 0}
+		<NotificationToasts />
+	{/if}
 </div>
 
 {#if $_openPopup}

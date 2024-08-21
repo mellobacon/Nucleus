@@ -6,6 +6,7 @@
         "window.background": "#171717",
         "window.borderColor": "#414040",
         "window.accent": "#376ba3",
+        "window.panelBorderColor": "#34b0f8",
 
         "window.menuBackground": "#2D2D2D",
         "window.menuButtonBackground": "#2D2D2D",
@@ -95,6 +96,12 @@
         "editor.activeLineBackground": "#212121",
         "editor.activeLineBorder": "",
         "editor.activeIndentLineColor": "#a5a5a5",
+        "editor.tooltipForeground": "#e4e4e4",
+        "editor.tooltipBackground": "#212121",
+        "editor.tooltipActiveBackground": "#1d4a97",
+        "editor.tooltipActiveForeground": "#e4e4e4",
+        "editor.tooltipBorder": "#353535",
+        "editor.tooltipCompletionForeground": "#50a5ff",
 
         "filetree.treeNodeBackground": "",
         "filetree.treeNodeForeground": "#808080",
@@ -129,6 +136,15 @@
         "terminal.brightBlue": "#7aa2f7",
         "terminal.brightMagenta": "#bb9af7",
         "terminal.brightCyan": "#7dcfff",
-        "terminal.brightWhite": "#acb0d0"
+        "terminal.brightWhite": "#acb0d0",
+
+        "test.color": "#f52891cc",
+      
+        "notification.background": "#1f1f1f",
+        "notification.foreground": "#fff",
+        "notification.defaultBorderColor": "#4589ff",
+        "notification.unreadColor": "#838383",
+        "notification.unreadBorderColor": "#333",
+        "notification.actionButtonColor": "#bdd4ff"
     }
 }

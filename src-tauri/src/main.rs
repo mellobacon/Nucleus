@@ -356,7 +356,7 @@ fn load_settings(app: &mut App) {
             "editor.tabSize": 4,
             "editor.autosave": false,
             "nucleus.showKeybinds": false,
-            "nucleus.useExternalTerminal": true,
+            "nucleus.useExternalTerminal": false,
             "terminal.external.profile": "powershell",
             "terminal.internal": {
                 "profile": "powershell",

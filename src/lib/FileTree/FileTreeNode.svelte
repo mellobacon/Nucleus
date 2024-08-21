@@ -16,7 +16,7 @@
 </script>
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import File from "../../util/icons/File.svelte";
+    import File from "../Icons/File.svelte";
     import ContextMenu from "../utility/ContextMenu.svelte";
     import { moveToTrash, openInExplorer, renameFile } from "../File";
     import { addEditorTab } from "../EditorTabList.svelte";
