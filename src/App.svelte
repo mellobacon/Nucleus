@@ -19,6 +19,9 @@
     import NotificationToasts from "./lib/Notifications/NotificationToasts.svelte";
     import { NotifType, addNotification, toasts } from "./lib/Notifications/notifications";
 	import { shell } from "@tauri-apps/api";
+	import { addTab } from "./lib/EditorTabList.svelte"; 
+	import Welcome from "./lib/Welcome.svelte";
+
 	let resolution = writable(0);
 
 	let minPanelSize = 10;
@@ -31,6 +34,8 @@
 		let dir = localStorage.getItem("lastDir");
 		if (dir) {
 			loadDir(dir);
+		} else {
+			addTab("Welcome", "Welcome", new Welcome({target: document.getElementById("tabview")}));
 		}
 
 		let size = await appWindow.innerSize();
