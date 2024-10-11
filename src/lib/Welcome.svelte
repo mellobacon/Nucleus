@@ -25,7 +25,7 @@
             <button on:click={() => addEditorTab()} ><DocumentBlank /> New file</button>
             <button on:click={openFolder} ><Folder /> Open Folder</button>
             <!-- <button on:click={openFolder} ><RecentlyViewed /> Recent...</button> -->
-            <button on:click={() => addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}><Settings /> Config</button>
+            <button on:click={() => addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}><Settings /> Settings</button>
         </div>
     </div>
 
