@@ -1,6 +1,7 @@
 <script lang="ts">
     import Menu from "./utility/Menu.svelte";
     import settings from "./Settings.svelte";
+    import Welcome from "./Welcome.svelte";
     import { Settings } from "carbon-icons-svelte";
     import { addTab, tabs, closeActiveTab } from "../lib/EditorTabList.svelte";
     import { workspaceName } from "./File";
@@ -48,6 +49,7 @@
             {name: "Close Window", shortcut: commands.closeWindow.keybind, action: commands.closeWindow.command},
         ]},
         {menuname: "Help", children: [
+            {name: "Welcome", shortcut: "", action: () => {addTab("Welcome", "Welcome", new Welcome({target: document.getElementById("tabview")}))}},
             {name: "Send Feedback", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Contact Support", disabled: true,  shortcut: "", action: () => {console.warn("Feature not implemented yet.")}},
             {name: "Report Issue", shortcut: "", action: () => {shell.open("https://github.com/mellobacon/Nucleus/issues/new/choose")}},
