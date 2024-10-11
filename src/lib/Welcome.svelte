@@ -1,18 +1,25 @@
 <script lang="ts">
-    import { openFolder } from "./File";
+    import { openFolderDialog } from "./File";
     import { DocumentBlank, Folder, RecentlyViewed, Settings } from "carbon-icons-svelte";
     import { addEditorTab, addTab } from "./EditorTabList.svelte";
     import settings from "./Settings.svelte";
     import { getVersion } from '@tauri-apps/api/app';
     import { onMount } from "svelte";
+    import RecentFolders from "./utility/RecentFolders.svelte";
 
     export let hidden = true;
 
     let appVersion = "";
+    let showRecentFolders = false;
 
     onMount(async () => {
         appVersion = await getVersion();
     })
+
+    function toggleRecentFolders() {
+        console.log("toggleRecentFolders");
+        showRecentFolders = !showRecentFolders;
+    }
 </script>
 
 <div class="container" class:hidden>
@@ -23,8 +30,11 @@
 
         <div class="quick-actions">
             <button on:click={() => addEditorTab()} ><DocumentBlank /> New file</button>
-            <button on:click={openFolder} ><Folder /> Open Folder</button>
-            <!-- <button on:click={openFolder} ><RecentlyViewed /> Recent...</button> -->
+            <button on:click={openFolderDialog} ><Folder /> Open Folder</button>
+            <button on:click={toggleRecentFolders} ><RecentlyViewed /> Recent...</button>
+            {#if showRecentFolders}
+                <RecentFolders on:close={toggleRecentFolders} />
+            {/if}
             <button on:click={() => addTab("Settings", "Settings", new settings({target: document.getElementById("tabview")}))}><Settings /> Settings</button>
         </div>
     </div>
