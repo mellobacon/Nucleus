@@ -51,7 +51,6 @@ ___
 | File Tree           | ✅        |
 | Syntax Highlighting | ✅        |
 | Logging             | 🟡        |
-| Theming             | ✅       |
 | Notifications       | ✅*        |
 | Settings            | ✅        |
 | Context Menus       | ✅        |
