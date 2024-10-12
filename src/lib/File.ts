@@ -21,17 +21,26 @@ export const workspaceName = writable("Untitled Workspace");
 export const dirToLoad =  writable("");
 export const dirLoadFail = writable(false);
 export const workingDir = writable(await homeDir());
-export async function openFolder() {
+
+export async function openFolderDialog() {
     dirLoadFail.set(false);
     let directory = await dialog.open({directory: true}) as string;
     if (!directory) return;
+    openFolder(directory);
+}
+
+
+export async function openFolder(directory) {
+    dirLoadFail.set(false);
     info(`Opening folder in: ${directory}`, {file: "File.ts", line: 25});
     localStorage.setItem("lastDir", directory);
     closeBottomPanel();
     closeTerminal();
     closeAllTabs();
     loadDir(directory);
+    saveToRecent(directory);
 }
+
 
 export async function loadDir(directory) {
     if (!directory) {
@@ -326,3 +335,15 @@ export function checkValidFileName(input: string) {
     if (input === "") return false;
     return true;
 }
+
+export function saveToRecent(path: string) {
+    const recent = localStorage.getItem("recentFolders");
+    if (!recent) {
+        localStorage.setItem("recentFolders", JSON.stringify([path]));
+        return;
+    }
+    const recentFolders = JSON.parse(recent) || [];
+    const updatedRecentFolders = [path, ...recentFolders.filter(f => f !== path)].slice(0, 10); // save 10 recent folders max
+    localStorage.setItem("recentFolders", JSON.stringify(updatedRecentFolders));
+}
+

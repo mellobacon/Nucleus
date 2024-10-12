@@ -2,7 +2,7 @@
     import FileTreeView from "./FileTree/FileTreeView.svelte";
     import ContextMenu from "./utility/ContextMenu.svelte";
     import { addEditorTab } from "./EditorTabList.svelte";
-    import { openFolder, pasteFile } from "./File";
+    import { openFolderDialog, pasteFile } from "./File";
     import { clipboard } from "@tauri-apps/api";
     import Button from "./utility/Button.svelte";
     import { commands } from "../config/commands";
@@ -48,7 +48,7 @@
 {#if $filetree.length === 0}
     <div class="container">
         <span>No folder/workspace open</span>
-        <Button _class="toolbar-button" style="secondary" label="Open Folder" on:click={async () => {await openFolder()}} />
+        <Button _class="toolbar-button" style="secondary" label="Open Folder" on:click={async () => {await openFolderDialog()}} />
     </div>
 {:else}
     <FileTreeView tree={$filetree} on:nodeselect={handleSelect} on:dblnodeselect={handleDblSelect} on:rightclick={handleClick} contextMenuEnabled canDrag></FileTreeView>
