@@ -1,0 +1,172 @@
+$titlebar-height: 2.2rem;
+$statusbar-height: 1.5rem;
+
+html {
+    background-color: var(--window-background);
+}
+
+#app {
+    color: var(--window-foreground);
+}
+
+#main {
+    height: calc(100% - ($statusbar-height + $titlebar-height + 0.2rem));
+}
+
+#titlebar {
+    height: $titlebar-height;
+    background-color: var(--header-background);
+    box-shadow: var(--header-borderColor) 0px var(--header-borderThickness) 0px;
+    .tool {
+        cursor: pointer;
+        &:hover {
+            background-color: var(--header-buttonHoverBackground);
+        }
+    }
+}
+
+.window-button:not(.close):hover {
+    background-color: var(--header-buttonHoverBackground);
+}
+.menu-button {
+    &:hover {
+        background-color: var(--header-buttonHoverBackground);
+    }
+    &.open {
+        background-color: var(--header-buttonHoverBackground);
+    }
+}
+.menu-list, .context-menu, .submenu {
+    background-color: var(--window-menuBackground);
+    box-shadow: 0 2px 6px var(--window-boxShadow);
+}
+.menu-item, .context-menu-option {
+    color: var(--window-foreground);
+    &:hover {
+        background-color:  var(--window-menuItemHoverBackground);
+    }
+}
+.divider {
+    background-color: var(--window-borderColor);
+}
+
+.disabled {
+    color: var(--window-disabledTextForeground);
+}
+.invalid {
+    color: var(--window-invalidTextForeground);
+}
+.readonly {
+    color: var(--window-readonlyTextForeground);
+}
+.shortcut {
+    color: var(--window-menuShortcutForeground)
+}
+label {
+    color: var(--window-inputLabelForeground);
+}
+input:not(.input) {
+    background-color: var(--window-inputBackground);
+    color: var(--window-inputForeground);
+}
+.tooltip {
+    border: 1px solid var(--window-borderColor);
+    background: var(--window-background);
+    padding: 2px 10px;
+    position: absolute;
+    font-size: 0.875rem;
+    color: var(--window-foreground);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#statusbar {
+    height: calc($statusbar-height + 0.1rem);
+}
+
+.tree {
+    color: var(--filetree-treeNodeForeground);
+    .hover {
+        background-color: var(--header-background) !important;   
+    }
+    .tree-label {
+        svg {
+            color: var(--window-foreground);
+        }
+        &:hover {
+            color: var(--filetree-treeNodeHoverForeground);
+            background-color: var(--filetree-treeNodeHoverBackground);
+        }
+        &.selected {
+            color: var(--filetree-treeNodeHoverForeground);
+            background-color: var(--filetree-treeNodeSelectedBackground);
+        }
+    }
+}
+.notification, .notification-toast {
+    background-color: var(--notification-background);
+    border-top: 3px solid var(--notification-defaultBorderColor);
+    color: var(--notification-foreground);
+    &.read {
+        border-top-color: var(--notification-unreadBorderColor) !important;
+        color: var(--notification-unreadColor);
+        .icon {
+            color: var(--notification-unreadBorderColor) !important;
+        }
+    }
+    .details .icon {
+        color: var(--notification-defaultBorderColor);
+    }
+    .action-button {
+        color: var(--notification-actionButtonColor);
+    }
+}
+.notification-toast {
+    box-shadow: 0 2px 6px var(--window-boxShadow);
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--window-scrollbarBackground);
+    &:hover {
+        background-color: #1b82dd91;
+    }
+    &:active {
+        background-color: #1b83ddb5;
+    }
+    border-radius: 3px;
+}
+
+.editor-scrollbar {
+    --os-handle-bg: var(--window-scrollbarBackground);
+    --os-handle-bg-hover: #1b82dd91;
+    --os-handle-bg-active: #1b83ddb5;
+    --os-size: 7px;
+    --os-padding-perpendicular: 1px;
+    --os-padding-axis: 1px;
+    --os-track-border-radius: 3px;
+    --os-handle-interactive-area-offset: 4px;
+    --os-handle-border-radius: 3px;
+    --os-handle-min-size: 10px;
+}
+.editor-scrollbar-tabs {
+    --os-handle-bg: var(--window-scrollbarBackground);
+    --os-handle-bg-hover: #1b82dd3a;
+    --os-handle-bg-active: #1b82dd56;
+    --os-size: 3px;
+    --os-padding-perpendicular: 1px;
+    --os-padding-axis: 1px;
+    --os-track-border-radius: 3px;
+    --os-handle-interactive-area-offset: 4px;
+    --os-handle-border-radius: 3px;
+    --os-handle-min-size: 10px;
+}
