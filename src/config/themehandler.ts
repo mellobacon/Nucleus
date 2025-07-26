@@ -4,7 +4,6 @@ import { editorHighlighting, editorTheme, setEditorTheme } from "../lib/Editor.s
 import { get } from "svelte/store";
 import { darkHighlighting, lightHighlighting } from "./styles/syntaxhighlighting";
 
-const stylesheet = document.styleSheets[2].cssRules[0] as CSSStyleRule;
 export class ThemeHandler {
     static async loadTheme(name: string) {
         let json = await import(`./styles/${name}.json`);
@@ -132,13 +131,13 @@ export class ThemeHandler {
             const [category, component] = entries[0].split(".");
             const property = `--${category}-${component}`;
             const value = entries[1] === "transparent" || "" ? "transparent" : entries[1];
-            stylesheet.style.setProperty(property, value);
+            (document.styleSheets[2].cssRules[0] as CSSStyleRule).style.setProperty(property, value);
         }
     }
     static getThemeProperty(styleName: string) {
-        for (const style of stylesheet.style) {
+        for (const style of (document.styleSheets[2].cssRules[0] as CSSStyleRule).style) {
             if (style === `--${styleName}`) {
-                return stylesheet.style.getPropertyValue(style);
+                return (document.styleSheets[2].cssRules[0] as CSSStyleRule).style.getPropertyValue(style);
             }
         }
     }
