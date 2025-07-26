@@ -3,6 +3,7 @@ import { SerializeAddon } from "@xterm/addon-serialize";
 import { Terminal, type ITerminalInitOnlyOptions, type ITerminalOptions } from "@xterm/xterm";
 import { ImageAddon, type IImageAddonOptions } from '@xterm/addon-image';
 import { terminalTheme } from "../lib/components/Terminal.svelte";
+import { LigaturesAddon } from '@xterm/addon-ligatures';
 import { get } from "svelte/store";
 
 const customSettings: IImageAddonOptions = {
@@ -25,6 +26,7 @@ export class NucleusTerminal {
     termFit!: FitAddon;
     termSerialize!: SerializeAddon;
     termImage!: ImageAddon;
+    termLigma!: LigaturesAddon;
     command: string = "";
     constructor(element: HTMLElement, options: ITerminalOptions & ITerminalInitOnlyOptions) {
         this.options = options;
@@ -32,14 +34,17 @@ export class NucleusTerminal {
         this.termFit = new FitAddon();
         this.termSerialize = new SerializeAddon();
         this.termImage = new ImageAddon(customSettings);
+        this.termLigma = new LigaturesAddon();
     }
 
-    initShell() {
+    async initShell() {
+        await Promise.all(Array.from(document.fonts).map(ff => ff.load()));
         this.terminalController = new Terminal(this.options);
         this.terminalController.loadAddon(this.termFit);
         this.terminalController.loadAddon(this.termSerialize);
         this.terminalController.loadAddon(this.termImage);
         this.terminalController.open(this.terminalElement);
+        this.terminalController.loadAddon(this.termLigma);
 
         this.updateTheme();
 

@@ -14,10 +14,10 @@
 
 	onMount(async () => {
 		terminal = new NucleusTerminal(terminalElement, {
-            fontFamily: "Cascadia Mono",
-            fontSize: 14,
+            fontFamily: '"Noto Sans 10pt", monospace, "Powerline Extra Symbols"', // Fira Sans, Noto Sans 10pt
+            fontSize: 13,
             cursorBlink: true,
-            allowProposedApi: true
+            allowProposedApi: true,
         })
         terminalInstance.set(terminal);
         terminal.initShell();
