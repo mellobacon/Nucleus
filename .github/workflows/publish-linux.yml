@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
 
