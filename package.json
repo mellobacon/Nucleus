@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "bun tauri dev",
+    "start-wayland-workaround": "WEBKIT_DISABLE_DMABUF_RENDERER=1 WEBKIT_DISABLE_COMPOSITING_MODE=1 bun tauri dev",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
