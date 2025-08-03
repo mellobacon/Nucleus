@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nucleus",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.editor.nucleus",
   "build": {
     "frontendDist": "../public",
     "devUrl": "http://localhost:8080/",
