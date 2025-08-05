@@ -153,6 +153,7 @@
         }
         .divider {
             width: 0.0625rem;
+            min-width: 0.0625rem;
             height: 1rem;
         }
         .toggles {

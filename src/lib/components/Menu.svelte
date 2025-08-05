@@ -192,6 +192,7 @@
     .divider {
 		width: 100%;
 		height: 0.0625rem;
+        min-height: 0.0625rem;
 		margin: 4px 0;
 	}
 </style>
