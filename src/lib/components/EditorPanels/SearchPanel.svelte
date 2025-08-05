@@ -2,18 +2,19 @@
 
 <script lang="ts">
     import { afterUpdate } from "svelte";
-    import ChevronRight from "../../../assets/icons/chevron_right.svelte";
     import DownArrow from "../../../assets/icons/down_arrow.svelte";
     import Matchcase from "../../../assets/icons/matchcase.svelte";
     import Matchword from "../../../assets/icons/matchword.svelte";
     import Regex from "../../../assets/icons/regex.svelte";
     import UpArrow from "../../../assets/icons/up_arrow.svelte";
     import Uppercase from "../../../assets/icons/uppercase.svelte";
+    import Replace from "../../../assets/icons/replace.svelte";
+    import ReplaceOne from "../../../assets/icons/replace_one.svelte";
+    import ReplaceAll from "../../../assets/icons/replace_all.svelte";
     import { tooltip } from "../../../scripts/tooltip";
-    import Button from "../Button.svelte";
     import Input from "../Input.svelte";
 
-    import { closeSearchPanel, findNext, findPrevious, replaceAll, replaceNext, SearchQuery, selectMatches, setSearchQuery } from "@codemirror/search";
+    import { closeSearchPanel, findNext, findPrevious, replaceAll, replaceNext, SearchCursor, SearchQuery, selectMatches, setSearchQuery } from "@codemirror/search";
     import { editorV } from "../../Editor.svelte";
 
     let toggleReplace = false;
@@ -27,10 +28,6 @@
 
     let view = $editorV;
 
-    function handleClick() {
-        toggleReplace = !toggleReplace;
-    }
-
     afterUpdate(() => {
         let query = new SearchQuery({
             "caseSensitive": matchCase,
@@ -39,25 +36,47 @@
             "wholeWord": matchWord,
             "replace": replaceQuery
         })
+        findTotalMatches();
         view.dispatch({ effects: setSearchQuery.of(query) });
         selectMatches($editorV)
     })
+
+    let totalMatches = 0;
+    function moveToNext() {
+        if (totalMatches === 0) return;
+        findNext($editorV);
+    }
+    function tryReplace() {
+        if (totalMatches === 0) return;
+        replaceNext($editorV)
+        findTotalMatches();
+    }
+
+    function findTotalMatches() {
+        const cursor = new SearchCursor($editorV.state.doc, findQuery);
+        let n = 0;
+        while (!cursor.done) {
+            cursor.next();
+            n += 1;
+        }
+        totalMatches = n - 1;
+    }
 </script>
 
 <div class="search-panel">
-    <div class="replace-toggle" role="button" tabindex="0" class:expanded={toggleReplace} on:keydown on:click={handleClick} use:tooltip title="Toggle Replace Field" data-tooltip-top-offset="115">
-        <ChevronRight />
-    </div>
     <div class="search">
         <div class="find">
             <Input placeholder="Find" _class="input" bind:value={findQuery} autofocus />
-            <small id="result-count">No Results</small>
+            <small id="result-count">Total matches: {totalMatches}</small>
             <div class="divider"></div>
             <div class="toggles">
+                <span class="toggle" class:active={toggleReplace} role="button" tabindex="0" on:keydown use:tooltip title="Toggle Replace Field" data-tooltip-top-offset="110" on:click={() => toggleReplace = !toggleReplace}>
+                    <Replace />
+                </span>
                 <span class="toggle" role="button" tabindex="0" on:keydown use:tooltip title="Previous Occurance" data-tooltip-top-offset="110" on:click={() => findPrevious($editorV)}>
                     <UpArrow />
                 </span>
-                <span class="toggle" role="button" tabindex="0" on:keydown use:tooltip title="Next Occurance" data-tooltip-top-offset="110" on:click={() => findNext($editorV)}>
+                <span class="toggle" role="button" tabindex="0" on:keydown use:tooltip title="Next Occurance" data-tooltip-top-offset="110" on:click={moveToNext}>
                     <DownArrow />
                 </span>
                 <span class="toggle" class:active={matchCase} role="button" tabindex="0" on:keydown use:tooltip title="Match Case" data-tooltip-top-offset="110" on:click={() => matchCase = !matchCase}>
@@ -78,11 +97,13 @@
                     <span class="toggle" use:tooltip title="Preserve Case" data-tooltip-top-offset="145">
                         <Uppercase />
                     </span>
-                </div>
-                <div class="divider"></div>
-                <div class="buttons">
-                    <Button label="Replace" style="outline" _class="button" on:click={() => replaceNext($editorV)} />
-                    <Button label="Replace All" style="outline" _class="button" on:click={() => replaceAll($editorV)} />
+                    <div class="divider"></div>
+                    <span class="toggle" role="button" tabindex="0" on:keydown use:tooltip title="Replace" data-tooltip-top-offset="145" on:click={tryReplace}>
+                        <ReplaceOne />
+                    </span>
+                    <span class="toggle" role="button" tabindex="0" on:keydown use:tooltip title="Replace All" data-tooltip-top-offset="145" on:click={() => replaceAll($editorV)}>
+                        <ReplaceAll />
+                    </span>
                 </div>
             </div>
         {/if}
@@ -102,29 +123,6 @@
         justify-content: center;
         width: 100%;
         gap: 10px;
-        .replace-toggle {
-            height: 80%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 5px;
-            z-index: 10;
-            border-radius: 2px;
-            cursor: pointer;
-            :global(svg) {
-                width: 24px;
-                height: 24px;
-            }
-            &.expanded {
-                :global(svg) {
-                    transform: rotate(90deg);
-                }
-            }
-            &:hover {
-                background-color: var(--header-buttonHoverBackground);
-            }
-        }
         .search {
             display: flex;
             flex-direction: column;
@@ -137,7 +135,6 @@
             align-items: center;
             grid-gap: 10px;
             justify-content: flex-start;
-            grid-template-columns: minmax(50px, auto) auto auto auto;
             :global(.input) {
                 margin: 0;
                 :global(input) {
@@ -148,20 +145,15 @@
                 white-space: nowrap;
             }
         }
+        .find {
+            grid-template-columns: minmax(70px, 1fr) max-content auto auto;
+        }
+        .replace {
+            grid-template-columns: minmax(70px, 1fr) 269px;
+        }
         .divider {
             width: 0.0625rem;
             height: 1rem;
-        }
-        .buttons {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            :global(.button) {
-                height: 100%;
-                padding: 5px;
-                white-space: nowrap;
-                font-size: smaller;
-            }
         }
         .toggles {
             display: flex;
