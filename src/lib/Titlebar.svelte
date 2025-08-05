@@ -19,6 +19,9 @@
     import { toggleInputModal } from "./components/Modal.svelte";
     import { paneBottom, paneLeft, paneRight, toggleBottomPanel, toggleLeftPanel, toggleRightPanel } from "../config/configStore";
     import Hamburger from "../assets/icons/hamburger.svelte";
+    import Close from "../assets/icons/close.svelte";
+    import Maximize from "../assets/icons/maximize.svelte";
+    import Minimize from "../assets/icons/minimize.svelte";
     
     let items = new MenuClass().getItems();
 
@@ -141,9 +144,15 @@
     {/if}
 
     <div id="window-controls">
-        <button aria-label="button" class="window-button" id="minimize" on:click={Commands.commands.minimizeWindow.command}></button>
-        <button aria-label="button" class="window-button" id="maximize" on:click={Commands.commands.maximizeWindow.command}></button>
-        <button aria-label="button" class="window-button" id="close" on:click={Commands.commands.closeWindow.command}></button>
+        <button aria-label="button" class="window-button" id="minimize" on:click={Commands.commands.minimizeWindow.command}>
+            <Minimize />
+        </button>
+        <button aria-label="button" class="window-button" id="maximize" on:click={Commands.commands.maximizeWindow.command}>
+            <Maximize />
+        </button>
+        <button aria-label="button" class="window-button" id="close" on:click={Commands.commands.closeWindow.command}>
+            <Close />
+        </button>
     </div>
 </div>
 
@@ -163,6 +172,7 @@
     }
     .divider {
 		width: 0.0625rem;
+        min-width: 0.0625rem;
 		height: 1.2rem;
 		margin: 0 4px;
 	}
@@ -203,24 +213,20 @@
 		button {
 			min-width: 36px;
 			height: 100%;
-			line-height: 34px;
-			text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 			padding: 0 5px;
 			font-size: 0.875rem;
 			cursor: pointer;
 			&#close:hover {
 				background-color: #ff3131;
 			}
-			&#minimize::before {
-				content: "\2014";
-				font-size: 10px;
-			}
-			&#maximize::before {
-				content: "\2610";
-			}
-			&#close::before {
-				content: "\2715";
-				line-height: 30px;
+			&#close, #maximize, #minimize {
+				:global(svg) {
+                    height: 16px;
+                    width: 16px;
+                }
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { afterUpdate, createEventDispatcher } from "svelte";
+    import Close from "../../../assets/icons/close.svelte";
     const dispatch = createEventDispatcher();
 
     export let id = 0;
@@ -38,7 +39,9 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="close-tab">
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <span title="Close tab" on:click={() => {handleClose(id)}}></span>
+        <span title="Close tab" on:click={() => {handleClose(id)}}>
+            <Close />
+        </span>
     </div>
 </div>
 
@@ -114,15 +117,14 @@
         padding-right: 20px;
     }
     .close-tab span {
-        font-size: 11px;
         display: flex;
         justify-content: center;
         width: 100%;
         height: 100%;
         align-items: center;
-        line-height: normal;
-        &::before {
-            content: "\2715";
+        :global(svg) {
+            width: 14px;
+            height: 14px;
         }
     }
     .close-tab span:hover {
