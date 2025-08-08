@@ -64,7 +64,6 @@
                     javascript(),
                     highlighting.of([]),
                     autocompletion({closeOnBlur: false}),
-                    //indentMarkers(),
                     codeFolding(),
                     theme.of([]),
                     showPanel.of(panel),
