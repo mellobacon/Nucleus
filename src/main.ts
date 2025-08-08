@@ -1,6 +1,6 @@
+import "./theme.scss";
 import './app.css'
 import 'overlayscrollbars/overlayscrollbars.css';
-import "./theme.scss";
 import App from './App.svelte'
 
 const app = new App({

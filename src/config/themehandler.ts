@@ -5,10 +5,12 @@ import { get } from "svelte/store";
 import { darkHighlighting, lightHighlighting } from "./styles/syntaxhighlighting";
 
 export class ThemeHandler {
+    static stylesheet = document.styleSheets[0].cssRules[0] as CSSStyleRule;
     static async loadTheme(name: string) {
+        console.log("Loading theme: " + name);
         let json = await import(`./styles/${name}.json`);
         this.processStyles(json);
-
+ 
         terminalTheme.set({
             "black": this.getThemeProperty("terminal-black"),
             "red": this.getThemeProperty("terminal-red"),
@@ -131,13 +133,13 @@ export class ThemeHandler {
             const [category, component] = entries[0].split(".");
             const property = `--${category}-${component}`;
             const value = entries[1] === "transparent" || "" ? "transparent" : entries[1];
-            (document.styleSheets[2].cssRules[0] as CSSStyleRule).style.setProperty(property, value);
+            this.stylesheet.style.setProperty(property, value);
         }
     }
     static getThemeProperty(styleName: string) {
-        for (const style of (document.styleSheets[2].cssRules[0] as CSSStyleRule).style) {
+        for (const style of this.stylesheet.style) {
             if (style === `--${styleName}`) {
-                return (document.styleSheets[2].cssRules[0] as CSSStyleRule).style.getPropertyValue(style);
+                return this.stylesheet.style.getPropertyValue(style);
             }
         }
     }
