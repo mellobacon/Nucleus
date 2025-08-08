@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.editor.nucleus",
   "build": {
-    "frontendDist": "../public",
+    "frontendDist": "../dist",
     "devUrl": "http://localhost:8080/",
     "beforeDevCommand": "bun dev",
     "beforeBuildCommand": "bun run build"

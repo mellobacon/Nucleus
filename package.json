@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "start": "bun tauri dev",
-    "start-wayland-workaround": "WEBKIT_DISABLE_DMABUF_RENDERER=1 WEBKIT_DISABLE_COMPOSITING_MODE=1 bun tauri dev",
     "dev": "vite",
     "build": "bunx vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "tauri-build-debug": "bun tauri build --debug"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.4",
