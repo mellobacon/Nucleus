@@ -45,6 +45,8 @@
     </div>
     {#if content}
         <svelte:component this={content}></svelte:component>
+    {:else if !bottom}
+        <p>Panel</p>
     {/if}
 </div>
 

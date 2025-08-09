@@ -7,6 +7,8 @@
     import Error from "../assets/icons/error.svelte";
     import { tooltip } from "../scripts/tooltip";
     import { line_info } from "./Editor.svelte";
+    import { notifications } from "../scripts/notifications";
+    import { openPanel, PanelDirection } from "../scripts/panel";
 </script>
 
 <div id="statusbar">
@@ -39,11 +41,15 @@
     </div>
     <div class="divider"></div>
     <div class="editor-tools-right">
-        <span class="tool" use:tooltip data-tooltip-bottom title="GitHub">
+        <span class="tool" use:tooltip data-tooltip-bottom title="GitHub" on:click={() => openPanel("Source Control", PanelDirection.Right)}>
             <svelte:component this={Github}></svelte:component>
         </span>
-        <span class="tool" use:tooltip data-tooltip-bottom data-tooltip-offset="38" title="Notifications">
+        <span class="tool" use:tooltip data-tooltip-bottom data-tooltip-offset="38" title="Notifications" on:click={() => openPanel("Notifications", PanelDirection.Right)}>
+            {#if $notifications.length === 0}
+            <svelte:component this={Bell}></svelte:component>
+            {:else}
             <svelte:component this={BellAlert}></svelte:component>
+            {/if}
         </span>
     </div>
 </div>

@@ -3,6 +3,11 @@
     import Button from "./Button.svelte";
     import { contextMenu } from "../../App.svelte";
     import { OverlayScrollbarsComponent } from "overlayscrollbars-svelte";
+    import { collapseAll } from "./FileTree/FileTreeList.svelte";
+    import AddFile from "../../assets/icons/add_file.svelte";
+    import AddFolder from "../../assets/icons/add_folder.svelte";
+    import Refresh from "../../assets/icons/refresh.svelte";
+    import CollapseAll from "../../assets/icons/collapse_all.svelte";
 
     let treeDom: HTMLElement;
     let path = null;
@@ -31,6 +36,15 @@
 </script>
 <script lang="ts" context="module">
     import { writable } from "svelte/store";
+
+    export let fileTreetoolbar = [
+        {name: "New File...", icon: AddFile},
+        {name: "New Folder...", icon: AddFolder},
+        {name: "Refresh Explorer", icon: Refresh},
+        {name: "Collapse All Folders", icon: CollapseAll, action: () => {
+            collapseAll();
+        }}
+    ];
 
     let x = [{
         id: 0, name: "FakeDir", path:"FakeDir/", children: [

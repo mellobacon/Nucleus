@@ -31,6 +31,7 @@
 <script lang="ts" context="module">
     export const terminalInstance: Writable<NucleusTerminal> = writable();
     export const terminalTheme: Writable<ITheme> = writable({});
+    export const terminalMenu = {children: [{name: "test1", shortcut: null, action: null, disabled: false}]};
 </script>
 
 <svelte:window on:resize={terminal.fitTerminal}></svelte:window>

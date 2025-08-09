@@ -4,25 +4,20 @@
     import { loadSettings } from "./config/config";
     import { Pane, Splitpanes } from 'svelte-splitpanes';
     import Statusbar from "./lib/Statusbar.svelte";
-    import FileTree from "./lib/components/FileTree.svelte";
-    import AddFile from "./assets/icons/add_file.svelte";
-    import AddFolder from "./assets/icons/add_folder.svelte";
-    import CollapseAll from "./assets/icons/collapse_all.svelte";
-    import Refresh from "./assets/icons/refresh.svelte";
-    import Notifications from "./lib/Notifications.svelte";
     import WindowPane from "./lib/components/WindowPane.svelte";
     import EditorBackground from "./lib/EditorBackground.svelte";
     import EditorView from "./lib/EditorView.svelte";
-    import { collapseAll } from "./lib/components/FileTree/FileTreeList.svelte";
     import { terminalInstance } from "./lib/components/Terminal.svelte";
     import { writable } from "svelte/store";
     import ContextMenu from "./lib/components/ContextMenu.svelte";
     import { activeMenu } from "./scripts/Menu";
     import { paneLeft, paneBottom, paneRight, paneLeftSize, paneBottomSize, paneRightSize } from "./config/configStore";
     import { editorTabsEmpty } from "./lib/components/Tabs/EditorTabs.svelte";
+    import { bottomPanel, initPanels, leftPanel, rightPanel } from "./scripts/panel";
 
     onMount(async () => {
         await loadSettings();
+        initPanels();
         document.addEventListener("click", handleMenuClickOutside);
     });
 
@@ -66,14 +61,15 @@
     <Splitpanes on:resized={setSidePanelSize} dblClickSplitter={false} theme="editor-panes" on:pane-remove={adjustTerminalPanel} on:pane-add={adjustTerminalPanel} on:resize={adjustTerminalPanel}>
         {#if $paneLeft}
             <Pane size={$paneLeftSize}>
-                <WindowPane content={FileTree} title="File Explorer" tools={[
-                    {name: "New File...", icon: AddFile},
-                    {name: "New Folder...", icon: AddFolder},
-                    {name: "Refresh Explorer", icon: Refresh},
-                    {name: "Collapse All Folders", icon: CollapseAll, action: () => {
-                        collapseAll();
-                    }}
-                ]}></WindowPane>
+                <WindowPane 
+                    title={$leftPanel.title} 
+                    menu={$leftPanel.menu}
+                    content={$leftPanel.content} 
+                    ellipsis={$leftPanel.ellipsis} 
+                    bottom={$leftPanel.bottom}
+                    bottomTooltip={$leftPanel.bottomTooltip}
+                    tools={$leftPanel.tools ?? []}
+                ></WindowPane>
             </Pane>
         {/if}
         <Pane>
@@ -84,7 +80,15 @@
                 </Pane>
                 {#if $paneBottom}
                     <Pane size={$paneBottomSize}>
-                        <WindowPane bottom title="Terminal" ellipsis menu={{children: [{name: "test1", shortcut: null, action: null, disabled: false}]}} />
+                        <WindowPane 
+                            title={$bottomPanel.title} 
+                            menu={$bottomPanel.menu}
+                            content={$bottomPanel.content} 
+                            ellipsis={$bottomPanel.ellipsis} 
+                            bottom={$bottomPanel.bottom}
+                            bottomTooltip={$bottomPanel.bottomTooltip}
+                            tools={$bottomPanel.tools ?? []}
+                        />
                     </Pane>
                 {/if}
             </Splitpanes>
@@ -92,10 +96,13 @@
         {#if $paneRight}
             <Pane size={$paneRightSize}>
                 <WindowPane
-                    title="Notifications" 
-                    content={Notifications} 
-                    ellipsis 
-                    menu={{children: [{name: "test1", shortcut: null, action: null, disabled: false}]}}
+                    title={$rightPanel.title} 
+                    menu={$rightPanel.menu}
+                    content={$rightPanel.content} 
+                    ellipsis={$rightPanel.ellipsis} 
+                    bottom={$rightPanel.bottom}
+                    bottomTooltip={$rightPanel.bottomTooltip}
+                    tools={$rightPanel.tools ?? []}
                 ></WindowPane>
             </Pane>
         {/if}

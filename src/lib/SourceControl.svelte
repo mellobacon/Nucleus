@@ -9,6 +9,9 @@
     export let openFolder = false;
     export let gitInit = false;
 </script>
+<script lang="ts" context="module">
+    export const sourceControlMenu = {children: [{name: "test1", shortcut: null, action: null, disabled: false}]};
+</script>
 
 <div id="source-control">
     {#if !openFolder}

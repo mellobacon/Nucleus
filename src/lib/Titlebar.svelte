@@ -13,15 +13,13 @@
     import Panel_Bottom_Open from "../assets/icons/panel_bottom_open.svelte";
     import Wand from "../assets/icons/wand.svelte";
     import Extensions from "../assets/icons/extensions.svelte";
-    import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
     import Cmd from "../assets/icons/cmd.svelte";
-    import { getCurrentWindow } from "@tauri-apps/api/window";
-    import { toggleInputModal } from "./components/Modal.svelte";
     import { paneBottom, paneLeft, paneRight, toggleBottomPanel, toggleLeftPanel, toggleRightPanel } from "../config/configStore";
     import Hamburger from "../assets/icons/hamburger.svelte";
     import Close from "../assets/icons/close.svelte";
     import Maximize from "../assets/icons/maximize.svelte";
     import Minimize from "../assets/icons/minimize.svelte";
+    import { openPanel, PanelDirection } from "../scripts/panel";
     
     let items = new MenuClass().getItems();
 
@@ -31,7 +29,7 @@
     export let windowTitle = "Window";
     let menubar: HTMLElement;
     
-    let app = getCurrentWindow();
+    let directoryName = "<No Directory>";
 </script>
 
 <div id="titlebar" data-tauri-drag-region>
@@ -52,16 +50,16 @@
 
     {#if tools}
         <div class="tools">
-            <div class="tool" title="File Tree" use:tooltip>
+            <div class="tool" title="File Tree" use:tooltip on:click={() => openPanel("File Explorer", PanelDirection.Left)}>
                 <svelte:component this={FoldersList}></svelte:component>
             </div>
-            <div class="tool" title="Terminal" use:tooltip>
+            <div class="tool" title="Terminal" use:tooltip on:click={() => openPanel("Terminal", PanelDirection.Bottom)}>
                 <svelte:component this={Cmd}></svelte:component>
             </div>
         </div>
 
         <div id="center" data-tauri-drag-region>
-            FakeDir
+            {directoryName}
         </div>
 
         {#if layout}
@@ -105,33 +103,12 @@
             </div>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="tool" title="Extensions" use:tooltip on:click={async () => {
-                let webview = new WebviewWindow("overlay", {
-                    url: "../../overlay.html",
-                    decorations: false,
-                    title: "Extensions",
-                    width: 600,
-                    height: 200,
-                    center: true,
-                    skipTaskbar: true,
-                    resizable: false,
-                    parent: app
-                })
-                
-                webview.once('tauri://created', async function (e) {
-                    console.log(e)
-                });
-                webview.once('tauri://error', function (e) {
-                    console.log(e)
-                });
-            }}>
+            <div class="tool" title="Extensions" use:tooltip>
                 <svelte:component this={Extensions}></svelte:component>
             </div>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="tool" title="Check For Updates" use:tooltip on:click={() => {
-                toggleInputModal("Input Modal", "pretend description here");
-            }}>
+            <div class="tool" title="Check For Updates" use:tooltip>
                 <svelte:component this={Wand}></svelte:component>
             </div>
         </div>
