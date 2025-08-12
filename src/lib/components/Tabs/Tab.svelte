@@ -27,7 +27,7 @@
     }
 </script>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div bind:this={tab} title={path} id={`editorTab-${id}`} data-id={id} class="tab" class:active={active} on:mousedown|stopPropagation = {(e) => {
+<div bind:this={tab} title={path} id={`editorTab-${id}`} data-id={id} class="tab" class:active={active} on:mousedown = {(e) => {
         if (!tab.contains(e.target)) return;
         if (e.button === 0) handleSelect(id);
     }}>
@@ -49,7 +49,7 @@
     .tab {
         height: 100%;
         min-width: min-content;
-        flex-grow: 0.05;
+        max-width: 230px;
         display: flex;
         overflow: hidden;
         justify-content: space-between;
@@ -115,6 +115,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         padding-right: 20px;
+        overflow: hidden;
     }
     .close-tab span {
         display: flex;
