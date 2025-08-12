@@ -159,6 +159,7 @@
         justify-content: center;
         height: 100%;
         width: 100%;
+        font-size: 0.9rem;
     }
     #center.title {
         padding-left: 120px;
