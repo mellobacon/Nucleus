@@ -13,7 +13,7 @@
     export let tools: Tool[] = [];
     export let menu: MenuItem = null;
     export let content = null;
-    export let title = "Pane";
+    export let title = "Panel";
     export let ellipsis = false;
     export let bottom = false;
     export let bottomTooltip: "true" | "false" | "none" = "false";
@@ -46,7 +46,7 @@
     {#if content}
         <svelte:component this={content}></svelte:component>
     {:else if !bottom}
-        <p>Panel</p>
+        <p id="empty">Nothing to show</p>
     {/if}
 </div>
 
@@ -61,6 +61,10 @@
             .content {
                 padding: 0;
             }
+        }
+        #empty {
+            padding: 0 10px;
+            color: var(--window-descriptionForeground);
         }
         .content {
             height: 100%;
