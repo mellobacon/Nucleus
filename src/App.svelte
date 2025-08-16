@@ -24,7 +24,7 @@
     function handleMenuClickOutside(event: MouseEvent) {
         const e = event.target as HTMLElement;
         let button = e;
-        if (e.parentElement.nodeName === "BUTTON")  {
+        if (e.parentElement && e.parentElement.nodeName === "BUTTON")  {
             button = e.parentElement;
         }
         if (!button.classList.contains("menu-button")) {
