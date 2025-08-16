@@ -11,7 +11,7 @@
         <div class="shortcuts">
             <span>
                 <div>Show Command Palette</div>
-                <ShortcutButton shortcut={Commands.commands.commandPalette.keybind} />
+                <ShortcutButton shortcut={Commands.commands.openCommandPallete.keybind} />
             </span>
             <span>
                 <div>Create New File</div>
