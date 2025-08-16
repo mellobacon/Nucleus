@@ -2,6 +2,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { get } from 'svelte/store';
 import { terminalInstance } from '../lib/components/Terminal.svelte';
 import { addEditorTab } from '../lib/components/Tabs/EditorTabs.svelte';
+import CommandPalette from '../lib/components/CommandPalette.svelte';
 
 const appWindow = getCurrentWindow();
 
@@ -10,6 +11,11 @@ type CommandObject = {
     keybind: string;
     disabled: boolean;
     command: void;
+}
+type NamedCommandObject = {
+    text: string;
+    shortcut: string;
+    command: any;
 }
 
 export class Commands {
@@ -49,11 +55,6 @@ export class Commands {
                     appWindow.setFullscreen(true);
                 }
             }
-        },
-        "commandPalette": {
-            "keybind": "Ctrl+Shift+P",
-            "disabled": false,
-            "command": () => {}
         },
         "createNewFile": {
             "keybind": "Ctrl+N",
@@ -157,8 +158,23 @@ export class Commands {
         "openCommandPallete": {
             "keybind": "Ctrl+Shift+P",
             "disabled": false,
-            "command": () => {}
+            "command": () => {
+                const _ = new CommandPalette({target: document.getElementById("main")});
+            }
         }
+    }
+    static getNamedCommands(): NamedCommandObject[] {
+        let commands: NamedCommandObject[] = []
+        let z = Object.entries(this.commands);
+        for (let c of z) {
+            let value = c[1];
+            if (value.disabled || c[0] === "openCommandPallete") continue;
+
+            let text = c[0].replace(/([A-Z])/g, ' $1').trim();
+            text = text.split(" ").map(c => c[0].toUpperCase() + c.slice(1)).join(' ');
+            commands.push({text: text, shortcut: value.keybind, command: value.command})
+        }
+        return commands;
     }
     /**
      *  Registers a command

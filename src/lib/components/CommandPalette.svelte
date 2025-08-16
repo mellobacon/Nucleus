@@ -1,17 +1,33 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Searchbar from "./Searchbar.svelte";
+    import { Commands } from "../../config/commands";
 
     let open = false;
+    let title = "Command Palette";
+    let placeholder = "Type a command..."
     let overlay: HTMLElement;
+    let searchbar;
+
+    export let list = Commands.getNamedCommands();
+    const defaultList = [...list];
 
     onMount(() => {
         open = true;
+        onkeydown = (e) => {
+            if (e.code === "Escape") {
+                close(null);
+            }
+        }
     })
 
     function close(e) {
-        if (e.target !== overlay) return;
+        if (e && e.target instanceof HTMLInputElement) return;
         open = false;
+    }
+    function handleInput(e) {
+        let value: string = e.detail.value;
+        list = defaultList.filter(i => i.text.toLowerCase().startsWith((value.toLowerCase())));
     }
 </script>
 
@@ -21,9 +37,19 @@
     <div id="overlay" bind:this={overlay} on:click|stopPropagation={close}>
         <div id="command-palette">
             <div class="top">
-                Command Palette
+                {title}
             </div>
-            <Searchbar fluid height="30px" placeholder="> Type a command..." autofocus />
+            <Searchbar bind:this={searchbar} fluid height="30px" placeholder={placeholder} autofocus on:d_input={handleInput} input_delay={1} />
+            <div class="commandlist">
+                {#each list as item}
+                    <div class="search-item" on:click={(e) => {item.command(); close(e);}}>
+                        <span class="item-name">{item.text}</span>
+                        {#if item.shortcut}
+                            <span class="shortcut">{item.shortcut}</span>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
         </div>
     </div>
 {/if}
@@ -46,7 +72,7 @@
         padding: 10px;
         width: 80%;
         max-width: 600px;
-        max-height: 80vh;
+        max-height: 30vh;
         overflow-y: auto;
         background: var(--window-background);
         backdrop-filter: blur(5px);
@@ -62,6 +88,27 @@
             align-items: center;
             border-bottom: 1px solid var(--window-borderColor);
             padding: 5px 0;
+        }
+        .commandlist {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        .search-item {
+            padding: 2px 0.5rem;
+            border-radius: 2px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            &:hover {
+                background-color: var(--window-menuItemHoverBackground);
+            }
+            .shortcut {
+                margin-left: 20px;
+            }
         }
     }
 </style>
