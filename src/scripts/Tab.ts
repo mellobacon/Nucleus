@@ -19,7 +19,7 @@ export class Tab {
                 if (tab.id === id) {
                     this.activeid = id;
                     tab.active = true;
-                    if (tab.isfile) {
+                    if (get(tab.isfile)) {
                         this.isfile.set(true);
                         tab.content.focusEditor();
                     }
