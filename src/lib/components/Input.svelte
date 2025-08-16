@@ -15,6 +15,7 @@
     export let invalid = false;
     export let labelDirection: "top" | "left" = "top";
     export let autofocus = false;
+    export let input_delay = 500;
 
     let ref: HTMLElement = null;
 
@@ -24,7 +25,7 @@
         invalid = false;
         _ = setTimeout(() => {
             dispatch("d_input", {value: value})
-        }, 500);
+        }, input_delay);
     }
 </script>
 
@@ -34,7 +35,7 @@
     {/if}
 
     <!-- svelte-ignore a11y-autofocus -->
-    <input on:input={handleInput} autofocus={autofocus}
+    <input on:input={handleInput} on:input autofocus={autofocus}
     bind:this={ref}
     autocomplete="off"
     class="mousetrap"
@@ -70,7 +71,8 @@
     }
     input {
         padding: 0.4rem 15px;
-        outline: 1px solid var(--window-borderColor);
+        border: 1px solid var(--window-borderColor);
+        border-radius: 2px;
         &.extra_small {
             width: 12% !important;
         }
