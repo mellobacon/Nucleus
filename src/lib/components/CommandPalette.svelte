@@ -2,9 +2,8 @@
     import { onMount } from "svelte";
     import Searchbar from "./Searchbar.svelte";
     import { Commands } from "../../config/commands";
-    import { commandPallete } from "../../App.svelte";
 
-    let open = false;
+    export let open = false;
     export let title = "Command Palette";
     export let placeholder = "Type a command..."
     let overlay: HTMLElement;
@@ -25,7 +24,6 @@
     function close(e) {
         if (e && e.target instanceof HTMLInputElement) return;
         open = false;
-        commandPallete.set(null);
     }
     function handleInput(e) {
         let value: string = e.detail.value;

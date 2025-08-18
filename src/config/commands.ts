@@ -2,8 +2,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { get } from 'svelte/store';
 import { terminalInstance } from '../lib/components/Terminal.svelte';
 import { addEditorTab } from '../lib/components/Tabs/EditorTabs.svelte';
-import CommandPalette from '../lib/components/CommandPalette.svelte';
-import { commandPallete } from '../App.svelte';
+import { openCommandPallete } from '../App.svelte';
 
 const appWindow = getCurrentWindow();
 
@@ -160,15 +159,7 @@ export class Commands {
             "keybind": "Ctrl+Shift+P",
             "disabled": false,
             "command": () => {
-                let cmdPallete = get(commandPallete);
-                if (!cmdPallete) {
-                    commandPallete.set(new CommandPalette({target: document.getElementById("main")}));
-                    return;
-                }
-                if (cmdPallete && cmdPallete.defaultList !== this.getNamedCommands()) {
-                    cmdPallete.$set({"title": "Command Palette", placeholder: "Type a command...", list: this.getNamedCommands()});
-                    commandPallete.set(cmdPallete);
-                }
+                openCommandPallete();
             }
         }
     }

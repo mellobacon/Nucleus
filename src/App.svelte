@@ -8,13 +8,14 @@
     import EditorBackground from "./lib/EditorBackground.svelte";
     import EditorView from "./lib/EditorView.svelte";
     import { terminalInstance } from "./lib/components/Terminal.svelte";
-    import { writable } from "svelte/store";
+    import { writable, get } from "svelte/store";
     import ContextMenu from "./lib/components/ContextMenu.svelte";
     import { activeMenu } from "./scripts/Menu";
     import { paneLeft, paneBottom, paneRight, paneLeftSize, paneBottomSize, paneRightSize } from "./config/configStore";
     import { editorTabsEmpty } from "./lib/components/Tabs/EditorTabs.svelte";
     import { bottomPanel, initPanels, leftPanel, rightPanel } from "./scripts/panel";
     import CommandPalette from "./lib/components/CommandPalette.svelte";
+    import { Commands } from "./config/commands";
 
     onMount(async () => {
         await loadSettings();
@@ -54,6 +55,19 @@
 <script lang="ts" context="module">
     export let contextMenu = writable({open: false, target: null, items: []});
     export let commandPallete = writable<CommandPalette>();
+
+    export function openCommandPallete(title = "Command Palette", placeholder = "Type a command...", list = Commands.getNamedCommands()) {
+        let cmdPallete = get(commandPallete);
+        if (!cmdPallete) {
+            cmdPallete = new CommandPalette({target: document.getElementById("main")});
+            commandPallete.set(cmdPallete);
+        }
+        if (cmdPallete.title === title) {
+            cmdPallete.open = true;
+            return;
+        }
+        cmdPallete.$set({"title": title, placeholder: placeholder, list: list, open: true});
+    }
 </script>
 
 <svelte:window on:contextmenu|preventDefault></svelte:window>
