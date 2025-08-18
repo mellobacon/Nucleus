@@ -1,8 +1,9 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { get } from 'svelte/store';
 import { terminalInstance } from '../lib/components/Terminal.svelte';
-import { addEditorTab } from '../lib/components/Tabs/EditorTabs.svelte';
+import { addEditorTab, addTab } from '../lib/components/Tabs/EditorTabs.svelte';
 import { openCommandPallete } from '../App.svelte';
+import Settings from '../lib/Settings.svelte';
 
 const appWindow = getCurrentWindow();
 
@@ -101,7 +102,9 @@ export class Commands {
         "openSettings": {
             "keybind": "",
             "disabled": false,
-            "command": () => {}
+            "command": () => {
+                addTab("Settings", "Settings", new Settings({target: document.getElementById("tab-view")}));
+            }
         },
         "exitNucleus": {
             "keybind": "",
