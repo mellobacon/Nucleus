@@ -9,6 +9,19 @@
     import { line_info } from "./Editor.svelte";
     import { notifications } from "../scripts/notifications";
     import { openPanel, PanelDirection } from "../scripts/panel";
+    import { openCommandPallete } from "../App.svelte";
+
+    function openLanguageList() {
+        openCommandPallete("Select Language", "Select a language...", [{text: "test", shortcut: "test", command: () => {}}])
+    }
+
+    function openSetLineCol(ln, col) {
+        openCommandPallete("Line, Column", `${ln}:${col}`, [{text: `Go to line:column`, shortcut: "", command: () => {}}], false)
+    }
+
+    function openSetEncoding() {
+        openCommandPallete("Select Encoding", "UTF-8", [{text: "test", shortcut: "", command: () => {}}])
+    }
 </script>
 
 <div id="statusbar">
@@ -33,11 +46,11 @@
         </div>
         <span title="Indentation" use:tooltip data-tooltip-bottom>Spaces: 4</span>
         <div class="divider"></div>
-        <span title="Line {$line_info.ln}, Column {$line_info.col}" use:tooltip data-tooltip-bottom>{$line_info.ln} : {$line_info.col}</span>
+        <span class="tool" on:click={() => openSetLineCol($line_info.ln, $line_info.col)} title="Line {$line_info.ln}, Column {$line_info.col}" use:tooltip data-tooltip-bottom>{$line_info.ln} : {$line_info.col}</span>
         <div class="divider"></div>
-        <span title="Encoding" use:tooltip data-tooltip-bottom >UTF-8</span>
+        <span class="tool" on:click={openSetEncoding} title="Encoding" use:tooltip data-tooltip-bottom >UTF-8</span>
         <div class="divider"></div>
-        <span title="Language" use:tooltip data-tooltip-bottom>Plain Text</span>
+        <span class="tool" title="Language" use:tooltip data-tooltip-bottom on:click={openLanguageList}>Plain Text</span>
     </div>
     <div class="divider"></div>
     <div class="editor-tools-right">
@@ -84,6 +97,7 @@
     .tool:hover, .problems:hover {
         background-color: var(--statusbar-buttonBackgroundHover);
         color: var(--statusbar-buttonForegroundHover);
+        cursor: pointer;
     }
     .divider {
         width: 0.0625rem;
