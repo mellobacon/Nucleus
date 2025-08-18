@@ -14,6 +14,7 @@
     import { paneLeft, paneBottom, paneRight, paneLeftSize, paneBottomSize, paneRightSize } from "./config/configStore";
     import { editorTabsEmpty } from "./lib/components/Tabs/EditorTabs.svelte";
     import { bottomPanel, initPanels, leftPanel, rightPanel } from "./scripts/panel";
+    import CommandPalette from "./lib/components/CommandPalette.svelte";
 
     onMount(async () => {
         await loadSettings();
@@ -52,6 +53,7 @@
 
 <script lang="ts" context="module">
     export let contextMenu = writable({open: false, target: null, items: []});
+    export let commandPallete = writable<CommandPalette>();
 </script>
 
 <svelte:window on:contextmenu|preventDefault></svelte:window>

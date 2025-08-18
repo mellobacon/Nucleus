@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import { terminalInstance } from '../lib/components/Terminal.svelte';
 import { addEditorTab } from '../lib/components/Tabs/EditorTabs.svelte';
 import CommandPalette from '../lib/components/CommandPalette.svelte';
+import { commandPallete } from '../App.svelte';
 
 const appWindow = getCurrentWindow();
 
@@ -159,7 +160,15 @@ export class Commands {
             "keybind": "Ctrl+Shift+P",
             "disabled": false,
             "command": () => {
-                const _ = new CommandPalette({target: document.getElementById("main")});
+                let cmdPallete = get(commandPallete);
+                if (!cmdPallete) {
+                    commandPallete.set(new CommandPalette({target: document.getElementById("main")}));
+                    return;
+                }
+                if (cmdPallete && cmdPallete.defaultList !== this.getNamedCommands()) {
+                    cmdPallete.$set({"title": "Command Palette", placeholder: "Type a command...", list: this.getNamedCommands()});
+                    commandPallete.set(cmdPallete);
+                }
             }
         }
     }
