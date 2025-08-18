@@ -37,7 +37,7 @@
         :global(.searchinput input) {
             width: 100%;
             height: 100%;
-            border: 1px solid var(--window-inputBorder);
+            outline: 1px solid var(--window-inputBorder);
             font-size: 0.875rem;
             border-radius: 2px;
             padding: 0 0.4rem;

@@ -71,6 +71,7 @@ input {
 input:focus,
 textarea:focus {
   outline: none;
+  outline-offset: 0;
 }
 
 input:disabled {
