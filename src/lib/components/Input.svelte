@@ -71,7 +71,7 @@
     }
     input {
         padding: 0.4rem 15px;
-        border: 1px solid var(--window-borderColor);
+        border: 1px solid var(--window-borderColor) !important;
         border-radius: 2px;
         &.extra_small {
             width: 12% !important;

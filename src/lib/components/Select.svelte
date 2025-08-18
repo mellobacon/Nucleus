@@ -95,6 +95,7 @@
         min-width: 15rem;
         width: 100%;
         position: relative;
+        border-radius: 2px;
         button {
             display: flex;
             align-items: center;
@@ -102,6 +103,7 @@
             min-height: 2rem;
             width: 100%;
             padding: 0 15px;
+            border-radius: 2px;
             background-color: var(--window-selectButtonBackground);
             color: var(--window-selectButtonForeground);
             span {
@@ -129,7 +131,8 @@
         max-height: 15rem;
         overflow-y: overlay;
         z-index: 1;
-        outline: 1px solid var(--window-borderColor);
+        border: 1px solid var(--window-borderColor);
+        border-radius: 2px;
         background-color: var(--window-selectBackground);
         .item {
             display: flex;
