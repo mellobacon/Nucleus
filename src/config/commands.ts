@@ -5,6 +5,7 @@ import { addEditorTab, addTab } from '../lib/components/Tabs/EditorTabs.svelte';
 import { openCommandPallete } from '../App.svelte';
 import Settings from '../lib/Settings.svelte';
 import Welcome from '../lib/Welcome.svelte';
+import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
 
 const appWindow = getCurrentWindow();
 
@@ -68,7 +69,16 @@ export class Commands {
         "createNewWindow": {
             "keybind": "Ctrl+Shift+N",
             "disabled": false,
-            "command": () => {}
+            "command": () => {
+                let randomId = (Math.random() + 1).toString(36).substring(7);
+                let _ = new WebviewWindow(`nucleus-${randomId}`, {
+                    url: "../../index.html",
+                    decorations: false,
+                    title: "nucleus",
+                    maximized: true,
+                    resizable: true,
+                })
+            }
         },
         "openFile": {
             "keybind": "Ctrl+O",
