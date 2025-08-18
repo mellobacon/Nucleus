@@ -94,10 +94,7 @@
             <Checkbox label="Auto Indent" checked />
         </div>
         <div class="setting">
-            <Select labelDirection="left" label="Line Numbers" items={[
-                {id: 0, name: "On"},
-                {id: 1, name: "Off"},
-            ]} />
+            <Checkbox label="Line Numbers" />
         </div>
         <div class="setting">
             <Select labelDirection="left" label="Indent Using" items={[
