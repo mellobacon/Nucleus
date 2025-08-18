@@ -38,7 +38,7 @@
                 {id: 1, name: "Nucleus Light"},
                 {id: 2, name: "Nucleus Gruv"},
             ]} />
-            <small>Edit current theme in the <a href="/">settings.json</a></small>
+            <small>Edit current theme in the <a>settings.json</a></small>
         </div>
         <div class="setting">
             <Select labelDirection="left" label="Keymap" items={[
