@@ -47,7 +47,7 @@ export class Menu {
                 {name: "Command Pallete", shortcut: Commands.commands.openCommandPallete.keybind, action: Commands.commands.openCommandPallete.command, disabled: Commands.commands.openCommandPallete.disabled}
             ]},
             {menu: "Help", children: [
-                {name: "Welcome", shortcut: "", action: ()=>{}, disabled: true},
+                {name: "Welcome", shortcut: Commands.commands.openWelcomeTab.keybind, action: Commands.commands.openWelcomeTab.command, disabled: Commands.commands.openWelcomeTab.disabled},
                 {name: "Send Feedback", shortcut: "", action: ()=>{}, disabled: true},
                 {name: "Contact Support", shortcut: "", action: ()=>{}, disabled: true},
                 {name: "Report Issue", shortcut: "", action: ()=>{}, disabled: true},

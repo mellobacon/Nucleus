@@ -4,6 +4,7 @@ import { terminalInstance } from '../lib/components/Terminal.svelte';
 import { addEditorTab, addTab } from '../lib/components/Tabs/EditorTabs.svelte';
 import { openCommandPallete } from '../App.svelte';
 import Settings from '../lib/Settings.svelte';
+import Welcome from '../lib/Welcome.svelte';
 
 const appWindow = getCurrentWindow();
 
@@ -163,6 +164,14 @@ export class Commands {
             "disabled": false,
             "command": () => {
                 openCommandPallete();
+            }
+        },
+
+        "openWelcomeTab": {
+            "keybind": "",
+            "disabled": false,
+            "command": () => {
+                addTab("Welcome", "Welcome", new Welcome({target: document.getElementById("tab-view")}));
             }
         }
     }
