@@ -56,7 +56,7 @@
     export let contextMenu = writable({open: false, target: null, items: []});
     export let commandPallete = writable<CommandPalette>();
 
-    export function openCommandPallete(title = "Command Palette", placeholder = "Type a command...", list = Commands.getNamedCommands()) {
+    export function openCommandPallete(title = "Command Palette", placeholder = "Type a command...", list = Commands.getNamedCommands(), filterInput = true) {
         let cmdPallete = get(commandPallete);
         if (!cmdPallete) {
             cmdPallete = new CommandPalette({target: document.getElementById("main")});
@@ -66,7 +66,7 @@
             cmdPallete.open = true;
             return;
         }
-        cmdPallete.$set({"title": title, placeholder: placeholder, list: list, open: true});
+        cmdPallete.$set({"title": title, placeholder: placeholder, list: list, open: true, filterInput: filterInput});
     }
 </script>
 

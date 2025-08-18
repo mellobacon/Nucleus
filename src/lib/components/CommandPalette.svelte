@@ -5,7 +5,8 @@
 
     export let open = false;
     export let title = "Command Palette";
-    export let placeholder = "Type a command..."
+    export let placeholder = "Type a command...";
+    export let filterInput = false;
     let overlay: HTMLElement;
     let searchbar;
 
@@ -26,6 +27,7 @@
         open = false;
     }
     function handleInput(e) {
+        if (!filterInput) return;
         let value: string = e.detail.value;
         list = defaultList.filter(i => i.text.toLowerCase().startsWith((value.toLowerCase())));
     }
