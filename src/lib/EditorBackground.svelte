@@ -9,15 +9,15 @@
     <div class="top">
         <h1>Nucleus</h1>
         <div class="shortcuts">
-            <span>
+            <span on:click={Commands.commands.openCommandPallete.command}>
                 <div>Show Command Palette</div>
                 <ShortcutButton shortcut={Commands.commands.openCommandPallete.keybind} />
             </span>
-            <span>
+            <span on:click={Commands.commands.createNewFile.command}>
                 <div>Create New File</div>
                 <ShortcutButton shortcut={Commands.commands.createNewFile.keybind} />
             </span>
-            <span>
+            <span on:click={Commands.commands.openFile.command}>
                 <div>Open File</div>
                 <ShortcutButton shortcut={Commands.commands.openFile.keybind} />
             </span>
@@ -25,7 +25,7 @@
                 <div>Open Recents</div>
                 <ShortcutButton shortcut={Commands.commands.openRecents.keybind} />
             </span>
-            <span>
+            <span on:click={Commands.commands.fullscreen.command}>
                 <div>Toggle Fullscreen</div>
                 <ShortcutButton shortcut={Commands.commands.fullscreen.keybind} />
             </span>

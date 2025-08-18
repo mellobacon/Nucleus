@@ -15,15 +15,15 @@
         <h1>Nucleus</h1>
 
         <div class="quick-actions">
-            <button on:click={() => Commands.commands.createNewFile}>
+            <button on:click={Commands.commands.createNewFile.command}>
                 <svelte:component this={AddFile}></svelte:component>
                 New File
             </button>
-            <button on:click={() => Commands.commands.openFile}>
+            <button on:click={Commands.commands.openFile.command}>
                 <svelte:component this={FolderOpen}></svelte:component>
                 Open File
             </button>
-            <button on:click={() => Commands.commands.openFolder}>
+            <button on:click={Commands.commands.openFolder.command}>
                 <svelte:component this={Folder}></svelte:component>
                 Open Folder
             </button>
@@ -31,7 +31,7 @@
                 <svelte:component this={Git}></svelte:component>
                 Clone From Version Control
             </button>
-            <button on:click={() => Commands.commands.openSettings}>
+            <button on:click={Commands.commands.openSettings.command}>
                 <svelte:component this={Settings}></svelte:component>
                 Settings
             </button>
