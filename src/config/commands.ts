@@ -83,7 +83,9 @@ export class Commands {
         "openRecents": {
             "keybind": "Ctrl+Shift+R",
             "disabled": false,
-            "command": () => {}
+            "command": () => {
+                openCommandPallete("Open Recent...", "Open file or folder...", [{"text": "No files/folders found", "shortcut": "", command: () => {}}]);
+            }
         },
         "saveFile": {
             "keybind": "Ctrl+S",
@@ -97,7 +99,7 @@ export class Commands {
         },
         "saveAll": {
             "keybind": "Ctrl+K S",
-            "disabled": false,
+            "disabled": true,
             "command": () => {}
         },
         "openSettings": {
