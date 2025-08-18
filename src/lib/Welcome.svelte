@@ -4,6 +4,7 @@
     import FolderOpen from "../assets/icons/folder_open.svelte";
     import Git from "../assets/icons/git.svelte";
     import Settings from "../assets/icons/settings.svelte";
+    import { Commands } from "../config/commands";
 
     export let hidden = false;
 </script>
@@ -14,15 +15,15 @@
         <h1>Nucleus</h1>
 
         <div class="quick-actions">
-            <button>
+            <button on:click={() => Commands.commands.createNewFile}>
                 <svelte:component this={AddFile}></svelte:component>
                 New File
             </button>
-            <button>
+            <button on:click={() => Commands.commands.openFile}>
                 <svelte:component this={FolderOpen}></svelte:component>
                 Open File
             </button>
-            <button>
+            <button on:click={() => Commands.commands.openFolder}>
                 <svelte:component this={Folder}></svelte:component>
                 Open Folder
             </button>
@@ -30,7 +31,7 @@
                 <svelte:component this={Git}></svelte:component>
                 Clone From Version Control
             </button>
-            <button>
+            <button on:click={() => Commands.commands.openSettings}>
                 <svelte:component this={Settings}></svelte:component>
                 Settings
             </button>
