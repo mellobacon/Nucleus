@@ -6,13 +6,22 @@
     import Warning from "../assets/icons/warning.svelte";
     import Error from "../assets/icons/error.svelte";
     import { tooltip } from "../scripts/tooltip";
-    import { line_info } from "./Editor.svelte";
+    import { language, line_info, setEditorLanguage } from "./Editor.svelte";
     import { notifications } from "../scripts/notifications";
     import { openPanel, PanelDirection } from "../scripts/panel";
     import { openCommandPallete } from "../App.svelte";
+    import { languages } from "@codemirror/language-data";
+    import { editorTabsEmpty } from "./components/Tabs/EditorTabs.svelte";
 
     function openLanguageList() {
-        openCommandPallete("Select Language", "Select a language...", [{text: "test", shortcut: "test", command: () => {}}])
+        console.log(languages)
+        let langList = languages.flatMap(l => 
+            [{"text": l.name, "shortcut": "", "command": () => {setEditorLanguage(l)}}]
+        )
+
+        langList = langList.filter(l => l.text === "HTML" || l.text === "CSS" || l.text === "JavaScript" || l.text === "TypeScript")
+        langList.sort((a,b) => a.text.localeCompare(b.text));
+        openCommandPallete("Select Language", "Select a language...", langList)
     }
 
     function openSetLineCol(ln, col) {
@@ -36,7 +45,8 @@
         </span>
     </div>
     <div class="editor-info">
-        <div class="problems" title="No Problems" use:tooltip data-tooltip-bottom>
+        {#if !$editorTabsEmpty}
+            <div class="problems" title="No Problems" use:tooltip data-tooltip-bottom>
             <span>
                 <svelte:component this={Error}></svelte:component> 0
             </span>
@@ -50,7 +60,8 @@
         <div class="divider"></div>
         <span class="tool" on:click={openSetEncoding} title="Encoding" use:tooltip data-tooltip-bottom >UTF-8</span>
         <div class="divider"></div>
-        <span class="tool" title="Language" use:tooltip data-tooltip-bottom on:click={openLanguageList}>Plain Text</span>
+        <span class="tool" title="Language" use:tooltip data-tooltip-bottom on:click={openLanguageList}>{$language}</span>
+        {/if}
     </div>
     <div class="divider"></div>
     <div class="editor-tools-right">
@@ -108,7 +119,7 @@
         height: 100%;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: flex-end;
         padding: 0 10px;
         font-size: 13px;
         .tool {

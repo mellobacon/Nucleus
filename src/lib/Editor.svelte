@@ -4,9 +4,8 @@
     import { defaultKeymap, history, historyKeymap, indentWithTab} from "@codemirror/commands";
     import { searchKeymap } from "@codemirror/search";
     import { onMount, tick } from "svelte";
-    import { getTabs } from "./components/Tabs/EditorTabs.svelte";
+    import { getCurrentEditor, getTabs } from "./components/Tabs/EditorTabs.svelte";
     import { get, writable, type Writable } from "svelte/store";
-    import { javascript } from "@codemirror/lang-javascript"
     import { autocompletion } from "@codemirror/autocomplete"
     import { codeFolding, HighlightStyle, syntaxHighlighting } from "@codemirror/language";
     import { editorSearch, foldGutters, highlightNewLine, highlightWhiteSpace, indentMarkers } from "../scripts/editor";
@@ -17,6 +16,11 @@
     let editorView: EditorView;
     const theme = new Compartment();
     const highlighting = new Compartment();
+    const lang =  new Compartment();
+
+    const file_info = writable({
+        language: "Plain Text",
+    })
 
     export function setTheme() {
         editorView.dispatch({
@@ -34,12 +38,27 @@
         await tick();
         editorView.focus();
         updateLineInfo();
+        if (get(file_info).language) {
+            language.set(get(file_info).language)
+        }
     }
 
     export function updateLineInfo() {
         let lineNumber = editorView.state.doc.lineAt(editorView.state.selection.main.head).number;
         let columnNumber = editorView.state.selection.ranges[0].head - editorView.state.doc.lineAt(editorView.state.selection.main.head).from;
         line_info.set({ln: lineNumber, col: columnNumber + 1});
+    }
+
+    export async function setFileLanguage(l) {
+        let mode = await l.load();
+        if (!mode) {
+            return;
+        }
+        editorView.dispatch({
+            effects: lang.reconfigure(mode)
+        })
+        language.set(l.name);
+        get(file_info).language = l.name;
     }
 
     async function handleKeyDown(e) {
@@ -61,7 +80,7 @@
                     drawSelection({cursorBlinkRate: 1000}),
                     highlightNewLine(),
                     highlightWhiteSpace(),
-                    javascript(),
+                    lang.of([]),
                     highlighting.of([]),
                     autocompletion({closeOnBlur: false}),
                     codeFolding(),
@@ -113,6 +132,7 @@
     export let editorV: Writable<EditorView> = writable();
     
     export let line_info = writable({ln: 0, col: 0});
+    export let language = writable("Plain Text");
     
     export function setEditorTheme() {
         for (const tab of getTabs()) {
@@ -121,6 +141,11 @@
                 tab.content.setHighlighting();
             }
         }
+    }
+
+    export function setEditorLanguage(l) {
+        let tab = getCurrentEditor();
+        tab.setFileLanguage(l);
     }
 </script>
 
