@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Searchbar from "./Searchbar.svelte";
-    import { Commands } from "../../config/commands";
 
     export let open = false;
     export let title = "Command Palette";
@@ -10,8 +9,8 @@
     let overlay: HTMLElement;
     let searchbar;
 
-    export let list = Commands.getNamedCommands();
-    export const defaultList = [...list];
+    export let list = [];
+    export let defaultList = [];
 
     onMount(() => {
         open = true;

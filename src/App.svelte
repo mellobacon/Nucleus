@@ -59,14 +59,14 @@
     export function openCommandPallete(title = "Command Palette", placeholder = "Type a command...", list = Commands.getNamedCommands(), filterInput = true) {
         let cmdPallete = get(commandPallete);
         if (!cmdPallete) {
-            cmdPallete = new CommandPalette({target: document.getElementById("main")});
+            cmdPallete = new CommandPalette({target: document.getElementById("main"), props: {title, placeholder, defaultList: list, list, filterInput}});
             commandPallete.set(cmdPallete);
         }
         if (cmdPallete.title === title) {
             cmdPallete.open = true;
             return;
         }
-        cmdPallete.$set({"title": title, placeholder: placeholder, list: list, open: true, filterInput: filterInput});
+        cmdPallete.$set({title, placeholder, defaultList: list, list, open: true, filterInput});
     }
 </script>
 
