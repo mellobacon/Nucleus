@@ -11,7 +11,7 @@
     import { openPanel, PanelDirection } from "../scripts/panel";
     import { openCommandPallete } from "../App.svelte";
     import { languages } from "@codemirror/language-data";
-    import { editorTabsEmpty } from "./components/Tabs/EditorTabs.svelte";
+    import { editorTabsEmpty, isfile } from "./components/Tabs/EditorTabs.svelte";
 
     function openLanguageList() {
         console.log(languages)
@@ -45,7 +45,7 @@
         </span>
     </div>
     <div class="editor-info">
-        {#if !$editorTabsEmpty}
+        {#if !$editorTabsEmpty && $isfile}
             <div class="problems" title="No Problems" use:tooltip data-tooltip-bottom>
             <span>
                 <svelte:component this={Error}></svelte:component> 0
