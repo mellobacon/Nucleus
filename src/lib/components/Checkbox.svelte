@@ -45,6 +45,8 @@
         height: 16px;
         width: 16px;
         background-color: var(--window-inputBackground);
+        outline: solid 1px var(--window-borderColor);
+        border-radius: 1.5px;
     }
 
     .checkbox:hover input ~ .checkmark {

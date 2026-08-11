@@ -98,7 +98,7 @@
         <div class="tools">
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="tool" title="Settings" use:tooltip>
+            <div class="tool" title="Settings" use:tooltip on:click={Commands.commands.openSettings.command}>
                 <svelte:component this={Settings}></svelte:component>
             </div>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
