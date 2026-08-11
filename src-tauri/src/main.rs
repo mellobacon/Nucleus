@@ -299,8 +299,7 @@ fn configure_log() -> TauriPlugin<Wry> {
                 .unwrap_or("".to_string());
             out.finish(format_args!(
                 "{}[{}][{}{}{}] {}",
-                time::OffsetDateTime::now_local()
-                    .unwrap()
+                time::OffsetDateTime::now_utc()
                     .format(&format)
                     .unwrap(),
                 record.level(),
@@ -333,15 +332,16 @@ fn configure_log_path(app: &mut App) {
     }
 
     let format = time::format_description::parse("[year]-[month]-[day]-[hour][minute]").unwrap();
-    let time = time::OffsetDateTime::now_local()
-        .unwrap()
+    let time = time::OffsetDateTime::now_utc()
         .format(&format)
         .unwrap();
     let log_name = format!("nucleus_log-{}.log", time);
     
     // changing the default log name to something more meaningful
     let new_log_path = app_log_dir.join(log_name);
-    fs::rename(old_log_path, new_log_path).unwrap();
+    if let Err(e) = fs::rename(&old_log_path, &new_log_path) {
+        error!("Failed to rename log file: {}", e);
+    }
 }
 
 fn load_settings(app: &mut App) {
@@ -368,14 +368,34 @@ fn load_settings(app: &mut App) {
             }
         }
     );
-    let appdata_local = tauri::api::path::app_local_data_dir(&app.config()).unwrap();
+
+    let appdata_local = match tauri::api::path::app_local_data_dir(&app.config()) {
+        Some(path) => path,
+        None => {
+            error!("Failed to get app local data directory");
+            return;
+        }
+    };
+
+    // Create the directory if it doesn't exist
+    if let Err(e) = fs::create_dir_all(&appdata_local) {
+        error!("Failed to create app data directory: {}", e);
+        return;
+    }
+
     let settings_path = appdata_local.join("default_settings.json");
 
     #[cfg(debug_assertions)]
-    fs::write(&settings_path, default_settings.to_string()).unwrap();
+    if let Err(e) = fs::write(&settings_path, default_settings.to_string()) {
+        error!("Failed to write default settings: {}", e);
+        return;
+    }
 
-    if !settings_path.try_exists().unwrap() {
-        fs::write(&settings_path, default_settings.to_string()).unwrap();
+    if !settings_path.try_exists().unwrap_or(false) {
+        if let Err(e) = fs::write(&settings_path, default_settings.to_string()) {
+            error!("Failed to create default settings file: {}", e);
+            return;
+        }
         info!(
             "Default settings file not found. Created a new default settings file. Path: {:?}",
             &settings_path
@@ -395,7 +415,9 @@ fn load_settings(app: &mut App) {
         .defaults(defaults)
         .build();
 
-    settings_store.load().unwrap();
+    if let Err(e) = settings_store.load() {
+        error!("Failed to load settings: {}", e);
+    }
 }
 
 fn main() {

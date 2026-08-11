@@ -1,10 +1,10 @@
 {
+  "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/1.5.4/tooling/cli/schema.json",
   "build": {
     "beforeBuildCommand": "yarn build",
     "beforeDevCommand": "yarn dev",
     "devPath": "http://localhost:8080",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "distDir": "../dist"
   },
   "package": {
     "productName": "nucleus",
@@ -100,14 +100,15 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "nucleus",
+      "identifier": "com.nucleus.app",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
-        "frameworks": [],
+        "frameworks": ["AppKit", "WebKit", "Security"],
         "providerShortName": null,
-        "signingIdentity": null
+        "signingIdentity": null,
+        "minimumSystemVersion": "10.13"
       },
       "resources": [],
       "shortDescription": "",
@@ -115,7 +116,10 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "downloadBootstrapper"
+        }
       }
     },
     "security": {
