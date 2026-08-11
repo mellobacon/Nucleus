@@ -50,6 +50,8 @@ export class NucleusTerminal {
 
         this.fitTerminal();
 
+        this.write('\x1b[4h'); // insert mode
+
         this.terminalController.onData(async e => {
             switch (e) {
                 case '\u0003': // Ctrl+C
@@ -60,17 +62,39 @@ export class NucleusTerminal {
                     await this.processCommand();
                     break;
                 case '\u007F': // Backspace (DEL)
+                    this.write('\x1b[4l'); // replace mode
+
+                    let inputIndex = this.terminalController.buffer.normal.cursorX - 2;
                     // Do not delete the prompt
                     if (this.terminalController.buffer.normal.cursorX > 2) {
-                        this.terminalController.write('\b \b');
+                        this.write('\u001B[D') // Move cursor left
+                        this.write('\x1b[P'); // Insert DEL
                         if (this.command.length > 0) {
-                            this.command = this.command.slice(0, this.command.length - 1);
+                            let x = this.command.slice(0, inputIndex - 1);
+                            let y = this.command.slice(inputIndex);
+                            this.command = x + y;
                         }
                     }
+                    this.write('\x1b[4h'); // insert mode
+                    break;
+                case '\u001B[D': // Left
+                    if (this.terminalController.buffer.normal.cursorX > 2) {
+                        this.write(e);
+                    }
+                    break;
+                case '\u001B[C': // Right
+                    if (this.terminalController.buffer.normal.cursorX < this.command.length + 2) {
+                        this.write(e);
+                    }
+                    break;
+                case '\u001B[A': // Up
+                    break;
+                case '\u001B[B': // Down
                     break;
                 default: // Print all other characters for demo
                     if (e >= String.fromCharCode(0x20) && e <= String.fromCharCode(0x7E) || e >= '\u00a0') {
-                        this.command += e;
+                        let inputIndex = this.terminalController.buffer.normal.cursorX - 2;
+                        this.command = this.command.slice(0, inputIndex) + e + this.command.slice(inputIndex)
                         this.write(e);
                     }
             }
@@ -93,6 +117,7 @@ export class NucleusTerminal {
         this.write('\r\n$ ');
     }
     private async processCommand() {
+        this.command = "";
         this.prompt();
     }
     updateTheme() {
