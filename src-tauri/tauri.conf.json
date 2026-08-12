@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeBuildCommand": "yarn build",
-    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "bun build",
+    "beforeDevCommand": "bun dev",
     "devPath": "http://localhost:8080",
     "distDir": "../dist",
     "withGlobalTauri": false
